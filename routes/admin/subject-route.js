@@ -1,3 +1,8 @@
+/*
+Route này dùng để xử lý CRUD các môn học
+Ví dụ: kiến thức chung, kiến thức chuyên ngành, tiếng anh, tin học...
+*/
+
 const router = require('express').Router();
 const Subject = require('../../models/subject-model');
 const middeware = require('../../middlewares/admin-middleware');
@@ -18,17 +23,37 @@ router.get('/list',(req,res)=>{
   });
 });
 
+
+/*
+Khi tiến hành add,update cần kiểm tra xem trong csdl đã tồn tại document này hay chưa
+Khi add cần kiểm tra xem đã tồn tại thị không add tiếp nữa.
+Khi update cần kiểm tra nội dung update có bị trùng với 1 document nào khác không
+*/
 router.post('/add',middeware.isAdmin,(req,res)=>{
   let group = req.body.group;
   let name = req.body.name;
   let meta = req.body.meta;
-  
 
-  Subject.create({name:name,meta:meta,group:group},function(err,subject){
+  Subject.countDocuments({
+    group:group,
+    $or:[
+      {name:{ $regex : new RegExp(name, "i") }},
+      {meta:{ $regex : new RegExp(meta, "i") }}
+    ]
+  },function(err,count){
     if(err){
-      res.send({code:500,msg:'created subject failed: '+new Error(err),type:'danger'});
+      res.send({code:500,msg:'can not count subject: '+new Error(err),type:'danger'});
     }
-    res.send({code:200,msg:'Thêm môn học thành công',type:'success',subject:subject})
+    if(count>0){
+      res.send({code:101,msg:'Môn này đã tồn tại trong hệ thống',type:'warning'});
+    }else{
+      Subject.create({name:name,meta:meta,group:group},function(err,subject){
+        if(err){
+          res.send({code:500,msg:'created subject failed: '+new Error(err),type:'danger'});
+        }
+        res.send({code:200,msg:'Thêm môn học thành công',type:'success',subject:subject})
+      });
+    }
   });
 });
 

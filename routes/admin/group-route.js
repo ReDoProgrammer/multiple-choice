@@ -24,11 +24,11 @@ router.post('/create',middeware.isAdmin,(req,res)=>{
   Group.countDocuments({$or:[
     {name:{ $regex : new RegExp(name, "i") }},
     {meta:{ $regex : new RegExp(meta, "i") }}
-  ]},function(err,gr){
+  ]},function(err,count){
     if(err){
       res.send({code:500,msg:'Count group failed: '+new Error(err),type:'danger'});
     }
-    if(gr){//nếu đã tồn tại
+    if(count>0){//nếu đã tồn tại
       res.send({code:101,msg:'Bộ môn này đã tồn tại',type:'warning'});
     }else{//ngược lại: chưa có trong database
       Group.create({

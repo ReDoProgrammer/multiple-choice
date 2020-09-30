@@ -1,3 +1,9 @@
+/*
+  Route này dùng để xử lý CRUD các bộ môn
+  Từ các bộ môn mới có môn.
+  Ví dụ: Bộ môn: thi công chức, sẽ có các môn: kiến thức chung, tiếng anh, kiến thức chuyên ngành
+*/
+
 const router = require('express').Router();
 const Group = require('../../models/group-model');
 const middeware = require('../../middlewares/admin-middleware');
@@ -9,28 +15,34 @@ router.get('/',middeware.isAdmin,(req,res)=>{
 router.post('/create',middeware.isAdmin,(req,res)=>{
   let name = req.body.name;
   let meta = req.body.meta;
+  /*
+    Tìm kiếm xem tên và thẻ meta của bộ môn đã có trong db chưa ( không tính hoa thường )
+    { $regex : new RegExp(name, "i") } không tính hoa thường
+    nếu chưa có thì tiến hành thêm
+    ngược lại hiện thông báo bộ môn này đã tồn tại
+  */
   Group.countDocuments({$or:[
     {name:{ $regex : new RegExp(name, "i") }},
-    {meta:{ $regex : new RegExp(meta, "i") }}    
+    {meta:{ $regex : new RegExp(meta, "i") }}
   ]},function(err,gr){
     if(err){
-      console.log('error when find group: '+new Error(err));
+      res.send({code:500,msg:'Count group failed: '+new Error(err),type:'danger'});
     }
-    if(gr){
-      console.log('exist',gr);
-    }else{
-      console.log(0);
+    if(gr){//nếu đã tồn tại
+      res.send({code:101,msg:'Bộ môn này đã tồn tại',type:'warning'});
+    }else{//ngược lại: chưa có trong database
+      Group.create({
+        name:name,
+        meta:meta
+      },function(err,cl){
+        if(err){
+          res.send({code:500,msg:'Create class failed: '+new Error(err),type:'danger'});
+        }
+        res.send({code:200,msg:'Tạo bộ môn thành công',type:'success'});
+      });
     }
   })
-  // Group.create({
-  //   name:name,
-  //   meta:meta
-  // },function(err,cl){
-  //   if(err){
-  //     res.send({code:500,msg:'Create class failed: '+new Error(err),type:'danger'});
-  //   }
-  //   res.send({code:200,msg:'created class successfully',type:'success'});
-  // });
+
 });
 
 router.post('/update',middeware.isAdmin,(req,res)=>{

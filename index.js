@@ -11,6 +11,7 @@ const bodyParser = require('body-parser');//body parser dùng để lấy dữ l
 const adminRoutes = require('./routes/admin/admin-route');
 const groupRoutes = require('./routes/admin/group-route');
 const subjectRoutes = require('./routes/admin/subject-route');
+const questionRoutes = require('./routes/admin/question-route');
 
 
 //phần route của user hoặc guest
@@ -45,6 +46,7 @@ app.use(bodyParser.json());
 app.use('/admin',adminRoutes);
 app.use('/admin/group',groupRoutes);
 app.use('/admin/subject',subjectRoutes);
+app.use('/admin/question',questionRoutes);
 
 //phần route user
 app.use('/',homeRoutes);//route trang chủ

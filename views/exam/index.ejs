@@ -2,61 +2,84 @@
 <div class="col-sm-12 col-md-9 col-lg-9">
   <div class="panel panel-primary list-announcement">
     <div class="panel-heading">
-      <h4 class="panel-title" id="subject">nội dung bài kiểm tra</h4>
-    </div>
-    <div class="panel-body">
-      <ul class="list-unstyled mb20">
-        <li>
-          <a href="#">Testing Credit Card Payments on...</a>
-          <small>June 30, 2015 <a href="#">7 shares</a></small>
-        </li>
-        <li>
-          <a href="#">A Shopping Cart for New and...</a>
-          <small>June 15, 2015 &nbsp; <a href="#">11 shares</a></small>
-        </li>
-        <li>
-          <a href="#">A Shopping Cart for New and...</a>
-          <small>June 15, 2015 &nbsp; <a href="#">2 shares</a></small>
-        </li>
-      </ul>
-    </div>
-    <div class="panel-footer">
-      <button class="btn btn-primary btn-block">View More Announcements <i class="fa fa-arrow-right"></i></button>
-    </div>
-  </div>
-</div>
-<!-- kết thúc phần nội dung câu hỏi  -->
+      <div class="form-group">
 
 
-<!-- cột thống kê kết quả làm bài -->
-<div class="col-sm-12 col-md-3 col-lg-9">
-  <div class="panel panel-success" id="statistic_user">
-    <div class="panel-heading">
-      <h4 class="panel-title">Kết quả làm bài của bạn</h4>
-    </div>
-    <div class="panel-body">
-      <ul class="media-list user-list">
-        <li class="media">
-          <div class="media-body">
-            <h4 class="media-heading nomargin">Đúng 100%: <span id="100">432142</span> lần
-            </h4>
+        <% if(user){%>
+          <h5 class="panel-title col-sm-2 ">Mã thí sinh: <span id="candidate_code">00124</span></h5>
+          <div class="col-sm-3 text-center">
+            <label class="col-form-label" id="candidate">Thí sinh: <span class="panel-title"><%=user.fullname%></span></label>
           </div>
-        </li>
-      </ul>
+        <%}else{%>
+          <div class="col-sm-3 text-center">
+            <label class="col-form-label" id="candidate">Thí sinh: Guest</label>
+          </div>
+        <%}%>
+
+            <div class="col-sm-3 text-center">
+              <label class="col-form-label">Thời gian làm bài: <span id="totalTime">45:00</span> phút</label>
+            </div>
+            <div class="col-sm-3 text-center">
+              <label class="col-form-label">Thời gian còn lại: <span id="remainTime">40:00</span></label>
+            </div>
+            <div class="col-sm-1 text-center">
+              <button type="button" name="button" class="btn btn-sm btn-warning">Làm bài</button>
+            </div>
+          </div>
+        </div>
+        <div class="panel-body">
+          <ul class="list-unstyled mb20">
+            <li>
+              <a href="#">Testing Credit Card Payments on...</a>
+              <small>June 30, 2015 <a href="#">7 shares</a></small>
+            </li>
+            <li>
+              <a href="#">A Shopping Cart for New and...</a>
+              <small>June 15, 2015 &nbsp; <a href="#">11 shares</a></small>
+            </li>
+            <li>
+              <a href="#">A Shopping Cart for New and...</a>
+              <small>June 15, 2015 &nbsp; <a href="#">2 shares</a></small>
+            </li>
+          </ul>
+        </div>
+        <div class="panel-footer">
+          <button class="btn btn-primary btn-block">View More Announcements <i class="fa fa-arrow-right"></i></button>
+        </div>
+      </div>
     </div>
-  </div><!-- panel -->
-</div>
-<!-- kết thúc cột thống kê kết quả làm bài -->
+    <!-- kết thúc phần nội dung câu hỏi  -->
 
-<script type="text/javascript">
-  $(document).ready(function(){
-    // let group = $('#group').data('group');
-    // console.log(group);
-    var urlParams = new URLSearchParams(window.location.search);
-    if(urlParams.has('group')){
-      let group = urlParams.get('group');
-      console.log(group);
-    }    
-  });
 
-</script>
+    <!-- cột thống kê kết quả làm bài -->
+    <div class="col-sm-12 col-md-3 col-lg-9">
+      <div class="panel panel-success" id="statistic_user">
+        <div class="panel-heading">
+          <h4 class="panel-title">Kết quả làm bài của bạn</h4>
+        </div>
+        <div class="panel-body">
+          <ul class="media-list user-list">
+            <li class="media">
+              <div class="media-body">
+                <h4 class="media-heading nomargin">Đúng 100%: <span id="100">432142</span> lần
+                </h4>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div><!-- panel -->
+    </div>
+    <!-- kết thúc cột thống kê kết quả làm bài -->
+
+    <script type="text/javascript">
+      $(document).ready(function(){
+        // let group = $('#group').data('group');
+        // console.log(group);
+        var urlParams = new URLSearchParams(window.location.search);
+        if(urlParams.has('group')){
+          let group = urlParams.get('group');
+          console.log(group);
+        }
+      });
+
+    </script>

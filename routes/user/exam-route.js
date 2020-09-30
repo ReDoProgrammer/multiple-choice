@@ -24,7 +24,7 @@ router.get('/',(req,res)=>{
             if(!sbj){
               res.render('404',{layout:'404',msg:'Môn '+subject+' không tồn tại',type:'danger'});
             }else{
-              res.render('exam/index',{layout:'user-layout',code:200,msg:'Lấy thông tin môn thành công',subject:sbj});
+              res.render('exam/index',{layout:'user-layout',code:200,msg:'Lấy thông tin môn thành công',subject:sbj,user:req.session.user});
             }
           }
         })

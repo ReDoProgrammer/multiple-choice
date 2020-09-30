@@ -23,6 +23,16 @@ router.get('/list',(req,res)=>{
   });
 });
 
+router.get('/list-by-group',(req,res)=>{
+  let group = req.query.group;
+
+  Subject.find({group:group},function(err,subjects){
+    if(err){
+      res.send({code:500,type:'danger',msg:'List by group failed: '+new Error(err)});
+    }
+    res.send({code:200,msg:'List subjects by group successfully',type:'success',subjects:subjects});
+  });
+});
 
 /*
 Khi tiến hành add,update cần kiểm tra xem trong csdl đã tồn tại document này hay chưa

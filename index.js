@@ -14,6 +14,7 @@ const subjectRoutes = require('./routes/admin/subject-route');
 const questionRoutes = require('./routes/admin/question-route');
 
 
+
 //phần route của user hoặc guest
 const homeRoutes = require('./routes/user/home-route');
 const examRoutes = require('./routes/user/exam-route');
@@ -57,7 +58,8 @@ app.use('/lam-bai-thi',examRoutes);//route trang chủ
 mongoose.connect(config.mongodb.mongodb,{
   useUnifiedTopology: true,
   useNewUrlParser: true,
-  useFindAndModify:false
+  useFindAndModify:false,
+  useCreateIndex: true,
 },()=>{
 	console.log('connect database successfully');
 });

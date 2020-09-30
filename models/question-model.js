@@ -1,5 +1,6 @@
 const mongoose=require('mongoose');
 const Schema = mongoose.Schema;
+var random = require('mongoose-simple-random');
 
 const questionSchema = new Schema({
   question:{type:String,default:''},
@@ -7,11 +8,10 @@ const questionSchema = new Schema({
   option_b:{type:String,default:''},
   option_c:{type:String,default:''},
   option_d:{type:String,default:''},
-  descryption:{type:String,default:''},
-  subject:{
-    type: Schema.Types.ObjectId,
-    ref:  'subject'
-  }
+  answer:{type:String,default:''},
+  description:{type:String,default:''},
+  subject:{type:Schema.Types.ObjectId,ref:'subject'}
 });
 
-module.export = mongoose.model("question",questionSchema);
+questionSchema.plugin(random);
+module.exports = mongoose.model("question",questionSchema);

@@ -1,0 +1,186 @@
+<div class="modal" tabindex="-1" role="dialog" id="modalQuestion">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Thêm mới câu hỏi</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="col-sm-6 form-group has-success">
+          <label for="">Lớp</label>
+          <select class="form-control" id="mdl_groups"></select>
+        </div>
+        <div class="col-sm-6 form-group has-success">
+          <label for="">Môn</label>
+          <select class="form-control" id="mdl_subjects"></select>
+        </div>
+        <div class="col-sm-12">
+          <div class="form-group has-primary">
+            <textarea id="question" rows="2" class="form-control" placeholder="Câu hỏi"></textarea>
+          </div>
+        </div>
+
+        <div class="col-sm-12">
+          <div class="form-group has-primary">
+            <textarea id="option_a" rows="2" class="form-control" placeholder="Đáp án A"></textarea>
+          </div>
+        </div>
+
+        <div class="col-sm-12">
+          <div class="form-group has-primary">
+            <textarea id="option_b" rows="2" class="form-control" placeholder="Đáp án B"></textarea>
+          </div>
+        </div>
+
+        <div class="col-sm-12">
+          <div class="form-group has-primary">
+            <textarea id="option_c" rows="2" class="form-control" placeholder="Đáp án C"></textarea>
+          </div>
+        </div>
+
+        <div class="col-sm-12">
+          <div class="form-group has-primary">
+            <textarea id="option_d" rows="2" class="form-control" placeholder="Đáp án D"></textarea>
+          </div>
+        </div>
+
+
+        <label class="col-sm-4">Đáp án đúng</label>
+        <div class="col-sm-2">
+          <label class="rdiobox">
+            <input id="rdA" type="radio" name="platform" value="mac" required="" aria-required="true">
+            <span>A</span>
+          </label>
+        </div>
+        <div class="col-sm-2">
+          <label class="rdiobox">
+            <input id="rdB" type="radio" name="platform" value="mac" required="" aria-required="true">
+            <span>B</span>
+          </label>
+        </div>
+        <div class="col-sm-2">
+          <label class="rdiobox">
+            <input id="rdC" type="radio" name="platform" value="mac" required="" aria-required="true">
+            <span>C</span>
+          </label>
+        </div>
+        <div class="col-sm-2">
+          <label class="rdiobox">
+            <input id="rdD" type="radio" name="platform" value="mac" required="" aria-required="true">
+            <span>D</span>
+          </label>
+        </div>
+
+        <hr>
+        <div class="col-sm-12">
+          <div class="form-group has-primary">
+            <textarea id="description" rows="1" class="form-control" placeholder="Chú thích"></textarea>
+          </div>
+        </div>
+
+        <div class="col-sm-12 text-right">
+          <label class="text-danger">
+            <strong class="" id="msg"></strong>
+          </label>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" id="btnSubmit">Xác nhận</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    $("select#mdl_groups").change(function(){
+      let id = $(this).children("option:selected").attr('id');
+      LoadSubjectInModal(id);
+    });
+  });
+
+
+  $('#btnSubmit').click(function(){
+    let subject_id = $('#mdl_subjects').children("option:selected").attr('id');
+    if(!subject_id || subject_id.length==0){
+      $('#msg').text('Vui lòng chọn môn học');
+      return;
+    }
+    let question  = $('#question').val().trim();
+    let option_a  = $('#option_a').val().trim();
+    let option_b  = $('#option_b').val().trim();
+    let option_c  = $('#option_c').val().trim();
+    let option_d  = $('#option_d').val().trim();
+
+    if(question.length == 0){
+      $('#msg').text('Vui lòng nhập câu hỏi');
+      return;
+    }
+    if(option_a.length == 0){
+      $('#msg').text('Vui lòng nhập đáp án A');
+      return;
+    }
+    if(option_b.length == 0){
+      $('#msg').text('Vui lòng nhập đáp án B');
+      return;
+    }
+    if(option_c.length == 0){
+      $('#msg').text('Vui lòng nhập đáp án C');
+      return;
+    }
+    if(option_d.length == 0){
+      $('#msg').text('Vui lòng nhập đáp án D');
+      return;
+    }
+
+    let answer = $('#rdA').is(':checked')?"A":$('#rdB').is(':checked')?"B":$('#rdC').is(':checked')?"C":$('#rdD').is(':checked')?"D":"";
+    if(answer.length == 0){
+      $('#msg').text('Vui lòng chọn đáp án đúng');
+      return;
+    }
+    let description = $('#description').val();
+
+    $.ajax({
+      url:'/admin/question/add',
+      type:'post',
+      data:{
+        question:question,
+        option_a:option_a,
+        option_b:option_b,
+        option_c:option_c,
+        option_d:option_d,
+        answer:answer,
+        description:description,
+        subject:subject_id
+      },
+      success:function(data){
+
+      }
+    });
+
+
+  });
+
+  function LoadSubjectInModal(id){
+    $.ajax({
+      url:'/admin/subject/list-by-group',
+      type:'get',
+      data:{
+        group:id
+      },
+      success:function(data){
+        if(data.code == 200){
+          $('#mdl_subjects').empty();
+          let d = '';
+          $.each(data.subjects,function(k,r){
+            d += '<option value="'+r.meta+'" id="'+r._id+'">'+r.name+'</option>';
+          });
+          $('#mdl_subjects').append(d);
+        }
+      }
+    });
+  }
+</script>

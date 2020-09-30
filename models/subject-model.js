@@ -7,7 +7,11 @@ const subjectSchema = new Schema({
   group:{
     type: Schema.Types.ObjectId,
     ref:  'group'
-  }
+  },
+  question:[{
+    type:Schema.Types.ObjectId,
+    ref:'question'
+  }]
 });
 
 module.exports = mongoose.model("subject",subjectSchema);

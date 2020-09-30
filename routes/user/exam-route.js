@@ -34,20 +34,26 @@ router.get('/',(req,res)=>{
   });
 });
 
-router.get('/list',(req,res)=>{
-//lấy thông tin số câu hỏi được hiển thị trong mỗi bài thi
-//được lưu ở file configs.js
+router.get('/random-questions',(req,res)=>{
   let questionNumber = config.questionNumber;
-  //lấy danh sách câu hỏi gồm questionNumber được lấy một cách ngẫu nhiên
-  //hàm findRandom là 1 hàm của package: mongoose-simple-random
-  //xem thêm trong models/Question-model.js
-  let legalId = req.query.legalId;
-  Question.findRandom({legaldoc:legalId}, {}, {limit: questionNumber}, function(err, results) {
-    if (err) {
-      console.log(err);
+  let group = req.query.group;
+  let subject = req.query.subject;
+  Subject.findOne({meta:subject},function(err,s){
+    if(err){
+      res.send({code:500,type:'danger',msg:'can not find subject '+new Error(err)});
+    }else{
+      Question.findRandom({subject:s._id}, {}, {limit: questionNumber}, function(err, results) {
+        if (err) {
+          res.send({code:500,type:'danger',msg:'can not get random question: '+new Error(err)});
+        }else{
+          res.send({code:200,type:'success',msg:'get random questions successfully',questions:results});
+        }
+
+      });
     }
-    res.send({questions:results});
   });
+
+
 });
 
 module.exports = router;

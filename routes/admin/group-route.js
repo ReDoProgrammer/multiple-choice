@@ -58,7 +58,7 @@ router.get('/list',(req,res)=>{
     if(err){
       res.send({code:500,msg:'load classes failed: '+new Error(err),type:'danger'});
     }
-    res.send({code:200,msg:'load classes successfully',classes:classes});
+    res.send({code:200,msg:'load classes successfully',groups:classes});
   });
 });
 

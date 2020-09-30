@@ -17,7 +17,8 @@
     <h6 class="text-danger ml-2" id="msg"></h6>
   </div>
 </div>
-<table class="table mt-2">
+
+<table class="table table-bordered table-primary table-striped mt-2">
   <thead>
     <tr>
       <th scope="col">#</th>
@@ -94,7 +95,7 @@
         if(data.code == 200){
           $('#classes').empty();
           let d = '';
-          $.each(data.classes,function(k,r){
+          $.each(data.groups,function(k,r){
             d += '<option value="'+r.meta+'" id = "'+r._id+'">'+r.name+'</option>';
           });
           $('#group').append(d);
@@ -117,7 +118,7 @@
               d +=    '<td>'+r.group.name+'</td>';
               d +=    '<td>'+r.name+'</td>';
               d +=    '<td>'+r.meta+'</td>';
-              d +=    '<td><button type="button" class="btn btn-danger text-danger">x</button></td>';
+              d +=    '<td></td>';
               d +=    '</tr>';
             });
             $('#tblData').append(d);

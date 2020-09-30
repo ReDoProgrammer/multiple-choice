@@ -1,16 +1,22 @@
 <div class="card">
   <div class="card-header">
-    <div class="form-inline">
-      <label class="col-sm2">Tên lớp</label>
-      <input type="text" name="" class="ml-1 col-sm-3 form-control" placeholder="Tên lớp" id="txtClassName">
-      <label class="ml-1 col-sm-2">Thẻ meta</label>
-      <input type="text" name="" class="form-control col-sm-3" placeholder="Thẻ meta của lớp, không dấu, ngăn cách nhau bởi kí tự -" id="txtClassMeta">
-      <button type="button" class="col-sm-2 btn btn-success ml-1" id="btnSave"><i class="fas fa-save"></i> Lưu</button>
+    <div class="row">
+      <div class="col-sm-5">
+          <input type="text" name="" class="form-control" placeholder="Tên lớp" id="txtClassName">
+      </div>
+      <div class="col-sm-5">
+          <input type="text" name="" class="form-control" placeholder="Thẻ meta của lớp, không dấu, ngăn cách nhau bởi kí tự -" id="txtClassMeta">
+      </div>
+
+      <div class="col-sm-2">
+        <button type="button" class="btn btn-success" id="btnSave" style="width:100%"><i class="glyphicon-plus"></i> Lưu</button>
+      </div>
+
     </div>
   </div>
   <!-- /.card-header -->
-  <div class="card-body p-0">
-    <table class="table table-sm">
+  <div class="card-body mt-4">
+    <table class="table table-bordered table-primary table-striped ">
       <thead>
         <tr>
           <th style="width: 10px">#</th>
@@ -32,28 +38,28 @@
   });
 
   $('#btnSave').click(function(){
-      let name = $('#txtClassName').val().trim();
-      let meta = $('#txtClassMeta').val().trim();
-      if(name.length == 0 || meta.length == 0){
-        alert('Vui lòng nhập đủ thông tin');
-        return;
-      }
+    let name = $('#txtClassName').val().trim();
+    let meta = $('#txtClassMeta').val().trim();
+    if(name.length == 0 || meta.length == 0){
+      alert('Vui lòng nhập đủ thông tin');
+      return;
+    }
 
-      $.ajax({
-        url:'/admin/group/create',
-        type:'post',
-        data:{
-          name:name,
-          meta:meta
-        },
-        success:function(data){
-          if(data.code==200){
-            LoadData();
-            $('#txtClassName').val('');
-            $('#txtClassMeta').val('');
-          }
+    $.ajax({
+      url:'/admin/group/create',
+      type:'post',
+      data:{
+        name:name,
+        meta:meta
+      },
+      success:function(data){
+        if(data.code==200){
+          LoadData();
+          $('#txtClassName').val('');
+          $('#txtClassMeta').val('');
         }
-      })
+      }
+    })
   });
 
   function LoadData(){
@@ -65,18 +71,19 @@
           $('#tblData').empty();
           let d = '';
           let idx = 1;
-          $.each(data.classes,function(k,r){
-            d += '<tr>';
-            d +=  '<td>'+(idx++)+'</td>';
-            d +=  '<td>'+r.name+'</td>';
-            d +=  '<td>'+r.meta+'</td>';
-            d += '<td><span class="badge bg-danger">Update</span></td>'
-            d += '</tr>';
-          });
-          $('#tblData').append(d);
-        }
-      }
-    })
-  };
 
-</script>
+          $.each(data.groups,function(k,r){
+            d += '<tr>';
+              d +=  '<td>'+(idx++)+'</td>';
+              d +=  '<td>'+r.name+'</td>';
+              d +=  '<td>'+r.meta+'</td>';
+              d += '<td><span class="badge bg-danger">Update</span></td>'
+              d += '</tr>';
+            });
+            $('#tblData').append(d);
+          }
+        }
+      })
+    };
+
+  </script>

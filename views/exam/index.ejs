@@ -10,11 +10,11 @@
           <div class="col-sm-3 text-center">
             <label class="col-form-label" id="candidate">Thí sinh: <span class="panel-title"><%=user.fullname%></span></label>
           </div>
-        <%}else{%>
-          <div class="col-sm-3 text-center">
-            <label class="col-form-label" id="candidate">Thí sinh: Guest</label>
-          </div>
-        <%}%>
+          <%}else{%>
+            <div class="col-sm-3 text-center">
+              <label class="col-form-label" id="candidate">Thí sinh: Guest</label>
+            </div>
+            <%}%>
 
             <div class="col-sm-3 text-center">
               <label class="col-form-label">Thời gian làm bài: <span id="totalTime">45:00</span> phút</label>
@@ -23,28 +23,17 @@
               <label class="col-form-label">Thời gian còn lại: <span id="remainTime">40:00</span></label>
             </div>
             <div class="col-sm-1 text-center">
-              <button type="button" name="button" class="btn btn-sm btn-warning">Làm bài</button>
+              <button type="button" id="btnDoExam" class="btn btn-sm btn-warning">Làm bài</button>
             </div>
           </div>
         </div>
         <div class="panel-body">
-          <ul class="list-unstyled mb20">
-            <li>
-              <a href="#">Testing Credit Card Payments on...</a>
-              <small>June 30, 2015 <a href="#">7 shares</a></small>
-            </li>
-            <li>
-              <a href="#">A Shopping Cart for New and...</a>
-              <small>June 15, 2015 &nbsp; <a href="#">11 shares</a></small>
-            </li>
-            <li>
-              <a href="#">A Shopping Cart for New and...</a>
-              <small>June 15, 2015 &nbsp; <a href="#">2 shares</a></small>
-            </li>
+          <ul class="list-unstyled mb20" id="questions">
+
           </ul>
         </div>
         <div class="panel-footer">
-          <button class="btn btn-primary btn-block">View More Announcements <i class="fa fa-arrow-right"></i></button>
+          <button class="btn btn-primary btn-block">Kết thúc và nộp bài thi</button>
         </div>
       </div>
     </div>
@@ -75,11 +64,54 @@
       $(document).ready(function(){
         // let group = $('#group').data('group');
         // console.log(group);
-        var urlParams = new URLSearchParams(window.location.search);
-        if(urlParams.has('group')){
-          let group = urlParams.get('group');
-          console.log(group);
-        }
+
       });
 
-    </script>
+      $('#btnDoExam').click(function(){
+        var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+
+        let group =(hashes[0].split('='))[1];
+        let subject = (hashes[1].split('='))[1];
+
+        $.ajax({
+          url:'/lam-bai-thi/random-questions',
+          type:'get',
+          data:{
+            group:group,
+            subject:subject
+          },
+          success:function(data){
+            if(data.code == 200){
+              $('#questions').empty();
+              let content = '';
+              let idx = 1;
+              $.each(data.questions,function(k,r){
+                content +='<li class="form-group" id="'+r._id+'">';
+                  content +='<label for="question">Câu hỏi '+idx+':<span class = "text-danger"><strong> '+r.question+'</strong></span></label>';
+                  content += '<fieldset id="group'+idx+'">';
+                    content += '<input type="radio" name="group'+idx+'" class="rdOptionA" > a. <span class = "text-primary rdOptionA">'+r.option_a+'</span>';
+                    content += '</fieldset>';
+                    content += '<fieldset id="group'+idx+'">';
+                      content += '<input type="radio" name="group'+idx+'" class="rdOptionB" > b. <span class = "text-primary rdOptionB">'+r.option_b+'</span>';
+                      content += '</fieldset>';
+                      content += '<fieldset id="group'+idx+'">';
+                        content += '<input type="radio" name="group'+idx+'" class="rdOptionC" > c. <span class = "text-primary rdOptionC">'+r.option_c+'</span>';
+                        content += '</fieldset>';
+                        content += '<fieldset id="group'+idx+'">';
+                          content += '<input type="radio" name="group'+idx+'" class="rdOptionD" > d. <span class = "text-primary rdOptionD  ">'+r.option_d+'</span>';
+                          content += '</fieldset>';
+                          content +='<fieldset class ="remark">';
+                            content += '<p class = "description"></p>';
+                            content += '</fieldset>';
+                            content +='</li>';
+                            idx++;
+                          });
+                          $('#questions').append(content);
+                        }
+                      }
+                    });
+
+
+                  });
+
+                </script>

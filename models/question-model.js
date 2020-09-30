@@ -14,4 +14,4 @@ const questionSchema = new Schema({
   }
 });
 
-module.export = mongoose.model("group",groupSchema);
+module.export = mongoose.model("question",questionSchema);

@@ -5,9 +5,9 @@ Ví dụ: kiến thức chung, kiến thức chuyên ngành, tiếng anh, tin h�
 
 const router = require('express').Router();
 const Subject = require('../../models/subject-model');
-const middeware = require('../../middlewares/admin-middleware');
+const middleware = require('../../middlewares/admin-middleware');
 
-router.get('/',middeware.isAdmin,(req,res)=>{
+router.get('/',middleware.isAdmin,(req,res)=>{
   res.render('subject/index',{layout:'admin-layout'});
 });
 
@@ -29,7 +29,7 @@ Khi tiến hành add,update cần kiểm tra xem trong csdl đã tồn tại doc
 Khi add cần kiểm tra xem đã tồn tại thị không add tiếp nữa.
 Khi update cần kiểm tra nội dung update có bị trùng với 1 document nào khác không
 */
-router.post('/add',middeware.isAdmin,(req,res)=>{
+router.post('/add',middleware.isAdmin,(req,res)=>{
   let group = req.body.group;
   let name = req.body.name;
   let meta = req.body.meta;
@@ -57,11 +57,11 @@ router.post('/add',middeware.isAdmin,(req,res)=>{
   });
 });
 
-router.post('/update',middeware.isAdmin,(req,res)=>{
+router.post('/update',middleware.isAdmin,(req,res)=>{
 
 });
 
-router.delete('/delete',middeware.isAdmin,(req,res)=>{
+router.delete('/delete',middleware.isAdmin,(req,res)=>{
 
 });
 

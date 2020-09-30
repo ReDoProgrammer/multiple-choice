@@ -6,13 +6,13 @@
 
 const router = require('express').Router();
 const Group = require('../../models/group-model');
-const middeware = require('../../middlewares/admin-middleware');
+const middleware = require('../../middlewares/admin-middleware');
 
-router.get('/',middeware.isAdmin,(req,res)=>{
+router.get('/',middleware.isAdmin,(req,res)=>{
   res.render('group/index',{layout:'admin-layout'});
 });
 
-router.post('/create',middeware.isAdmin,(req,res)=>{
+router.post('/create',middleware.isAdmin,(req,res)=>{
   let name = req.body.name;
   let meta = req.body.meta;
   /*
@@ -45,11 +45,11 @@ router.post('/create',middeware.isAdmin,(req,res)=>{
 
 });
 
-router.post('/update',middeware.isAdmin,(req,res)=>{
+router.post('/update',middleware.isAdmin,(req,res)=>{
 
 });
 
-router.delete('/delete',middeware.isAdmin,(req,res)=>{
+router.delete('/delete',middleware.isAdmin,(req,res)=>{
 
 });
 

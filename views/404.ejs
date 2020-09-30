@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Tieu Long Lanh from Baobinh.net -->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <!--<link rel="shortcut icon" href="/user/images/favicon.png" type="image/png">-->
+
+  <title>Lỗi 404! Không tìm thấy trang yêu cầu</title>
+
+  <link rel="stylesheet" href="/user/lib/fontawesome/css/font-awesome.css">
+  <link rel="stylesheet" href="/user/lib/weather-icons/css/weather-icons.css">
+  <link rel="stylesheet" href="/user/lib/jquery-toggles/toggles-full.css">
+
+  <link rel="stylesheet" href="/user/css/quirk.css">
+
+  <script src="/user/lib/modernizr/modernizr.js"></script>
+  <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
+  <script src="/user/lib/html5shiv/html5shiv.js"></script>
+  <script src="/user/lib/respond/respond.src.js"></script>
+  <![endif]-->
+</head>
+
+<body>
+
+
+<section>
+
+  <div class="notfoundpanel">
+    <h1>404!</h1>
+    <% if(msg) { %>
+      <h3><%= msg %></h3>
+    <%}else{%>
+      <h3>The page you are looking for has not been found!</h3>
+    <%}%>
+
+    <h4>The page you are looking for might have been removed, had its name changed,<br>or unavailable. Maybe you could try a search:</h4>
+    <form action="http://themepixels.com/demo/webpage/quirk/templates/index.html">
+      <div class="input-group mb15">
+        <input type="text" class="form-control" placeholder="Search here">
+        <span class="input-group-btn">
+          <button class="btn btn-success" type="button"><i class="glyphicon glyphicon-search"></i></button>
+        </span>
+      </div>
+    </form>
+    <hr class="darken">
+    <ul class="list-inline">
+      <li><a href="#">Home</a></li>
+      <li><a href="#">About</a></li>
+      <li><a href="#">Privacy Policy</a></li>
+      <li><a href="#">Terms of Use</a></li>
+      <li><a href="#">Contact Us</a></li>
+      <li class="pull-right">ReDo &copy; 2015. All Rights Reserved.</li>
+    </ul>
+
+  </div><!-- notfoundpanel -->
+
+</section>
+
+
+<script src="/user/lib/jquery/jquery.js"></script>
+<script src="/user/lib/jquery-ui/jquery-ui.js"></script>
+<script src="/user/lib/bootstrap/js/bootstrap.js"></script>
+<script src="/user/lib/jquery-toggles/toggles.js"></script>
+
+<script src="/user/js/quirk.js"></script>
+
+</body>
+
+<!-- Tieu Long Lanh from Baobinh.net -->
+</html>

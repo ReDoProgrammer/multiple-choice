@@ -1,0 +1,127 @@
+<div class="">
+  <div class="text-right">
+    <button type="button" class="btn btn-info" id="btnAddSubject">+</button>
+  </div>
+  <div class="row" id="divAddOrUpdate" hidden>
+    <select class="form-control col-sm-2 mt-2" id="group">
+    </select>
+    <div class="col-sm-4  mt-2">
+      <input type="text" id="txtSubjectName" placeholder="Tên môn học" class="form-control">
+    </div>
+    <div class="col-sm-4  mt-2">
+      <input type="text" id="txtSubjectMeta" placeholder="Thẻ meta" class="form-control">
+    </div>
+    <div class="col-sm-2  mt-2">
+      <button type="button" class="btn btn-success" id="btnSubmit">Xác nhận</button>
+    </div>
+    <h6 class="text-danger ml-2" id="msg"></h6>
+  </div>
+</div>
+<table class="table mt-2">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Lớp</th>
+      <th scope="col">Tên môn học</th>
+      <th scope="col">Thẻ meta</th>
+      <th scope="col">Handle</th>
+    </tr>
+  </thead>
+  <tbody id="tblData">
+  </tbody>
+</table>
+
+<script type="text/javascript">
+  var id = "";
+
+  //sự kiện page đc load
+  $(document).ready(function(){
+    LoadData();
+    LoadGroup();
+  });
+
+
+  $('#btnAddSubject').click(function(){
+    $('#divAddOrUpdate').removeAttr('hidden',100);
+  });
+
+  //sự kiện xác nhận
+  $('#btnSubmit').click(function(){
+    let group = $('#group').children(":selected").attr("id");
+    let name = $('#txtSubjectName').val().trim();
+    let meta = $('#txtSubjectMeta').val().trim();
+
+
+    if(name.length == 0){
+      $('#msg').text('Vui lòng nhập tên môn học');
+      return;
+    }
+    if(meta.length == 0){
+      $('#msg').text('Vui lòng nhập tên meta không dấu và được ngân cách nhau bởi dấu gạch ngang -');
+      return;
+    }
+    if(id.length == 0){//thêm mới môn học
+      $.ajax({
+        url:'/admin/subject/add',
+        type:'post',
+        data:{
+          name:name,
+          meta:meta,
+          group:group
+        },success:function(data){
+          if(data.code == 200){
+            $('#txtSubjectMeta').val('');
+            $('#txtSubjectName').val('');
+            LoadData();
+            alert(data.msg);
+          }
+        }
+      });
+    }else{//cập nhật môn học
+
+    }
+
+  });
+
+  //hàm load dữ liệu
+  function LoadGroup(){
+    $.ajax({
+      url:'/admin/group/list',
+      type:'get',
+      success:function(data){
+        if(data.code == 200){
+          $('#classes').empty();
+          let d = '';
+          $.each(data.classes,function(k,r){
+            d += '<option value="'+r.meta+'" id = "'+r._id+'">'+r.name+'</option>';
+          });
+          $('#group').append(d);
+        }
+      }
+    })
+  }
+  function LoadData(){
+    $('#tblData').empty();
+    $.ajax({
+      url:'/admin/subject/list',
+      type:'get',
+      success:function(data){
+        if(data.code == 200){
+          let d = '';
+          let idx = 1;
+          $.each(data.subjects,function(k,r){
+            d +=   '<tr>';
+              d +=   '<th scope="row">'+(idx++)+'</th>';
+              d +=    '<td>'+r.group.name+'</td>';
+              d +=    '<td>'+r.name+'</td>';
+              d +=    '<td>'+r.meta+'</td>';
+              d +=    '<td><button type="button" class="btn btn-danger text-danger">x</button></td>';
+              d +=    '</tr>';
+            });
+            $('#tblData').append(d);
+          }
+        }
+      });
+    }
+
+  </script>

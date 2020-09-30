@@ -1,0 +1,164 @@
+<div class="card card-default mt-2">
+  <div class="card-header">
+    <h3 class="card-title">
+      <i class="fas fa-bullhorn text-info"></i>
+      Bình luận, góp ý
+    </h3>
+  </div>
+  <!-- /.card-header -->
+  <div id="divComments" class="mt-2">
+
+  </div>
+
+  <nav aria-label="Page navigation example">
+    <ul class="pagination pagination-sm flex-sm-wrap" id="cmt_pages">
+    </ul>
+  </nav>
+  <div class="card-body">
+    <form>
+      <div class="form-group row">
+        <div class="col-sm-12">
+          <input type="email" class="form-control" id="txtCmtEmail" value="" placeholder="Địa chỉ email" required>
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-sm-12">
+          <input type="text" class="form-control" id="txtCmtFullname" placeholder="Họ và tên" required>
+        </div>
+      </div>
+      <div class="form-group">
+        <textarea name="name" class="form-control" rows="2" id="taCmtContent"></textarea>
+        <label id="lbCmtError"></label><hr>
+        <button type="button" class="btn btn-sm btn-info mt-2" id="btnCmtSubmit"><i class="fa fa-paper-plane" aria-hidden="true"></i> &nbsp;Xác nhận</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script type="text/javascript">
+  //khai báo biến toàn cục
+  var page =1;
+
+  $(document).ready(function(){
+    LoadComment();
+    Pagination(1);
+  });
+
+//sự kiện click của button gửi comment
+$('#btnCmtSubmit').click(function(){
+    let email = $('#txtCmtEmail').val().trim();
+    let fullname = $('#txtCmtFullname').val().trim();
+    let content = $('#taCmtContent').val().trim();
+    if(email.length == 0 || fullname.length == 0 || content.length ==0){
+      $('#lbCmtError').delay(200).show();
+      $('#lbCmtError').addClass('text-danger');
+      $('#lbCmtError').text('Vui lòng nhập đầy đủ họ tên, email và nội dung bạn muốn góp ý, bình luận');
+      return;
+    }
+    $.ajax({
+      url:'/comment/create',
+      type:'post',
+      data:{
+        email:email,
+        fullname:fullname,
+        content:content
+      },success:function(data){
+        if(data.code == 200){
+            $('#lbCmtError').delay(200).show();
+          $('#lbCmtError').removeClass('text-danger');
+          $('#lbCmtError').addClass('text-success');
+          $('#lbCmtError').text(data.msg);
+          $('#lbCmtError').delay(4000).hide();
+
+          $('#txtCmtFullname').val('');
+          $('#txtCmtEmail').val('');
+          $('#taCmtContent').val('');
+          LoadComment();
+          Pagination();
+        }
+      }
+    });
+});
+
+//hàm load comments
+  function LoadComment(page){
+    $.ajax({
+      url:'/comment/',
+      type:'get',
+      data:{
+        page:page
+      },success:function(data){
+        if(data.code == 200){
+          //nếu là thành viên đang đăng nhập
+          if(data.user){
+            $('#txtCmtFullname').val(data.user.fullname);
+            $("#txtCmtFullname").prop("readonly", true);
+            $('#txtCmtEmail').val(data.user.username);
+            $("#txtCmtEmail").prop("readonly", true);
+          }
+
+          $('#divComments').empty();
+          let cmts = '';
+          $.each(data.comment,function(k,r){
+            cmts += '<h6 class="cmt_user"><b>'+r.fullname+'</b>&nbsp;&nbsp;<span class="cmt_time">'+r.created_at+'</span></h6>';
+            cmts += '<p class = "cmt_content">'+r.content+'</p>';
+          });
+          $('#divComments').append(cmts);
+        }
+
+
+      }
+    });
+  }
+
+  //hàm load tổng số trang comment
+  function Pagination(){
+    $.ajax({
+      url:'/comment/total-pages',
+      type:'get',
+      success:function(data){
+        if(data.code == 200){
+          $('#cmt_pages').empty();
+          let pagi = '';
+          for(i = 1; i<data.pages; i++){
+            pagi +='<li class="page-item li_page"><a class="page-link" href="#">'+i+'</a></li>';
+          }
+          $('#cmt_pages').append(pagi);
+          $('#cmt_pages li').eq(0).addClass('active');
+        }
+      }
+    })
+  }
+
+  //sự kiện click của li phân trang
+  $("#cmt_pages").on("click", ".li_page", function(event){
+        event.preventDefault();
+        $('#cmt_pages li.active').removeClass('active');
+        $(this).addClass('active');
+        page = $(this).text();
+        LoadComment(page);
+      });
+
+</script>
+
+<style media="screen">
+  .cmt_user{
+    font-size:12px;
+    color:#800000;
+  }
+  .cmt_time{
+    font-size:10px;
+  }
+  .cmt_content{
+    padding-left:20px;
+    font-size:12px;
+    color:#555555;
+  }
+  #divComments{
+    padding:20px;
+  }
+  #cmt_pages{
+    padding-left:10px;
+    padding-right:10px;
+  }
+</style>

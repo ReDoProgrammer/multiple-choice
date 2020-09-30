@@ -1,0 +1,156 @@
+<div id="rigt_footer">
+  <div class="row" id="divStat">
+    <div class="col-sm-3 text-center mt-2">
+      <h6 class="statTitle"><i class="fa fa-universal-access" aria-hidden="true"></i> Truy cập hiện tại</h6>
+      <h4 class="statNumber" id="current_visitors">123431422</h4>
+    </div>
+    <div class="col-sm-3  text-center mt-2">
+      <h6 class="statTitle"><i class="fa fa-universal-access" aria-hidden="true"></i> Lượt truy cập</h6>
+      <h4 class="statNumber" id="visitors_count">123431422</h4>
+    </div>
+    <div class="col-sm-3  text-center mt-2">
+      <h6 class="statTitle"><i class="fa fa-university " aria-hidden="true"></i> Lượt làm bài</h6>
+      <h4 class="statNumber" id="exam_times">123431422</h4>
+    </div>
+    <div class="col-sm-3  text-center mt-2">
+      <h6 class="statTitle"><i class="fa fa-user " aria-hidden="true"></i> Số thành viên</h6>
+      <h4 class="statNumber" id="members_count">123431422</h4>
+    </div>
+  </div>
+  <hr>
+  <h6 id="donate">MỌI ỦNG HỘ (DONATE) VUI LÒNG LIÊN HỆ</h6>
+  <div class="row">
+          <div class="col-lg-3 col-6">
+            <!-- small box -->
+            <div class="small-box bg-info">
+              <div class="inner text-center">
+                <img src="/images/e-wallet/bidv.jpg" alt="BIDV" class="wallet_thumbnail img-fluid">
+                <p>62110000454248</p>
+                <p>NGUYEN HUU TRUONG</p>
+              </div>
+              <div class="icon">
+                <i class="ion ion-bag"></i>
+              </div>
+              <a href="#" class="small-box-footer">BIDV</a>
+            </div>
+          </div>
+          <!-- ./col -->
+          <div class="col-lg-3 col-6">
+            <!-- small box -->
+            <div class="small-box bg-success">
+              <div class="inner text-center">
+                <img src="/images/e-wallet/viettel_pay.jpg" alt="Viettel Pay" class="wallet_thumbnail img-fluid">
+                <p>9704229207615407073</p>
+                <p>NGUYEN HUU TRUONG</p>
+              </div>
+              <div class="icon">
+                <i class="ion ion-stats-bars"></i>
+              </div>
+              <h6 class="small-box-footer">ViettelPay</h6>
+            </div>
+          </div>
+          <!-- ./col -->
+          <div class="col-lg-3 col-6">
+            <!-- small box -->
+            <div class="small-box bg-warning">
+              <div class="inner text-center">
+                <img src="/images/e-wallet/zalo_pay.jpg" alt="Zalo Pay" class="wallet_thumbnail img-fluid">
+                <p>0911397764</p>
+                <p>NGUYEN HUU TRUONG</p>
+              </div>
+              <div class="icon">
+                <i class="ion ion-person-add"></i>
+              </div>
+              <h6 href="#" class="small-box-footer">ZaloPay</h6>
+            </div>
+          </div>
+          <!-- ./col -->
+          <div class="col-lg-3 col-6">
+            <!-- small box -->
+            <div class="small-box bg-danger">
+              <div class="inner text-center">
+                <img src="/images/e-wallet/momo.jpg" alt="MoMo" class="wallet_thumbnail img-fluid">
+                <p>0911397764</p>
+                <p>NGUYỄN HỮU TRƯỜNG</p>
+              </div>
+              <div class="icon">
+                <i class="ion ion-pie-graph"></i>
+              </div>
+              <h6 class="small-box-footer">MoMo</h6>
+            </div>
+          </div>
+          <!-- ./col -->
+  </div>
+  <hr>
+  <%- include('../layouts/about.ejs') %>
+</div>
+
+<%- include('wallet.ejs') %>
+
+
+<script type="text/javascript">
+
+  $('.wallet_thumbnail').click(function(){
+    let img = $(this).attr('src');
+    $("#imgWallet").attr("src",img);
+
+    $('#modalWallet').modal();
+  });
+
+  $(document).ready(function(){
+    Statistic();
+    CountMember();
+  })
+
+  //hàm hiển thị thông tin truy cập web
+  function Statistic(){
+    $.ajax({
+      url:'/statistic/',
+      type:'GET',
+      success:function(data){
+        let e_times = data.st.exam_times<100?'00'+data.st.exam_times:data.st.exam_times<1000?'0'+data.st.exam_times:data.st.exam_times;
+        $('#exam_times').text(e_times);
+        let v_times = data.st.visitors_count<100?'00'+data.st.visitors_count:data.st.visitors_count<1000?'0'+data.st.visitors_count:data.st.visitors_count;
+        $('#visitors_count').text(v_times);
+        let v_current = Math.floor((Math.random() * 10) + 1);
+        $('#current_visitors').text(v_current);
+      }
+    });
+  }
+
+  function CountMember(){
+    $.ajax({
+      url:'/thanh-vien/count',
+      type:'get',
+      success:function(data){
+        let members = data.count<10?'000'+data.count:(data.count<100?'00'+data.count:data.count<1000?'0'+data.count:data.count);
+        $('#members_count').text(members);
+      }
+    });
+  }
+
+</script>
+<style media="screen">
+  #donate{
+    color:#993333;
+    font-size:14px;
+    font-weight:bold;
+    margin-bottom:20px;
+  }
+
+  #divStat{
+    background-color:#C0C0C0;
+    padding-top:20px;
+    padding-bottom:20px;
+  }
+  .statTitle{
+    color:#fff;
+  }
+  .statNumber{
+    font-family:'Digital';
+    font-size:19px;
+    color:#fff;
+  }
+
+
+</style>

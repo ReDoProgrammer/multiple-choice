@@ -1,0 +1,58 @@
+
+<style media="screen">
+	@font-face {
+ font-family:Digital;
+ src:url('/fonts/digital-7/digital-7.ttf') format('truetype')
+}
+	#countdown{
+		font-size: 60px;
+		font-family:"Digital"
+	}
+</style>
+
+<script type="text/javascript">
+
+		var constTime = 45*60+1;
+	  let hour = 0;
+	  let minute = 0;
+	  let seconds = 0;
+	  let totalSeconds = constTime;
+
+	  let intervalId = null;
+
+	  function startTimer() {
+	    --totalSeconds;
+	    hour = Math.floor(totalSeconds /3600);
+	    minute = Math.floor((totalSeconds - hour*3600)/60);
+	    seconds = totalSeconds - (hour*3600 + minute*60);
+
+	    document.getElementById("hour").innerHTML =hour<10?'0'+hour:hour;
+	    document.getElementById("minute").innerHTML =minute<10?'0'+minute:minute;
+	    document.getElementById("seconds").innerHTML =seconds<10?'0'+seconds:seconds;
+			if(totalSeconds<1){
+				$('#stop-btn').click();
+			}
+	  }
+
+	  $('#start-btn').click(() => {
+			totalSeconds = constTime;
+			let countdown = '<span id="hour"></span>:<span id="minute"></span>:<span id="seconds"></span>';
+			$('#countdown').html(countdown);
+	    intervalId = setInterval(startTimer, 1000);
+	  });
+
+	  $('#stop-btn').click(function(){
+	      clearInterval(intervalId);
+				totalSeconds = constTime;
+				alert('finish');
+	  });
+
+
+	  $('#reset-btn').click(() => {
+	     totalSeconds = 0;
+	     document.getElementById("hour").innerHTML = '0';
+	     document.getElementById("minute").innerHTML = '0';
+	     document.getElementById("seconds").innerHTML = '0';
+	  });
+
+</script>

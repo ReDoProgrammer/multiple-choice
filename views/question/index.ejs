@@ -1,0 +1,468 @@
+<div class="modal" tabindex="-1" role="dialog" id="modalQuestion">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title text-info text-uppercase font-weight-bold">Thêm câu hỏi mới</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <label for="question">Câu hỏi</label>
+            <textarea class="form-control" id="question" rows="1"></textarea>
+            <input type="hidden" id="questionId" name="questionId" value="">
+            <input type="hidden" id="legalId" name="legalId" value="">
+          </div><hr>
+          <div class="form-group">
+            <label for="option_a">Đáp án A</label>
+            <textarea class="form-control" id="option_a" rows="1"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="option_b">Đáp án B</label>
+            <textarea class="form-control" id="option_b" rows="1"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="option_c">Đáp án C</label>
+            <textarea class="form-control" id="option_c" rows="1"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="optionD">Đáp án D</label>
+            <textarea class="form-control" id="optionD" rows="1"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="optionD">Đáp án đúng</label>
+            <div class="row">
+              <div class="col-md-3">
+                <label class="radio-inline">
+                  <input type="radio" name="optradio" id="rdoption_a" >Đáp án A
+                </label>
+              </div>
+              <div class="col-md-3">
+                <label class="radio-inline">
+                  <input type="radio" name="optradio" id="rdoption_b">Đáp án B
+                </label>
+              </div>
+              <div class="col-md-3">
+                <label class="radio-inline">
+                  <input type="radio" name="optradio" id="rdoption_c">Đáp án C
+                </label>
+              </div>
+              <div class="col-md-3">
+                <label class="radio-inline">
+                  <input type="radio" name="optradio" id="rdOptionD">Đáp án D
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="optionD">Chú thích</label>
+            <textarea class="form-control" id="remark" rows="1"></textarea>
+          </div>
+
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary"  id="btnSubmit">Xác nhận</button>
+        <button type="button" class="btn btn-secondary" id = "btnReset">Reset</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row">
+
+  <div class="col-md-4">
+    <div class="form-group">
+      <select class="form-control" id="slLegal">
+      </select>
+    </div>
+  </div>
+  <div class="col-md-6">
+  <div class="form-inline">
+    <input class="form-control" type="text" placeholder="Từ khóa tìm kiếm" aria-label="Search" id="txtSearch">
+    <button type="button" name="button" class="btn btn-md btn-info ml-2" id="btnSearch"> <span><i class="fa fa-search mr-2" aria-hidden="true"></i></span>Tìm kiếm</button>
+  </div>
+
+
+  </div>
+  <div class="col-md-2">
+    <button type="button" id="btnAdd" class="btn btn-success" style="margin-bottom:10px;"><i class="fa fa-plus" aria-hidden="true"></i> Thêm câu hỏi</button>
+  </div>
+</div>
+
+<table class="table" id="tblData">
+  <thead class="thead-light">
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Câu hỏi</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody id="table-data">
+  </tbody>
+</table>
+
+<nav aria-label="Page navigation example">
+  <ul class="pagination" id="pagination">
+  </ul>
+</nav>
+
+
+<script type="text/javascript">
+
+  //khi trang được load, gọi tới hàm load danh sách dữ liệu các câu hỏi
+  /*
+    Vì  hàm phân trang dựa trên option của select môn học
+    và từ khóa tìm kiếm
+    nên nó phải được chạy sau khi hàm load danh sách môn học được chạy xong
+    do đó function trong sự kiện document ready phải để dạng đồng bộ async
+  */
+  $(document).ready(async function(){
+    // GetData(1);
+    await $.ajax({
+      url: '/admin/loai-van-ban/list',
+      type: 'GET',
+      dataType: 'json',
+      success:function(data){
+        let opts = '';
+        $.each(data.ds,function(key,row){
+          opts += '<option id="'+row._id+'">'+row.name+'</option>';
+        });
+        $('#slLegal').append(opts);
+      }
+    });
+
+
+    //gọi tới sự kiện click của button tìm kiếm để load dữ liệu ngay khi trang được load xong
+    await $('#btnSearch').click();
+
+
+  });
+  //khi click vào button thêm câu hỏi thì cho hiện modal nhập câu hỏi lên
+  $('#btnAdd').click(function(){
+    ResetValue();//gọi tới hàm reset lại các component của form
+    $('#questionId').val('');
+    $('#legalId').val($('#slLegal').children("option:selected").attr('id'));
+    SetVisible(false);
+    $('#modalQuestion').modal();
+  });
+
+  //sự kiện click của nút xác nhận
+  $('#btnSubmit').click(function(){
+    let question = $('#question').val();
+    let option_a = $('#option_a').val();
+    let option_b = $('#option_b').val();
+    let option_c = $('#option_c').val();
+    let option_d = $('#optionD').val();
+    let remark = $('#remark').val();
+
+    let answer = $('#rdoption_a').is(':checked')?"A":$('#rdoption_b').is(':checked')?"B":$('#rdoption_c').is(':checked')?"C":$('#rdOptionD').is(':checked')?"D":"";
+    //ràng buộc dữ liệu
+    if(question.length == 0){
+      alert('Vui lòng nhập nội dung câu hỏi');
+      return;
+    }
+
+    if(option_a.length == 0 || option_b.length == 0 || option_c.length == 0 || option_d.length == 0){
+      alert('Vui lòng nhập đầy đủ các đáp án');
+      return;
+    }
+
+    if(answer.length == 0){
+      alert('Vui lòng chọn đáp án đúng');
+      return;
+    }
+    //--kết thúc ràng buộc dữ liệu
+    let questionId = $('#questionId').val();
+
+    //lấy mã loại văn bản luật
+    let legalId = $('#legalId').val();
+
+    if(questionId.length > 0){
+      $.ajax({
+        url: '/admin/thi-cong-chuc/cau-hoi/update',
+        type: 'POST',
+        dataType: "json",
+        data: {
+          id: questionId,
+          question:question,
+          option_a:option_a,
+          option_b:option_b,
+          option_c:option_c,
+          option_d:option_d,
+          answer:answer,
+          remark:remark
+        },
+        success: function(data) {
+          alert(data.msg);
+          $('#modalQuestion').modal('hide');//ẩn modal
+          Pagination();
+          GetData();
+        },
+        error: function(xhr, status,error) {
+          alert(error.msg);
+        }
+      });
+    }else{
+      $.ajax({
+        url: '/admin/thi-cong-chuc/cau-hoi/add',
+        type: 'POST',
+        dataType: "json",
+        data: {
+          question:question,
+          option_a:option_a,
+          option_b:option_b,
+          option_c:option_c,
+          option_d:option_d,
+          answer:answer,
+          remark:remark,
+          legalId:legalId
+        },
+        success: function(data) {
+          var r = confirm(data.msg+". Bạn có muốn tiếp tục thêm câu hỏi?");
+          GetData();//load lại danh sách câu hỏi
+          if (r == true) {
+            //gọi tới hàm để reset lại các giá trị của các component trên form
+            ResetValue();
+          }else{
+            //nếu không thêm câu hỏi nữa
+            $('#modalQuestion').modal('hide');//ẩn modal
+          }
+        },
+        error: function(xhr, status,error) {
+          alert(error.msg);
+        }
+      })
+    }
+
+  });
+
+  //sự kiện click của nut reset
+  $('#tblData').on('click', '.btnUpdate', function() {
+    let id =  $(this).data('update');
+    $('#questionId').val(id);
+    GetAQuestion(id);
+    SetVisible(false);
+  });
+  //sự kiện click của button view trên mỗi hàng của table
+  $('#tblData').on('click', '.btnView', function() {
+    let id =  $(this).data('view');
+    GetAQuestion(id);
+    SetVisible(true);
+  });
+
+  // //sự kiện nút xóa
+  $('#tblData').on('click', '.btnDelete', function() {
+    let id = $(this).data('delete');
+    var r = confirm("Bạn chắc muốn xóa câu hỏi này?");
+    if(r == true){
+      $.ajax({
+        type: 'DELETE',
+        url: '/admin/thi-cong-chuc/cau-hoi/delete/'+id,
+        success: function(data){
+          alert(data.msg);
+          GetData();
+          Pagination();
+        },
+        error: function(err){
+          console.log(err);
+        }
+      });
+    }
+
+  });
+
+  //hàm set visible của các component
+  function SetVisible(b){
+    if(b == true){
+      $('#btnSubmit').hide();
+      $('#btnReset').hide();
+      $('#question').attr('readonly', true);
+      $('#option_a').attr('readonly', true);
+      $('#option_b').attr('readonly', true);
+      $('#option_c').attr('readonly', true);
+      $('#optionD').attr('readonly', true);
+      $('#remark').attr('readonly', true);
+
+      $('#rdoption_a').attr('disabled', true);
+      $('#rdoption_b').attr('disabled', true);
+      $('#rdoption_c').attr('disabled', true);
+      $('#rdOptionD').attr('disabled', true);
+    }else{
+      $('#btnSubmit').show();
+      $('#btnReset').show();
+      $('#question').attr('readonly', false);
+      $('#option_a').attr('readonly', false);
+      $('#option_b').attr('readonly', false);
+      $('#option_c').attr('readonly', false);
+      $('#optionD').attr('readonly', false);
+      $('#remark').attr('readonly', false);
+
+      $('#rdoption_a').attr('disabled', false);
+      $('#rdoption_b').attr('disabled', false);
+      $('#rdoption_c').attr('disabled', false);
+      $('#rdOptionD').attr('disabled', false);
+    }
+  }
+
+  //hàm fill nội dung của 1 câu hỏi lên form trên modal
+  function GetAQuestion(id){
+    $.ajax({
+      url: "/admin/thi-cong-chuc/cau-hoi/detail",
+      type: "GET",
+      data:{id:id},
+      success: function(data) {
+        let ch = data.ch;
+
+        $('#question').val(ch.question);
+        switch (ch.answer) {
+          case 'A':
+          $("#rdoption_a").prop('checked', true);
+          break;
+          case 'B':
+          $("#rdoption_b").prop('checked', true);
+          break;
+          case 'C':
+          $("#rdoption_c").prop('checked', true);
+          break;
+          case 'D':
+          $("#rdOptionD").prop('checked', true);
+          break;
+        }
+        $('#option_a').val(ch.option_a);
+        $('#option_b').val(ch.option_b);
+        $('#option_c').val(ch.option_c);
+        $('#optionD').val(ch.option_d);
+        $('#remark').val(ch.remark);
+        $('#modalQuestion').modal();
+
+        console.log(ch.remark);
+      }
+    });
+  }
+
+
+  //hàm reset lại các giá trị hiện có trên component của form về default
+  function ResetValue(){
+    $('#question').val('');
+    $('#option_a').val('');
+    $('#option_b').val('');
+    $('#option_c').val('');
+    $('#optionD').val('');
+    $('#remark').val('');
+    $("#rdoption_a").prop('checked', false);
+    $("#rdoption_b").prop('checked', false);
+    $("#rdoption_c").prop('checked', false);
+    $("#rdOptionD").prop('checked', false);
+  }
+
+  //hàm load danh sách câu hỏi và hiển thị lên table
+  //total pages
+  var pages = 1;
+
+  //biến lưu page hiện tại
+  var page = 1;
+  //biến lưu môn và từ khóa tìm kiếm
+  var legalId,key;
+
+//sự kiện enter của textbox tìm kiếm
+$('#txtSearch').on('keypress',function(e) {
+    if(e.which == 13) {
+        $('#btnSearch').click();
+    }
+});
+
+  function GetData(){
+    $.ajax({
+      url: "/admin/thi-cong-chuc/cau-hoi/danh-sach/"+page,
+      type: "GET",
+      data:{
+        legalId:legalId,
+        key:key
+      },
+      success: function(data) {
+        $('#table-data').empty();
+        let dsch = data.dsch;
+        let content = "";
+        //stt của các dòng
+        let idx = (page-1)*data.pageSize+1;
+        $.each(dsch,function(key,row){
+          content +="<tr id='"+row._id+"'>";
+            content +="<td>"+idx+++"</td>";
+            content +="<td class = 'font-weight-bold'>"+row.question+"</td>";
+            content +="<td>";
+              content += "<button class ='btn btnView' data-view = '"+row._id+"' ><i class='text-info fa fa-eye' aria-hidden='true'></i></button>";
+              content +="<button class ='btn btnUpdate' data-update = '"+row._id+"'>Sửa</button>";
+              content +="<button class ='btn btnDelete' data-delete = '"+row._id+"'><i class='text-danger fa fa-trash' aria-hidden='true'></i></button>";
+              content += "</td>";
+            });
+            $('#table-data').append(content);
+          }
+        });
+      }
+  //sự kiện page load xong
+
+
+  //hàm phân trang
+  function Pagination(){
+    $('#pagination').empty();
+
+    $.ajax({
+      url: "/admin/thi-cong-chuc/cau-hoi/total-pages",
+      type: "GET",
+      data:{
+        legalId:legalId,
+        key:key
+      },
+      success: function(data) {
+        pages = data.pages;
+        console.log(pages);
+        if(pages <= 1){
+          $('#pagination').hide();
+        }else{//ngược lại: số trang lớn hơn 1
+          $('#pagination').show();
+          let lis = '';
+          //lặp số trang và gán cho li
+          for(i=1;i<=pages;i++){
+            lis +='<li class="page-item li_page" id="'+i+'"><a class="page-link" href="#">'+i+'</a></li>';
+          }
+          //hiện phân trang
+          // $('#pagination').empty();
+          $('#pagination').show();
+          //chèn nội dung các trang vào
+          $('#pagination').append(lis);
+          let hasActive = false;
+          $('ul#pagination li').each(function( l ) {
+            if($(this).attr('class')=='active'){
+              hasActive = true;
+            }
+          });
+          if(hasActive == false){
+            $('#pagination li').eq(0).addClass('active');
+          }
+
+        }
+      }
+    });
+  }
+  //sự kiện click của các li trên phân trang
+  $("#pagination").on("click", ".li_page", function(event){
+        event.preventDefault();
+        $('#pagination li.active').removeClass('active');
+        $(this).addClass('active');
+        page = $(this).attr('id');
+        GetData();
+      });
+
+
+  //sự kiện click của nút tìm kiếm
+  $('#btnSearch').click(function(){
+    legalId = $('#slLegal').children("option:selected").attr('id');
+    key  = $('#txtSearch').val();
+    page = 1;
+    GetData();
+    Pagination();
+  });
+
+</script>

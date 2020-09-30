@@ -1,0 +1,175 @@
+<div class="row">
+  <button type="button" name="button" class="btn btn-success" id="btnAddUpdate">+</button>
+</div>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Tên văn bản luật</th>
+      <th scope="col"></th>
+    </tr>
+  </thead>
+  <tbody id="tblData">
+  </tbody>
+</table>
+
+<div class="modal" tabindex="-1" role="dialog" id="modalLegal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">blah blah</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="name">Tên văn bản luật</label>
+          <input type="text" class="form-control" id="name" placeholder="Tên văn bản luật">
+          <input type="hidden" id="id" name="id" value="">
+        </div>
+        <div class="form-group">
+          <label for="name">Ghi chú</label>
+          <textarea name="name" rows="3" class="form-control" id="remark"></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" id="btnSubmit">Xác nhận</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">X</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+  //gọi tới hàm load dữ liệu khi trang được load xong
+  $(document).ready(function(){
+    GetData();
+  });
+
+  //sự kiện click của nút thêm loại văn bản luật
+  $('#btnAddUpdate').click(function(){
+    $('#name').val('');
+    $('#id').val('');
+    $('#remark').val('');
+    $('#modalLegal').modal();
+    $('.modal-title').text('Thêm mới văn bản luật');
+  });
+
+  //sự kiên click của nut xác nhận trên modal
+  $('#btnSubmit').click(function(){
+    let name = $('#name').val();
+    if(name.length == 0){
+      alert('Vui lòng nhập tên loại văn bản Luật');
+      return;
+    }
+    let id = $('#id').val();
+    let remark = $('#remark').val();
+    if(id.length > 0){
+      $.ajax({
+        url: '/admin/loai-van-ban/update',
+        type: 'POST',
+        dataType: "json",
+        data: {
+          id:id,
+          name:name,
+          remark:remark
+        },
+        success: function(data) {
+          alert(data.msg);
+          $('#modalLegal').modal('hide');//ẩn modal
+          GetData();
+        },
+        error: function(xhr, status,error) {
+          alert(error.msg);
+        }
+      });
+    }else{
+      $.ajax({
+        url: '/admin/loai-van-ban/add',
+        type: 'POST',
+        dataType: "json",
+        data: {
+          name:name,
+          remark:remark
+        },
+        success: function(data) {
+          var r = confirm(data.msg+" Bạn có muốn tiếp tục thêm loại văn bản Luật mới?");
+          GetData();//load lại danh sách câu hỏi
+          if (r == true) {
+            $('#name').val('');
+          }else{
+            //nếu không thêm câu hỏi nữa
+            $('#modalLegal').modal('hide');//ẩn modal
+          }
+        },
+        error: function(xhr, status,error) {
+          alert(error.msg);
+        }
+      });
+    }
+
+    //sau khi thêm mới hoặc cập nhật xong dữ liệu thì gọi lại hàm load dữ liệu
+    GetData();
+  });
+
+  //sự kiện của nút sửa trên mỗi dòng
+
+  $('#tblData').on('click', '.btnUpdate', function() {
+    let id =  $(this).data('update');
+    $('#id').val(id);
+
+    $('.modal-title').text('Cập nhật loại văn bản Luật');
+
+    $.ajax({
+      url: "/admin/loai-van-ban/detail",
+      type: "GET",
+      data:{id:id},
+      success: function(data) {
+        let t = data.t;
+        $('#name').val(t.name);
+        $('#remark').val(t.remark);
+        $('#modalLegal').modal();
+      }
+    });
+  });
+
+  function GetData(){
+    $.ajax({
+      url: 'loai-van-ban/list',
+      type: 'GET',
+      dataType: 'json',
+      success:function(data){
+        $('#tblData').empty();
+        let lst = '';
+        let idx = 1;
+        $.each(data.ds,function(key,row){
+          lst +='<tr>';
+            lst += '<th scope="row">'+(idx++)+'</th>';
+            lst += '<td>'+row.name+'</td>';
+            lst += '<td>';
+              lst += '<button type="button" name="button" class="btn btn-sm btn-warning btnUpdate" data-update = "'+row._id+'">Sửa</button>';
+              // lst += '<button type="button" name="button" class="btn btn-sm btn-danger" data-delete = "'+row._id+'">Xóa</button>';
+            lst += '</td>';
+          lst += '</tr>';
+        });
+        $('#tblData').append(lst);
+      }
+    });
+  }
+
+
+
+</script>
+
+
+<!-- <tr>
+
+  <td>Mark</td>
+  <td >Otto</td>
+  <td>
+    <button type="button" name="button" class="btn btn-sm btn-warning">Sửa</button>
+    <button type="button" name="button" class="btn btn-sm btn-danger">Xóa</button>
+  </td>
+</tr> -->

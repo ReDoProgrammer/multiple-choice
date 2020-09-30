@@ -25,12 +25,13 @@ router.get('/list',(req,res)=>{
 
 router.get('/list-by-group',(req,res)=>{
   let group = req.query.group;
-
   Subject.find({group:group},function(err,subjects){
     if(err){
       res.send({code:500,type:'danger',msg:'List by group failed: '+new Error(err)});
+    }else{
+      res.send({code:200,msg:'List subjects by group successfully',type:'success',subjects:subjects});
     }
-    res.send({code:200,msg:'List subjects by group successfully',type:'success',subjects:subjects});
+
   });
 });
 

@@ -1,0 +1,44 @@
+<div class="tab-pane active" id="mainmenu">
+
+</div><!-- tab-pane -->
+
+<script type="text/javascript">
+  var g = $.when();
+  $(document).ready(function(){
+    $.ajax({
+      url:'/admin/group/list',
+      type:'get'
+    }).done(function(data){
+      data.groups.forEach(function(k,r){
+        g = g.then(function(){
+          return addSub(k._id,k.name,k.meta);
+        });
+      });
+    });
+    ;
+  });
+
+  function addSub(id,name,meta){
+    return $.ajax({
+      url:'/admin/subject/list-by-group',
+      type:'get',
+      data:{
+        group:id
+      },
+      success:function(data){
+        if(data.code == 200){
+          let menu = '';
+          menu =   '<h5 class="sidebar-title">'+name+'</h5>';
+          menu += '<ul class="nav nav-pills nav-stacked nav-quirk">';
+
+          $.each(data.subjects,function(k,r){
+            menu += '<li><a href="/lam-bai-thi?group='+meta+'&subject='+r.meta+'"><span class="text-primary">'+r.name+'</span></a></li>'
+          });
+          menu +=  '</ul>';
+          $('#mainmenu').append(menu);
+        }
+
+      }
+    });
+  }
+</script>

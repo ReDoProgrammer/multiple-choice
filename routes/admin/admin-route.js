@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const User = require('../../models/user-model');
+const common = require('../../common/common');
 var session = require('express-session');
 
 const isAdmin = function(req,res,next){
@@ -15,20 +16,20 @@ router.get('/',isAdmin,(req,res)=>{
 });
 
 router.get('/init',(req,res)=>{
+
   // User.deleteMany({},function(err){
   //   console.log(1);
   // });
   // khởi tạo admin khi chưa có
+
   User.findOne({username:'redo'},function(err,ad){
     if(!ad){
       var ad = new User({
         username: 'redo',
         password: 'ReDo1@vn',
         fullname:'Nguyễn Hữu Trường',
-        email:'redo2011dht@gmail.com',
-        facebook:'https://www.facebook.com/redodht',
-        address:'Gia Lai',
-        is_admin:true
+        is_admin:true,
+        member_code:common.MemberCode()
       });
 
       // save user to database

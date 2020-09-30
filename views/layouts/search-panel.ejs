@@ -1,0 +1,28 @@
+<div class="searchpanel">
+  <div class="input-group">
+    <input type="text" class="form-control" placeholder="Search for..." id="txtSearch">
+    <span class="input-group-btn">
+      <button class="btn btn-default" id="btnSearch" type="button"><i class="fa fa-search"></i></button>
+    </span>
+  </div><!-- input-group -->
+</div>
+
+<script type="text/javascript">
+  $('#txtSearch').on('keypress', function (e) {
+    if(e.which === 13){
+      $('#btnSearch').click();
+    }
+  });
+  $('#btnSearch').click(function(){
+    let search = $('#txtSearch').val();
+    var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+    if(hashes.length == 2){
+      let group =(hashes[0].split('='))[1];
+      let subject = (hashes[1].split('='))[1];
+      console.log(group,subject);
+    }else {
+      console.log(0);
+    }
+
+  });
+</script>

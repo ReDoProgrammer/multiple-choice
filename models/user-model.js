@@ -4,15 +4,18 @@ const bcrypt = require('bcrypt');
 const SALT_WORK_FACTOR = 10;
 
 const UserSchema = new Schema({
-  username:{type:String,default:''},
+  member_code:{type:String,default:'',unique:true},
+  username:{type:String,default:'',unique:true},
   password:{type:String,default:''},
   fullname:{type:String,default:''},
   phone:{type:String,default:''},
-  facebook:{type:String,default:''},
-  email:{type:String,default:''},
-  address:{type:String,default:''},
   is_admin:{type:Boolean,default:false},
-  user_type:{type:Number,default:0}  
+  user_type:{type:Number,default:0},
+  avatar:{type:String,default:''},
+  job:{
+    type:Schema.Types.ObjectId,
+    ref:'job'
+  }
 });
 
 UserSchema.pre('save', function(next) {

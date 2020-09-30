@@ -6,7 +6,7 @@
 
 
         <% if(user){%>
-          <h5 class="panel-title col-sm-2 ">Mã thí sinh: <span id="candidate_code">00124</span></h5>
+          <h5 class="panel-title col-sm-2 ">Mã thí sinh: <span id="candidate_code" class="text-danger"><b><%=user.member_code%></b></span></h5>
           <div class="col-sm-3 text-center">
             <label class="col-form-label" id="candidate">Thí sinh: <span class="panel-title"><%=user.fullname%></span></label>
           </div>
@@ -88,7 +88,13 @@
                             content +='</li>';
                             idx++;
                           });
-                          $('#questions').append(content);
+                          if(content.length > 0){
+                            $('#questions').append(content);
+                          }else{
+                            $('#questions').append('<div class="text-center"><h1 class="text-warning">Hệ thống câu hỏi đang được cập nhật. Chân thành cảm ơn sự ủng hộ của bạn!</h1></div>');
+                          }
+
+
                         }
                       }
                     });

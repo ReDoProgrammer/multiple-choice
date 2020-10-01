@@ -147,7 +147,12 @@
     <li>
       <div class="btn-group">
         <button type="button" class="btn btn-logged" data-toggle="dropdown">
-          <img src="/user/images/photos/loggeduser.png" alt="" />
+          <% if(user.avatar.trim().length == 0) { %>
+            <img src="<%= user.avatar %>" alt="" />
+          <%}else{%>
+            <img src="/user/images/photos/loggeduser.png" alt="" />
+          <%}%>
+
           <%= user.fullname %>
           <span class="caret"></span>
         </button>

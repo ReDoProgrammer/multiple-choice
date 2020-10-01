@@ -91,6 +91,9 @@
     $.ajax({
       url:'/admin/group/list',
       type:'get',
+      data:{
+        is_actived:true
+      },
       success:function(data){
         if(data.code == 200){
           $('#classes').empty();
@@ -108,6 +111,9 @@
     $.ajax({
       url:'/admin/subject/list',
       type:'get',
+      data:{
+        is_actived:true
+      },
       success:function(data){
         if(data.code == 200){
           let d = '';

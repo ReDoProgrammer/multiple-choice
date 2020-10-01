@@ -7,7 +7,10 @@
   $(document).ready(function(){
     $.ajax({
       url:'/admin/group/list',
-      type:'get'
+      type:'get',
+      data:{
+        is_actived:true
+      }
     }).done(function(data){
       data.groups.forEach(function(k,r){
         g = g.then(function(){
@@ -23,7 +26,8 @@
       url:'/admin/subject/list-by-group',
       type:'get',
       data:{
-        group:id
+        group:id,
+        is_actived:true
       },
       success:function(data){
         if(data.code == 200){

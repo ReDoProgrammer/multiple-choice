@@ -66,6 +66,9 @@
     $.ajax({
       url:'/admin/group/list',
       type:'get',
+      data:{
+        is_actived:true
+      },
       success:function(data){
         if(data.code == 200){
           $('#tblData').empty();

@@ -5,17 +5,11 @@ const Comment = require('../../models/comment-model');
 const Group = require('../../models/group-model');
 const Subject = require('../../models/subject-model');
 const common = require('../../common/common');
+const middleware = require('../../middlewares/middleware');
 var session = require('express-session');
 
-const isAdmin = function(req,res,next){
-  if(req.session.user && req.session.user.is_admin){
-    next();
-  }else{
-    res.redirect('/admin/login');
-  }
-}
 
-router.get('/',isAdmin,(req,res)=>{
+router.get('/',middleware.isAdmin,(req,res)=>{
   res.render('admin/home',{layout:'admin-layout'});
 });
 
@@ -49,6 +43,7 @@ router.get('/init',(req,res)=>{
     }
   });
 
+
   // User.deleteMany({},function(err){
   //   console.log(1);
   // });
@@ -75,7 +70,12 @@ router.get('/init',(req,res)=>{
 
 });
 
-router.get('/destroy',(req,res)=>{
+  router.get('/drop',middleware.isAdmin,(req,res)=>{
+    Group.collection.drop();
+    Subject.collection.drop();
+    console.log('drop collection successfully');
+  });
+router.get('/destroy',middleware.isAdmin,(req,res)=>{
   Comment.deleteMany({},function(err){
     if(err){
       console.log('destroy all comments failed: '+new Error(err));
@@ -97,6 +97,7 @@ router.get('/destroy',(req,res)=>{
       console.log('destroy all subject successfully');
     }
   });
+
 });
 
 router.get('/login',(req,res)=>{

@@ -1,11 +1,12 @@
 <div class="media leftpanel-profile">
   <div class="media-left">
     <a href="#">
-      <% if(user.avatar.trim().length == 0) { %>
-        <img src="<%= user.avatar %>" alt="" />
-      <%}else{%>
-        <img src="/user/images/photos/loggeduser.png" alt="" />
+      <% if(user.avatar.trim().length > 0){%>
+          <img src="<%= user.avatar %>" alt="" class="media-object img-circle">
+      <%} else{%>
+          <img src="/user/images/photos/loggeduser.png" alt="" class="media-object img-circle">
       <%}%>
+
     </a>
   </div>
   <div class="media-body">

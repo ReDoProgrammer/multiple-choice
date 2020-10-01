@@ -14,7 +14,6 @@ passport.use(new GoogleStrategy({
       console.log('find user in google auth failed: '+new Error(err));
     }else{
       if(u){
-        req.session.user = u;
         return done(err, u);
       }else{
         User.create({
@@ -25,7 +24,6 @@ passport.use(new GoogleStrategy({
           if(err){
             console.log('find or create user failed: '+new Error(err));
           }else{
-            req.session.user = user;
             return done(err, user);
           }
         });
@@ -41,7 +39,7 @@ router.get('/auth/google',passport.authenticate('google', { scope: ['profile'] }
 
 router.get('/auth/google/callback',passport.authenticate('google', { failureRedirect: '/login' }),function(req, res) {
   // Successful authentication, redirect home.
-
+  console.log('req.user:',req.user,'session:',req.session.user);
   res.redirect('/');
 });
 

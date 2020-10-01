@@ -10,11 +10,10 @@ const commentSchema = new Schema({
   like:{type:Number,default:0},
   dislike:{type:Number,default:0},
   created_at:{type:String,default:common.currentTime},
-  subjects:[{
+  user:{
       type:Schema.Types.ObjectId,
-      ref:'subject'
+      ref:'user'
     }
-  ]
 });
 
 module.exports = mongoose.model("comment",commentSchema);

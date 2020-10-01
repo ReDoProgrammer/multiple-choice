@@ -16,7 +16,11 @@ const UserSchema = new Schema({
   job:{
     type:Schema.Types.ObjectId,
     ref:'job'
-  }
+  },
+  comments:[{
+    type:Schema.Types.ObjectId,
+    ref:'comment'
+  }]
 });
 
 UserSchema.pre('save', function(next) {

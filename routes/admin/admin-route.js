@@ -16,10 +16,9 @@ router.get('/',isAdmin,(req,res)=>{
   res.render('admin/home',{layout:'admin-layout'});
 });
 
-router.get('/init',(req,res)=>{
+router.get('/init',(req,res)=>{  
 
   //Khởi tạo nghề nghiệp
-
   Job.countDocuments({},function(err,c){
     if(err){
       console.log('count job failed: '+new Error(err));

@@ -4,97 +4,146 @@
       <h3 class="panel-title"><i class="fa fa-bullhorn" aria-hidden="true"></i> Bình luận, góp ý</h3>
     </div>
     <div class="panel-body" id="comments">
-      <div class="comment_line">
-        <section class="post-heading">
-          <div class="row">
-            <div class="col-md-12">
-              <div class="media">
-                <div class="media-left">
-                  <a href="#">
-                    <img class="media-object photo-profile" src="http://0.gravatar.com/avatar/38d618563e55e6082adf4c8f8c13f3e4?s=40&d=mm&r=g" alt="...">
-                  </a>
-                </div>
-                <div class="media-body">
-                  <a href="#" class="anchor-username"><h4 class="media-heading">Bayu Darmantra</h4></a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
 
-        <section class="post-body">
-          <p">222222222222fdsafdsafasdfdsarf1241234213412341234213412343214321432142rfrsdfsafdsafas fasdf 5423532422222222.</p>
-        </section>
-
-        <section class="post-footer">
-          <div class="post-footer-option container">
-            <ul class="list-unstyled">
-              <li><a href="#"><i class="glyphicon glyphicon-thumbs-up"></i> Like</a></li>
-              <li><a href="#"><i class="glyphicon glyphicon-comment"></i> Comment</a></li>
-              <li><a href="#"><i></i> 51 phút</a></li>
-            </ul>
-          </div>
-        </section>
+    </div>
+  </div>
+  <% if(user) { %>
+    <div class="post-footer-comment-wrapper">
+      <div class="comment-form">
+        <div class="input-group mb15">
+          <input type="text" class="form-control" id="txtComment">
+          <span class="input-group-btn">
+            <button type="button" class="btn btn-default" id="btnCreateComment"><i class="fa fa-send-o text-primary"></i></button>
+          </span>
+        </div>
       </div>
     </div>
   </div>
-  <div class="post-footer-comment-wrapper">
-    <div class="comment-form">
-      <div class="input-group mb15">
-        <input type="text" class="form-control" id="txtComment">
-        <span class="input-group-btn">
-          <button type="button" class="btn btn-default" id="btnCreateComment"><i class="fa fa-send-o text-primary"></i></button>
-        </span>
-      </div>
-    </div>
-  </div>
-</div>
+  <%}%>
 
 
-<script type="text/javascript">
-  $(document).ready(function(){
-    //khi scroll lên top
-    $('#comments').scroll(function() {
-      if($('#comments').scrollTop() == $('#comments').height() - $('#comments').height()) {
-        console.log('top');
-      }
-    });
 
-    //khi scroll tới cuối
-    $('#comments').on('scroll', function() {
-      if ($(this).scrollTop() + $(this).innerHeight() >=  $(this)[0].scrollHeight) {
-        console.log('bottom');
-      }
-    });
-  });
+  <script type="text/javascript">
+    /*
+    KHU VỰC KHAI BÁO BIẾN TOÀN CỤC
+    */
+    var page = 1;
+    var group = '';
+    var subject = '';
+    $(document).ready(function(){
+      //gọi tới hàm load comment khi page đc load xong
 
-  $('#btnCreateComment').click(function(){
-    let comment = $('#txtComment').val().trim();
-    if(comment.length > 0){
-      var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
-      let group = '';
-      let subject = '';
-      if(hashes.length==2){
-         group =(hashes[0].split('='))[1];
-         subject = (hashes[1].split('='))[1];
-      }
-      $.ajax({
-        url:'/comment/create',
-        type:'post',
-        data:{
-          group:group,
-          subject:subejct,
-          comment:comment
-        },
-        success:function(data){
-          console.log(data);
+      GetGroupAndSubject();
+      LoadComment();
+      $('#btnCreateComment').click(function(){
+        let comment = $('#txtComment').val().trim();
+        if(comment.length > 0){
+          GetGroupAndSubject();
+          $.ajax({
+            url:'/comment/create',
+            type:'post',
+            data:{
+              group:group,
+              subject:subject,
+              comment:comment
+            },
+            success:function(data){
+              if(data.code == 200){
+                console.log(data);
+                $('#txtComment').val('');
+                page = 1;
+                LoadComment();
+              }
+
+            }
+          });
         }
       });
 
 
-    }
+      function LoadComment(){
+        $.ajax({
+          url:'/comment/list',
+          type:'get',
+          data:{
+            page:page,
+            group:group,
+            subject:subject
+          },
+          success:function(data){
+            if(data.code == 200){
+              $('#comments').empty();
+              let comments = '';
+              $.each(data.comments,function(k,v){
+                  comments +=  '<div class="comment_line">';
+                  comments +=     '<section class="post-heading">';
+                  comments +=       '<div class="row">';
+                  comments +=         '<div class="col-md-12">';
+                  comments +=           '<div class="media">';
+                  comments +=             '<div class="media-left">';
+                  comments +=               '<a href="#">';
+                  comments +=                ' <img class="media-object photo-profile" src="'+v.user.avatar+'" alt="...">';
+                  comments +=               '</a>';
+                  comments +=             '</div>';
+                  comments +=             '<div class="media-body">';
+                  comments +=               '<a href="#" class="anchor-username"><h4 class="media-heading">'+v.user.fullname+'</h4></a>';
+                  comments +=            ' </div>';
+                  comments +=           '</div>';
+                  comments +=        ' </div>';
+                  comments +=      ' </div>';
+                  comments +=    ' </section>';
 
-  });
+                  comments +=     '<section class="post-body">';
+                  comments +=       '<p">'+v.comment+'</p>';
+                  comments +=     '</section>';
+
+                  comments +=     '<section class="post-footer">';
+                  comments +=       '<div class="post-footer-option container">';
+                  comments +=        ' <ul class="list-unstyled">';
+                  comments +=           '<li><a href="#"><i class="glyphicon glyphicon-thumbs-up"></i> Like</a></li>';
+                  comments +=           '<li><a href="#"><i class="glyphicon glyphicon-comment"></i> Comment</a></li>';
+                  comments +=           '<li><a href="#"><i></i>'+v.created_at+'</a></li>';
+                  comments +=         '</ul>';
+                  comments +=      ' </div>';
+                  comments +=     '</section>';
+                  comments +=   '</div>';
+              });
+              $('#comments').append(comments);
+            }
+          }
+        });
+      }
+
+      function GetGroupAndSubject(){
+        var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+        if(hashes.length==2){
+          group =(hashes[0].split('='))[1];
+          subject = (hashes[1].split('='))[1];
+        }
+      }
+
+      //khi scroll lên top
+      $('#comments').scroll(function() {
+        if($('#comments').scrollTop() == $('#comments').height() - $('#comments').height()) {
+          console.log('top');
+        }
+      });
+
+      //khi scroll tới cuối
+      $('#comments').on('scroll', function() {
+        if ($(this).scrollTop() + $(this).innerHeight() >=  $(this)[0].scrollHeight) {
+          console.log('bottom');
+        }
+      });
+    });
+
+
+    $('#txtComment').keyup(function(e){
+        if(e.keyCode == 13)
+        {
+            $('#btnCreateComment').click();
+        }
+    });
 
   </script>
 

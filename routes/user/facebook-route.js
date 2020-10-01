@@ -7,7 +7,7 @@ const passport = require('passport');//#1
 FacebookStrategy = require('passport-facebook').Strategy;//#2
 
 //#3
-router.get('/auth/facebook',(req,res)=>{});
+router.get('/auth/facebook',passport.authenticate('facebook'),(req,res)=>{});
 router.get('/auth/facebook/callback',passport.authenticate('facebook', { failureRedirect: '/' }),function(req, res){
   res.redirect('/account');
 });

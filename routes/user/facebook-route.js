@@ -34,7 +34,7 @@ router.get('/account', ensureAuthenticated, function(req, res) {
             console.log('create user via facebook user failed: '+new Error(err));
           }else{
             req.session.user = usr;
-            res.render('home/index');
+            res.redirect('/');
           }
         });
       }

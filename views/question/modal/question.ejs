@@ -169,7 +169,8 @@
       url:'/admin/subject/list-by-group',
       type:'get',
       data:{
-        group:id
+        group:id,
+        is_actived:true
       },
       success:function(data){
         if(data.code == 200){

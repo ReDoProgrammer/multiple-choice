@@ -18,7 +18,7 @@ passport.use(new GoogleStrategy({
 
 router.get('/auth/google',passport.authenticate('google', { scope: ['profile'] }));
 
-router.get('/auth/google/callback',passport.authenticate('google', { failureRedirect: '/login' }),function(req, res) {
+router.get('/google/callback',passport.authenticate('google', { failureRedirect: '/login' }),function(req, res) {
   // Successful authentication, redirect home.
   console.log('callback',req.user);
   res.redirect('/');

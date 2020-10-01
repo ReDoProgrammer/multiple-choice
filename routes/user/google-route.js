@@ -2,17 +2,37 @@ const router = require('express').Router();
 const passport = require('passport');
 const config = require('../../configs/config');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
+const User = require('../../models/user-model');
 
 passport.use(new GoogleStrategy({
   clientID: config.google_api.clientId,
   clientSecret: config.google_api.clientSecret,
   callbackURL: config.google_api.callbackURL
 },function(accessToken, refreshToken, profile, done) {
-  console.log('profile:',profile);
-    // User.findOrCreate({ googleId: profile.id }, function (err, user) {
-    //   return done(err, user);
-    // });
-  }
+  User.findOne({username:profile.id},function(err,u){
+    if(err){
+      console.log('find user in google auth failed: '+new Error(err));
+    }else{
+      if(u){
+        console.log('user is already exists',u);
+        return done(err, u);
+      }else{
+        User.create({
+          username:profile.id,
+          fullname:profile.displayName,
+          avatar:profile.photos[0].value
+        }, function (err, user) {
+          if(err){
+            console.log('find or create user failed: '+new Error(err));
+          }else{
+            return done(err, user);
+          }
+        });
+      }
+    }
+  });
+
+}
 ));
 
 

@@ -1,55 +1,127 @@
-<!--modal đăng ký tài khoản -->
+<!--modal login --->
 <div class="modal fade" id="modalRegister" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
 aria-hidden="true">
-<div class="modal-dialog" role="document">
-  <div class="modal-content">
-    <div class="modal-header text-center">
-      <h4 class="modal-title w-100 font-weight-bold">Đăng ký tài khoản</h4>
-      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-      </button>
+<body class="signwrapper">
+  <div class="sign-overlay"></div>
+  <div class="signpanel"></div>
+  <div class="panel signin">
+    <div class="row text-right">
+      <a href="#" class="btn btn-lg" id="btnCloseRegisterModal"><i class="fa fa-times text-danger" aria-hidden="true"></i></a>
     </div>
-    <div class="modal-body mx-10">
-      <div class="container h-100">
-        <div class="d-flex justify-content-center h-100">
-          <div class="user_card">
-            <div class="d-flex justify-content-center">
-              <div class="brand_logo_container">
-                <img src="/images/logo.png" class="brand_logo" alt="Logo">
-              </div>
-            </div>
+    <div class="panel-heading">
+      <h1>Trắc nghiệm</h1>
+    </div>
+    <div class="panel-body">
+      <button class="btn btn-primary btn-quirk btn-fb btn-block">Đăng nhập bằng Facebook</button>
+      <div class="or">hoặc</div>
 
-            <div class="container">
-              <div class="form-group row">
-                <label for="exampleFormControlInput1">Tài khoản</label>
-                <input type="text" class="form-control" id="r_username" placeholder="Tài khoản">
-              </div>
-              <div class="form-group row">
-                <label for="exampleFormControlInput1">Mật khẩu</label>
-                <input type="password" class="form-control" id="r_password" placeholder="Mật khẩu">
-              </div>
-              <div class="form-group row">
-                <label for="exampleFormControlInput1">Xác nhận mật khẩu</label>
-                <input type="password" class="form-control" id="r_confirm_password" placeholder="Xác nhận mật khẩu">
-              </div>
-
-              <div class="form-group row">
-                <label for="exampleFormControlInput1">Họ và tên</label>
-                <input type="text" class="form-control" id="r_fullname" placeholder="Họ và tên">
-              </div>
-            </div>
-
-            <div class="col-md-12">
-              <label class="text-danger" id="r_message"></label>
-            </div>
-          </div>
+      <div class="form-group">
+        <label for="">Nghề nghiệp</label>
+        <select class="form-control mb10" id="jobs">
+        </select>
+      </div>
+      <div class="form-group mb10">
+        <div class="input-group has-error">
+          <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+          <input type="text" class="form-control" placeholder="Tài khoản" id="txtSU_username">
         </div>
       </div>
+      <div class="form-group mb10">
+        <div class="input-group has-error">
+          <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+          <input type="password" class="form-control" placeholder="Mật khẩu" id="txtSU_password">
+        </div>
+      </div>
+      <div class="form-group mb10">
+        <div class="input-group has-error">
+          <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+          <input type="password" class="form-control" placeholder="Xác nhận mật khẩu" id="txtSU_confirm_password">
+        </div>
+      </div>
+
+      <div class="form-group mb10">
+        <div class="input-group has-error">
+          <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+          <input type="text" class="form-control" placeholder="Họ tên" id="txtSU_fullname">
+        </div>
+      </div>
+
+      <div class="form-group mb10">
+        <div class="input-group">
+          <span class="input-group-addon"><b><i class="fa fa-phone" aria-hidden="true"></i></b></span>
+          <input type="text" class="form-control" placeholder="Số điện thoại" id="txtSU_phone">
+        </div>
+      </div>
+
+      <div class="input-group mb10">
+        <span class="input-group-addon">@</span>
+        <input type="text" placeholder="Thư điện tử(email)" class="form-control">
+      </div>
+
+
+      <div class="input-group mb10">
+        <label for="exampleFormControlFile1">Ảnh đại diện</label>
+        <input type="file" class="form-control-file btn btn-warning" id="txtSU_avatar">
+      </div>
+
+      <div class="form-group">
+        <h4 class="text-danger" id="msgSignIn"></h4>
+        <button class="btn btn-success btn-quirk btn-block" id="btnSignUp">Đăng ký</button>
+      </div>
+
+      <hr class="invisible">
+      <div class="form-group">
+        <a href="" class="btn btn-default btn-quirk btn-stroke btn-stroke-thin btn-block btn-sign" id="btnLoginSuddently">Đã có tài khoản? Đăng nhập ngay!</a>
+      </div>
     </div>
-    <div class="modal-footer d-flex justify-content-center">
-      <button type="button" name="button" class="btn btn-secondary" id="r_btnLogin">Đăng nhập</button>
-      <button type="button" name="button" class="btn btn-success" id="r_btnRegister">Xác nhận đăng ký</button>
-    </div>
-  </div>
+  </div><!-- panel -->
+</body>
 </div>
-</div>
+
+<script type="text/javascript">
+  $('#btnCloseRegisterModal').click(function(e){
+    e.preventDefault();
+    $('#modalRegister').modal('hide');
+  });
+  $('#btnSignUp').click(function(){
+    let username = $('#txtSignIUsername').val();
+    let password = $('#txtSignInPassword').val();
+    $.ajax({
+      url:'/thanh-vien/login',
+      type:'post',
+      data:{
+        username:username,
+        password:password
+      },
+      success:function(data){
+        if(data.code == 200){
+          location.reload()
+        }else{
+          $('#msgSignIn').text(data.msg);
+        }
+      }
+    });
+  });
+
+  $('#btnLoginSuddently').click(function(e){
+    e.preventDefault();
+    $('#modalRegister').modal('hide');
+    $('#modalLogin').modal();
+  });
+
+  $(document).ready(function(){
+    $.ajax({
+      url:'/admin/job/list',
+      type:'get',
+      success:function(data){
+        if(data.code == 200){
+          let jobs = '';
+          $.each(data.jobs,function(k,r){
+            jobs += '<option value="'+r._id+'">'+r.name+'</option>';
+          });
+          $('#jobs').append(jobs);
+        }
+      }
+    });
+  });
+</script>

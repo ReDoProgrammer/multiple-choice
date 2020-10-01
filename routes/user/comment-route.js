@@ -6,7 +6,10 @@ const Comment = require('../../models/comment-model');
 router.get('/list',(req,res)=>{
   const {page,group,subject} = req.query;
   let commentSize = config.commentSize;
-  Comment.find({})
+  Comment.find({
+    group:group,
+    subject:subject
+  })
   .populate('user','fullname avatar')
   .sort({created_at:-1})
   .skip((page-1)*commentSize)

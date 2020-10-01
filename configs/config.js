@@ -8,6 +8,11 @@ module.exports={
     callbackURL: "https://redoapp.com/auth/facebook/callback",
     profileFields: ['id', 'displayName', 'name', 'gender','photos']
   },
+  google_api:{
+    clientId:'937859717773-ji8eqvrdli8icb22ljqfpiscv9f175un.apps.googleusercontent.com',
+    clientSecret:'0pJQj5Cd_5vJPqSWzmMSUHm-',
+    callbackURL:'https://redoapp.com/google/callback'
+  },
   pageSize:20,
   commentSize:5,
   questionNumber:55,

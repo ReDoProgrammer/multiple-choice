@@ -147,7 +147,7 @@
     <li>
       <div class="btn-group">
         <button type="button" class="btn btn-logged" data-toggle="dropdown">
-          <% if(user.avatar.trim().length == 0) { %>
+          <% if(user.avatar.trim().length > 0){%>
             <img src="<%= user.avatar %>" alt="" />
           <%}else{%>
             <img src="/user/images/photos/loggeduser.png" alt="" />

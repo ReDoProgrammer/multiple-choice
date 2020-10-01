@@ -73,7 +73,7 @@ router.get('/init',(req,res)=>{
 
 });
 
-route.get('/destroy',(req,res)=>{
+router.get('/destroy',(req,res)=>{
   Comment.deleteMany({},function(err){
     if(err){
       console.log('destroy all comments failed: '+new Error(err));

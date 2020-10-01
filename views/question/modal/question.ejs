@@ -96,9 +96,9 @@
 
 <script type="text/javascript">
   $(document).ready(function(){
+    LoadGroupInModal();
     $("select#mdl_groups").change(function(){
       let id = $(this).children("option:selected").attr('id');
-      LoadSubjectInModal(id);
     });
   });
 
@@ -157,13 +157,47 @@
         subject:subject_id
       },
       success:function(data){
-
+        if(data.code == 200){
+          alert(data.msg);
+          $('#question').val('');
+          $('#option_a').val('');
+          $('#option_b').val('');
+          $('#option_c').val('');
+          $('#option_d').val('');
+          $('#description').val('');
+          $("#rdA").prop('checked', false);
+          $("#rdB").prop('checked', false);
+          $("#rdC").prop('checked', false);
+          $("#rdD").prop('checked', false);
+          LoadQuestion();
+        }
       }
     });
 
 
   });
 
+  function LoadGroupInModal(){
+    $.ajax({
+      url:'/admin/group/list',
+      type:'get',
+      data:{
+        is_actived:true
+      },
+      success:function(data){
+        if(data.code == 200){
+          $('#mdl_groups').empty();
+          let d = '';
+          $.each(data.groups,function(k,r){
+            d += '<option value="'+r.meta+'" id = "'+r._id+'">'+r.name+'</option>';
+          });
+          $('#mdl_groups').append(d);
+          let id = $('#mdl_groups').children("option:selected").attr('id');
+          LoadSubjectInModal(id);
+        }
+      }
+    });
+  }
   function LoadSubjectInModal(id){
     $.ajax({
       url:'/admin/subject/list-by-group',

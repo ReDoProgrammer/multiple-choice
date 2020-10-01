@@ -110,16 +110,13 @@
           success:function(data){
             if(data.code == 200){
               $('#groups').empty();
-              $('#mdl_groups').empty();
               let d = '';
               $.each(data.groups,function(k,r){
                 d += '<option value="'+r.meta+'" id = "'+r._id+'">'+r.name+'</option>';
               });
               $('#groups').append(d);
-              $('#mdl_groups').append(d);
               let id = $('#groups').children("option:selected").attr('id');
               LoadSubject(id);
-              LoadSubjectInModal(id);
             }
           }
         });

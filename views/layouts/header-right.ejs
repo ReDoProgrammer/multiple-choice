@@ -159,8 +159,8 @@
         <ul class="dropdown-menu pull-right">
           <li><a href="profile.html"><i class="glyphicon glyphicon-user"></i> My Profile</a></li>
           <li><a href="#"><i class="glyphicon glyphicon-cog"></i> Account Settings</a></li>
-          <li><a href="#"><i class="glyphicon glyphicon-question-sign"></i> Help</a></li>
-          <li><a href="signin.html"><i class="glyphicon glyphicon-log-out"></i> Log Out</a></li>
+          <li><a href="#" id="btnContributeQuestion"><i class="glyphicon glyphicon-question-sign"></i> Đóng góp câu hỏi</a></li>
+          <li><a href="/user/logout"><i class="glyphicon glyphicon-log-out"></i> Log Out</a></li>
         </ul>
       </div>
     </li>
@@ -172,3 +172,12 @@
     </li>
   </ul>
 </div><!-- header-right -->
+
+<%- include('../question/modal/question') %>
+
+<script type="text/javascript">
+  $('#btnContributeQuestion').click(function(e){
+    e.preventDefault();
+    $('#modalQuestion').modal();
+  });
+</script>

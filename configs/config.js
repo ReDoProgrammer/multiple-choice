@@ -5,7 +5,7 @@ module.exports={
   fb_api:{
     clientID: '957295484766781',
     clientSecret: '1bfa1916430b3797d684be824331b5f8',
-    callbackURL: "http://thicongchuc.redoapp.com/thanh-vien/auth/facebook/callback",
+    callbackURL: "https://redoapp.com//thanh-vien/auth/facebook/callback",
     profileFields: ['id', 'displayName', 'name', 'gender','photos']
   },
   pageSize:20,

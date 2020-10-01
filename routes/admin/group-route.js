@@ -6,7 +6,7 @@
 
 const router = require('express').Router();
 const Group = require('../../models/group-model');
-const middleware = require('../../middlewares/admin-middleware');
+const middleware = require('../../middlewares/middleware');
 
 router.get('/',middleware.isAdmin,(req,res)=>{
   res.render('group/index',{layout:'admin-layout'});

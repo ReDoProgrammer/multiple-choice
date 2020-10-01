@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const Question = require('../../models/question-model');
-const middleware = require('../../middlewares/admin-middleware');
+const middleware = require('../../middlewares/middleware');
 const config = require('../../configs/config');
 
 router.get('/',middleware.isAdmin,(req,res)=>{

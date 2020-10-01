@@ -74,9 +74,24 @@
       var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
       let group = '';
       let subject = '';
-      console.log(hashes);
-      // let group =(hashes[0].split('='))[1];
-      // let subject = (hashes[1].split('='))[1];
+      if(hashes.length==2){
+         group =(hashes[0].split('='))[1];
+         subject = (hashes[1].split('='))[1];
+      }
+      $.ajax({
+        url:'/comment/create',
+        type:'post',
+        data:{
+          group:group,
+          subject:subejct,
+          comment:comment
+        },
+        success:function(data){
+          console.log(data);
+        }
+      });
+
+
     }
 
   });

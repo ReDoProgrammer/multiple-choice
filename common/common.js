@@ -19,5 +19,5 @@ module.exports.currentTime = ()=>{
   let hour = d.c.hour<10?'0'+d.c.hour:d.c.hour;
   let minutes = d.c.minute<10?'0'+d.c.minute:d.c.minute;
 
-  return  parse('%s/%s/%s %s:%s',date,month,year,hour,minutes);
+  return  date+'/'+month+'/'+year+' '+hour+':'+minutes;
 }

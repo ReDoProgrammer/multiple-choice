@@ -4,7 +4,7 @@
 
 const router = require('express').Router();
 const Job = require('../../models/job-model');
-const middleware = require('../../middlewares/admin-middleware');
+const middleware = require('../../middlewares/middleware');
 
 router.get('/',middleware.isAdmin,(req,res)=>{
   res.render('job/index',{layout:'admin-layout'});

@@ -5,7 +5,7 @@ Ví dụ: kiến thức chung, kiến thức chuyên ngành, tiếng anh, tin h�
 
 const router = require('express').Router();
 const Subject = require('../../models/subject-model');
-const middleware = require('../../middlewares/admin-middleware');
+const middleware = require('../../middlewares/middleware');
 
 router.get('/',middleware.isAdmin,(req,res)=>{
   res.render('subject/index',{layout:'admin-layout'});

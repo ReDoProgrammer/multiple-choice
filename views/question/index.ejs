@@ -73,7 +73,8 @@
       data:{
         page:page,
         subject:subject,
-        search:search
+        search:search,
+        is_actived:true
       },
       success:function(data){
         if(data.code == 200){
@@ -103,6 +104,9 @@
         $.ajax({
           url:'/admin/group/list',
           type:'get',
+          data:{
+            is_actived:true
+          },
           success:function(data){
             if(data.code == 200){
               $('#groups').empty();
@@ -129,7 +133,8 @@
             url:'/admin/subject/list-by-group',
             type:'get',
             data:{
-              group:group
+              group:group,
+              is_actived:true
             },
             success:function(data){
               if(data.code == 200){

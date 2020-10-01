@@ -12,6 +12,7 @@ const adminRoutes = require('./routes/admin/admin-route');
 const groupRoutes = require('./routes/admin/group-route');
 const subjectRoutes = require('./routes/admin/subject-route');
 const questionRoutes = require('./routes/admin/question-route');
+const jobRoutes = require('./routes/admin/job-route');
 
 
 
@@ -48,6 +49,7 @@ app.use('/admin',adminRoutes);
 app.use('/admin/group',groupRoutes);
 app.use('/admin/subject',subjectRoutes);
 app.use('/admin/question',questionRoutes);
+app.use('/admin/job',jobRoutes);
 
 //phần route user
 app.use('/thanh-vien',userRoutes);//route thành viên

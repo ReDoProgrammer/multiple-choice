@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const User = require('../../models/user-model');
+const Job = require('../../models/job-model');
 const common = require('../../common/common');
 var session = require('express-session');
 
@@ -17,6 +18,35 @@ router.get('/',isAdmin,(req,res)=>{
 
 router.get('/init',(req,res)=>{
 
+  //Khởi tạo nghề nghiệp
+
+  Job.countDocuments({},function(err,c){
+    if(err){
+      console.log('count job failed: '+new Error(err));
+    }else{
+      if(c == 0){
+        const jobs = [
+          {name:'Sinh viên'},
+          {name:'Công nhân'},
+          {name:'Bác sĩ'},
+          {name:'Giáo viên'},
+          {name:'Tài xế'},
+          {name:'Doanh nhân'},
+          {name:'Nông dân'},
+          {name:'Khác'}
+        ];
+        Job.insertMany(jobs,function(err,rs){
+          if(err){
+            console.log('init jobs failed: '+new Error(err));
+          }else{
+            console.log('init jobs successfully');
+          }
+        });
+
+      }
+    }
+  });
+
   // User.deleteMany({},function(err){
   //   console.log(1);
   // });
@@ -28,7 +58,7 @@ router.get('/init',(req,res)=>{
         username: 'redo',
         password: 'ReDo1@vn',
         fullname:'Nguyễn Hữu Trường',
-        is_admin:true      
+        is_admin:true
       });
 
       // save user to database

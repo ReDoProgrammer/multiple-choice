@@ -23,6 +23,7 @@ const examRoutes = require('./routes/user/exam-route');
 const facebookRoutes = require('./routes/user/facebook-route');
 const googleRoutes = require('./routes/user/google-route');
 const commentRoutes = require('./routes/user/comment-route');
+const contributeQuestionRoutes = require('./routes/user/contribute-question-route');
 
 
 app.set('view engine','ejs');//set view engine cho nodejs
@@ -85,6 +86,7 @@ app.use('/',googleRoutes);//route google
 app.use('/',homeRoutes);//route trang chủ
 app.use('/lam-bai-thi',examRoutes);//route làm bài thi
 app.use('/comment',commentRoutes);//route bình luận
+app.use('/contribute-question',contributeQuestionRoutes);//đóng góp câu hỏi
 
 
 

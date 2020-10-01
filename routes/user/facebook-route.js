@@ -16,17 +16,19 @@ router.get('/auth/facebook/callback',
 
 router.get('/account', ensureAuthenticated, function(req, res) {
   console.log('account:',req.user);
-  User.findOne({username:req.user.id},function(err,user){
-    if(err){
-      console.log('find user failed in facebook auth: '+new Error(err));
-    }else{
-      if(user){
-        console.log(user);
-      }else{
-        console.log(user.id+' not exist');
-      }
-    }
-  });
+  let id = req.user.id;
+  console.log('facebook user id: ',id);
+  // User.findOne({username:req.user.id},function(err,user){
+  //   if(err){
+  //     console.log('find user failed in facebook auth: '+new Error(err));
+  //   }else{
+  //     if(user){
+  //       console.log(user);
+  //     }else{
+  //       console.log(user.id+' not exist');
+  //     }
+  //   }
+  // });
 });
 
 function ensureAuthenticated(req, res, next) {

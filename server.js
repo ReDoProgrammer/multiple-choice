@@ -21,6 +21,7 @@ const userRoutes = require('./routes/user/user-route');
 const homeRoutes = require('./routes/user/home-route');
 const examRoutes = require('./routes/user/exam-route');
 const facebookRoutes = require('./routes/user/facebook-route');
+const googleRoutes = require('./routes/user/google-route');
 // const userRoutes = require('./routes/user-route');
 
 
@@ -80,6 +81,7 @@ app.use('/admin/job',jobRoutes);
 //phần route user
 app.use('/thanh-vien',userRoutes);//route thành viên
 app.use('/',facebookRoutes);//route facebook
+app.use('/',googleRoutes);//route facebook
 app.use('/',homeRoutes);//route trang chủ
 app.use('/lam-bai-thi',examRoutes);//route trang chủ
 

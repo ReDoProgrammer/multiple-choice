@@ -35,7 +35,7 @@ aria-hidden="true">
 
       <hr class="invisible">
       <div class="form-group">
-        <a href="signup.html" class="btn btn-default btn-quirk btn-stroke btn-stroke-thin btn-block btn-sign">Không phải thành viên? Đăng ký ngay!</a>
+        <a href="" class="btn btn-default btn-quirk btn-stroke btn-stroke-thin btn-block btn-sign" id="btnRegisterSuddently">Không phải thành viên? Đăng ký ngay!</a>
       </div>
     </div>
   </div><!-- panel -->
@@ -48,8 +48,12 @@ aria-hidden="true">
     $('#modalLogin').modal('hide');
   });
   $('#btnSignIn').click(function(){
-    let username = $('#txtSignIUsername').val();
-    let password = $('#txtSignInPassword').val();
+    let username = $('#txtSignIUsername').val().trim();
+    let password = $('#txtSignInPassword').val().trim();
+    if(username.length == 0 || password.length == 0){
+        $('#msgSignIn').text('Vui lòng nhập đủ tài khoản và mật khẩu');
+        return;
+    }
     $.ajax({
       url:'/thanh-vien/login',
       type:'post',
@@ -66,4 +70,10 @@ aria-hidden="true">
       }
     });
   });
+
+  $('#btnRegisterSuddently').click(function(e){
+    e.preventDefault();
+    $('#modalLogin').modal('hide');
+    $('#modalRegister').modal();
+  })
 </script>

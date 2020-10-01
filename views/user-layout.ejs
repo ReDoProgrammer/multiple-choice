@@ -42,6 +42,8 @@
 
         <% if(user) { %>
           <%- include('layouts/header-right.ejs') %>
+        <%}else{%>
+          <%- include('layouts/login-register') %>
         <%}%>
       </div><!-- headerbar -->
     </div><!-- header-->

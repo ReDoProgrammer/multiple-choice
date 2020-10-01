@@ -39,11 +39,10 @@ app.use(session({
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(bodyParser.json());
 
-//gọi tới các route đã được khai báo
-//các route phải đặt sau cấu hình của body parser thì mới gọi được tới các thuộc tính của body
-// app.use('/',homeRoutes);
 
-
+/*
+  ROUTE
+*/
 //phần routes admin
 app.use('/admin',adminRoutes);
 app.use('/admin/group',groupRoutes);

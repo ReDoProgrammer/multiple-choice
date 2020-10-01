@@ -28,8 +28,7 @@ router.get('/init',(req,res)=>{
         username: 'redo',
         password: 'ReDo1@vn',
         fullname:'Nguyễn Hữu Trường',
-        is_admin:true,
-        member_code:common.MemberCode()
+        is_admin:true      
       });
 
       // save user to database

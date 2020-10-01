@@ -42,22 +42,23 @@ router.post('/login',(req,res)=>{
   User.findOne({ username: username }, function(err, user) {
     if (err) {
       console.log('error login: ', new Error(err));
-    };
-    if(user){
-      // test a matching password
-      user.ComparePassword(password, function(err, isMatch) {
-        if (err) throw err;
-        if(isMatch){
-          req.session.user = user;
-          res.send({msg:'Đăng nhập thành công',type:'txt-success',user:user});
-        }else{
-          res.send({msg:'Mật khẩu không chính xác. Vui lòng kiểm tra lại',type:'txt-warning'});
-        }
-      });
-
     }else{
-      res.send({msg:'Tài khoản không đúng. Vui lòng kiểm tra lại',type:'warning'})
+      if(user){
+        // test a matching password
+        user.ComparePassword(password, function(err, isMatch) {
+          if (err) throw err;
+          if(isMatch){
+            req.session.user = user;
+            res.send({msg:'Đăng nhập thành công',type:'txt-success',user:user,code:200});
+          }else{
+            res.send({msg:'Mật khẩu không chính xác. Vui lòng kiểm tra lại',type:'txt-warning',code:401});
+          }
+        });
+      }else{
+        res.send({msg:'Tài khoản không đúng. Vui lòng kiểm tra lại',type:'warning',code:404});
+      }
     }
+
 
   });
 });

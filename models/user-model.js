@@ -1,10 +1,11 @@
 const mongoose=require('mongoose');
 const Schema = mongoose.Schema;
 const bcrypt = require('bcrypt');
+const common = require('../common/common');
 const SALT_WORK_FACTOR = 10;
 
 const UserSchema = new Schema({
-  member_code:{type:String,default:'',unique:true},
+  member_code:{type:String,default:common.MemberCode(),unique:true},
   username:{type:String,default:'',unique:true},
   password:{type:String,default:''},
   fullname:{type:String,default:''},

@@ -1,0 +1,30 @@
+<div class="header-right">
+  <ul class="headermenu">
+    <li>
+      <div  class="btn-group">
+        <button class="btn" data-toggle="dropdown" id="btnLogin">
+          <i class="fa fa-user text-warning"></i> <span class="text-danger">Đăng nhập</span>
+        </button>
+      </div>
+    </li>
+    <li>
+      <div  class="btn-group">
+        <button class="btn" data-toggle="dropdown" id="btnRegister">
+          <i class="fa fa-registered text-success" aria-hidden="true"></i> <span class="text-warning">Đăng ký</span>
+        </button>
+      </div>
+    </li>
+  </ul>
+</div><!-- header-right -->
+
+<%- include('login') %>
+<%- include('register') %>
+
+<script type="text/javascript">
+  $('#btnLogin').click(function(){
+    $('#modalLogin').modal();
+  });
+  $('#btnRegister').click(function(){
+    $('#modalRegister').modal();
+  });
+</script>

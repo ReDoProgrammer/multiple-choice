@@ -5,7 +5,7 @@ const expressLayouts = require('express-ejs-layouts');
 const mongoose = require('mongoose');
 const config = require('./configs/config');
 const bodyParser = require('body-parser');//body parser dùng để lấy dữ liệu từ form
-
+const passport = require('passport');
 //phần routes của admin
 
 const adminRoutes = require('./routes/admin/admin-route');
@@ -37,6 +37,31 @@ app.use(session({
   cookie: { secure: false }
 }));
 
+app.use(passport.initialize());
+app.use(passport.session());
+
+passport.serializeUser(function(user, done) {
+  done(null, user);
+});
+
+passport.deserializeUser(function(obj, done) {
+  done(null, obj);
+});
+
+passport.use(new FacebookStrategy({
+    clientID: config.fb_api.clientID,
+    clientSecret: config.fb_api.clientSecret,
+    callbackURL: config.fb_api.callbackURL,
+    profileFields: config.fb_api.profileFields
+  },
+  function(accessToken, refreshToken, profile, done) {
+    // asynchronous verification, for effect...
+    process.nextTick(function () {
+      return done(null, profile);
+    });
+  }
+));
+
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(bodyParser.json());
 
@@ -66,6 +91,6 @@ mongoose.connect(config.mongodb.mongodb,{
 },()=>{
 	console.log('connect database successfully');
 });
-app.listen(3000,()=>{
-	console.log("app is running on port 3000");
+app.listen(8080,()=>{
+	console.log("app is running on port 8080");
 });

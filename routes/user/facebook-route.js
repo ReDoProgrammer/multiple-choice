@@ -24,7 +24,6 @@ router.get('/account', ensureAuthenticated, function(req, res) {
         //if facebook account already exist in database
         //asign session user = user found
         req.session.user = user;
-        console.log('avatar: ',req.session.user.avatar);
         res.redirect('/');
       }else{
         User.create({

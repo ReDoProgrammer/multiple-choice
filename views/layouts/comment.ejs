@@ -41,9 +41,9 @@
   <div class="post-footer-comment-wrapper">
     <div class="comment-form">
       <div class="input-group mb15">
-        <input type="text" class="form-control">
+        <input type="text" class="form-control" id="txtComment">
         <span class="input-group-btn">
-          <button type="button" class="btn btn-default"><i class="fa fa-send-o text-primary"></i></button>
+          <button type="button" class="btn btn-default" id="btnCreateComment"><i class="fa fa-send-o text-primary"></i></button>
         </span>
       </div>
     </div>
@@ -66,6 +66,19 @@
         console.log('bottom');
       }
     });
+  });
+
+  $('#btnCreateComment').click(function(){
+    let comment = $('#txtComment').val().trim();
+    if(comment.length > 0){
+      var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+      let group = '';
+      let subject = '';
+      console.log(hashes);
+      // let group =(hashes[0].split('='))[1];
+      // let subject = (hashes[1].split('='))[1];
+    }
+
   });
 
   </script>

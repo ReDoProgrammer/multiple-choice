@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const User = require('../../models/user-model');
 const Job = require('../../models/job-model');
+const Comment = require('../../models/comment-model');
 const common = require('../../common/common');
 var session = require('express-session');
 
@@ -16,7 +17,7 @@ router.get('/',isAdmin,(req,res)=>{
   res.render('admin/home',{layout:'admin-layout'});
 });
 
-router.get('/init',(req,res)=>{  
+router.get('/init',(req,res)=>{
 
   //Khởi tạo nghề nghiệp
   Job.countDocuments({},function(err,c){
@@ -70,6 +71,16 @@ router.get('/init',(req,res)=>{
     }
   })
 
+});
+
+route.get('/destroy',(req,res)=>{
+  Comment.deleteMany({},function(err){
+    if(err){
+      console.log('destroy all comments failed: '+new Error(err));
+    }else{
+      console.log('destroy all comments successfully');
+    }
+  })
 });
 
 router.get('/login',(req,res)=>{

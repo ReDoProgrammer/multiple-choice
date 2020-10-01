@@ -29,18 +29,19 @@ router.post('/create',middleware.isAdmin,(req,res)=>{
       console.log('cound group failed: '+new Error(err));
     }else{
       if(count>0){//nếu đã tồn tại
-        res.send({code:101,msg:'Bộ môn này đã tồn tại',type:'warning'});
+        console.log('count groups failed: '+new Error(err));
       }else{//ngược lại: chưa có trong database
         Group.create({
           name:name,
-          meta:meta
+          meta:meta,
+          is_actived:true,
+          created_by:req.session.user._id
         },function(err,cl){
           if(err){
             console.log('create group failed: '+new Error(err));
           }else{
             res.send({code:200,msg:'Tạo bộ môn thành công',type:'success'});
           }
-
         });
       }
     }
@@ -58,13 +59,13 @@ router.delete('/delete',middleware.isAdmin,(req,res)=>{
 });
 
 router.get('/list',(req,res)=>{
-  Group.find({},function(err,classes){
+  let is_actived = req.query.is_actived;
+  Group.find({is_actived:is_actived},function(err,classes){
     if(err){
       console.log('get group list failed: '+new Error(err));
     }else{
       res.send({code:200,msg:'load classes successfully',groups:classes});
     }
-
   });
 });
 

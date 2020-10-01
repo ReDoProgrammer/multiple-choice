@@ -9,7 +9,12 @@ const groupSchema = new Schema({
       type:Schema.Types.ObjectId,
       ref:'subject'
     }
-  ]
+  ],
+  created_by:{
+    type:Schema.Types.ObjectId,
+    ref:'user'
+  },
+  is_actived:{type:Boolean,default:false}
 });
 
 module.exports = mongoose.model("group",groupSchema);

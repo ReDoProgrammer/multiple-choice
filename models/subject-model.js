@@ -11,7 +11,12 @@ const subjectSchema = new Schema({
   question:[{
     type:Schema.Types.ObjectId,
     ref:'question'
-  }]
+  }],
+  created_by:{
+    type:Schema.Types.ObjectId,
+    ref:'user'
+  },
+  is_actived:{type:Boolean,default:false}
 });
 
 module.exports = mongoose.model("subject",subjectSchema);

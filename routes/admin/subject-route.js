@@ -12,26 +12,29 @@ router.get('/',middleware.isAdmin,(req,res)=>{
 });
 
 router.get('/list',(req,res)=>{
-  Subject.find({})
+  let is_actived = req.query.is_actived;
+  Subject.find({is_actived:is_actived})
   .populate('group')
   .sort({group:1})
   .exec(function(err,subjects){
     if(err){
-      res.send({code:500,msg:'load subjects failed: '+new Error(err),type:'danger'});
+      console.log('list subject failed: '+new Error(err));
+    }else{
+      res.send({code:200,msg:'load subjects successfully',subjects:subjects,type:'success'});
     }
-    res.send({code:200,msg:'load subjects successfully',subjects:subjects,type:'success'});
+
   });
 });
 
 router.get('/list-by-group',(req,res)=>{
   let group = req.query.group;
-  Subject.find({group:group},function(err,subjects){
+  let is_actived = req.query.is_actived;
+  Subject.find({group:group,is_actived:is_actived},function(err,subjects){
     if(err){
-      res.send({code:500,type:'danger',msg:'List by group failed: '+new Error(err)});
+      console.log('find subject by group failed: '+new Error(err));
     }else{
       res.send({code:200,msg:'List subjects by group successfully',type:'success',subjects:subjects});
     }
-
   });
 });
 
@@ -53,17 +56,26 @@ router.post('/add',middleware.isAdmin,(req,res)=>{
     ]
   },function(err,count){
     if(err){
-      res.send({code:500,msg:'can not count subject: '+new Error(err),type:'danger'});
-    }
-    if(count>0){
-      res.send({code:101,msg:'Môn này đã tồn tại trong hệ thống',type:'warning'});
+      console.log('add subject failed: '+new Error(err));
     }else{
-      Subject.create({name:name,meta:meta,group:group},function(err,subject){
-        if(err){
-          res.send({code:500,msg:'created subject failed: '+new Error(err),type:'danger'});
-        }
-        res.send({code:200,msg:'Thêm môn học thành công',type:'success',subject:subject})
-      });
+      if(count>0){
+        res.send({code:101,msg:'Môn này đã tồn tại trong hệ thống',type:'warning'});
+      }else{
+        Subject.create({
+          name:name,
+          meta:meta,
+          group:group,
+          created_by:req.session.user._id,
+          is_actived:true
+        },function(err,subject){
+          if(err){
+            console.log('create subject failed: '+new Error(err));
+          }else{
+            res.send({code:200,msg:'Thêm môn học thành công',type:'success',subject:subject});
+          }
+
+        });
+      }
     }
   });
 });

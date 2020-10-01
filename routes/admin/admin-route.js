@@ -4,6 +4,7 @@ const Job = require('../../models/job-model');
 const Comment = require('../../models/comment-model');
 const Group = require('../../models/group-model');
 const Subject = require('../../models/subject-model');
+const Question = require('../../models/question-model');
 const common = require('../../common/common');
 const middleware = require('../../middlewares/middleware');
 var session = require('express-session');
@@ -73,6 +74,7 @@ router.get('/init',(req,res)=>{
   router.get('/drop',middleware.isAdmin,(req,res)=>{
     Group.collection.drop();
     Subject.collection.drop();
+    Question.collection.drop();
     console.log('drop collection successfully');
   });
 router.get('/destroy',middleware.isAdmin,(req,res)=>{

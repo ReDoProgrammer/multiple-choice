@@ -33,7 +33,7 @@ router.post('/add',middleware.isLoggedIn,(req,res)=>{
       console.log('created question failed: '+new Error(err));
     }else{
       console.log('question created:',q);
-      res.send({code:200,type:'success',msg:'Đăng câu hỏi thành công'});
+      res.send({code:200,type:'success',msg: req.session.user.isAdmin?'Đăng câu hỏi thành công':'Đăng câu hỏi thành công. Chân thành cảm ơn sự đóng góp của bạn'});
     }
 
   });

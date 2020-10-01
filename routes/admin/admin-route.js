@@ -2,6 +2,8 @@ const router = require('express').Router();
 const User = require('../../models/user-model');
 const Job = require('../../models/job-model');
 const Comment = require('../../models/comment-model');
+const Group = require('../../models/group-model');
+const Subject = require('../../models/subject-model');
 const common = require('../../common/common');
 var session = require('express-session');
 
@@ -80,7 +82,21 @@ router.get('/destroy',(req,res)=>{
     }else{
       console.log('destroy all comments successfully');
     }
-  })
+  });
+  Group.deleteMany({},function(err){
+    if(err){
+      console.log('destroy all groups failed: '+new Error(err));
+    }else{
+      console.log('destroy all groups successfully');
+    }
+  });
+  Subject.deleteMany({},function(err){
+    if(err){
+      console.log('destroy all subjects failed: '+new Error(err));
+    }else{
+      console.log('destroy all subject successfully');
+    }
+  });
 });
 
 router.get('/login',(req,res)=>{

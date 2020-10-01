@@ -4,7 +4,7 @@
  *
  * Last compiled on Wednesday, July 22nd, 2015, 9:20:49 AM
  */
- 
+
 @import url(http://fonts.googleapis.com/css?family=Open+Sans:400,400italic,600,600italic,700,700italic,300italic,300);
 @import url(http://fonts.googleapis.com/css?family=Raleway:400,100,200,300,500,600,700,800);
 /*!
@@ -13957,7 +13957,7 @@ fieldset[disabled] .btn-fb.active {
 }
 /***** SIGN IN/UP *****/
 .signwrapper {
-  background-image: url(../images/photos/bg.jpg);
+  /* background-image: url(../images/photos/bg.jpg); */
   background-repeat: no-repeat;
   background-position: center;
   background-attachment: fixed;

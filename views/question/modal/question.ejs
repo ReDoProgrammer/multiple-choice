@@ -157,6 +157,9 @@
         subject:subject_id
       },
       success:function(data){
+        if(data.code == 401){
+          alert(data.msg);
+        }
         if(data.code == 200){
           alert(data.msg);
           $('#question').val('');

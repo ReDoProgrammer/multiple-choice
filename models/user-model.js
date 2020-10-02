@@ -13,6 +13,7 @@ const UserSchema = new Schema({
   is_admin:{type:Boolean,default:false},
   user_type:{type:Number,default:0},
   avatar:{type:String,default:''},
+  contributed_question:{type:Boolean,default:true},
   job:{
     type:Schema.Types.ObjectId,
     ref:'job'

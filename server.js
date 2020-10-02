@@ -84,7 +84,7 @@ app.use('/thanh-vien',userRoutes);//route thành viên
 app.use('/',facebookRoutes);//route facebook
 app.use('/',googleRoutes);//route google
 app.use('/',homeRoutes);//route trang chủ
-app.use('/lam-bai-thi',examRoutes);//route làm bài thi
+// app.use('/view',examRoutes);//route làm bài thi
 app.use('/comment',commentRoutes);//route bình luận
 app.use('/contribute-question',contributeQuestionRoutes);//đóng góp câu hỏi
 

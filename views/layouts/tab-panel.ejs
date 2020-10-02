@@ -36,7 +36,7 @@
           menu += '<ul class="nav nav-pills nav-stacked nav-quirk">';
 
           $.each(data.subjects,function(k,r){
-            menu += '<li><a href="/lam-bai-thi?group='+meta+'&subject='+r.meta+'"><span class="text-primary">'+r.name+'</span></a></li>'
+            menu += '<li><a href="/view?group='+meta+'&subject='+r.meta+'"><span class="text-primary">'+r.name+'</span></a></li>'
           });
           menu +=  '</ul>';
           $('#mainmenu').append(menu);

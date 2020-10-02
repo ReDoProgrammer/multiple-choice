@@ -1,0 +1,189 @@
+<div class="card">
+  <div class="card-header">
+    <div class="row">
+      <div class="col-md-3">
+        <select class="form-control" id="groups">
+        </select>
+      </div>
+      <div class="col-md-3">
+        <select class="form-control" id="subjects">
+        </select>
+      </div>
+      <div class="col-md-2">
+        <select class="form-control" id="doctypes">
+        </select>
+      </div>
+      <div class="col-sm-4">
+        <input type="text" name="" class="form-control" placeholder="Tên tài liệu" id="txtDocumentName">
+      </div>
+
+    </div>
+    <div class="row mt-4">
+      <div class="col-sm-10">
+        <input type="text" name="" class="form-control" placeholder="Link tài liệu" id="txtDocumentLink">
+      </div>
+
+      <div class="col-sm-2">
+        <button type="button" class="btn btn-success" id="btnSave" style="width:100%"><i class="glyphicon-plus"></i> Lưu</button>
+      </div>
+    </div>
+  </div>
+  <!-- /.card-header -->
+  <div class="card-body mt-4">
+    <table class="table table-bordered table-primary table-striped ">
+      <thead>
+        <tr>
+          <th style="width: 10px">#</th>
+          <th>Lớp</th>
+          <th>Môn học</th>
+          <th>Tên tài liệu</th>
+          <th>Loại</th>
+          <th style="width: 40px"></th>
+        </tr>
+      </thead>
+      <tbody id="tblData">
+      </tbody>
+    </table>
+  </div>
+  <!-- /.card-body -->
+</div>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    LoadDocTypes();
+    LoadGroups();
+    $("select#groups").change(async function(){
+      let id = await $(this).children("option:selected").attr('id');
+      LoadSubjects(id);
+    });
+    LoadDocments();
+  });
+
+  $('#btnSave').click(function(){
+    let subject = $('#subjects').children("option:selected").val();
+    let doctype = $('#doctypes').children("option:selected").val();
+
+    let name = $('#txtDocumentName').val().trim();
+    let link = $('#txtDocumentLink').val().trim();
+
+    if(name.length == 0 || link.length == 0 ){
+      alert('Vui lòng nhập đủ thông tin');
+      return;
+    }
+
+    $.ajax({
+      url:'/admin/document/create',
+      type:'post',
+      data:{
+        subject:subject,
+        doctype:doctype,
+        name:name,
+        link:link
+      },
+      success:function(data){
+        if(data.code==200||data.code == 401){
+          alert(data.msg)
+          LoadDocments();
+        }
+      }
+    });
+  });
+
+  function LoadDocments(subject){
+    subject = $('#subjects').children("option:selected").val();
+    doctype = $('#doctypes').children("option:selected").val();
+    search = '1';
+    $.ajax({
+      url:'/admin/document/list',
+      type:'get',
+      data:{
+        subject:subject,
+        doctype:doctype,
+        search:search
+      },
+      success:function(data){
+        if(data.code == 200){
+          let d = '';
+          $('#tblData').empty();
+          let idx = 1;
+
+          $.each(data.documents,function(k,v){
+
+              d +=  '<tr>';
+              d +=   '<td>'+(idx++)+'</td>';
+              d +=   '<td>'+v.subject.group.name+'</td>';
+              d +=   '<td>'+v.subject.name+'</td>';
+              d +=   '<td><a href="'+v.link+'" target="_blank">'+v.name+'</a></td>';
+              d +=   '<td class = "'+v.doctype.icon_class+'">'+v.doctype.icon+'</td>';
+              d +=   '<td></td>';
+              d += '</tr>';
+          });
+           $('#tblData').append(d);
+        }
+      }
+    });
+  }
+
+  function LoadGroups(){
+    $.ajax({
+      url:'/admin/group/list',
+      type:'get',
+      data:{
+        is_actived:true
+      },
+      success:function(data){
+        if(data.code == 200){
+          $('#groups').empty();
+          let d = '';
+          $.each(data.groups,function(k,r){
+            d += '<option value="'+r.meta+'" id = "'+r._id+'">'+r.name+'</option>';
+          });
+          $('#groups').append(d);
+          let id = $('#groups').children("option:selected").attr('id');
+          LoadSubjects(id);
+        }
+      }
+    });
+  }
+  function LoadSubjects(id){
+    $.ajax({
+      url:'/admin/subject/list-by-group',
+      type:'get',
+      data:{
+        group:id,
+        is_actived:true
+      },
+      success:function(data){
+        if(data.code == 200){
+          $('#subjects').empty();
+          let d = '';
+          $.each(data.subjects,function(k,r){
+            d += '<option value="'+r._id+'" id="'+r._id+'">'+r.name+'</option>';
+          });
+          $('#subjects').append(d);
+          subject =  $('#subjects').children("option:selected").attr('id');
+
+          LoadDocments(subject);
+        }
+      }
+    });
+  }
+  function LoadDocTypes(){
+    $.ajax({
+      url:'/admin/document-type/list',
+      type:'get',
+      success:function(data){
+        if(data.code == 200){
+          $('#doctypes').empty();
+          let d = '';
+          let idx = 1;
+          $.each(data.document_types,function(k,r){
+            d += '<option value="'+r._id+'">'+r.name+'</option>';
+          });
+          $('#doctypes').append(d);
+        }
+      }
+    })
+  };
+
+</script>

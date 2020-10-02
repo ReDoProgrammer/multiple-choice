@@ -6,13 +6,16 @@ const mongoose = require('mongoose');//database
 const config = require('./configs/config');
 const bodyParser = require('body-parser');//body parser dùng để lấy dữ liệu từ form
 const passport = require('passport');
-//phần routes của admin
 
+
+//phần routes của admin
 const adminRoutes = require('./routes/admin/admin-route');
 const groupRoutes = require('./routes/admin/group-route');
 const subjectRoutes = require('./routes/admin/subject-route');
 const questionRoutes = require('./routes/admin/question-route');
 const jobRoutes = require('./routes/admin/job-route');
+const docTypeRoutes = require('./routes/admin/doctype-route');
+const documentRoutes = require('./routes/admin/document-route');
 
 
 
@@ -78,6 +81,8 @@ app.use('/admin/group',groupRoutes);
 app.use('/admin/subject',subjectRoutes);
 app.use('/admin/question',questionRoutes);
 app.use('/admin/job',jobRoutes);
+app.use('/admin/document-type',docTypeRoutes);
+app.use('/admin/document',documentRoutes);
 
 //phần route user
 app.use('/thanh-vien',userRoutes);//route thành viên

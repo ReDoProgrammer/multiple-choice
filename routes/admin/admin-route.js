@@ -56,7 +56,8 @@ router.get('/init',(req,res)=>{
         username: 'redo',
         password: 'ReDo1@vn',
         fullname:'Nguyễn Hữu Trường',
-        is_admin:true
+        is_admin:true,
+        avatar:'/user/images/photos/loggeduser.png'
       });
 
       // save user to database
@@ -71,42 +72,36 @@ router.get('/init',(req,res)=>{
 
 });
 
-  router.get('/drop',middleware.isAdmin,(req,res)=>{
-    Group.collection.drop();
-    Subject.collection.drop();
-    Question.collection.drop();
-    console.log('drop collection successfully');
-  });
-router.get('/destroy',middleware.isAdmin,(req,res)=>{
-  Comment.deleteMany({},function(err){
-    if(err){
-      console.log('destroy all comments failed: '+new Error(err));
-    }else{
-      console.log('destroy all comments successfully');
-    }
-  });
-  Group.deleteMany({},function(err){
-    if(err){
-      console.log('destroy all groups failed: '+new Error(err));
-    }else{
-      console.log('destroy all groups successfully');
-    }
-  });
-  Subject.deleteMany({},function(err){
-    if(err){
-      console.log('destroy all subjects failed: '+new Error(err));
-    }else{
-      console.log('destroy all subject successfully');
-    }
-  });
-
+/*
+  DROP ZONE
+*/
+router.get('/drop-group',middleware.isAdmin,(req,res)=>{
+  Group.collection.drop();
+  console.log('drop groups successfully');
+});
+router.get('/drop-subject',middleware.isAdmin,(req,res)=>{
+  Subject.collection.drop();
+  console.log('drop subjects successfully');
+});
+router.get('/drop-question',middleware.isAdmin,(req,res)=>{
+  Question.collection.drop();
+  console.log('drop questions successfully');
+});
+router.get('/drop-user',middleware.isAdmin,(req,res)=>{
+  User.collection.drop();
+  console.log('drop user successfully');
+});
+router.get('/drop-comment',middleware.isAdmin,(req,res)=>{
+  Comment.collection.drop();
+  console.log('drop comments successfully');
 });
 
 router.get('/login',(req,res)=>{
   if(req.session.user && req.session.user.is_admin){
     res.redirect('/admin/');
+  }else{
+    res.render('admin/login',{ layout: 'admin/login' });
   }
-  res.render('admin/login',{ layout: 'admin/login' });
 });
 
 router.post('/login',(req,res)=>{

@@ -11616,7 +11616,8 @@ blockquote {
   margin-bottom: 20px;
 }
 .breadcrumb-quirk > li {
-  font-size: 12px;
+  font-size: 13px;
+  font-weight: bold;
 }
 .breadcrumb-quirk > li > a {
   color: #545b68;
@@ -11639,7 +11640,7 @@ blockquote {
 }
 .breadcrumb-quirk > li.active {
   color: #464f63;
-  font-weight: 500;
+  font-weight: bold;
 }
 .contentpanel {
   padding: 20px;

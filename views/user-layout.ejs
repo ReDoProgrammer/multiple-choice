@@ -126,8 +126,8 @@
       <div class="contentpanel">
         <ol class="breadcrumb breadcrumb-quirk">
           <li><a href="/"><i class="fa fa-home mr5"></i> Home</a></li>
-          <%if(subject){%>
-            <li id="group"><a href="#"><%= (subject.group.name) %></a></li>
+          <%if(subject && group){%>
+            <li id="group"><a href="#"><%= (group.name) %></a></li>
             <li class="active" id="subject"><%= subject.name %></li>
           <%}%>
         </ol>

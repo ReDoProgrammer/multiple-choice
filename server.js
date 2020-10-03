@@ -96,6 +96,7 @@ app.use('/censor',censorRoutes);//route kiểm duyệt câu hỏi
 // app.use('/view',examRoutes);//route làm bài thi
 app.use('/comment',commentRoutes);//route bình luận
 app.use('/contribute-question',contributeQuestionRoutes);//đóng góp câu hỏi
+app.use('/lam-bai-thi',examRoutes);//route làm bài thi
 
 
 

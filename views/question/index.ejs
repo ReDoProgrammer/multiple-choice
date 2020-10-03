@@ -34,7 +34,7 @@
 <table class="table table-bordered table-primary table-striped mt-2">
   <thead>
     <tr>
-      <th scope="col">#</th>
+      <th scope="col">  <input type="checkbox" id="check-all"><span class="text-success"></span></th>
       <th scope="col">Câu hỏi</th>
       <th scope="col">Người tạo</th>
       <th scope="col">Người kiểm duyệt</th>
@@ -104,7 +104,7 @@
           $.each(data.questions,function(key,row){
             content +="<tr id='"+row._id+"'>";
               content +=  '<td><label class="ckbox">';
-                content +=    '<input type="checkbox" '+(row.is_actived?"checked":"")+'><span class="text-success"></span>';
+                content +=    '<input class = "ckbChecked" type="checkbox" '+(row.is_actived?"checked":"")+'><span class="text-success"></span>';
                 content +=  '</label></td>';
                 // content +="<td>"+idx+++"</td>";
                 content +='<td class = "font-weight-bold">'+row.question+'</td>';
@@ -340,6 +340,12 @@
   $('#txtSearch').keyup(function(e){
     if(e.keyCode == 13){
        $('#btnSearch').click();
+    }
+});
+
+$("#check-all").change(function() {
+    if(this.checked) {
+        $('.ckbChecked').prop('checked', true);
     }
 });
 

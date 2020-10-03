@@ -3,15 +3,16 @@ const Question = require('../../models/question-model');
 const User = require('../../models/user-model');
 const middleware = require('../../middlewares/middleware');
 const config = require('../../configs/config');
+const request = require('request');
 
 router.get('/',middleware.isAdmin,(req,res)=>{
   res.render('question/index',{layout:'admin-layout'});
 });
 
 /*
-  Mỗi user có thuộc tính contributed_question dùng để đánh dấu quyền đóng góp câu hỏi, mặc định có giá trị:true
-  trong trường hợp spam nhiều quá, admin sẽ khóa tính năng này lại -> false
-  trước khi thêm câu hỏi, cần kiểm tra xem người này có được quyền đóng góp câu hỏi hay không
+Mỗi user có thuộc tính contributed_question dùng để đánh dấu quyền đóng góp câu hỏi, mặc định có giá trị:true
+trong trường hợp spam nhiều quá, admin sẽ khóa tính năng này lại -> false
+trước khi thêm câu hỏi, cần kiểm tra xem người này có được quyền đóng góp câu hỏi hay không
 */
 router.post('/add',middleware.isLoggedIn,(req,res)=>{
   User.findOne({_id:req.session.user._id},function(err,usr){
@@ -131,11 +132,49 @@ router.get('/total-pages',middleware.isAdmin,(req,res)=>{
     if(err){
       console.log('get question total records failed: '+new Error(err));
     }else{
-       let pages = count%pageSize==0? count/pageSize:Math.ceil( count/pageSize );
-       res.send({code:200,pages:pages,msg:'load pages number successfully'});
+      let pages = count%pageSize==0? count/pageSize:Math.ceil( count/pageSize );
+      res.send({code:200,pages:pages,msg:'load pages number successfully'});
     }
   });
 });
 
+router.get('/fetch-and-insert',middleware.isAdmin,(req,res)=>{
+  res.render('question/fetch',{layout:'admin-layout'});
+});
+router.post('/fetch-and-insert',middleware.isAdmin,(req,res)=>{
+  let subject = req.body.subject;
+  let url = 'http://tracnghiem.redoapp.com/admin/questions';
+  let options = {json: true};
+  request(url, options, (error, ress, body) => {
+    if (error) {
+      return  console.log(error)
+    };
+
+    if (!error && ress.statusCode == 200) {
+      let questions = body.questions.map(s=>{
+        let q = {};
+        q['question']    =s.question;
+        q['option_a']    =s.option_a;
+        q['option_b']    =s.option_b;
+        q['option_c']    =s.option_c;
+        q['option_d']    =s.option_d;
+        q['answer']      =s.answer;
+        q['description']    =s.remark;
+        q['option_d']    =s.option_d;
+        q['created_by'] = req.session.user._id;
+        q['subject'] = subject;
+        q['is_actived'] = true;
+        return q;
+      });
+      Question.insertMany(questions,function(err,result){
+        if(err){
+          console.log('fetch question failed: '+new Error(err));
+        }else{
+          res.send({code:200,msg:'sao chép câu hỏi thành công'});
+        }
+      });
+    };
+  });
+})
 
 module.exports = router;

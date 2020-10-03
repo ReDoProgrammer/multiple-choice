@@ -13,7 +13,7 @@ module.exports={
     clientSecret:'0pJQj5Cd_5vJPqSWzmMSUHm-',
     callbackURL:'https://redoapp.com/auth/google/callback'
   },
-  pageSize:2,
+  pageSize:20,
   commentSize:5,
   questionNumber:55,
   timeRemain: 45,

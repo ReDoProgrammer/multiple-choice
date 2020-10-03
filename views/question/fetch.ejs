@@ -1,0 +1,89 @@
+<div class="row">
+  <div class="col-sm-3">
+    <select class="form-control" id="groups">
+
+    </select>
+  </div>
+  <div class="col-sm-3">
+    <select class="form-control" id="subjects">
+
+    </select>
+  </div>
+  <div class="col-sm-6">
+    <button type="button" id="btnExecute" class="btn btn-success">Execute</button>
+  </div>
+</div>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    LoadGroup();
+    $("select#groups").change(async function(){
+      let id = await $(this).children("option:selected").attr('id');
+      LoadSubject(id);
+    });
+  });
+
+  function LoadGroup(){
+    $.ajax({
+      url:'/admin/group/list',
+      type:'get',
+      data:{
+        is_actived:true
+      },
+      success:function(data){
+        if(data.code == 200){
+          $('#groups').empty();
+          let d = '';
+          $.each(data.groups,function(k,r){
+            d += '<option value="'+r.meta+'" id = "'+r._id+'">'+r.name+'</option>';
+          });
+          $('#groups').append(d);
+          let id = $('#groups').children("option:selected").attr('id');
+          LoadSubject(id);
+        }
+      }
+    });
+  }
+
+  function LoadSubject(group){
+    if(group.trim().length == 0){
+      $('#subjects').empty();
+    }else{
+      $.ajax({
+        url:'/admin/subject/list-by-group',
+        type:'get',
+        data:{
+          group:group,
+          is_actived:true
+        },
+        success: function(data){
+          if(data.code == 200){
+            $('#subjects').empty();
+            let d = '';
+            $.each(data.subjects,function(k,r){
+              d += '<option value="'+r.meta+'" id="'+r._id+'">'+r.name+'</option>';
+            });
+            $('#subjects').append(d);
+            subject =  $('#subjects').children("option:selected").attr('id');
+          }
+        }
+      });
+    }
+  }
+
+  $('#btnExecute').click(function(){
+    let subject =  $('#subjects').children("option:selected").attr('id');
+    $.ajax({
+      url:'/admin/question/fetch-and-insert',
+      type:'post',
+      data:{
+        subject:subject
+      },
+      success:function(data){
+        if(data.code == 200){
+          alert(data.msg);
+        }
+      }
+    });
+  });
+</script>

@@ -43,6 +43,8 @@
   <%- include('../layouts/comment') %>
 </div>
 
+<%- include('comment') %>
+
 
 
 
@@ -80,7 +82,7 @@
               questions = data.questions;
               $.each(questions,function(k,r){
                 content +='<li class="form-group" id="'+r._id+'">';
-                  content +='<label for="question">Câu hỏi <span class="quest-number">'+idx+'</span>:<span class = "text-danger"><strong> '+r.question+'</strong></span></label>';
+                  content +='<label for="question">Câu hỏi <span class="quest-number">'+idx+'</span>:<span class = "text-danger"><strong class="q-content"> '+r.question+'</strong></span> <a href="#" class="commentOnQuestion"><i class="fa fa-comments-o text-warning" aria-hidden="true"></i></a></label>';
                   content += '<fieldset id="group'+idx+'">';
                     content += '<input type="radio" name="group'+idx+'" class="rdOptionA" > a. <span class = "text-primary rdOptionA">'+r.option_a+'</span>';
                     content += '</fieldset>';
@@ -236,4 +238,13 @@
             }
           }
     }
+
+    $(document).on('click', '.commentOnQuestion', function (e) {
+      e.preventDefault();
+      let id = $(this).closest('li').attr('id');
+      let question = $(this).closest('li').find('label').find('strong').text();
+      $('#pushedQuestion').text(question);
+      $('#txtCommentQuestion').val('');
+      $('#comment-on-question').modal();
+    });
       </script>

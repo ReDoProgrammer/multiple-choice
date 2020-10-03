@@ -1,0 +1,118 @@
+<div class="modal" tabindex="-1" role="dialog" id="comment-on-question">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Góp ý, bình luận cho câu hỏi</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p class="text-primary" id="pushedQuestion"></p>
+      </div>
+      <% if(user) { %>
+        <div class="modal-footer">
+            <label for="" id="lblCommentMsg" class="text-danger"></label>
+          <div class="input-group mb15">
+            <input type="text" class="form-control" id="txtCommentQuestion" style="border: solid 1px #696c74;">
+            <span class="input-group-btn">
+              <button type="button" class="btn btn-default" id="btnCommentQuestion"><i class="fa fa-send-o text-primary"></i></button>
+            </span>
+          </div>
+        </div>
+      <%}%>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+  $('#btnCommentQuestion').click(()=>{
+    let comment = $('#txtCommentQuestion').val().trim();
+    if(comment.length == 0){
+      $('#lblCommentMsg').text('Vui lòng nhập nội dung bạn muốn góp ý!');
+      return;
+    }
+    comment = '<b class="text-danger">'+$('#pushedQuestion').text()+'</b>: '+comment;
+    let group,subject;
+    var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+    if(hashes.length==2){
+      group =(hashes[0].split('='))[1];
+      subject = (hashes[1].split('='))[1];
+    }
+    $.ajax({
+      url:'/comment/create',
+      type:'post',
+      data:{
+        group:group,
+        subject:subject,
+        comment:comment
+      },
+      success:function(data){
+        if(data.code == 200){
+          console.log(data);
+          $('#comment-on-question').modal('hide');
+          page = 1;
+          LoadComment();
+        }
+
+      }
+    });
+  });
+  $("#txtCommentQuestion").keypress(function(){
+    if($('#txtCommentQuestion').val().trim().length > 0){
+      $('#lblCommentMsg').text('');
+    }
+  });
+  function LoadComment(){
+    $.ajax({
+      url:'/comment/list',
+      type:'get',
+      data:{
+        page:page,
+        group:group,
+        subject:subject
+      },
+      success:function(data){
+        if(data.code == 200){
+          $('#comments').empty();
+          let comments = '';
+          $.each(data.comments,function(k,v){
+            comments +=  '<div class="comment_line">';
+              comments +=     '<section class="post-heading">';
+                comments +=       '<div class="row">';
+                  comments +=         '<div class="col-md-12">';
+                    comments +=           '<div class="media">';
+                      comments +=             '<div class="media-left">';
+                        comments +=               '<a href="#">';
+                          comments +=                ' <img class="media-object photo-profile" src="'+v.user.avatar+'" alt="...">';
+                          comments +=               '</a>';
+                          comments +=             '</div>';
+                          comments +=             '<div class="media-body">';
+                            comments +=               '<a href="#" class="anchor-username"><h4 class="media-heading">'+v.user.fullname+'</h4></a>';
+                            comments +=            ' </div>';
+                            comments +=           '</div>';
+                            comments +=        ' </div>';
+                            comments +=      ' </div>';
+                            comments +=    ' </section>';
+
+                            comments +=     '<section class="post-body">';
+                              comments +=       '<p">'+v.comment+'</p>';
+                              comments +=     '</section>';
+
+                              comments +=     '<section class="post-footer">';
+                                comments +=       '<div class="post-footer-option container">';
+                                  comments +=        ' <ul class="list-unstyled">';
+                                    comments +=           '<li><a href="#"><i class="glyphicon glyphicon-thumbs-up"></i> Like</a></li>';
+                                    comments +=           '<li><a href="#"><i class="glyphicon glyphicon-comment"></i> Comment</a></li>';
+                                    comments +=           '<li><a href="#"><i></i>'+v.created_at+'</a></li>';
+                                    comments +=         '</ul>';
+                                    comments +=      ' </div>';
+                                    comments +=     '</section>';
+                                    comments +=   '</div>';
+                                  });
+                                  $('#comments').append(comments);
+                                }
+                              }
+                            });
+                          }
+</script>

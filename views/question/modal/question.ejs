@@ -107,7 +107,7 @@
 
   $('#btnSubmit').click(function(){
     let subject_id = $('#mdl_subjects').children("option:selected").attr('id');
-    if(!subject_id || subject_id.length==0){
+    if(subject_id.length==0){
       $('#msg').text('Vui lòng chọn môn học');
       return;
     }

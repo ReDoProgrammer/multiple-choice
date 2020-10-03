@@ -28,6 +28,7 @@ const facebookRoutes = require('./routes/user/facebook-route');
 const googleRoutes = require('./routes/user/google-route');
 const commentRoutes = require('./routes/user/comment-route');
 const contributeQuestionRoutes = require('./routes/user/contribute-question-route');
+const censorRoutes = require('./routes/user/censor-route');
 
 
 app.set('view engine','ejs');//set view engine cho nodejs
@@ -91,6 +92,7 @@ app.use('/thanh-vien',userRoutes);//route thành viên
 app.use('/',facebookRoutes);//route facebook
 app.use('/',googleRoutes);//route google
 app.use('/',homeRoutes);//route trang chủ
+app.use('/censor',censorRoutes);//route kiểm duyệt câu hỏi
 // app.use('/view',examRoutes);//route làm bài thi
 app.use('/comment',commentRoutes);//route bình luận
 app.use('/contribute-question',contributeQuestionRoutes);//đóng góp câu hỏi

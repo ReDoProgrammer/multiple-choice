@@ -94,6 +94,7 @@ router.get('/list-with-conditions',(req,res)=>{
     is_actived:is_actived
   })
   .populate('created_by','fullname')
+  .populate('censor','fullname')
   .sort({question:1})
   .skip((page-1)*pageSize)
   .limit(pageSize)

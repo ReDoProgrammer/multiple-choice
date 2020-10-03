@@ -1,23 +1,29 @@
 <%- include('modal/question.ejs') %>
 <div class="row">
-  <div class="col-sm-3">
+  <div class="col-md-3 col-sm-6">
     <div class="form-group">
       <select class="form-control" id="groups">
       </select>
     </div>
   </div>
-  <div class="col-sm-3">
+  <div class="col-md-3 col-sm-6">
     <div class="form-group">
       <select class="form-control" id="subjects">
       </select>
     </div>
   </div>
-  <div class="col-sm-3">
+  <div class="col-md-1 col-sm-4">
+    <label class="ckbox vertical-center">
+      <input type="checkbox" checked="" id="ckbActived"><span class="text-success">actived</span>
+    </label>
+  </div>
+  <div class="col-md-3 col-sm-4">
     <div class="form-group">
       <input class="form-control" type="text" placeholder="Từ khóa tìm kiếm" aria-label="Search" id="txtSearch">
     </div>
   </div>
-  <div class="col-sm-2">
+
+  <div class="col-md-1 col-sm-4">
     <button type="button" name="button" class="btn btn-md btn-primary" id="btnSearch"> <span><i class="fa fa-search mr-2" aria-hidden="true"></i></span>Tìm kiếm</button>
   </div>
   <div class="col-sm-1">
@@ -68,6 +74,7 @@
   })
 
   function LoadQuestion(){
+    let checked =  $("#ckbActived").is(":checked")?true:false;
     $.ajax({
       url:'/admin/question/list-with-conditions',
       type:'get',
@@ -75,24 +82,29 @@
         page:page,
         subject:subject,
         search:search,
-        is_actived:true
+        checked:checked
       },
       success:function(data){
         if(data.code == 200){
           $('#tblData').empty();
           let dsch = data.dsch;
           let content = "";
+
           //stt của các dòng
           let idx = (page-1)*data.pageSize+1;
           $.each(data.questions,function(key,row){
-            content +="<tr id='"+row._id+"'>";
-              content +="<td>"+idx+++"</td>";
-              content +="<td class = 'font-weight-bold'>"+row.question+"</td>";
-              content +="<td>";
-                content += "<button class ='btn btnView' data-view = '"+row._id+"' ><i class='text-info fa fa-eye' aria-hidden='true'></i></button>";
-                content +="<button class ='btn btnUpdate' data-update = '"+row._id+"'><i class='text-warning fa fa-edit' aria-hidden='true'></i></button>";
-                content +="<button class ='btn btnDelete' data-delete = '"+row._id+"'><i class='text-danger fa fa-trash' aria-hidden='true'></i></button>";
-                content += "</td>";
+                content +="<tr id='"+row._id+"'>";
+                  content +=  '<td><label class="ckbox">';
+                  content +=    '<input type="checkbox" '+(row.is_actived?"checked":"")+'><span class="text-success"></span>';
+                  content +=  '</label></td>';
+                  // content +="<td>"+idx+++"</td>";
+                  content +="<td class = 'font-weight-bold'>"+row.question+"</td>";
+                  content +="<td>";
+                    content += "<button class ='btn btn-xs btnView' data-view = '"+row._id+"' ><i class='text-info fa fa-eye' aria-hidden='true'></i></button>";
+                    content +="<button class ='btn btn-xs btnUpdate' data-update = '"+row._id+"'><i class='text-warning fa fa-edit' aria-hidden='true'></i></button>";
+                    content +="<button class ='btn btn-xs btnDelete' data-delete = '"+row._id+"'><i class='text-danger fa fa-trash' aria-hidden='true'></i></button>";
+                  content += "</td>";
+                content += "</tr>";
               });
               $('#tblData').append(content);
             }
@@ -101,56 +113,67 @@
       }
 
 
-      function LoadGroup(){
-        $.ajax({
-          url:'/admin/group/list',
-          type:'get',
-          data:{
-            is_actived:true
-          },
-          success:function(data){
-            if(data.code == 200){
-              $('#groups').empty();
-              let d = '';
-              $.each(data.groups,function(k,r){
-                d += '<option value="'+r.meta+'" id = "'+r._id+'">'+r.name+'</option>';
-              });
-              $('#groups').append(d);
-              let id = $('#groups').children("option:selected").attr('id');
-              LoadSubject(id);
-            }
-          }
-        });
-      }
-
-      function LoadSubject(group){
-        if(group.trim().length == 0){
-          $('#subjects').empty();
-        }else{
-          $.ajax({
-            url:'/admin/subject/list-by-group',
-            type:'get',
-            data:{
-              group:group,
-              is_actived:true
-            },
-            success:function(data){
-              if(data.code == 200){
-                $('#subjects').empty();
-                let d = '';
-                $.each(data.subjects,function(k,r){
-                  d += '<option value="'+r.meta+'" id="'+r._id+'">'+r.name+'</option>';
-                });
-                $('#subjects').append(d);
-                subject =  $('#subjects').children("option:selected").attr('id');
-
-                LoadQuestion();
-              }
-            }
+  function LoadGroup(){
+    $.ajax({
+      url:'/admin/group/list',
+      type:'get',
+      data:{
+        is_actived:true
+      },
+      success:function(data){
+        if(data.code == 200){
+          $('#groups').empty();
+          let d = '';
+          $.each(data.groups,function(k,r){
+            d += '<option value="'+r.meta+'" id = "'+r._id+'">'+r.name+'</option>';
           });
+          $('#groups').append(d);
+          let id = $('#groups').children("option:selected").attr('id');
+          LoadSubject(id);
         }
       }
+    });
+  }
+
+  function LoadSubject(group){
+    if(group.trim().length == 0){
+      $('#subjects').empty();
+    }else{
+      $.ajax({
+        url:'/admin/subject/list-by-group',
+        type:'get',
+        data:{
+          group:group,
+          is_actived:true
+        },
+        success:function(data){
+          if(data.code == 200){
+            $('#subjects').empty();
+            let d = '';
+            $.each(data.subjects,function(k,r){
+              d += '<option value="'+r.meta+'" id="'+r._id+'">'+r.name+'</option>';
+            });
+            $('#subjects').append(d);
+            subject =  $('#subjects').children("option:selected").attr('id');
+
+            LoadQuestion();
+          }
+        }
+      });
+    }
+  }
 
 
 
     </script>
+
+
+    <style media="screen">
+      .vertical-center {
+  margin: 0;
+  position: absolute;
+  top: 20%;
+  -ms-transform: translateY(-20%);
+  transform: translateY(-20%);
+}
+    </style>

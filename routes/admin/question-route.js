@@ -44,7 +44,7 @@ router.post('/add',middleware.isLoggedIn,(req,res)=>{
           if(err){
             console.log('created question failed: '+new Error(err));
           }else{
-            res.send({code:200,type:'success',msg: req.session.user.isAdmin?'Đăng câu hỏi thành công':'Đăng câu hỏi thành công. Chân thành cảm ơn sự đóng góp của bạn'});
+            res.send({code:200,type:'success',msg: req.session.user.is_admin?'Đăng câu hỏi thành công':'Đăng câu hỏi thành công. Chân thành cảm ơn sự đóng góp của bạn'});
           }
         });
       }

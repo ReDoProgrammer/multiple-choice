@@ -132,7 +132,7 @@ router.post('/login',(req,res)=>{
             req.session.user = user;
             res.send({msg:'Bạn đăng nhập quản trị thành công',type:'success',user:user,url:'/admin/'});
           }else{
-            console.log(0);
+            res.render('admin/login',{ layout: 'admin/login',msg:'Bạn không có quyền truy cập module này' });
           }
         }else{//nếu không khớp mật khẩu
           res.send({msg:'Mật khẩu không chính xác. Vui lòng kiểm tra lại',type:'warning'});

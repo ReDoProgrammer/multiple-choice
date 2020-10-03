@@ -25,17 +25,18 @@
   </div>
 </div>
 
-<table class="table table-bordered table-success nomargin" id="tblData">
-  <thead class="thead-light">
+<table class="table table-bordered table-primary table-striped mt-2">
+  <thead>
     <tr>
       <th scope="col">#</th>
       <th scope="col">Câu hỏi</th>
-      <th></th>
+      <th scope="col">Handle</th>
     </tr>
   </thead>
-  <tbody id="table-data">
+  <tbody id="tblData">
   </tbody>
 </table>
+
 <nav aria-label="Page navigation example">
   <ul class="pagination" id="pagination">
   </ul>
@@ -78,7 +79,7 @@
       },
       success:function(data){
         if(data.code == 200){
-          $('#table-data').empty();
+          $('#tblData').empty();
           let dsch = data.dsch;
           let content = "";
           //stt của các dòng
@@ -93,7 +94,7 @@
                 content +="<button class ='btn btnDelete' data-delete = '"+row._id+"'><i class='text-danger fa fa-trash' aria-hidden='true'></i></button>";
                 content += "</td>";
               });
-              $('#table-data').append(content);
+              $('#tblData').append(content);
             }
           }
         });

@@ -61,16 +61,13 @@ router.get('/list-by-subject',(req,res)=>{
 router.get('/list-with-conditions',(req,res)=>{
   let {page,subject,search,checked} = req.query;
   let pageSize = config.pageSize;
-
-
   let is_actived = checked=='true'?true:false;
-  // console.log({page,subject,search,is_actived,actived});
-
   Question.find({
     subject:subject,
     question: { $regex: search, $options: "i" },
     is_actived:is_actived
   })
+  .populate('created_by','fullname')
   .sort({question:1})
   .skip((page-1)*pageSize)
   .limit(pageSize)

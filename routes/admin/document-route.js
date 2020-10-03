@@ -10,12 +10,13 @@ router.get('/',middleware.isAdmin,(req,res)=>{
 });
 
 router.post('/create',middleware.isAdmin,(req,res)=>{
-  let {subject,doctype,name,link} = req.body;
+  let {subject,doctype,name,link,description} = req.body;
   Document.create({
     subject:subject,
     doctype:doctype,
     name:name,
-    link
+    link,
+    description:description
   },function(err,doc){
     if(err){
       console.log('create new document failed: '+new Error(err));

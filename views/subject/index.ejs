@@ -2,19 +2,30 @@
   <div class="text-right">
     <button type="button" class="btn btn-info" id="btnAddSubject">+</button>
   </div>
-  <div class="row" id="divAddOrUpdate" hidden>
-    <select class="form-control col-sm-2 mt-2" id="group">
-    </select>
-    <div class="col-sm-4  mt-2">
-      <input type="text" id="txtSubjectName" placeholder="Tên môn học" class="form-control">
+  <div id="divAddOrUpdate" hidden>
+    <div class="row">
+      <div class="col-sm-2 mt-2">
+        <select class="form-control" id="group">
+        </select>
+      </div>
+      <div class="col-sm-5  mt-2">
+        <input type="text" id="txtSubjectName" placeholder="Tên môn học" class="form-control">
+      </div>
+      <div class="col-sm-5  mt-2">
+        <input type="text" id="txtSubjectMeta" placeholder="Thẻ meta" class="form-control">
+      </div>
     </div>
-    <div class="col-sm-4  mt-2">
-      <input type="text" id="txtSubjectMeta" placeholder="Thẻ meta" class="form-control">
+    <div class="row">
+      <div class="col-sm-10 mt-2">
+        <input type="text" id="txtSubjectDescription" placeholder="Mô tả chi tiết" class="form-control">
+      </div>
+      <div class="col-sm-2  mt-2">
+        <button type="button" class="btn btn-success" id="btnSubmit">Xác nhận</button>
+      </div>
     </div>
-    <div class="col-sm-2  mt-2">
-      <button type="button" class="btn btn-success" id="btnSubmit">Xác nhận</button>
+    <div class="row">
+      <h6 class="text-danger ml-2" id="msg"></h6>
     </div>
-    <h6 class="text-danger ml-2" id="msg"></h6>
   </div>
 </div>
 
@@ -25,6 +36,7 @@
       <th scope="col">Lớp</th>
       <th scope="col">Tên môn học</th>
       <th scope="col">Thẻ meta</th>
+      <th scope="col">Mô tả</th>
       <th scope="col">Handle</th>
     </tr>
   </thead>
@@ -51,7 +63,7 @@
     let group = $('#group').children(":selected").attr("id");
     let name = $('#txtSubjectName').val().trim();
     let meta = $('#txtSubjectMeta').val().trim();
-
+    let description = $('#txtSubjectDescription').val().trim();
 
     if(name.length == 0){
       $('#msg').text('Vui lòng nhập tên môn học');
@@ -68,7 +80,8 @@
         data:{
           name:name,
           meta:meta,
-          group:group
+          group:group,
+          description:description
         },success:function(data){
           if(data.code == 200){
             $('#txtSubjectMeta').val('');
@@ -124,6 +137,7 @@
               d +=    '<td>'+r.group.name+'</td>';
               d +=    '<td>'+r.name+'</td>';
               d +=    '<td>'+r.meta+'</td>';
+              d +=    '<td>'+r.description+'</td>';
               d +=    '<td></td>';
               d +=    '</tr>';
             });

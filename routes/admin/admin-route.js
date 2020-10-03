@@ -5,6 +5,7 @@ const Comment = require('../../models/comment-model');
 const Group = require('../../models/group-model');
 const Subject = require('../../models/subject-model');
 const Question = require('../../models/question-model');
+const Document = require('../../models/document-model');
 const common = require('../../common/common');
 const middleware = require('../../middlewares/middleware');
 var session = require('express-session');
@@ -94,6 +95,11 @@ router.get('/drop-user',middleware.isAdmin,(req,res)=>{
 router.get('/drop-comment',middleware.isAdmin,(req,res)=>{
   Comment.collection.drop();
   console.log('drop comments successfully');
+});
+
+router.get('/drop-document',middleware.isAdmin,(req,res)=>{
+  Document.collection.drop();
+  console.log('drop documents successfully');
 });
 
 router.get('/login',(req,res)=>{

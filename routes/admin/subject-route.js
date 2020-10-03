@@ -47,7 +47,7 @@ router.post('/add',middleware.isAdmin,(req,res)=>{
   let group = req.body.group;
   let name = req.body.name;
   let meta = req.body.meta;
-
+  let description = req.body.description;
   Subject.countDocuments({
     group:group,
     $or:[
@@ -65,6 +65,7 @@ router.post('/add',middleware.isAdmin,(req,res)=>{
           name:name,
           meta:meta,
           group:group,
+          description:description,
           created_by:req.session.user._id,
           is_actived:true
         },function(err,subject){
@@ -73,7 +74,6 @@ router.post('/add',middleware.isAdmin,(req,res)=>{
           }else{
             res.send({code:200,msg:'Thêm môn học thành công',type:'success',subject:subject});
           }
-
         });
       }
     }

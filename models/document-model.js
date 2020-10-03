@@ -4,6 +4,7 @@ const Schema = mongoose.Schema;
 const documentSchema = new Schema({
   name:{type:String,default:'',unique:true},
   link:{type:String,default:''},
+  description:{type:String,default:''},
   doctype:{
     type:Schema.Types.ObjectId,
     ref:'doc_type'

@@ -4,6 +4,7 @@ const Schema = mongoose.Schema;
 const subjectSchema = new Schema({
   name:{type:String,default:''},
   meta:{type:String,default:''},
+  description:{type:String,default:''},
   group:{
     type: Schema.Types.ObjectId,
     ref:  'group'

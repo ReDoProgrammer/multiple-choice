@@ -19,10 +19,14 @@
 
     </div>
     <div class="row mt-4">
-      <div class="col-sm-10">
+      <div class="col-sm-12">
         <input type="text" name="" class="form-control" placeholder="Link tài liệu" id="txtDocumentLink">
       </div>
-
+    </div>
+    <div class="row mt-4">
+      <div class="col-sm-10">
+        <input type="text" name="" class="form-control" placeholder="Mô tả tài liệu" id="txtDocumentDescription">
+      </div>
       <div class="col-sm-2">
         <button type="button" class="btn btn-success" id="btnSave" style="width:100%"><i class="glyphicon-plus"></i> Lưu</button>
       </div>
@@ -36,8 +40,9 @@
           <th style="width: 10px">#</th>
           <th>Lớp</th>
           <th>Môn học</th>
-          <th>Tên tài liệu</th>
           <th>Loại</th>
+          <th>Tên tài liệu</th>
+          <th>Mô tả tài liệu</th>
           <th style="width: 40px"></th>
         </tr>
       </thead>
@@ -65,6 +70,7 @@
 
     let name = $('#txtDocumentName').val().trim();
     let link = $('#txtDocumentLink').val().trim();
+    let description = $('#txtDocumentDescription').val().trim();
 
     if(name.length == 0 || link.length == 0 ){
       alert('Vui lòng nhập đủ thông tin');
@@ -78,12 +84,16 @@
         subject:subject,
         doctype:doctype,
         name:name,
-        link:link
+        link:link,
+        description:description
       },
       success:function(data){
         if(data.code==200||data.code == 401){
           alert(data.msg)
           LoadDocments();
+          $('#txtDocumentName').val('');
+          $('#txtDocumentLink').val('');
+          $('#txtDocumentDescription').val('');
         }
       }
     });
@@ -113,8 +123,9 @@
               d +=   '<td>'+(idx++)+'</td>';
               d +=   '<td>'+v.subject.group.name+'</td>';
               d +=   '<td>'+v.subject.name+'</td>';
+              d +=   '<td class = "text-center""'+v.doctype.icon_class+'">'+v.doctype.icon+'</td>';
               d +=   '<td><a href="'+v.link+'" target="_blank">'+v.name+'</a></td>';
-              d +=   '<td class = "'+v.doctype.icon_class+'">'+v.doctype.icon+'</td>';
+              d +=   '<td>'+v.description+'</td>';
               d +=   '<td></td>';
               d += '</tr>';
           });

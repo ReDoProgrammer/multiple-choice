@@ -16,6 +16,7 @@ const questionRoutes = require('./routes/admin/question-route');
 const jobRoutes = require('./routes/admin/job-route');
 const docTypeRoutes = require('./routes/admin/doctype-route');
 const documentRoutes = require('./routes/admin/document-route');
+const memberRoutes = require('./routes/admin/member-route');
 
 
 
@@ -83,6 +84,7 @@ app.use('/admin/question',questionRoutes);
 app.use('/admin/job',jobRoutes);
 app.use('/admin/document-type',docTypeRoutes);
 app.use('/admin/document',documentRoutes);
+app.use('/admin/member',memberRoutes);
 
 //phần route user
 app.use('/thanh-vien',userRoutes);//route thành viên

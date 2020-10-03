@@ -14,6 +14,10 @@ const questionSchema = new Schema({
     type:Schema.Types.ObjectId,
     ref:'user'
   },
+  censor:{
+    type:Schema.Types.ObjectId,
+    ref:'user'
+  },
   is_actived:{type:Boolean,default:false},
   subject:{type:Schema.Types.ObjectId,ref:'subject'}
 });

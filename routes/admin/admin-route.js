@@ -58,6 +58,7 @@ router.get('/init',(req,res)=>{
         password: 'ReDo1@vn',
         fullname:'Nguyễn Hữu Trường',
         is_admin:true,
+        is_censor:true,
         avatar:'/user/images/photos/loggeduser.png'
       });
 

@@ -37,6 +37,7 @@
       <th scope="col">#</th>
       <th scope="col">Câu hỏi</th>
       <th scope="col">Người tạo</th>
+      <th scope="col">Người kiểm duyệt</th>
       <th scope="col">Handle</th>
     </tr>
   </thead>
@@ -108,6 +109,7 @@
                 // content +="<td>"+idx+++"</td>";
                 content +='<td class = "font-weight-bold">'+row.question+'</td>';
                 content +='<td class = "font-weight-bold"> <a href="/admin/member/profile?id='+row.created_by._id+'" target="_blank" class="text-warning">'+row.created_by.fullname+'</a></td>';
+                content +='<td class = "font-weight-bold"> <a href="/admin/member/profile?id='+row.censor._id+'" target="_blank" class="text-warning">'+row.censor.fullname+'</a></td>';
                 content +='<td>';
                   content += '<button class ="btn btn-xs btnView" data-view = "'+row._id+'" ><i class="text-info fa fa-eye" aria-hidden="true"></i></button>';
                   content +='<button class ="btn btn-xs btnUpdate" data-update = "'+row._id+'"><i class="text-warning fa fa-edit" aria-hidden="true"></i></button>';

@@ -11,6 +11,7 @@ const UserSchema = new Schema({
   fullname:{type:String,default:''},
   phone:{type:String,default:''},
   is_admin:{type:Boolean,default:false},
+  is_censor:{type:Boolean,default:false},
   user_type:{type:Number,default:0},
   avatar:{type:String,default:''},
   contributed_question:{type:Boolean,default:true},

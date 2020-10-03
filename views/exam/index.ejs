@@ -31,28 +31,40 @@
           </ul>
         </div>
         <div class="panel-footer">
-          <button class="btn btn-primary btn-block">Kết thúc và nộp bài thi</button>
+          <button class="btn btn-primary btn-block" id="btnApplyExam">Kết thúc và nộp bài thi</button>
         </div>
       </div>
-    </div>
-    <!-- kết thúc phần nội dung câu hỏi  -->
+</div>
+<!-- kết thúc phần nội dung câu hỏi  -->
+<div class="col-sm-6">
+  <%- include('statistic') %>
+</div>
+<div class="col-sm-6">
+  <%- include('../layouts/comment') %>
+</div>
+
 
 
 
 
     <script type="text/javascript">
+      /*
+        KHU VỰC BIẾN TOÀN CỤC
+      */
+      var questions;
+      var overtime = false;
+      let correct = 0;
+      let notAsw = [];
       $(document).ready(function(){
-        // let group = $('#group').data('group');
-        // console.log(group);
-
+        $('#btnApplyExam').hide();
+        $('#statistic').hide();
       });
 
       $('#btnDoExam').click(function(){
+        $('#statistic').hide();
         var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
-
         let group =(hashes[0].split('='))[1];
         let subject = (hashes[1].split('='))[1];
-
         $.ajax({
           url:'/lam-bai-thi/random-questions',
           type:'get',
@@ -65,9 +77,10 @@
               $('#questions').empty();
               let content = '';
               let idx = 1;
-              $.each(data.questions,function(k,r){
+              questions = data.questions;
+              $.each(questions,function(k,r){
                 content +='<li class="form-group" id="'+r._id+'">';
-                  content +='<label for="question">Câu hỏi '+idx+':<span class = "text-danger"><strong> '+r.question+'</strong></span></label>';
+                  content +='<label for="question">Câu hỏi <span class="quest-number">'+idx+'</span>:<span class = "text-danger"><strong> '+r.question+'</strong></span></label>';
                   content += '<fieldset id="group'+idx+'">';
                     content += '<input type="radio" name="group'+idx+'" class="rdOptionA" > a. <span class = "text-primary rdOptionA">'+r.option_a+'</span>';
                     content += '</fieldset>';
@@ -80,24 +93,147 @@
                         content += '<fieldset id="group'+idx+'">';
                           content += '<input type="radio" name="group'+idx+'" class="rdOptionD" > d. <span class = "text-primary rdOptionD  ">'+r.option_d+'</span>';
                           content += '</fieldset>';
-                          content +='<fieldset class ="remark">';
+                          content +='<fieldset class ="description">';
                             content += '<p class = "description"></p>';
                             content += '</fieldset>';
                             content +='</li>';
                             idx++;
                           });
-                          if(content.length > 0){
-                            $('#questions').append(content);
-                          }else{
-                            $('#questions').append('<div class="text-center"><h1 class="text-warning">Hệ thống câu hỏi đang được cập nhật. Chân thành cảm ơn sự ủng hộ của bạn!</h1></div>');
-                          }
+                  if(content.length > 0){
+                    $('#questions').append(content);
+                  }else{
+                    $('#questions').append('<div class="text-center"><h1 class="text-warning">Hệ thống câu hỏi đang được cập nhật. Chân thành cảm ơn sự ủng hộ của bạn!</h1></div>');
+                  }
 
 
-                        }
-                      }
-                    });
+                }
+              }
+            });
+        $(this).hide();
+        $('#btnApplyExam').show();
+        });
+
+      $('#btnApplyExam').click(function(){
+        if(!overtime){
+             $('#questions li').each(function(index,v){
+               let ch = $(v).find('input[type="radio"]:checked').attr('class');
+               let asw = '';
+               switch (ch) {
+                 case 'rdOptionA':
+                 break;
+                 case 'rdOptionB':
+                 break;
+                 case 'rdOptionC':
+                 break;
+                 case 'rdOptionD':
+                 break;
+                 default:
+                 let qi = $(v).find('label>span.quest-number').text();
+                 notAsw.push(qi);
+                 break;
+               }
+             });
+             if(notAsw.length > 0 && confirm('Những câu hỏi \n'+notAsw+'\n chưa chọn đáp án. Bạn vẫn muốn tiếp tục?')==true){
+                CheckResult();
+             }else{
+               if(notAsw.length == 0){
+                 CheckResult();
+               }
+             }
+        }
+        else{
+          CheckResult();
+        }
+        $('#btnDoExam').show();
+        $(this).hide();
+
+      });
 
 
-                  });
 
-                </script>
+      function CheckResult(){
+
+         $('#questions li').each(function(index,v){
+             //lấy id của câu hỏi
+             let id = $(v).attr('id');
+             let cont = true;
+             // //lấy đáp án đã được chọn ứng với mỗi câu
+             let ch = $(v).find('input[type="radio"]:checked').attr('class');
+
+             let asw = '';
+             switch (ch) {
+               case 'rdOptionA':
+               asw = 'A';
+               break;
+               case 'rdOptionB':
+               asw = 'B';
+               break;
+               case 'rdOptionC':
+               asw = 'C';
+               break;
+               case 'rdOptionD':
+               asw = 'D';
+               break;
+               default: asw = 'N';
+               break;
+             }
+
+           //tìm ra câu hỏi tương ứng trong mãng dựa vào id câu hỏi lấy đượcanvas
+             var qs = questions.find(x=>x._id === id);
+
+           //đánh dấu câu trả lời đúng
+             if(qs){
+               $('#'+id+' > fieldset > span.rdOption'+qs.answer).css("background-color", "yellow");
+               if(asw == qs.answer){
+                 correct++;
+               }
+               if(qs.description.length > 0){
+                 $('#'+id+' > fieldset.description > p.description').html('<hr><h6 class = "text-warning"><span class = "font-weight-bold"><u>Chú thích: </u></span><span class="text-info"><i>'+qs.description+'</i></span></h6>');
+               }
+             }
+           });
+
+
+          //statistic exam result
+          $('#statistic').show();
+          $('#answered').text((questions.length-notAsw.length) + ' câu');
+          $('#correct').text(correct + ' câu');
+          $('#wrong').text((questions.length - correct - notAsw.length)+ ' câu');
+          $('#notyet').text(notAsw.length + ' câu');
+          let ratio = ((correct/questions.length).toFixed(2))*100;
+          $('#ratio').text(ratio+'%');
+
+          if(ratio==100){
+            $('#evaluate').text('Thật tuyệt vời. Kiến thức bạn nắm được là tuyệt đối');
+            $('#evaluate').addClass('text-success');
+          }else{
+            if(ratio>=90){
+                $('#evaluate').text('Thật tuyệt vời. Kiến thức bạn nắm được gần như là tuyệt đối');
+                $('#evaluate').addClass('text-success');
+            }else{
+              if(ratio>=80){
+                $('#evaluate').text('Việc thi đậu không còn là vấn đề khó của bạn nữa!');
+                $('#evaluate').addClass('text-success');
+              }else{
+                if(ratio>=70){
+                  $('#evaluate').text('Mọi việc đang tiến triển rất tốt. Cố lên bạn tôi ơi!');
+                  $('#evaluate').addClass('text-primary');
+                }else{
+                  if(ratio>=50){
+                    $('#evaluate').text('Kết quả tạm chấp nhận. Nhưng chưa đủ. Cố gắng lên!');
+                    $('#evaluate').addClass('text-warning');
+                  }else{
+                    if(ratio>=30){
+                      $('#evaluate').text('Có vẻ bạn chưa thực sự nghiêm túc dành nhiều thời gian học bài!');
+                      $('#evaluate').addClass('text-danger');
+                    }else{
+                      $('#evaluate').text('Có lẽ bạn nên nghĩ đến việc khác thích hợp hơn là học bài!');
+                      $('#evaluate').addClass('text-danger');
+                    }
+                  }
+                }
+              }
+            }
+          }
+    }
+      </script>

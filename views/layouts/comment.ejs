@@ -1,4 +1,4 @@
-<div class="panel panel-inverse">
+<div class="panel panel-inverse" id="divComment">
   <div class="panel-heading">
     <h3 class="panel-title"><i class="fa fa-bullhorn" aria-hidden="true"></i> Bình luận, góp ý</h3>
   </div>
@@ -112,87 +112,87 @@
                                 });
                               }
 
-                              function GetGroupAndSubject(){
-                                var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
-                                if(hashes.length==2){
-                                  group =(hashes[0].split('='))[1];
-                                  subject = (hashes[1].split('='))[1];
-                                }
-                              }
+      function GetGroupAndSubject(){
+        var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+        if(hashes.length==2){
+          group =(hashes[0].split('='))[1];
+          subject = (hashes[1].split('='))[1];
+        }
+      }
 
-                              //khi scroll lên top
-                              $('#comments').scroll(function() {
-                                if($('#comments').scrollTop() == $('#comments').height() - $('#comments').height()) {
-                                  console.log('top');
-                                }
-                              });
+      //khi scroll lên top
+      $('#comments').scroll(function() {
+        if($('#comments').scrollTop() == $('#comments').height() - $('#comments').height()) {
+          console.log('top');
+        }
+      });
 
-                              //khi scroll tới cuối
-                              $('#comments').on('scroll', function() {
-                                if ($(this).scrollTop() + $(this).innerHeight() >=  $(this)[0].scrollHeight) {
-                                  console.log('bottom');
-                                }
-                              });
-                            });
+      //khi scroll tới cuối
+      $('#comments').on('scroll', function() {
+        if ($(this).scrollTop() + $(this).innerHeight() >=  $(this)[0].scrollHeight) {
+          console.log('bottom');
+        }
+      });
+    });
 
 
-                            $('#txtComment').keyup(function(e){
-                              if(e.keyCode == 13)
-                              {
-                                $('#btnCreateComment').click();
-                              }
-                            });
+    $('#txtComment').keyup(function(e){
+      if(e.keyCode == 13)
+      {
+        $('#btnCreateComment').click();
+      }
+    });
 
-                          </script>
+  </script>
 
-                          <style media="screen">
-                            #comments{
-                              height:200px;
-                              overflow: scroll;
-                              overflow-x:hidden;
-                            }
-                            /*-- Content Style --*/
-                            .post-body{
-                              word-wrap: break-word;
-                              margin-left:45px;
-                            }
-                            /*-- Content Style --*/
-                            .post-footer-option li{
-                              float:left;
-                              margin-right:50px;
-                              padding-bottom:15px;
-                            }
+  <style media="screen">
+    #divComment{
+      height:300px;
+      overflow: scroll;
+      overflow-x:hidden;
+    }
+    /*-- Content Style --*/
+    .post-body{
+      word-wrap: break-word;
+      margin-left:45px;
+    }
+    /*-- Content Style --*/
+    .post-footer-option li{
+      float:left;
+      margin-right:50px;
+      padding-bottom:15px;
+    }
 
-                            .post-footer-option li a{
-                              color:#AFB4BD;
-                              font-weight:500;
-                              font-size:1.3rem;
-                            }
+    .post-footer-option li a{
+      color:#AFB4BD;
+      font-weight:500;
+      font-size:1.3rem;
+    }
 
-                            .photo-profile{
-                              border:1px solid #DDD;
-                              border-radius: 50%;
-                              width:30px;
-                              height:30px;
-                            }
+    .photo-profile{
+      border:1px solid #DDD;
+      border-radius: 50%;
+      width:30px;
+      height:30px;
+    }
 
-                            .anchor-username h4{
-                              font-weight:bold;
-                            }
+    .anchor-username h4{
+      font-weight:bold;
+    }
 
-                            .anchor-time{
-                              color:#ADB2BB;
-                              font-size:1.2rem;
-                            }
+    .anchor-time{
+      color:#ADB2BB;
+      font-size:1.2rem;
+    }
 
-                            .post-footer-comment-wrapper{
-                              background-color:#F6F7F8;
-                            }
-                            .media-body{
-                              padding-top:10px;
-                            }
+    .post-footer-comment-wrapper{
+      background-color:#F6F7F8;
+    }
+    .media-body{
+      padding-top:10px;
+    }
 
-                            .fa-bullhorn{
-                              font-size:18px;
-                            }
-                          </style>
+    .fa-bullhorn{
+      font-size:18px;
+    }
+  </style>

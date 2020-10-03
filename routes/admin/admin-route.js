@@ -6,6 +6,7 @@ const Group = require('../../models/group-model');
 const Subject = require('../../models/subject-model');
 const Question = require('../../models/question-model');
 const Document = require('../../models/document-model');
+const Config = require('../../models/config-model');
 const common = require('../../common/common');
 const middleware = require('../../middlewares/middleware');
 var session = require('express-session');
@@ -45,12 +46,6 @@ router.get('/init',(req,res)=>{
     }
   });
 
-
-  // User.deleteMany({},function(err){
-  //   console.log(1);
-  // });
-  // khởi tạo admin khi chưa có
-
   User.findOne({username:'redo'},function(err,ad){
     if(!ad){
       var ad = new User({
@@ -70,7 +65,29 @@ router.get('/init',(req,res)=>{
     }else{
       console.log('admin is ready exists');
     }
-  })
+  });
+
+  Config.countDocuments({},function(err,count){
+    if(err){
+      console.log('count config failed: '+new Error(err));
+    }else{
+      if(count == 0){
+        let configs = [
+          {key:'page-size',value:'20',description:'Số dòng trên mỗi trang'},
+          {key:'exam-time',value:'45',description:'Thời gian làm bài kiểm tra'},
+          {key:'questions-size',value:'20',description:'Số câu hỏi tương ứng với mỗi bài kiểm tra'},
+          {key:'comments-size',value:'10',description:'Số comment trên mỗi trang'}
+        ];
+        Config.insertMany(configs,function(err,cf){
+          if(err){
+            console.log('init config failed: '+new Error(err));
+          }else{
+            console.log('init config successfully');
+          }
+        });
+      }
+    }
+  });
 
 });
 

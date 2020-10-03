@@ -8,6 +8,7 @@
         </button>
       </div>
       <div class="modal-body">
+        <input type="text" hidden value="" id="questionId">
         <div class="col-sm-6 form-group has-success">
           <label for="">Lớp</label>
           <select class="form-control" id="mdl_groups"></select>
@@ -99,6 +100,7 @@
     LoadGroupInModal();
     $("select#mdl_groups").change(function(){
       let id = $(this).children("option:selected").attr('id');
+      LoadSubjectInModal(id);
     });
   });
 
@@ -142,39 +144,75 @@
       return;
     }
     let description = $('#description').val();
+    if(!question_id || question_id.trim().length == 0){//create new on
+      $.ajax({
+        url:'/admin/question/add',
+        type:'post',
+        data:{
+          question:question,
+          option_a:option_a,
+          option_b:option_b,
+          option_c:option_c,
+          option_d:option_d,
+          answer:answer,
+          description:description,
+          subject:subject_id
+        },
+        success:function(data){
+          if(data.code == 401){
+            alert(data.msg);
+          }
+          if(data.code == 200){
+            alert(data.msg);
+            $('#question').val('');
+            $('#option_a').val('');
+            $('#option_b').val('');
+            $('#option_c').val('');
+            $('#option_d').val('');
+            $('#description').val('');
+            $("#rdA").prop('checked', false);
+            $("#rdB").prop('checked', false);
+            $("#rdC").prop('checked', false);
+            $("#rdD").prop('checked', false);
+          }
+        }
+      });
+    }else{//update exists one
+      $.ajax({
+        url:'/admin/question/update',
+        type:'post',
+        data:{
+          id:question_id,
+          question:question,
+          option_a:option_a,
+          option_b:option_b,
+          option_c:option_c,
+          option_d:option_d,
+          answer:answer,
+          description:description,
+          subject:subject_id
+        },
+        success:function(data){
+          if(data.code == 401){
+            alert(data.msg);
+          }
+          if(data.code == 200){
+            alert(data.msg);
+            $('#question').val('');
+            $('#option_a').val('');
+            $('#option_b').val('');
+            $('#option_c').val('');
+            $('#option_d').val('');
+            $('#description').val('');
+            $("#rdA").prop('checked', false);
+            $("#rdB").prop('checked', false);
+            $("#rdC").prop('checked', false);
+            $("#rdD").prop('checked', false);
+          }
+        }
+      });
+    }
 
-    $.ajax({
-      url:'/admin/question/add',
-      type:'post',
-      data:{
-        question:question,
-        option_a:option_a,
-        option_b:option_b,
-        option_c:option_c,
-        option_d:option_d,
-        answer:answer,
-        description:description,
-        subject:subject_id
-      },
-      success:function(data){
-        if(data.code == 401){
-          alert(data.msg);
-        }
-        if(data.code == 200){
-          alert(data.msg);
-          $('#question').val('');
-          $('#option_a').val('');
-          $('#option_b').val('');
-          $('#option_c').val('');
-          $('#option_d').val('');
-          $('#description').val('');
-          $("#rdA").prop('checked', false);
-          $("#rdB").prop('checked', false);
-          $("#rdC").prop('checked', false);
-          $("#rdD").prop('checked', false);
-        }
-      }
-    });
 
 
   });

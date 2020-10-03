@@ -53,9 +53,35 @@ router.post('/add',middleware.isLoggedIn,(req,res)=>{
 
 });
 
-router.get('/list-by-subject',(req,res)=>{
-  let subject = req.query.subject;
-  console.log(subject);
+router.post('/update',middleware.isAdmin,(req,res)=>{
+  let {id,question,option_a,option_b,option_c,option_d,answer,description,subject} = req.body;
+  Question.findOneAndUpdate({_id:id},{
+    question:question,
+    option_a:option_a,
+    option_b:option_b,
+    option_c:option_c,
+    option_d:option_d,
+    answer:answer,
+    description:description,
+    subject:subject
+  },function(err,question){
+    if(err){
+      console.log('update question failed: '+new Error(err));
+    }else{
+      res.send({code:200,msg:'Cập nhật câu hỏi thành công'});
+    }
+  });
+})
+
+router.delete('/delete',middleware.isAdmin,(req,res)=>{
+  let id = req.body.id;
+  Question.deleteOne({_id:id},function(err){
+    if(err){
+      console.log('delete a question failed: '+new Error(err));
+    }else{
+      res.send({code:200,msg:'Xóa câu hỏi thành công'});
+    }
+  });
 });
 
 router.get('/list-with-conditions',(req,res)=>{
@@ -79,6 +105,35 @@ router.get('/list-with-conditions',(req,res)=>{
     }
   });
 
+});
+
+router.get('/detail',middleware.isAdmin,(req,res)=>{
+  let id = req.query.id;
+  Question.findById(id,function(err,question){
+    if(err){
+      console.log('find question by id failed: '+new Error(err));
+    }else{
+      res.send({code:200,msg:'get question by id successfully',question:question});
+    }
+  });
+});
+
+router.get('/total-pages',middleware.isAdmin,(req,res)=>{
+  let {subject,search,checked} = req.query;
+  let is_actived = checked=='true'?true:false;
+  let pageSize = config.pageSize;
+  Question.countDocuments({
+    subject:subject,
+    question: { $regex: search, $options: "i" },
+    is_actived:is_actived
+  },function(err,count){
+    if(err){
+      console.log('get question total records failed: '+new Error(err));
+    }else{
+       let pages = count%pageSize==0? count/pageSize:Math.ceil( count/pageSize );
+       res.send({code:200,pages:pages,msg:'load pages number successfully'});
+    }
+  });
 });
 
 

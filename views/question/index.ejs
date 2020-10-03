@@ -54,25 +54,32 @@
   // //lưu biến toàn cục
   var subject = '';
   var page = 1;
+  var pages = 0;//biến lưu tổng số trang
   var search = '';
+  var question_id = '';
   $(document).ready( function(){
     LoadGroup();
     $("select#groups").change(async function(){
       let id = await $(this).children("option:selected").attr('id');
       LoadSubject(id);
+      Pagination();
     });
   });
 
 
   $('#btnAdd').click(function(){
+     SetVisible(false);
+     question_id = '';
     $('#modalQuestion').modal();
   });
 
   $('#btnSearch').click(function(){
     search = $('#txtSearch').val();
     subject =  $('#subjects').children("option:selected").attr('id');
+    page = 1;
     LoadQuestion();
-  })
+    Pagination();
+  });
 
   function LoadQuestion(){
     let checked =  $("#ckbActived").is(":checked")?true:false;
@@ -94,88 +101,256 @@
           //stt của các dòng
           let idx = (page-1)*data.pageSize+1;
           $.each(data.questions,function(key,row){
-                content +="<tr id='"+row._id+"'>";
-                  content +=  '<td><label class="ckbox">';
-                  content +=    '<input type="checkbox" '+(row.is_actived?"checked":"")+'><span class="text-success"></span>';
-                  content +=  '</label></td>';
-                  // content +="<td>"+idx+++"</td>";
-                  content +='<td class = "font-weight-bold">'+row.question+'</td>';
-                  content +='<td class = "font-weight-bold"> <a href="/admin/member/profile?id='+row.created_by._id+'" target="_blank" class="text-warning">'+row.created_by.fullname+'</a></td>';
-                  content +='<td>';
-                    content += '<button class ="btn btn-xs btnView" data-view = "'+row._id+'" ><i class="text-info fa fa-eye" aria-hidden="true"></i></button>';
-                    content +='<button class ="btn btn-xs btnUpdate" data-update = "'+row._id+'"><i class="text-warning fa fa-edit" aria-hidden="true"></i></button>';
-                    content +='<button class ="btn btn-xs btnDelete" data-delete = "'+row._id+'"><i class="text-danger fa fa-trash" aria-hidden="true"></i></button>';
+            content +="<tr id='"+row._id+"'>";
+              content +=  '<td><label class="ckbox">';
+                content +=    '<input type="checkbox" '+(row.is_actived?"checked":"")+'><span class="text-success"></span>';
+                content +=  '</label></td>';
+                // content +="<td>"+idx+++"</td>";
+                content +='<td class = "font-weight-bold">'+row.question+'</td>';
+                content +='<td class = "font-weight-bold"> <a href="/admin/member/profile?id='+row.created_by._id+'" target="_blank" class="text-warning">'+row.created_by.fullname+'</a></td>';
+                content +='<td>';
+                  content += '<button class ="btn btn-xs btnView" data-view = "'+row._id+'" ><i class="text-info fa fa-eye" aria-hidden="true"></i></button>';
+                  content +='<button class ="btn btn-xs btnUpdate" data-update = "'+row._id+'"><i class="text-warning fa fa-edit" aria-hidden="true"></i></button>';
+                  content +='<button class ="btn btn-xs btnDelete" data-delete = "'+row._id+'"><i class="text-danger fa fa-trash" aria-hidden="true"></i></button>';
                   content += '</td>';
-                content += '</tr>';
-              });
-              $('#tblData').append(content);
+                  content += '</tr>';
+                });
+                $('#tblData').append(content);
+              }
             }
-          }
-        });
-      }
+          });
+        }
 
 
   function LoadGroup(){
-    $.ajax({
-      url:'/admin/group/list',
-      type:'get',
-      data:{
-        is_actived:true
-      },
-      success:function(data){
-        if(data.code == 200){
-          $('#groups').empty();
-          let d = '';
-          $.each(data.groups,function(k,r){
-            d += '<option value="'+r.meta+'" id = "'+r._id+'">'+r.name+'</option>';
+          $.ajax({
+            url:'/admin/group/list',
+            type:'get',
+            data:{
+              is_actived:true
+            },
+            success:function(data){
+              if(data.code == 200){
+                $('#groups').empty();
+                let d = '';
+                $.each(data.groups,function(k,r){
+                  d += '<option value="'+r.meta+'" id = "'+r._id+'">'+r.name+'</option>';
+                });
+                $('#groups').append(d);
+                let id = $('#groups').children("option:selected").attr('id');
+                LoadSubject(id);
+                Pagination();
+              }
+            }
           });
-          $('#groups').append(d);
-          let id = $('#groups').children("option:selected").attr('id');
-          LoadSubject(id);
         }
+
+  function LoadSubject(group){
+        if(group.trim().length == 0){
+          $('#subjects').empty();
+        }else{
+          $.ajax({
+            url:'/admin/subject/list-by-group',
+            type:'get',
+            data:{
+              group:group,
+              is_actived:true
+            },
+            success: function(data){
+              if(data.code == 200){
+                $('#subjects').empty();
+                let d = '';
+                $.each(data.subjects,function(k,r){
+                  d += '<option value="'+r.meta+'" id="'+r._id+'">'+r.name+'</option>';
+                });
+                $('#subjects').append(d);
+                subject =  $('#subjects').children("option:selected").attr('id');
+                LoadQuestion();
+                Pagination();
+              }
+            }
+          });
+        }
+      }
+
+  $('#tblData').on('click', '.btnView', function() {
+      question_id=  $(this).data('view');
+      GetAQuestion(question_id);
+      SetVisible(true);
+    });
+
+    //sự kiện click của nut reset
+ $('#tblData').on('click', '.btnUpdate', function() {
+   question_id =  $(this).data('update');
+   GetAQuestion(question_id);
+   SetVisible(false);
+ });
+ //sự kiện click của button view trên mỗi hàng của table
+ $('#tblData').on('click', '.btnView', function() {
+   let id =  $(this).data('view');
+   GetAQuestion(id);
+   SetVisible(true);
+ });
+ // //sự kiện nút xóa
+ $('#tblData').on('click', '.btnDelete', function() {
+   let id = $(this).data('delete');
+   var r = confirm("Bạn chắc muốn xóa câu hỏi này?");
+   if(r == true){
+     $.ajax({
+       type: 'delete',
+       url: '/admin/question/delete',
+       data:{
+         id:id
+       },
+       success: function(data){
+         alert(data.msg);
+         LoadQuestion();
+         Pagination();
+       },
+       error: function(err){
+         console.log(err);
+       }
+     });
+   }
+ });
+
+    //hàm set visible của các component
+ function SetVisible(b){
+   if(b == true){
+     $('#btnSubmit').hide();
+     $('#btnReset').hide();
+     $('#question').attr('readonly', true);
+     $('#option_a').attr('readonly', true);
+     $('#option_b').attr('readonly', true);
+     $('#option_c').attr('readonly', true);
+     $('#option_d').attr('readonly', true);
+     $('#description').attr('readonly', true);
+
+     $('#rdA').attr('disabled', true);
+     $('#rdB').attr('disabled', true);
+     $('#rdC').attr('disabled', true);
+     $('#rdD').attr('disabled', true);
+   }else{
+     $('#btnSubmit').show();
+     $('#question').attr('readonly', false);
+     $('#option_a').attr('readonly', false);
+     $('#option_b').attr('readonly', false);
+     $('#option_c').attr('readonly', false);
+     $('#option_d').attr('readonly', false);
+     $('#description').attr('readonly', false);
+
+     $('#rdA').attr('disabled', false);
+     $('#rdB').attr('disabled', false);
+     $('#rdC').attr('disabled', false);
+     $('#rdD').attr('disabled', false);
+   }
+ }
+
+
+ //hàm fill nội dung của 1 câu hỏi lên form trên modal
+  function GetAQuestion(id){
+    $.ajax({
+      url: "/admin/question/detail",
+      type: "GET",
+      data:{id:id},
+      success: function(data) {
+        if(data.code == 200){
+          let question = data.question;
+          $('#question').val(question.question);
+          switch (question.answer) {
+            case 'A':
+            $("#rdA").prop('checked', true);
+            break;
+            case 'B':
+            $("#rdB").prop('checked', true);
+            break;
+            case 'C':
+            $("#rdC").prop('checked', true);
+            break;
+            case 'D':
+            $("#rdD").prop('checked', true);
+            break;
+          }
+          $('#option_a').val(question.option_a);
+          $('#option_b').val(question.option_b);
+          $('#option_c').val(question.option_c);
+          $('#option_d').val(question.option_d);
+          $('#description').val(question.description);
+          $('#modalQuestion').modal();
+        }
+
       }
     });
   }
 
-  function LoadSubject(group){
-    if(group.trim().length == 0){
-      $('#subjects').empty();
-    }else{
-      $.ajax({
-        url:'/admin/subject/list-by-group',
-        type:'get',
-        data:{
-          group:group,
-          is_actived:true
-        },
-        success:function(data){
-          if(data.code == 200){
-            $('#subjects').empty();
-            let d = '';
-            $.each(data.subjects,function(k,r){
-              d += '<option value="'+r.meta+'" id="'+r._id+'">'+r.name+'</option>';
-            });
-            $('#subjects').append(d);
-            subject =  $('#subjects').children("option:selected").attr('id');
-
-            LoadQuestion();
-          }
-        }
-      });
-    }
+  function Pagination(){
+    //hàm phân trang
+    let checked =  $("#ckbActived").is(":checked")?true:false;
+    subject = $('#subjects').children("option:selected").attr('id');
+    $('#pagination').empty();
+   $.ajax({
+     url: "/admin/question/total-pages",
+     type: "GET",
+     data:{
+       subject:subject,
+       search:search,
+       checked:checked
+     },
+     success: function(data) {
+       pages = data.pages;
+       if(pages <= 1){
+         $('#pagination').hide();
+       }else{//ngược lại: số trang lớn hơn 1
+         $('#pagination').show();
+         let lis = '';
+         //lặp số trang và gán cho li
+         for(i=1;i<=pages;i++){
+           lis +='<li class="page-item li_page" id="'+i+'"><a class="page-link" href="#">'+i+'</a></li>';
+         }
+         //hiện phân trang
+         // $('#pagination').empty();
+         $('#pagination').show();
+         //chèn nội dung các trang vào
+         $('#pagination').append(lis);
+         let hasActive = false;
+         $('ul#pagination li').each(function( l ) {
+           if($(this).attr('class')=='active'){
+             hasActive = true;
+           }
+         });
+         if(hasActive == false){
+           $('#pagination li').eq(0).addClass('active');
+         }
+       }
+     }
+   });
   }
 
+  //sự kiện click của các li trên phân trang
+  $("#pagination").on("click", ".li_page", function(event){
+    event.preventDefault();
+    $('#pagination li.active').removeClass('active');
+    $(this).addClass('active');
+    page = $(this).attr('id');
+    LoadQuestion();
+  });
+
+  //sự kiện enter của text search
+  $('#txtSearch').keyup(function(e){
+    if(e.keyCode == 13){
+       $('#btnSearch').click();
+    }
+});
+
+</script>
 
 
-    </script>
-
-
-    <style media="screen">
-      .vertical-center {
-  margin: 0;
-  position: absolute;
-  top: 20%;
-  -ms-transform: translateY(-20%);
-  transform: translateY(-20%);
-}
-    </style>
+<style media="screen">
+  .vertical-center {
+    margin: 0;
+    position: absolute;
+    top: 20%;
+    -ms-transform: translateY(-20%);
+    transform: translateY(-20%);
+  }
+</style>

@@ -60,10 +60,14 @@
       $(document).ready(function(){
         $('#btnApplyExam').hide();
         $('#statistic').hide();
+
       });
 
       $('#btnDoExam').click(function(){
         $('#statistic').hide();
+        overtime = false;
+        correct = 0;
+        notAsw = [];
         var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
         let group =(hashes[0].split('='))[1];
         let subject = (hashes[1].split('='))[1];
@@ -202,7 +206,8 @@
           $('#correct').text(correct + ' câu');
           $('#wrong').text((questions.length - correct - notAsw.length)+ ' câu');
           $('#notyet').text(notAsw.length + ' câu');
-          let ratio = ((correct/questions.length).toFixed(2))*100;
+
+          let ratio = ((correct/questions.length)*100).toFixed(1);
           $('#ratio').text(ratio+'%');
 
           if(ratio==100){

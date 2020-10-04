@@ -1,11 +1,14 @@
 <div class="card">
   <div class="card-header">
     <div class="row">
-      <div class="col-sm-5">
-          <input type="text" name="" class="form-control" placeholder="Tên lớp" id="txtClassName">
+      <div class="col-sm-2">
+          <input type="text" name="" class="form-control" placeholder="STT" id="txtGroupOrder">
       </div>
-      <div class="col-sm-5">
-          <input type="text" name="" class="form-control" placeholder="Thẻ meta của lớp, không dấu, ngăn cách nhau bởi kí tự -" id="txtClassMeta">
+      <div class="col-sm-4">
+          <input type="text" name="" class="form-control" placeholder="Tên lớp" id="txtGroupName">
+      </div>
+      <div class="col-sm-4">
+          <input type="text" name="" class="form-control" placeholder="Thẻ meta của lớp, không dấu, ngăn cách nhau bởi kí tự -" id="txtGroupMeta">
       </div>
 
       <div class="col-sm-2">
@@ -19,7 +22,7 @@
     <table class="table table-bordered table-primary table-striped ">
       <thead>
         <tr>
-          <th style="width: 10px">#</th>
+          <th style="width: 10px">STT</th>
           <th>Tên lớp</th>
           <th>Thẻ meta</th>
           <th style="width: 40px">Label</th>
@@ -38,9 +41,10 @@
   });
 
   $('#btnSave').click(function(){
-    let name = $('#txtClassName').val().trim();
-    let meta = $('#txtClassMeta').val().trim();
-    if(name.length == 0 || meta.length == 0){
+    let order = $('#txtGroupOrder').val().trim();
+    let name = $('#txtGroupName').val().trim();
+    let meta = $('#txtGroupMeta').val().trim();
+    if(order.length ==0 || name.length == 0 || meta.length == 0){
       alert('Vui lòng nhập đủ thông tin');
       return;
     }
@@ -49,14 +53,16 @@
       url:'/admin/group/create',
       type:'post',
       data:{
+        order:order,
         name:name,
         meta:meta
       },
       success:function(data){
         if(data.code==200){
           LoadData();
-          $('#txtClassName').val('');
-          $('#txtClassMeta').val('');
+          $('#txtGroupOrder').val('');
+          $('#txtGroupName').val('');
+          $('#txtGroupMeta').val('');
         }
       }
     })
@@ -73,11 +79,9 @@
         if(data.code == 200){
           $('#tblData').empty();
           let d = '';
-          let idx = 1;
-
           $.each(data.groups,function(k,r){
             d += '<tr>';
-              d +=  '<td>'+(idx++)+'</td>';
+              d +=  '<td>'+r.order+'</td>';
               d +=  '<td>'+r.name+'</td>';
               d +=  '<td>'+r.meta+'</td>';
               d += '<td><span class="badge bg-danger">Update</span></td>'

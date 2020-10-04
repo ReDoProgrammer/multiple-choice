@@ -16,8 +16,11 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-sm-10 mt-2">
+      <div class="col-sm-9 mt-2">
         <input type="text" id="txtSubjectDescription" placeholder="Mô tả chi tiết" class="form-control">
+      </div>
+      <div class="col-sm-1 mt-2">
+        <input type="text" id="txtSubjectOrder" placeholder="STT" class="form-control">
       </div>
       <div class="col-sm-2  mt-2">
         <button type="button" class="btn btn-success" id="btnSubmit">Xác nhận</button>
@@ -32,7 +35,7 @@
 <table class="table table-bordered table-primary table-striped mt-2">
   <thead>
     <tr>
-      <th scope="col">#</th>
+      <th scope="col">STT</th>
       <th scope="col">Lớp</th>
       <th scope="col">Tên môn học</th>
       <th scope="col">Thẻ meta</th>
@@ -63,6 +66,7 @@
     let group = $('#group').children(":selected").attr("id");
     let name = $('#txtSubjectName').val().trim();
     let meta = $('#txtSubjectMeta').val().trim();
+    let order = $('#txtSubjectOrder').val().trim();
     let description = $('#txtSubjectDescription').val().trim();
 
     if(name.length == 0){
@@ -73,6 +77,10 @@
       $('#msg').text('Vui lòng nhập tên meta không dấu và được ngân cách nhau bởi dấu gạch ngang -');
       return;
     }
+    if(order.length == 0){
+      $('#msg').text('Vui lòng nhập tên số thứ tự xuất hiện trên menu');
+      return;
+    }
     if(id.length == 0){//thêm mới môn học
       $.ajax({
         url:'/admin/subject/add',
@@ -81,12 +89,14 @@
           name:name,
           meta:meta,
           group:group,
-          description:description
+          description:description,
+          order:order
         },success:function(data){
           if(data.code == 200){
             $('#txtSubjectMeta').val('');
             $('#txtSubjectName').val('');
             $('#txtSubjectDescription').val('');
+            $('#txtSubjectOrder').val('');
             LoadData();
             alert(data.msg);
           }else{
@@ -131,10 +141,10 @@
       success:function(data){
         if(data.code == 200){
           let d = '';
-          let idx = 1;
+
           $.each(data.subjects,function(k,r){
             d +=   '<tr>';
-              d +=   '<th scope="row">'+(idx++)+'</th>';
+              d +=   '<th scope="row">'+r.order+'</th>';
               d +=    '<td>'+r.group.name+'</td>';
               d +=    '<td>'+r.name+'</td>';
               d +=    '<td>'+r.meta+'</td>';

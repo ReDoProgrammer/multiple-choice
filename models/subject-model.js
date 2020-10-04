@@ -17,7 +17,8 @@ const subjectSchema = new Schema({
     type:Schema.Types.ObjectId,
     ref:'user'
   },
-  is_actived:{type:Boolean,default:false}
+  is_actived:{type:Boolean,default:false},
+  order:{type:Number,default: 0}
 });
 
 module.exports = mongoose.model("subject",subjectSchema);

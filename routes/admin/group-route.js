@@ -13,8 +13,7 @@ router.get('/',middleware.isAdmin,(req,res)=>{
 });
 
 router.post('/create',middleware.isAdmin,(req,res)=>{
-  let name = req.body.name;
-  let meta = req.body.meta;
+  let {name,meta,order} = req.body;
   /*
     Tìm kiếm xem tên và thẻ meta của bộ môn đã có trong db chưa ( không tính hoa thường )
     { $regex : new RegExp(name, "i") } không tính hoa thường
@@ -35,7 +34,8 @@ router.post('/create',middleware.isAdmin,(req,res)=>{
           name:name,
           meta:meta,
           is_actived:true,
-          created_by:req.session.user._id
+          created_by:req.session.user._id,
+          order:order
         },function(err,cl){
           if(err){
             console.log('create group failed: '+new Error(err));
@@ -60,13 +60,15 @@ router.delete('/delete',middleware.isAdmin,(req,res)=>{
 
 router.get('/list',(req,res)=>{
   let is_actived = req.query.is_actived;
-  Group.find({is_actived:is_actived},function(err,classes){
+  Group.find({is_actived:is_actived})
+  .sort({order:1})
+  .exec(function(err,groups){
     if(err){
-      console.log('get group list failed: '+new Error(err));
+      console.log('list groups failed: '+new Error(err));
     }else{
-      res.send({code:200,msg:'load classes successfully',groups:classes});
+      res.send({code:200,msg:'list groups successfully',groups:groups})
     }
-  });
+  })
 });
 
 router.get('/detail',(req,res)=>{

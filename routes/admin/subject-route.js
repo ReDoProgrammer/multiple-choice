@@ -15,7 +15,7 @@ router.get('/list',(req,res)=>{
   let is_actived = req.query.is_actived;
   Subject.find({is_actived:is_actived})
   .populate('group')
-  .sort({group:1})
+  .sort({order:1})
   .exec(function(err,subjects){
     if(err){
       console.log('list subject failed: '+new Error(err));
@@ -44,10 +44,7 @@ Khi add cần kiểm tra xem đã tồn tại thị không add tiếp nữa.
 Khi update cần kiểm tra nội dung update có bị trùng với 1 document nào khác không
 */
 router.post('/add',middleware.isAdmin,(req,res)=>{
-  let group = req.body.group;
-  let name = req.body.name;
-  let meta = req.body.meta;
-  let description = req.body.description;
+  let {group,name,meta,description,order} = req.body;
   Subject.countDocuments({
     group:group,
     $or:[
@@ -67,7 +64,8 @@ router.post('/add',middleware.isAdmin,(req,res)=>{
           group:group,
           description:description,
           created_by:req.session.user._id,
-          is_actived:true
+          is_actived:true,
+          order:order
         },function(err,subject){
           if(err){
             console.log('create subject failed: '+new Error(err));

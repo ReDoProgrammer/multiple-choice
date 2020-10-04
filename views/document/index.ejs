@@ -24,11 +24,14 @@
       </div>
     </div>
     <div class="row mt-4">
-      <div class="col-sm-10">
+      <div class="col-sm-8">
         <input type="text" name="" class="form-control" placeholder="Mô tả tài liệu" id="txtDocumentDescription">
       </div>
       <div class="col-sm-2">
         <button type="button" class="btn btn-success" id="btnSave" style="width:100%"><i class="glyphicon-plus"></i> Lưu</button>
+      </div>
+      <div class="col-sm-2">
+        <button type="button" class="btn btn-success" id="btnLoad" style="width:100%"><i class="glyphicon-search"></i> Load</button>
       </div>
     </div>
   </div>
@@ -64,6 +67,9 @@
     LoadDocments();
   });
 
+  $('#btnLoad').click(function(){
+      LoadDocments();
+  });
   $('#btnSave').click(function(){
     let subject = $('#subjects').children("option:selected").val();
     let doctype = $('#doctypes').children("option:selected").val();
@@ -112,6 +118,7 @@
         search:search
       },
       success:function(data){
+
         if(data.code == 200){
           let d = '';
           $('#tblData').empty();

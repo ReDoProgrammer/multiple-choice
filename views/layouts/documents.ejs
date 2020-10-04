@@ -26,7 +26,6 @@
       </div><hr>
       <div class="row">
         <div class="col-sm-12" id="doc-summary">
-
         </div>
       </div>
   </div>
@@ -53,9 +52,33 @@
         subject:subject
       },
       success:function(data){
-        console.log(data);
-        let content = '<h4>Với <span class="text-warning">'+data.count+'</span> câu hỏi từ <span class="text-success">'+data.subject.description+'</span></h4>';
+        let content = '<h4>Câu hỏi trong mỗi bài thi được lấy ngẫu nhiên từ <span class="text-danger">'+data.count+'</span> câu hỏi từ <span class="text-info">'+data.subject.description+'</span></h4>';
         $('#summary').html(content);
+      }
+    });
+
+    $.ajax({
+      url:'/admin/document/list-by-subject',
+      type:'get',
+      data:{
+        group:group,
+        subject:subject
+      },
+      success:function(data){
+        if(data.code == 200 && data.documents.length >0){
+          // $('#doc-summary').append('<h4 class="text-uppercase">Tài liệu liên quan</h4>');
+          // console.log(data.documents);
+          let documents = '<ul class="list-group">'
+          documents +=  '<li class="list-group-item disabled active"><span class = "text-warning" style="font-weight:bold; padding:10px;">TÀI LIỆU LIÊN QUAN</span></li>';
+          $.each(data.documents,function(k,v){
+            documents +=   '<li class="list-group-item">';
+            documents +=  '<h4>'+v.doctype.icon+' <a href="'+v.link+'" target="_blank">'+v.name+'</a></h4>';
+            documents += '<p style="margin-left:20px;">'+v.description+'</p>';
+            documents += '</li>';
+          });
+          documents +=  '</ul>';
+          $('#doc-summary').html(documents);
+        }
       }
     });
   });

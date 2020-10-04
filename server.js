@@ -29,6 +29,7 @@ const googleRoutes = require('./routes/user/google-route');
 const commentRoutes = require('./routes/user/comment-route');
 const contributeQuestionRoutes = require('./routes/user/contribute-question-route');
 const censorRoutes = require('./routes/user/censor-route');
+const statisticRoutes = require('./routes/user/statistic-route');
 
 
 app.set('view engine','ejs');//set view engine cho nodejs
@@ -97,6 +98,7 @@ app.use('/censor',censorRoutes);//route kiểm duyệt câu hỏi
 app.use('/comment',commentRoutes);//route bình luận
 app.use('/contribute-question',contributeQuestionRoutes);//đóng góp câu hỏi
 app.use('/lam-bai-thi',examRoutes);//route làm bài thi
+app.use('/statistic',statisticRoutes);//route thống kê kết quả làm bài
 
 
 

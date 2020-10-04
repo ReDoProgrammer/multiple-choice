@@ -280,7 +280,7 @@
 
           let ratio = ((correct/questions.length)*100).toFixed(1);
           $('#ratio').text(ratio+'%');
-
+          PushStatistic(ratio);
           if(ratio==100){
             $('#evaluate').text('Thật tuyệt vời. Kiến thức bạn nắm được là tuyệt đối');
             $('#evaluate').addClass('text-success');
@@ -317,6 +317,29 @@
           //---> kết thúc thống kê chi tiết kết quả làm bài
     }
 
+      //hàm thống kê kết quả làm bài của thành viên cập nhật vào dữ liệu
+      function PushStatistic(ratio){
+        var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+        if(hashes.length == 2){
+          let group =(hashes[0].split('='))[1];
+          let subject = (hashes[1].split('='))[1];
+          $.ajax({
+            url:'/statistic/push',
+            type:'post',
+            data:{
+              group:group,
+              subject:subject,
+              ratio:ratio
+            },
+            success:function(data){
+              if(data.code == 200){
+                console.log(data);
+              }
+            }
+          });
+        }
+
+      }
     //sự kiện comment trên từng câu hỏi
     $(document).on('click', '.commentOnQuestion', function (e) {
       e.preventDefault();
@@ -331,7 +354,7 @@
 
 <!-- phần xử lý count down -->
   <script type="text/javascript">
-      var constTime = 10;//biến lưu thời gian làm bài
+      var constTime = 45*60+1;//biến lưu thời gian làm bài
       let hour = 0;
       let minute = 0;
       let seconds = 0;
@@ -375,6 +398,8 @@
       }
     }
   </script>
+
+
 
 <!-- khai báo source font của đồng hồ -->
   <style media="screen">

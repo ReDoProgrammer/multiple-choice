@@ -18,7 +18,7 @@
               <label class="col-form-label">Thời gian làm bài: <span id="totalTime">45:00</span> phút</label>
             </div>
             <div class="col-sm-3 text-center">
-              <label class="col-form-label">Thời gian còn lại: <span id="remainTime">40:00</span></label>
+              <label class="col-form-label" id="countdown">Còn lại: <span id="remainTime">40:00</span></label>
             </div>
             <div class="col-sm-1 text-center">
               <button type="button" id="btnDoExam" class="btn btn-sm btn-warning">Làm bài</button>
@@ -47,27 +47,59 @@
 
 
 
+<div id="topCountDown">
+</div>
 
 
-    <script type="text/javascript">
+
+  <script type="text/javascript">
       /*
         KHU VỰC BIẾN TOÀN CỤC
       */
+      //biến lưu mảng câu hỏi
       var questions;
+
+      //biến lưu trạng thái hết giờ làm bài thi hay không
       var overtime = false;
+
+      //biến lưu số câu hỏi trả lời đúng
       let correct = 0;
+
+      //biến lưu mảng những câu chưa trả lời
       let notAsw = [];
+
+      //biến đánh dấu trạng thái đang làm bài kiểm tra hay không
+      let onExam = false;
+
       $(document).ready(function(){
+        //ẩn nút nộp bài khi page đc load
         $('#btnApplyExam').hide();
+
+        //ẩn div thống kê kết quả làm bài khi page đc load
         $('#statistic').hide();
 
+        //khi load page thì ẩn đồng hồ
+        $('#countdown').hide();
+        $('#topCountDown').hide();
       });
 
       $('#btnDoExam').click(function(){
+        //ẩn div thống kê khi làm bài
         $('#statistic').hide();
+
+        //khởi tạo các giá trị mặc định khi bắt đầu làm bài
         overtime = false;
         correct = 0;
         notAsw = [];
+        onExam = true;
+
+        //khi làm bài thì hiện đồng hồ lên
+        $('#countdown').show();
+        $('#topCountDown').show();
+
+        totalSeconds = constTime;
+        intervalId = setInterval(startTimer, 1000);
+
         var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
         let group =(hashes[0].split('='))[1];
         let subject = (hashes[1].split('='))[1];
@@ -120,6 +152,16 @@
         });
 
       $('#btnApplyExam').click(function(){
+        //set countdown khi kết thúc làm bài
+        clearInterval(intervalId);
+        totalSeconds = constTime;
+        onExam = false;
+
+        //khi kết thúc bài kiểm tra thì ẩn đồng hồ
+        $('#countdown').hide();
+        $('#topCountDown').hide();
+
+        //nếu chưa hết giờ làm bài
         if(!overtime){
              $('#questions li').each(function(index,v){
                let ch = $(v).find('input[type="radio"]:checked').attr('class');
@@ -147,10 +189,13 @@
                }
              }
         }
-        else{
+        else{//nếu đã hết thời gian làm bài
           CheckResult();
         }
+        //hiện lại nút "làm bài"
         $('#btnDoExam').show();
+
+        //ẩn nút "nộp bài"
         $(this).hide();
 
       });
@@ -158,14 +203,18 @@
 
 
       function CheckResult(){
-
+        //duyệt các câu hỏi
          $('#questions li').each(function(index,v){
              //lấy id của câu hỏi
              let id = $(v).attr('id');
+
+             //biến đánh dấu trạng thái có tiếp tục nộp bài khi có câu hỏi chưa trả lời
              let cont = true;
+
              // //lấy đáp án đã được chọn ứng với mỗi câu
              let ch = $(v).find('input[type="radio"]:checked').attr('class');
 
+             //lấy đáp án được chọn
              let asw = '';
              switch (ch) {
                case 'rdOptionA':
@@ -200,8 +249,9 @@
            });
 
 
-          //statistic exam result
-          $('#statistic').show();
+          //thống kê kết quả làm bài
+          $('#statistic').show();//hiện bảng thống kê
+          //chi tiết kết quả làm bài
           $('#answered').text((questions.length-notAsw.length) + ' câu');
           $('#correct').text(correct + ' câu');
           $('#wrong').text((questions.length - correct - notAsw.length)+ ' câu');
@@ -242,8 +292,11 @@
               }
             }
           }
+
+          //---> kết thúc thống kê chi tiết kết quả làm bài
     }
 
+    //sự kiện comment trên từng câu hỏi
     $(document).on('click', '.commentOnQuestion', function (e) {
       e.preventDefault();
       let id = $(this).closest('li').attr('id');
@@ -251,5 +304,80 @@
       $('#pushedQuestion').text(question);
       $('#txtCommentQuestion').val('');
       $('#comment-on-question').modal();
-    });
-      </script>
+    });//-->kết thúc sự kiện comment trên từng câu hỏi
+
+  </script>
+
+<!-- phần xử lý count down -->
+  <script type="text/javascript">
+      var constTime = 45*60+1;//biến lưu thời gian làm bài
+      let hour = 0;
+      let minute = 0;
+      let seconds = 0;
+      let totalSeconds = constTime;
+      let intervalId = null;
+      function startTimer() {
+        --totalSeconds;
+        hour = Math.floor(totalSeconds /3600);
+        minute = Math.floor((totalSeconds - hour*3600)/60);
+        seconds = totalSeconds - (hour*3600 + minute*60);
+        let remain = '<span id="hour"></span>:<span id="minute"></span>:<span id="seconds"></span>';
+        let zremain = '<span id="zhour"></span>:<span id="zminute"></span>:<span id="zseconds"></span>';
+
+        $('#remainTime').html(remain);
+        $("#hour").text(hour<10?'0'+hour:hour);
+        $("#minute").text(minute<10?'0'+minute:minute);
+        $("#seconds").text(seconds<10?'0'+seconds:seconds);
+
+        $('#topCountDown').html(zremain);
+        $("#zhour").text(hour<10?'0'+hour:hour);
+        $("#zminute").text(minute<10?'0'+minute:minute);
+        $("#zseconds").text(seconds<10?'0'+seconds:seconds);
+        if(totalSeconds<1){//nếu hết thời gian làm bài
+          alert('Thời gian làm bài của bạn đã hết');
+          overtime = true;//set trạng thái hết giờ là true
+          $('#btnApplyExam').click();//gọi tới sự kiện nộp bài
+        }
+      }
+  </script>
+  <!-- kết thúc phần countdown -->
+
+  <!-- phần đồng hồ nổi lên khi cuộn -->
+  <script type="text/javascript">
+    window.onscroll = function() {scrollFunction()};
+    function scrollFunction() {
+      //nếu cuộn trên tọa độ > 20 & trong trạng thái đang làm bài thì hiện đồng hồ ở góc lên
+      if ((document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) && onExam) {
+        $('#topCountDown').css("display", "block");;
+      } else {//ngược lại thì ẩn đồng hồ ở góc
+        $('#topCountDown').css("display", "none");;
+      }
+    }
+  </script>
+
+<!-- khai báo source font của đồng hồ -->
+  <style media="screen">
+    @font-face {
+    font-family:Digital;
+    src:url('/fonts/digital-7/digital-7.ttf') format('truetype')
+  }
+
+  /* set các thuộc tính của đồng hồ ở góc */
+    #topCountDown {
+      display: none;
+      position: fixed;
+      bottom: 10px;
+      right: 10px;
+      z-index: 99;
+      font-size: 20px;
+      font-family:"Digital";
+      border: none;
+      outline: none;
+      background-color: #000;
+      color: #FFF;
+      cursor: pointer;
+      padding: 5px;
+      border-radius: 4px;
+      border: solid 5px #CCCCCC;
+    }
+  </style>

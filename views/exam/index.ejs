@@ -152,14 +152,7 @@
         });
 
       $('#btnApplyExam').click(function(){
-        //set countdown khi kết thúc làm bài
-        clearInterval(intervalId);
-        totalSeconds = constTime;
-        onExam = false;
 
-        //khi kết thúc bài kiểm tra thì ẩn đồng hồ
-        $('#countdown').hide();
-        $('#topCountDown').hide();
 
         //nếu chưa hết giờ làm bài
         if(!overtime){
@@ -182,25 +175,53 @@
                }
              });
              if(notAsw.length > 0 && confirm('Những câu hỏi \n'+notAsw+'\n chưa chọn đáp án. Bạn vẫn muốn tiếp tục?')==true){
+               //set countdown khi kết thúc làm bài
+               clearInterval(intervalId);
+               totalSeconds = constTime;
+               onExam = false;
+               //khi kết thúc bài kiểm tra thì ẩn đồng hồ
+               $('#countdown').hide();
+               $('#topCountDown').hide();
+               //hiện lại nút "làm bài"
+               $('#btnDoExam').show();
+
+               //ẩn nút "nộp bài"
+               $(this).hide();
                 CheckResult();
              }else{
                if(notAsw.length == 0){
+                 //set countdown khi kết thúc làm bài
+                 clearInterval(intervalId);
+                 totalSeconds = constTime;
+                 onExam = false;
+                 //khi kết thúc bài kiểm tra thì ẩn đồng hồ
+                 $('#countdown').hide();
+                 $('#topCountDown').hide();
                  CheckResult();
+                 //hiện lại nút "làm bài"
+                 $('#btnDoExam').show();
+
+                 //ẩn nút "nộp bài"
+                 $(this).hide();
                }
              }
         }
         else{//nếu đã hết thời gian làm bài
+          //set countdown khi kết thúc làm bài
+          clearInterval(intervalId);
+          totalSeconds = constTime;
+          onExam = false;
+          //khi kết thúc bài kiểm tra thì ẩn đồng hồ
+          $('#countdown').hide();
+          $('#topCountDown').hide();
+          //hiện lại nút "làm bài"
+          $('#btnDoExam').show();
+
+          //ẩn nút "nộp bài"
+          $(this).hide();
           CheckResult();
         }
-        //hiện lại nút "làm bài"
-        $('#btnDoExam').show();
-
-        //ẩn nút "nộp bài"
-        $(this).hide();
-
       });
-
-
 
       function CheckResult(){
         //duyệt các câu hỏi
@@ -310,7 +331,7 @@
 
 <!-- phần xử lý count down -->
   <script type="text/javascript">
-      var constTime = 45*60+1;//biến lưu thời gian làm bài
+      var constTime = 10;//biến lưu thời gian làm bài
       let hour = 0;
       let minute = 0;
       let seconds = 0;

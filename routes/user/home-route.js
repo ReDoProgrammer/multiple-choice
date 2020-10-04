@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const Group = require('../../models/group-model');
 const Subject = require('../../models/subject-model');
+const Question = require('../../models/question-model');
 
 router.get('/',(req,res)=>{
   let group = req.query.group;
@@ -32,6 +33,29 @@ router.get('/view',(req,res)=>{
       }
     }
   })
+});
+
+router.get('/summary',(req,res)=>{
+  let {group,subject} = req.query;
+  Group.findOne({meta:group},function(err,gr){
+    if(err){
+      console.log('find group in /home/summary failed: '+new Error(err));
+    }else{
+      if(gr){
+        Subject.findOne({group:gr._id,meta:subject},function(err,sbj){
+          if(err){
+            console.log('find subject failed in home/summary: '+new Error(err));
+          }else{
+            if(sbj){
+              Question.countDocuments({subject:sbj._id},function(err,count){
+                res.send({code:200,msg:'count question in subject success',count:count,subject:sbj});
+              });
+            }
+          }
+        });
+      }
+    }
+  });
 });
 
 

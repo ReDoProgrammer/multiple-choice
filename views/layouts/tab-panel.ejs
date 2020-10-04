@@ -13,6 +13,7 @@
       }
     }).done(function(data){
       data.groups.forEach(function(k,r){
+        console.log(k);
         g = g.then(function(){
           return addSub(k._id,k.name,k.meta);
         });

@@ -10,7 +10,6 @@
 
   </div>
   <div class="panel-body" id="documents">
-    <% if(group && subject){%>
       <div class="row">
         <div class="col-sm-10 text-center">
           <h4 class="text-info">Thông tin bài làm: <span class="text-warning">45 phút</span>. Số câu hỏi: <span class="text-danger">55</span></h4>
@@ -20,7 +19,16 @@
         </div>
       </div>
       <hr>
-    <%}%>
+      <div class="row">
+        <div class="col-sm-12" id="summary">
+
+        </div>
+      </div><hr>
+      <div class="row">
+        <div class="col-sm-12" id="doc-summary">
+
+        </div>
+      </div>
   </div>
 </div>
 
@@ -28,5 +36,27 @@
   $('#btnDoExam').click(function(){
     var url = window.location.href;
     window.location.href = url.replace('view','lam-bai-thi');
-  })
+  });
+
+  $(document).ready(function(){
+    let group='',subject = '';
+    var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+    if(hashes.length==2){
+      group =(hashes[0].split('='))[1];
+      subject = (hashes[1].split('='))[1];
+    }
+    $.ajax({
+      url:'/summary',
+      type:'get',
+      data:{
+        group:group,
+        subject:subject
+      },
+      success:function(data){
+        console.log(data);
+        let content = '<h4>Với <span class="text-warning">'+data.count+'</span> câu hỏi từ <span class="text-success">'+data.subject.description+'</span></h4>';
+        $('#summary').html(content);
+      }
+    });
+  });
 </script>

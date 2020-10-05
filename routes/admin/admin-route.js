@@ -5,6 +5,8 @@ const Comment = require('../../models/comment-model');
 const Group = require('../../models/group-model');
 const Subject = require('../../models/subject-model');
 const Question = require('../../models/question-model');
+const Statistic = require('../../models/statistic-model');
+const DocType = require('../../models/doc-type-model');
 const Document = require('../../models/document-model');
 const Config = require('../../models/config-model');
 const common = require('../../common/common');
@@ -106,6 +108,10 @@ router.get('/drop-question',middleware.isAdmin,(req,res)=>{
   Question.collection.drop();
   console.log('drop questions successfully');
 });
+router.get('/drop-statistic',middleware.isAdmin,(req,res)=>{
+  Statistic.collection.drop();
+  console.log('drop statistics successfully');
+});
 router.get('/drop-user',middleware.isAdmin,(req,res)=>{
   User.collection.drop();
   console.log('drop user successfully');
@@ -114,10 +120,18 @@ router.get('/drop-comment',middleware.isAdmin,(req,res)=>{
   Comment.collection.drop();
   console.log('drop comments successfully');
 });
-
+router.get('/drop-document-type',middleware.isAdmin,(req,res)=>{
+  DocType.collection.drop();
+  console.log('drop document type successfully');
+});
 router.get('/drop-document',middleware.isAdmin,(req,res)=>{
   Document.collection.drop();
   console.log('drop documents successfully');
+});
+
+router.get('/drop-job',middleware.isAdmin,(req,res)=>{
+  Job.collection.drop();
+  console.log('drop jobs successfully');
 });
 
 router.get('/login',(req,res)=>{

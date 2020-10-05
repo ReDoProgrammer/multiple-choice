@@ -70,108 +70,17 @@ router.post('/push',middleware.isLoggedIn,(req,res)=>{
     }
   })
 });
-router.get('/groups',middleware.isLoggedIn,(req,res)=>{
-  try {
-    Statistic.find({user:req.session.user._id})
-    .distinct('subject',function(err,subjectids){
-      Subject.find({_id:{$in:subjectids}})
-      .distinct('group',function(err,groupids){
-        if(err){
-          console.log('statistic/groups distinct group failed: '+new Error(err));
-        }else{
-          Group.find({_id:{$in:groupids}},function(err,groups){
-            if(err){
-              console.log('statistic/groups find group failed: '+new Error(err));
-            }else{
-              res.send({code:200,msg:'get groups successfully',groups:groups});
-            }
-          });
-        }
-      });
-    });
-  } catch (e) {
-    console.log('/statistic/groups exception: '+new Error(err));
-  }
-});
-router.get('/subjects',middleware.isLoggedIn,(req,res)=>{
-  let group = req.query.group;
-  console.log('group id:',group);
-  Statistic.find({user:req.session.user._id})
-  .distinct('subject',function(err,subjectids){
-    Subject.find({_id:{$in:subjectids},group:group},function(err,subjects){
-      res.send({code:200,msg:'load subjects by group in statistic/subjects successfully',subjects:subjects});
-    })
-  });
-
-});
-router.get('/get-by-subject',middleware.isLoggedIn,(req,res)=>{
-  Statistic.findOne({subject:req.query.subject,user:req.session.user._id},function(err,statistic){
-    if(err){
-      console.log('statistic/get-by-subject failed: '+new Error(err));
-    }else{
-      if(statistic){
-        res.send({code:200,msg:'get statistic by subject successfully',statistic:statistic});
-      }
-    }
-  });
-});
-
-router.get('/profile',(req,res)=>{
+router.get('/profile',middleware.isLoggedIn,(req,res)=>{
   Group.find({})
-  .populate('subjects','name')
-  .exec((err,groups)=>{
-    console.log('aaa',groups);
+  .select('name -_id')
+  .populate({path:'subjects',select:'name',populate:{path:'statistics',match:{user:req.session.user._id}}})
+  .exec(function(err,dt){
+    if(err){
+      console.log('/statistic/profile failed: '+new Error(err));
+    }else{
+      res.send({code:200,msg:'get profile in statistic successfully',groups:dt});
+    }
   })
 });
-
-let groups = (userid) => {
-  return new Promise((resolve,reject)=>{
-    try {
-      Statistic.find({user:userid})
-      .distinct('subject',function(err,subjectids){
-        Subject.find({_id:{$in:subjectids}})
-        .distinct('group',function(err,groupids){
-          if(err){
-            return reject('statistic/groups distinct group failed: '+new Error(err));
-          }else{
-            Group.find({_id:{$in:groupids}},function(err,groups){
-              if(err){
-                return reject('statistic/groups find group failed: '+new Error(err));
-              }else{
-                return resolve({code:200,msg:'get groups successfully',groups:groups});
-              }
-            });
-          }
-        });
-      });
-    } catch (e) {
-      return reject('/statistic/groups exception: '+new Error(e));
-    }
-  });
-}
-
-let subjects = (group,userid,arr)=>{
-
-  return new Promise((resolve,reject)=>{
-    try {
-      Statistic.find({user:userid})
-      .distinct('subject',function(err,subjectids){
-        if(err){
-          return reject('distinct subjectids failed in statistic route: '+new Error(err));
-        }
-        Subject.find({_id:{$in:subjectids},group:group._id},async function(err,subjects){
-            if(err) return reject('err: '+new Error(err));
-            arr.push({
-              group:group,
-              subjects:subjects
-            })
-            return resolve(arr);
-        });
-      });
-    } catch (e) {
-      return reject('subjects promise in statistic route failed: '+new Error(e));
-    }
-  });
-}
 
 module.exports = router;

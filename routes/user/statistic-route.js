@@ -55,6 +55,8 @@ router.post('/push',middleware.isLoggedIn,(req,res)=>{
                       if(err){
                         console.log('create new statistic failed: '+new Error(err));
                       }else{
+                        sbj.statistics.push(statistic);
+                        sbj.save();
                         res.send({code:200,msg:'push new statistic successfully'});
                       }
                     });

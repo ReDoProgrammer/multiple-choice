@@ -46,17 +46,31 @@ router.get('/random-questions',(req,res)=>{
       //     res.send({code:200,type:'success',msg:'get random questions successfully',questions:results});
       //   }
       // });
-      Question.countDocuments({subject:s._id},function(err,count){
-        let random = Math.floor(Math.random() * (count-55));
-        Question.find({subject:s._id})
-        .skip(random)
-        .limit(55)
-        .exec(function(err,questions){
-           res.send({code:200,type:'success',msg:'get random questions successfully',questions:questions});
-        })
 
+
+      // Question.countDocuments({subject:s._id},function(err,count){
+      //   let random = Math.floor(Math.random() * (count-55));
+      //   Question.find({subject:s._id})
+      //   .skip(random)
+      //   .limit(55)
+      //   .exec(function(err,questions){
+      //      res.send({code:200,type:'success',msg:'get random questions successfully',questions:questions});
+      //   })
+      //
+      // });
+
+      Question.aggregate([
+          {$match: {subject: s._id,is_actived:true}},
+          {$sample: {size: 55}}
+      ], function(err, questions) {
+          // const unique = Array.from(new Set(questions));
+          // console.log(unique.length);
+          if(err){
+            console.log('get random questions failed: '+new Error(err));
+          }else{
+            res.send({code:200,type:'success',msg:'get random questions successfully',questions:questions});
+          }          
       });
-
     }
   });
 

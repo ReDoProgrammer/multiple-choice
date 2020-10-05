@@ -6,13 +6,17 @@
 /*
 biến toàn cục
 */
-
+var statistics = '';
 
 
 
 
   $(document).ready(function(){
-    let statistics = '';
+
+    StatistisUserSummaryExam();
+  });
+
+  function StatistisUserSummaryExam(){
     $.ajax({
       url:'/statistic/profile',
       type:'get',
@@ -49,6 +53,6 @@ biến toàn cục
         }
       }
     });
-  });
+  }
 
 </script>

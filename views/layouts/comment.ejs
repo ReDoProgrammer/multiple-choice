@@ -1,6 +1,6 @@
-<div class="panel panel-inverse" id="divComment">
-  <div class="panel-heading">
-    <h3 class="panel-title"><i class="fa fa-bullhorn" aria-hidden="true"></i> Bình luận, góp ý</h3>
+<div class="panel panel-primary" id="divComment" style="margin-bottom:2px;">
+  <div class="panel-heading" style="padding-top:5px; pading-bottom:5px;">
+    <h3 class="panel-title" style="padding-top:0px;"><i class="fa fa-bullhorn" aria-hidden="true"></i> Bình luận, góp ý</h3>
   </div>
   <div class="panel-body" id="comments">
 
@@ -12,14 +12,14 @@
       <div class="input-group mb15">
         <input type="text" class="form-control" id="txtComment">
         <span class="input-group-btn">
-          <button type="button" class="btn btn-default" id="btnCreateComment"><i class="fa fa-send-o text-primary"></i></button>
+          <button type="button" class="btn btn-default" id="btnCreateComment" style="border:none; border-left:1px solid #ddd"><i class="fa fa-send-o text-primary"></i></button>
         </span>
       </div>
     </div>
   </div>
   <%}%>
 
-
+<%- include('reply-modal') %>
 
   <script type="text/javascript">
     /*
@@ -58,6 +58,13 @@
         }
       });
 
+//sự kiện reply comment
+      $(document).on('click', '.btnReply', function (e) {
+        e.preventDefault();
+        let id = $(this).closest('li').attr('id');
+        $('#modalReply').modal();
+      });//-->kết thúc sự kiện comment trên từng câu hỏi
+
 
       function LoadComment(){
         $.ajax({
@@ -92,25 +99,26 @@
                                 comments +=    ' </section>';
 
                                 comments +=     '<section class="post-body">';
-                                  comments +=       '<p">'+v.comment+'</p>';
+                                  comments +=       '<p>'+v.comment+'</p>';
                                   comments +=     '</section>';
 
                                   comments +=     '<section class="post-footer">';
                                     comments +=       '<div class="post-footer-option container">';
                                       comments +=        ' <ul class="list-unstyled">';
                                         comments +=           '<li><a href="#"><i class="glyphicon glyphicon-thumbs-up"></i> Like</a></li>';
-                                        comments +=           '<li><a href="#"><i class="glyphicon glyphicon-comment"></i> Comment</a></li>';
+                                        comments +=           '<li id="'+v._id+'"><a href="#" class="btnReply"><i class="glyphicon glyphicon-comment"></i> Comment</a></li>';
                                         comments +=           '<li><a href="#"><i></i>'+v.created_at+'</a></li>';
                                         comments +=         '</ul>';
                                         comments +=      ' </div>';
                                         comments +=     '</section>';
                                         comments +=   '</div>';
                                       });
-                                      $('#comments').append(comments);
-                                    }
-                                  }
-                                });
-                              }
+              $('#comments').append(comments);
+              $('#comments').scrollTop($('#comments').height()/2);
+            }
+          }
+        });
+      }
 
       function GetGroupAndSubject(){
         var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
@@ -122,15 +130,19 @@
 
       //khi scroll lên top
       $('#comments').scroll(function() {
-        if($('#comments').scrollTop() == $('#comments').height() - $('#comments').height()) {
-          console.log('top');
+        if($('#comments').scrollTop() == 0) {
+          if(page>1){
+            page --;
+            LoadComment();
+          }
         }
       });
 
       //khi scroll tới cuối
       $('#comments').on('scroll', function() {
         if ($(this).scrollTop() + $(this).innerHeight() >=  $(this)[0].scrollHeight) {
-          console.log('bottom');
+          page++;
+          LoadComment();
         }
       });
     });
@@ -146,8 +158,8 @@
   </script>
 
   <style media="screen">
-    #divComment{
-      height:300px;
+    #comments{
+      height:200px;
       overflow: scroll;
       overflow-x:hidden;
     }

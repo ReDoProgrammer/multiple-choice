@@ -6,19 +6,30 @@ const Comment = require('../../models/comment-model');
 router.get('/list',(req,res)=>{
   const {page,group,subject} = req.query;
   let commentSize = config.commentSize;
-  Comment.find({
+  Comment.countDocuments({
     group:group,
     subject:subject
-  })
-  .populate('user','fullname avatar')
-  .sort({created_at:-1})
-  .skip((page-1)*commentSize)
-  .limit(commentSize)
-  .exec(function(err,comments){
+  },function(err,count){
     if(err){
-      console.log('get comments failed: '+new Error(err));
+      console.log('count comments failed: '+new Errror(err));
     }else{
-      res.send({code:200,msg:'Load comments successfully',comments:comments});
+      if(page*commentSize<=count){
+        Comment.find({
+          group:group,
+          subject:subject
+        })
+        .populate('user','fullname avatar')
+        .sort({created_at:-1})
+        .skip((page-1)*commentSize)
+        .limit(commentSize)
+        .exec(function(err,comments){
+          if(err){
+            console.log('get comments failed: '+new Error(err));
+          }else{
+            res.send({code:200,msg:'Load comments successfully',comments:comments});
+          }
+        });
+      }
     }
   });
 });

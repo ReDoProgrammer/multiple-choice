@@ -68,4 +68,12 @@ router.delete('/delete',middleware.isLoggedIn,(req,res)=>{
 
 });
 
+router.get('/check-logged-in',(req,res)=>{
+  if(req.session.user){
+    res.send({code:200,msg:'user is current logged in'});
+  }else{
+    res.send({code:100,msg:'guest visit this page'});
+  }
+});
+
 module.exports = router;

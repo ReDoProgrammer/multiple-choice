@@ -5,7 +5,6 @@ const common = require('../common/common');
 const commentSchema = new Schema({
   group: {type:String,default:''},
   subject:{type:String,default:''},
-  parent_id:{type:String,default:''},
   comment:{type:String,default:''},
   like:{type:Number,default:0},
   dislike:{type:Number,default:0},
@@ -14,7 +13,11 @@ const commentSchema = new Schema({
   user:{
       type:Schema.Types.ObjectId,
       ref:'user'
-    }
+    },
+  replies:[{
+      type:Schema.Types.ObjectId,
+      ref:'reply'
+    }]
 });
 
 module.exports = mongoose.model("comment",commentSchema);

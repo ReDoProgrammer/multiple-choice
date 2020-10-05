@@ -57,6 +57,7 @@
           });
         }
       });
+      // SetCommentControlsVisible();
 
 //sự kiện reply comment
       $(document).on('click', '.btnReply', function (e) {
@@ -105,9 +106,9 @@
                                   comments +=     '<section class="post-footer">';
                                     comments +=       '<div class="post-footer-option container">';
                                       comments +=        ' <ul class="list-unstyled">';
-                                        comments +=           '<li><a href="#"><i class="glyphicon glyphicon-thumbs-up"></i> Like</a></li>';
-                                        comments +=           '<li id="'+v._id+'"><a href="#" class="btnReply"><i class="glyphicon glyphicon-comment"></i> Comment</a></li>';
-                                        comments +=           '<li><a href="#"><i></i>'+v.created_at+'</a></li>';
+                                        comments +=           '<li class="li_Like"><a href="#" class = "btnLike"><i class="glyphicon glyphicon-thumbs-up"></i> Like</a></li>';
+                                        comments +=           '<li id="'+v._id+'" class="li_Comment"><a href="#" class="btnReply"><i class="glyphicon glyphicon-comment"></i> Comment</a></li>';
+                                        comments +=           '<li style="padding-left:25px;"><a href="">'+v.created_at+'</a></li>';
                                         comments +=         '</ul>';
                                         comments +=      ' </div>';
                                         comments +=     '</section>';
@@ -115,6 +116,7 @@
                                       });
               $('#comments').append(comments);
               $('#comments').scrollTop($('#comments').height()/2);
+              SetCommentControlsVisible();
             }
           }
         });
@@ -154,6 +156,23 @@
         $('#btnCreateComment').click();
       }
     });
+
+//hàm kiểm tra xem có đăng nhập hay không. Nếu không đăng nhập thì ẩn nút like và comment
+    function SetCommentControlsVisible(){
+      $.ajax({
+        url:'/comment/check-logged-in',
+        type:'get',
+        success:function(data){
+          if(data.code == 200){
+            $('.li_Like').show();
+            $('.li_Comment').show();
+          }else{
+            $('.li_Comment').hide();
+            $('.li_Like').hide();
+          }
+        }
+      });
+    }
 
   </script>
 

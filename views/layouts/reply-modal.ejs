@@ -1,0 +1,46 @@
+<!--modal reply comment --->
+<div class="modal fade" id="modalReply" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+aria-hidden="true">
+<body class="signwrapper">
+  <div class="sign-overlay"></div>
+  <div class="signpanel"></div>
+  <div class="panel signin" style="padding:0;">
+    <div class="panel panel-success" id="divReply" style="margin-bottom:2px;">
+      <div class="panel-heading" style="padding-top:5px; text-align: left;">
+        <h5 class="panel-title" style="margin-top:10px;"><i class="fa fa-reply" aria-hidden="true"></i> Trả lời bình luận</h5>
+      </div>
+      <div class="panel-body" id="replies">
+
+      </div>
+    </div>
+    <% if(user) { %>
+      <div class="post-footer-comment-wrapper">
+        <div class="comment-form">
+          <div class="input-group mb15">
+            <input type="text" class="form-control" id="txtComment">
+            <span class="input-group-btn">
+              <button type="button" class="btn btn-default" id="btnCreateComment"><i class="fa fa-send-o text-primary"></i></button>
+            </span>
+          </div>
+        </div>
+      </div>
+      <%}%>
+  </div><!-- panel -->
+</body>
+</div>
+
+<script type="text/javascript">
+  $('#btnCloseReplyModal').click(function(e){
+    e.preventDefault();
+    $('#modalReply').modal('hide');
+  });
+
+  function LoadReplies(id){
+
+  }
+</script>
+<style media="screen">
+  #replies{
+    height:200px;
+  }
+</style>

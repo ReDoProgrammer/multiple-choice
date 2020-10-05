@@ -22,6 +22,7 @@ var statistics = '';
       type:'get',
       success:function(data){
         if(data.code == 200){
+          $('#user-statistic').empty();
           $.each(data.statistics,function(k,g){
             if(g.subjects.length > 0){
                 statistics +=  '<div class="panel panel-primary" style="margin-bottom:2px;">';

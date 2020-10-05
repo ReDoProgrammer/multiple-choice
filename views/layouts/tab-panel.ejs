@@ -32,13 +32,17 @@
       success:function(data){
         if(data.code == 200){
           let menu = '';
-          menu =   '<h5 class="sidebar-title">'+name+'</h5>';
-          menu += '<ul class="nav nav-pills nav-stacked nav-quirk">';
+          if(data.subjects.length>0){
+            menu =   '<h5 class="sidebar-title">'+name+'</h5>';
+            menu += '<ul class="nav nav-pills nav-stacked nav-quirk">';
 
-          $.each(data.subjects,function(k,r){
-            menu += '<li><a href="/view?group='+meta+'&subject='+r.meta+'"><span class="text-primary">'+r.name+'</span></a></li>'
-          });
-          menu +=  '</ul>';
+            $.each(data.subjects,function(k,r){
+              menu += '<li><a href="/view?group='+meta+'&subject='+r.meta+'"><span class="text-primary">'+r.name+'</span></a></li>'
+            });
+            menu +=  '</ul>';
+          }
+
+
           $('#mainmenu').append(menu);
         }
 

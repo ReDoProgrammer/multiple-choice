@@ -4,6 +4,7 @@ Ví dụ: kiến thức chung, kiến thức chuyên ngành, tiếng anh, tin h�
 */
 
 const router = require('express').Router();
+const Group = require('../../models/group-model');
 const Subject = require('../../models/subject-model');
 const middleware = require('../../middlewares/middleware');
 
@@ -15,6 +16,7 @@ router.get('/list',(req,res)=>{
   let is_actived = req.query.is_actived;
   Subject.find({is_actived:is_actived})
   .populate('group')
+  .sort({group:1})
   .sort({order:1})
   .exec(function(err,subjects){
     if(err){
@@ -70,7 +72,13 @@ router.post('/add',middleware.isAdmin,(req,res)=>{
           if(err){
             console.log('create subject failed: '+new Error(err));
           }else{
-            res.send({code:200,msg:'Thêm môn học thành công',type:'success',subject:subject});
+            Group.findOneAndUpdate({_id:group},{$push:{subjects:subject}},function(err,gp){
+              if(err){
+                console.log('push subject into it\'s parent failed: '+new Error(err));
+              }else{
+                res.send({code:200,msg:'Thêm môn học thành công',type:'success',subject:subject});
+              }
+            });
           }
         });
       }

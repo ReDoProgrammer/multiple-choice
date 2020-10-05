@@ -1,4 +1,5 @@
 const router = require('express').Router();
+const Subject = require('../../models/subject-model');
 const Question = require('../../models/question-model');
 const User = require('../../models/user-model');
 const middleware = require('../../middlewares/middleware');
@@ -45,7 +46,13 @@ router.post('/add',middleware.isLoggedIn,(req,res)=>{
           if(err){
             console.log('created question failed: '+new Error(err));
           }else{
-            res.send({code:200,type:'success',msg: req.session.user.is_admin?'Đăng câu hỏi thành công':'Đăng câu hỏi thành công. Chân thành cảm ơn sự đóng góp của bạn'});
+            Subject.findOneAndUpdate({_id:subject},{$push:{questions:q}},(err,s)=>{
+              if(err){
+                console.log('pust question into subject failed: '+new Error(err));
+              }else{
+                res.send({code:200,type:'success',msg: req.session.user.is_admin?'Đăng câu hỏi thành công':'Đăng câu hỏi thành công. Chân thành cảm ơn sự đóng góp của bạn'});
+              }
+            });
           }
         });
       }
@@ -170,7 +177,14 @@ router.post('/fetch-and-insert',middleware.isAdmin,(req,res)=>{
         if(err){
           console.log('fetch question failed: '+new Error(err));
         }else{
-          res.send({code:200,msg:'sao chép câu hỏi thành công'});
+          Subject.findOneAndUpdate({_id:subject},{$push:{questions:result}},(err,s)=>{
+            if(err){
+              console.log('push questions into subject failed: '+new Error(err));
+            }else{
+              res.send({code:200,msg:'sao chép câu hỏi thành công'});
+            }
+          });
+
         }
       });
     };

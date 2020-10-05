@@ -5,6 +5,7 @@ const router = require('express').Router();
 const middleware = require('../../middlewares/middleware');
 const Group = require('../../models/group-model');
 const Subject = require('../../models/subject-model');
+const DocType = require('../../models/doc-type-model');
 const Document = require('../../models/document-model');
 
 router.get('/',middleware.isAdmin,(req,res)=>{
@@ -23,7 +24,14 @@ router.post('/create',middleware.isAdmin,(req,res)=>{
     if(err){
       console.log('create new document failed: '+new Error(err));
     }else{
-      res.send({code:200,msg:'Tạo mới tài liệu thành công'});
+      //push child item into parents
+      DocType.findOneAndUpdate({_id:doctype},{$push:{documents:doc}},function(err,dt){
+        if(err){
+          console.log('push document into parents failed: '+new Error(err));
+        }else{
+          res.send({code:200,msg:'Tạo mới tài liệu thành công'});
+        }
+      });
     }
   });
 });

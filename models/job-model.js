@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 const jobSchema = new Schema({
   name:{type:String,default:''},
-  user:[{
+  users:[{
     type: Schema.Types.ObjectId,
     ref:'user'
   }]

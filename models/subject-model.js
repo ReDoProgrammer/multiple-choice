@@ -9,7 +9,7 @@ const subjectSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref:  'group'
   },
-  question:[{
+  questions:[{
     type:Schema.Types.ObjectId,
     ref:'question'
   }],

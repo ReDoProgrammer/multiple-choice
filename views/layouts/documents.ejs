@@ -52,7 +52,7 @@
         subject:subject
       },
       success:function(data){
-        let content = '<h4>Câu hỏi trong mỗi bài thi được lấy ngẫu nhiên từ <span class="text-danger">'+data.count+'</span> câu hỏi từ <span class="text-info">'+data.subject.description+'</span></h4>';
+        let content = '<p>Câu hỏi trong mỗi bài thi được lấy ngẫu nhiên từ <span class="text-danger">'+data.count+'</span> câu hỏi từ <span class="text-info">'+data.subject.description+'</span></p>';
         $('#summary').html(content);
       }
     });

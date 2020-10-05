@@ -18,7 +18,11 @@ const subjectSchema = new Schema({
     ref:'user'
   },
   is_actived:{type:Boolean,default:false},
-  order:{type:Number,default: 0}
+  order:{type:Number,default: 0},
+  statistics:[{
+    type:Schema.Types.ObjectId,
+    ref:'statistic'
+  }]
 });
 
 module.exports = mongoose.model("subject",subjectSchema);

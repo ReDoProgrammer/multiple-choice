@@ -12,7 +12,8 @@
       </div>
       <% if(user) { %>
         <div class="modal-footer">
-            <label for="" id="lblCommentMsg" class="text-danger"></label>
+          <label for="" id="lblCommentMsg" class="text-danger"></label>
+          <input type="text" id="txtPushedQuestionId" value="" hidden>
           <div class="input-group mb15">
             <input type="text" class="form-control" id="txtCommentQuestion" style="border: solid 1px #696c74;">
             <span class="input-group-btn">
@@ -32,13 +33,18 @@
       $('#lblCommentMsg').text('Vui lòng nhập nội dung bạn muốn góp ý!');
       return;
     }
-    comment = '<b class="text-danger">'+$('#pushedQuestion').text()+'</b>: '+comment;
+    let pushedQuestionId = $('#txtPushedQuestionId').val();
+    comment = '<b class="text-danger">'+$('#pushedQuestion').text()+'</b>: '+comment + '<span hidden>'+pushedQuestionId+'</span>';
     let group,subject;
     var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
     if(hashes.length==2){
       group =(hashes[0].split('='))[1];
       subject = (hashes[1].split('='))[1];
+    }else{
+      return;
     }
+
+
     $.ajax({
       url:'/comment/create',
       type:'post',

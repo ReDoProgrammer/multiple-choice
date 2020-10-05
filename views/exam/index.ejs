@@ -315,7 +315,7 @@
           }
 
           //---> kết thúc thống kê chi tiết kết quả làm bài
-          
+
           // gọi tới hàm thống kê kết quả các bài thi của thành viên trong template /layout/statistic.ejs
           StatistisUserSummaryExam();
     }
@@ -349,6 +349,7 @@
       let id = $(this).closest('li').attr('id');
       let question = $(this).closest('li').find('label').find('strong').text();
       $('#pushedQuestion').text(question);
+      $('#txtPushedQuestionId').val(id);
       $('#txtCommentQuestion').val('');
       $('#comment-on-question').modal();
     });//-->kết thúc sự kiện comment trên từng câu hỏi

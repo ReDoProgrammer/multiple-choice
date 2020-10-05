@@ -39,14 +39,24 @@ router.get('/random-questions',(req,res)=>{
     if(err){
       res.send({code:500,type:'danger',msg:'can not find subject '+new Error(err)});
     }else{
-      Question.findRandom({subject:s._id}, {}, {limit: questionNumber}, function(err, results) {
-        if (err) {
-          res.send({code:500,type:'danger',msg:'can not get random question: '+new Error(err)});
-        }else{
-          res.send({code:200,type:'success',msg:'get random questions successfully',questions:results});
-        }
+      // Question.findRandom({subject:s._id}, {}, {limit: questionNumber}, function(err, results) {
+      //   if (err) {
+      //     res.send({code:500,type:'danger',msg:'can not get random question: '+new Error(err)});
+      //   }else{
+      //     res.send({code:200,type:'success',msg:'get random questions successfully',questions:results});
+      //   }
+      // });
+      Question.countDocuments({subject:s._id},function(err,count){
+        let random = Math.floor(Math.random() * (count-55));
+        Question.find({subject:s._id})
+        .skip(random)
+        .limit(55)
+        .exec(function(err,questions){
+           res.send({code:200,type:'success',msg:'get random questions successfully',questions:questions});
+        })
 
       });
+
     }
   });
 

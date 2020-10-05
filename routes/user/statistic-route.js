@@ -78,7 +78,7 @@ router.get('/profile',middleware.isLoggedIn,(req,res)=>{
     if(err){
       console.log('/statistic/profile failed: '+new Error(err));
     }else{
-      res.send({code:200,msg:'get profile in statistic successfully',groups:dt});
+      res.send({code:200,msg:'get profile in statistic successfully',statistics:dt});
     }
   })
 });

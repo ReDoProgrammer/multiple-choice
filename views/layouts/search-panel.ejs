@@ -15,14 +15,38 @@
   });
   $('#btnSearch').click(function(){
     let search = $('#txtSearch').val();
+    let group='',subject = '';
     var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+
     if(hashes.length == 2){
-      let group =(hashes[0].split('='))[1];
-      let subject = (hashes[1].split('='))[1];
-      console.log(group,subject);
-    }else {
-      console.log(0);
+       group =(hashes[0].split('='))[1];
+       subject = (hashes[1].split('='))[1];
     }
+    var url = location.protocol+'//'+location.hostname+(location.port ? ':'+location.port: '')+'/s';
+    if(group.length > 0){
+      if(subject.length>0){
+        url += '?group='+group+'&subject='+subject+'&key='+search;
+      }else{
+        url += '?group='+group+'&key='+search;
+      }
+
+    }else{
+      url +='?key='+search;
+    }
+    window.location.href = url;
+    console.log(url);
+    // $.ajax({
+    //   url:'/admin/question/search',
+    //   type:'get',
+    //   data:{
+    //     group:group,
+    //     subject:subject,
+    //     search:search
+    //   },
+    //   success:function(data){
+    //     console.log(data);
+    //   }
+    // });
 
   });
 </script>

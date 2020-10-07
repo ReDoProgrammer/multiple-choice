@@ -1,6 +1,11 @@
 <div class="tab-pane active" id="mainmenu">
+  <header>
+    <a href="/"><i class="fa fa-home mr5"></i> Trang chủ</a>
+  </header>
+  <ul class="nav" id="menuGroups">
+  </ul>
+</div>
 
-</div><!-- tab-pane -->
 
 <script type="text/javascript">
   var g = $.when();
@@ -12,41 +17,67 @@
         is_actived:true
       }
     }).done(function(data){
+      let groups = '';
       data.groups.forEach(function(k,r){
-        g = g.then(function(){
-          return addSub(k._id,k.name,k.meta);
+        groups += '<li>';
+          groups +=  '<a href="/view?group='+k.meta+'">';
+            groups +=  '<i class="zmdi zmdi-view-dashboard"></i> '+k.name;
+            groups +='</a>';
+            groups +='</li>';
+          });
+          $('#menuGroups').append(groups);
         });
+        ;
       });
-    });
-    ;
-  });
+    </script>
 
-  function addSub(id,name,meta){
-    return $.ajax({
-      url:'/admin/subject/list-by-group',
-      type:'get',
-      data:{
-        group:id,
-        is_actived:true
-      },
-      success:function(data){
-        if(data.code == 200){
-          let menu = '';
-          if(data.subjects.length>0){
-            menu =   '<h5 class="sidebar-title">'+name+'</h5>';
-            menu += '<ul class="nav nav-pills nav-stacked nav-quirk">';
+    <style media="screen">
+      #mainmenu {
+        left: 150px;
+        overflow-y: auto;
+        background: #37474F;
+        -webkit-transition: all 0.5s ease;
+        -moz-transition: all 0.5s ease;
+        -o-transition: all 0.5s ease;
+        transition: all 0.5s ease;
+      }
 
-            $.each(data.subjects,function(k,r){
-              menu += '<li><a href="/view?group='+meta+'&subject='+r.meta+'"><span class="text-primary">'+r.name+'</span></a></li>'
-            });
-            menu +=  '</ul>';
-          }
+      #mainmenu header {
+        background-color: #263238;
+        font-size: 20px;
+        line-height: 22px;
+        padding: 10px 5px;
+        padding-left: 16px;
+      }
 
+      #mainmenu header a {
+        color: #fff;
+        display: block;
+        text-decoration: none;
+      }
 
-          $('#mainmenu').append(menu);
-        }
+      #mainmenu header a:hover {
+        color: #fff;
+      }
+
+      #mainmenu .nav{
 
       }
-    });
-  }
-</script>
+
+      #mainmenu .nav a{
+        background: none;
+        border-bottom: 1px solid #455A64;
+        color: #CFD8DC;
+        font-size: 14px;
+        padding: 16px 5px;
+      }
+
+      #mainmenu .nav a:hover{
+        background: none;
+        color: #ECEFF1;
+      }
+
+      #mainmenu .nav a i{
+        margin-right: 16px;
+      }
+    </style>

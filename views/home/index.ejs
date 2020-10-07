@@ -1,16 +1,153 @@
 
 <div class="row">
   <div class="col-md-8 col-sm-12 col-xs-12">
-    <%- include('../layouts/documents') %>
+    <div class="panel panel-success">
+      <div class="panel-heading" style="padding-top:5px; padding-bottom:5px;">
+        <%if(locals.group){%>
+          <%if(locals.subject) {%>
+            <h1 class="panel-title" style = "text-align:left; text-transform: uppercase; margin-top:5px; padding-top:5px; padding-bottom:5px;"><i class="fa fa-book text-warning" aria-hidden="true"></i> Kiến thức <%=group.name%> môn <%=subject.name%>.</h1>
+          <%}else{%>
+            <h1 class="panel-title" style = "text-align:left; text-transform: uppercase; margin-top:5px; padding-top:5px; padding-bottom:5px;"><i class="fa fa-book text-warning" aria-hidden="true"></i> Tổng quan kiến thức <%= group.name%>.</h1>
+          <%}%>
+        <%}else{%>
+            <h1 class="panel-title" style = "text-align:left; text-transform: uppercase; margin-top:5px; padding-top:5px; padding-bottom:5px;"><i class="fa fa-book text-warning" aria-hidden="true"></i> NHỮNG TÍNH NĂNG NỔI BẬT CỦA WEBSITE THI TRẮC NGHIỆM MIỄN PHÍ.</h1>
+        <%}%>
+
+      </div>
+      <div class="panel-body" style="min-height:200px;">
+        <%if(locals.group){%>
+          <%if(locals.subject){%>
+            <p>
+              <%=subject.description%>
+              <%=subject.questions.length%>
+            </p>
+            <div id="divSummary"> </div>
+          <%}else{%>
+            <ul class="list-unstyled mb20">
+              <% subjects.forEach(function(r) { %>
+                <li>
+                  <h4 class="text-success"><%=r.name%> <a href="/view?group=<%=group.meta%>&subject=<%=r.meta%>"><i class="fa fa-info-circle text-warning" aria-hidden="true"></i> <span class="text-danger">Chi tiết</span></a></h4>
+                  <%if(r.questions.length > 0){%>
+                      <p style="padding-left:10px;">Với <span class="text-danger"><b><%=r.questions.length%></b></span> câu hỏi từ <%=r.description%></p>
+                  <%}else{%>
+                      <p style="padding-left:10px;"><%=r.description%></p>
+                  <%}%>
+
+                </li>
+              <% }) %>
+            </ul>
+          <%}%>
+        <%}else{%>
+          <%- include('../news/hot-news') %>
+        <%}%>
+      </div>
+    </div>
   </div>
   <div class="col-md-4 col-sm-12 col-xs-12">
     <%- include('../layouts/comment') %>
   </div>
 </div>
 
+<!-- thống kê thứ hạng thành viên -->
+<div class="row" id="ranks">
+  <div class="col-md-6 col-sm-12 col-xs-12" id="timesRank">
+      <div class="panel panel-success">
+        <div class="panel-heading" style="padding-top:5px; padding-bottom:5px;">
+          <h4 class="panel-title" style = "text-align:left; text-transform: uppercase; margin-top:5px; padding-top:5px; padding-bottom:5px; font-size:15px;"> <i class="fa fa-bar-chart" aria-hidden="true"></i> Xếp hạng lượt làm bài</h4>
+        </div>
+      <div class="panel-body" id="timesRankBody">
+
+      </div>
+      </div>
+  </div>
+  <div class="col-md-6 col-sm-12 col-xs-12">
+
+  </div>
+</div>
+
+
+
+
 
 
 <script type="text/javascript">
   $(document).ready(function(){
+
+    //ẩn thống kê ranks
+    $('#ranks').hide();
+
+    let subjectId = $('#direction li.active').attr('id');
+
+    if(typeof subjectId !== 'undefined'){
+      console.log(subjectId);
+      $.ajax({
+        url:'/admin/document//list-by-subject',
+        type:'get',
+        data:{
+          subjectId:subjectId
+        },
+        success:function(data){
+          if(data.code == 200){
+            let tblData = '<h2 class="text-warning">Tài liệu <span style = "text-transform:lowercase;"><%if(locals.subject){%><%=subject.name%> <%=group.name %><%}%></span></h2><hr>';
+              tblData += '<ul class="list-unstyled mb20">';
+            $.each(data.documents,function(k,v){
+              tblData += '<li style="padding-left:20px;"><h5><span>'+v.doctype.icon+'</span>&nbsp;<a href="'+v.link+'" target="_blank">'+v.name+'</a></h5>';
+              tblData += '<p style="padding-left:25px;">'+v.description+'</p>'
+              tblData +=  '</li><hr>';
+            });
+            tblData += '</ul>'
+            $('#divSummary').append(tblData);
+          }
+        }
+      });
+    }
+
+    Rank();
   });
+
+
+  function Rank(){
+    let subjectId = $('#direction li.active').attr('id');
+
+    if(typeof subjectId !== 'undefined'){
+      $.ajax({
+        url:'/statistic/ranks',
+        type:'get',
+        data:{
+          subjectId:subjectId
+        },
+        success:function(data){
+          if(data.code == 200){
+            $('#ranks').show();
+            let ranks = '<ul class="list-unstyled mb20">';
+              let idx = 1;
+            $.each(data.ranks,function(k,v){
+              ranks +=  '<div class="row">';
+              ranks +=   '<div class="col-xs-2">';
+              ranks +=     '<h5>#'+(idx++)+'</h5>';
+              ranks +=   '</div>';
+              ranks +=   '<div class="col-xs-8">';
+              ranks +=     '<div class="media">';
+              ranks +=       '<div class="media-left">';
+              ranks +=        ' <img class="media-object photo-profile" src="'+v.user.avatar+'" alt="...">';
+              ranks +=     '</div>';
+              ranks +=     '<div class="media-body">';
+              ranks +=       '<a href="#" class="anchor-username">';
+              ranks +=         '<h4 class="media-heading">'+v.user.member_code+'</h4>';
+              ranks +=       '</a>';
+              ranks +=     '</div>';
+              ranks +=   '</div>';
+              ranks +=   '</div>';
+              ranks +=   '<div class="col-xs-2">';
+              ranks +=     '<h5>'+v.times+' lần</h5>';
+              ranks +=   '</div>';
+              ranks += '</div>';
+            });
+            ranks +='</ul>';
+            $('#timesRankBody').append(ranks);
+          }
+        }
+      });
+    }
+  }
 </script>

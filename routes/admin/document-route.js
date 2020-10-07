@@ -63,32 +63,17 @@ router.get('/list',(req,res)=>{
 });
 
 router.get('/list-by-subject',(req,res)=>{
-  let {group,subject} = req.query;
-  Group.findOne({meta:group},function(err,gr){
+  let {subjectId} = req.query;
+  Document.find({subject:subjectId})
+  .populate('doctype','icon icon_class')
+  .exec(function(err,documents){
     if(err){
-      console.log('find group in /document/list-by-subject failed: '+new Error(err));
+      console.log('find document in list document by subject failed: '+new Error(err));
     }else{
-      if(gr){
-        Subject.findOne({group:gr._id,meta:subject},function(err,sbj){
-          if(err){
-            console.log('find subject failed in document/list-by-subject: '+new Error(err));
-          }else{
-            if(sbj){
-              Document.find({subject:sbj._id})
-              .populate('doctype','icon icon_class')
-              .exec(function(err,documents){
-                if(err){
-                  console.log('find document in list document by subject failed: '+new Error(err));
-                }else{
-                  res.send({code:200,msg:'list document by subject successfully',documents:documents});
-                }
-              });
-            }
-          }
-        });
-      }
+      res.send({code:200,msg:'list document by subject successfully',documents:documents});
     }
   });
+
 });
 
 module.exports = router;

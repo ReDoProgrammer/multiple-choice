@@ -5,11 +5,22 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-  <meta name="description" content="Thi trắc nghiệm công chức, ôn thi công chức, ôn thi viên chức, thi trăc nghiệm viên chức">
+  <% if(locals.group){%>
+    <%if(locals.subject){%>
+      <title>Hệ thống câu hỏi trắc nghiệm có đáp án <%= group.name %> <%= subject.name %></title>
+      <meta name="description" content="Website thi trắc nghiệm miễn phí có đáp án <%= group.name %> môn <%= subject.name %>. <%= subject.description %>">
+    <%}else{%>
+      <title>Hệ thống câu hỏi trắc nghiệm có đáp án <%= group.name %></title>
+      <meta name="description" content="Website thi trắc nghiệm miễn phí có đáp án <%= group.name %>">
+    <%}%>
+  <%}else{%>
+      <title>Website thi trắc nghiệm online miễn phí, trắc nghiệm thi công chức, câu hỏi thi trắc nghiệm công chức có đáp án</title>
+      <meta name="description" content="Trang chủ thi trắc nghiệm miễn phí có đáp án redoapp.com">
+  <%}%>
   <meta name="author" content="ReDo">
     <!--<link rel="shortcut icon" href="/user/images/favicon.png" type="image/png">-->
 
-  <title>Website thi trắc nghiệm online miễn phí, trắc nghiệm thi công chức, câu hỏi thi trắc nghiệm công chức có đáp án</title>
+
   <link rel="shortcut icon" href="/images/icon.ico">
   <link rel="stylesheet" href="/user/lib/fontawesome/css/font-awesome.css">
   <link rel="stylesheet" href="/user/lib/weather-icons/css/weather-icons.css">
@@ -42,7 +53,7 @@
 
         <%- include('layouts/search-panel') %>
 
-        <% if(user) { %>
+        <% if(locals.user) { %>
           <%- include('layouts/header-right.ejs') %>
         <%}else{%>
           <%- include('layouts/login-register') %>
@@ -58,7 +69,7 @@
 
         <!-- ################## LEFT PANEL PROFILE ################## -->
 
-      <% if(user) {%>
+      <% if(locals.user) {%>
           <%- include('layouts/profile.ejs') %>
       <%}%>
 
@@ -66,11 +77,11 @@
 
         <ul class="nav nav-tabs nav-justified nav-sidebar" style="padding-bottom:0; margin-bottom:1px;">
 
-          <%if(user){%>
+          <%if(locals.user){%>
             <li class="tooltips active" data-toggle="tooltip" title="Main Menu"><a data-toggle="tab" data-target="#mainmenu"><i class="tooltips fa fa-ellipsis-h"></i></a></li>
-            <li class="tooltips unread" data-toggle="tooltip" title="Check Mail"><a data-toggle="tab" data-target="#emailmenu"><i class="tooltips fa fa-envelope"></i></a></li>
+            <!-- <li class="tooltips unread" data-toggle="tooltip" title="Check Mail"><a data-toggle="tab" data-target="#emailmenu"><i class="tooltips fa fa-envelope"></i></a></li> -->
             <li class="tooltips" data-toggle="tooltip" title="Thống kê"><a data-toggle="tab" data-target="#user-statistic"><i class="fa fa-bar-chart" aria-hidden="true"></i></a></li>
-            <li class="tooltips" data-toggle="tooltip" title="Settings"><a data-toggle="tab" data-target="#settings"><i class="fa fa-cog"></i></a></li>
+            <!-- <li class="tooltips" data-toggle="tooltip" title="Settings"><a data-toggle="tab" data-target="#settings"><i class="fa fa-cog"></i></a></li> -->
             <li class="tooltips" data-toggle="tooltip" title="Log Out"><a href="#" id="aLogout"><i class="fa fa-sign-out"></i></a></li>
           <%}else{%>
             <li class="tooltips" data-toggle="tooltip" title="Main Menu"><a data-toggle="tab" data-target="#mainmenu"><i class="tooltips fa fa-ellipsis-h"></i></a></li>
@@ -108,14 +119,14 @@
           </div><!-- tab-pane -->
 
           <!-- ################### CONTACT LIST ################### -->
-          <% if(user) {%>
+          <% if(locals.user) {%>
             <%- include('layouts/user-statistic.ejs') %>
           <%}%>
 
 
           <!-- #################### SETTINGS ################### -->
 
-          <%if(user){%>
+          <%if(locals.user){%>
             <%- include('layouts/user-setting') %>
           <%}%>
 
@@ -127,11 +138,13 @@
 
     <div class="mainpanel">
       <div class="contentpanel" style="padding-left:5px; padding-right:5px;">
-        <ol class="breadcrumb breadcrumb-quirk">
+        <ol class="breadcrumb breadcrumb-quirk" id="direction">
           <li><a href="/"><i class="fa fa-home mr5"></i> Home</a></li>
-          <%if(subject && group){%>
-            <li id="group"><a href="#"><%= (group.name) %></a></li>
-            <li class="active" id="subject"><%= subject.name %></li>
+          <%if(locals.group){%>
+            <li id="<%= group._id %>"><a href="/view?group=<%=group.meta%>"><%= (group.name) %></a></li>
+            <% if(locals.subject){%>
+              <li class="active" id="<%= subject._id %>"><a href="/view?group=<%=group.meta%>&subject=<%=subject.meta%>"><%= (subject.name) %></a></li>
+            <%}%>
           <%}%>
         </ol>
         <!-- content goes here... -->

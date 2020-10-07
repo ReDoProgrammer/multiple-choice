@@ -1,4 +1,5 @@
 const router = require('express').Router();
+const Group = require('../../models/group-model');
 const Subject = require('../../models/subject-model');
 const Question = require('../../models/question-model');
 const User = require('../../models/user-model');
@@ -189,6 +190,46 @@ router.post('/fetch-and-insert',middleware.isAdmin,(req,res)=>{
       });
     };
   });
-})
+});
+
+//tìm kiếm trên layout
+router.get('/search',(req,res)=>{
+  let {group,subject,search} = req.query;
+
+  if(group.length > 0 && subject.length > 0){
+    Group.findOne({meta:group},function(err,gr){
+      if(err){
+        console.log('find group in /admin/question/search failed: '+new Error(err));
+      }else{
+        if(gr){
+          Subject.findOne({meta:subject,group:gr._id},function(err,sbj){
+            if(err){
+              console.log('find subject in /admin/question/search failed: '+new Error(err));
+            }else{
+              if(sbj){
+                Question.find({
+                  subject:sbj._id,
+                  question: { $regex: search, $options: "i" }
+                },function(err,questions){
+                  if(err){
+                    console.log('find question in /admin/question/search failed: '+new Error(err));
+                  }else{
+                    console.log(questions);
+                  }
+                });
+              }else{
+                console.log('subject is not exists in /admin/question/search');
+              }
+            }
+          });
+        }else{
+          console.log('group is not exists in /admin/question/search');
+        }
+      }
+    });
+  }else{
+
+  }
+});
 
 module.exports = router;

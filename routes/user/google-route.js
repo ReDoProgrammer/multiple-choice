@@ -21,7 +21,7 @@ passport.use(new GoogleStrategy({
           username:profile.id,
           fullname:profile.displayName,
           avatar:profile.photos[0].value,
-          member_code:common.MemberCode
+          member_code:common.MemberCode()
         }, function (err, user) {
           if(err){
             console.log('find or create user failed: '+new Error(err));

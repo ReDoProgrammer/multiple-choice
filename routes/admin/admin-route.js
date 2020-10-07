@@ -56,7 +56,7 @@ router.get('/init',(req,res)=>{
         fullname:'Nguyễn Hữu Trường',
         is_admin:true,
         is_censor:true,
-        member_code:common.MemberCode,
+        member_code:common.MemberCode(),
         avatar:'/user/images/photos/loggeduser.png'
       });
 

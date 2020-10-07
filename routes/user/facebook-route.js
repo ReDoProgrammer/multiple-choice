@@ -31,7 +31,7 @@ router.get('/account', ensureAuthenticated, function(req, res) {
           username:id,
           fullname:req.user.displayName,
           avatar:req.user.photos[0].value,
-          member_code:common.MemberCode
+          member_code:common.MemberCode()
         },function(err,usr){
           if(err){
             console.log('create user via facebook user failed: '+new Error(err));

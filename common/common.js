@@ -9,7 +9,8 @@ module.exports.MemberCode = ()=>{
   let minutes = d.c.minute;
   let seconds = d.c.second;
   let millisecond = d.c.millisecond;
-  return year+month+day+hour+minutes+seconds+millisecond;
+  let member_code = year+month+day+hour+minutes+seconds+millisecond
+  return member_code;
 }
 
 module.exports.currentTime = ()=>{

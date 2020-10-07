@@ -7,7 +7,10 @@ aria-hidden="true">
   <div class="panel signin" style="padding:0;">
     <div class="panel panel-success" id="divReply" style="margin-bottom:2px;">
       <div class="panel-heading" style="padding-top:5px; text-align: left;">
-        <h5 class="panel-title" style="margin-top:10px;"><i class="fa fa-reply" aria-hidden="true"></i> Trả lời bình luận</h5>
+        <h5 class="panel-title" style="margin-top:10px;"><i class="fa fa-reply" aria-hidden="true">
+        </i> Trả lời bình luận <span><a href="#" id="btnCloseReplyModal">
+          <i class="fa fa-times text-warning" aria-hidden="true"></i></a></span></h5>
+        <input type="text" id="txtCommentId" hidden value="">
       </div>
       <div class="panel-body" id="replies">
 
@@ -17,9 +20,9 @@ aria-hidden="true">
       <div class="post-footer-comment-wrapper">
         <div class="comment-form">
           <div class="input-group mb15">
-            <input type="text" class="form-control" id="txtComment">
+            <input type="text" class="form-control" id="txtReply">
             <span class="input-group-btn">
-              <button type="button" class="btn btn-default" id="btnCreateComment"><i class="fa fa-send-o text-primary"></i></button>
+              <button type="button" class="btn btn-default" id="btnCreateReply"><i class="fa fa-send-o text-primary"></i></button>
             </span>
           </div>
         </div>
@@ -30,17 +33,107 @@ aria-hidden="true">
 </div>
 
 <script type="text/javascript">
+  /*
+    BIẾN TOÀN CỤC
+  */
+  var commentId='';
+//sự kiên shown của modal reply
+  $('#modalReply').on('show.bs.modal', function() {
+      commentId = $('#txtCommentId').val();
+      LoadReplies(commentId);
+  })
+
+//sự kiện đóng modal
   $('#btnCloseReplyModal').click(function(e){
     e.preventDefault();
     $('#modalReply').modal('hide');
   });
 
+//hàm load reply
   function LoadReplies(id){
+    $.ajax({
+      url:'/reply/list',
+      type:'get',
+      data:{
+        commentId:id
+      },
+      success:function(data){
+        if(data.code == 200){
+          $('#replies').empty();
+          let replies = '';
+          $.each(data.replies,function(k,v){
+            replies +=  '<div class="comment_line">';
+            replies +=     '<section class="post-heading">';
+            replies +=       '<div class="row">';
+            replies +=         '<div class="col-md-12">';
+            replies +=           '<div class="media">';
+            replies +=             '<div class="media-left">';
+            replies +=               '<a href="#">';
+            replies +=                ' <img class="media-object photo-profile" src="'+v.user.avatar+'" alt="...">';
+            replies +=               '</a>';
+            replies +=             '</div>';
+            replies +=             '<div class="media-body">';
+            replies +=               '<a href="#" class="anchor-username"><h4 class="media-heading">'+v.user.fullname+'</h4></a>';
+            replies +=            ' </div>';
+            replies +=           '</div>';
+            replies +=        ' </div>';
+            replies +=      ' </div>';
+            replies +=    ' </section>';
 
+            replies +=     '<section class="post-body">';
+            replies +=       '<p>'+v.reply+'</p>';
+            replies +=     '</section>';
+
+          //   replies +=     '<section class="post-footer">';
+          //   replies +=       '<div class="post-footer-option container">';
+          // //  replies +=        ' <ul class="list-unstyled">';
+          // //  replies +=           '<li class="li_Like"><a href="#" class = "btnLike"><i class="glyphicon glyphicon-thumbs-up"></i> Like</a></li>';
+          // //  replies +=           '<li id="'+v._id+'" class="li_Comment"><a href="#" class="btnReply"><i class="glyphicon glyphicon-comment"></i> Comment</a></li>';
+          //   //replies +=           '<li style="padding-left:25px;"><a href="">'+v.created_at+'</a></li>';
+          // //  replies +=         '</ul>';
+          //   replies +=      ' </div>';
+          //   replies +=     '</section>';
+          //   replies +=   '</div>';
+          });
+          $('#replies').append(replies);
+        }
+      }
+    });
   }
+
+  //sự kiện gửi reply
+  $('#btnCreateReply').click(function(){
+    commentId = $('#txtCommentId').val();
+    let reply = $('#txtReply').val();
+    $.ajax({
+      url:'/reply/create',
+      type:'post',
+      data:{
+        commentId:commentId,
+        reply:reply
+      },
+      success:function(data){
+        if(data.code == 200){
+          $('#txtReply').val('');
+          LoadReplies(commentId);
+        }
+      }
+    });
+  });
+
+  //sự kiện enter ở textbox reply
+  $('#txtReply').keyup(function(e){
+    if(e.keyCode == 13){
+        $('#btnCreateReply').click();
+    }
+});
+
+
 </script>
 <style media="screen">
   #replies{
     height:200px;
+    overflow: scroll;
+    overflow-x:hidden;
   }
 </style>

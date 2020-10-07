@@ -63,6 +63,7 @@
       $(document).on('click', '.btnReply', function (e) {
         e.preventDefault();
         let id = $(this).closest('li').attr('id');
+        $('#txtCommentId').val(id);
         $('#modalReply').modal();
       });//-->kết thúc sự kiện comment trên từng câu hỏi
 
@@ -78,42 +79,41 @@
           },
           success:function(data){
             if(data.code == 200){
-              $('#comments').empty();
               let comments = '';
               $.each(data.comments,function(k,v){
                 comments +=  '<div class="comment_line">';
-                  comments +=     '<section class="post-heading">';
-                    comments +=       '<div class="row">';
-                      comments +=         '<div class="col-md-12">';
-                        comments +=           '<div class="media">';
-                          comments +=             '<div class="media-left">';
-                            comments +=               '<a href="#">';
-                              comments +=                ' <img class="media-object photo-profile" src="'+v.user.avatar+'" alt="...">';
-                              comments +=               '</a>';
-                              comments +=             '</div>';
-                              comments +=             '<div class="media-body">';
-                                comments +=               '<a href="#" class="anchor-username"><h4 class="media-heading">'+v.user.fullname+'</h4></a>';
-                                comments +=            ' </div>';
-                                comments +=           '</div>';
-                                comments +=        ' </div>';
-                                comments +=      ' </div>';
-                                comments +=    ' </section>';
+                comments +=     '<section class="post-heading">';
+                comments +=       '<div class="row">';
+                comments +=         '<div class="col-md-12">';
+                comments +=           '<div class="media">';
+                comments +=             '<div class="media-left">';
+                comments +=               '<a href="#">';
+                comments +=                ' <img class="media-object photo-profile" src="'+v.user.avatar+'" alt="...">';
+                comments +=               '</a>';
+                comments +=             '</div>';
+                comments +=             '<div class="media-body">';
+                comments +=               '<a href="#" class="anchor-username"><h4 class="media-heading">'+v.user.fullname+'</h4></a>';
+                comments +=            ' </div>';
+                comments +=           '</div>';
+                comments +=        ' </div>';
+                comments +=      ' </div>';
+                comments +=    ' </section>';
 
-                                comments +=     '<section class="post-body">';
-                                  comments +=       '<p>'+v.comment+'</p>';
-                                  comments +=     '</section>';
+                comments +=     '<section class="post-body">';
+                comments +=       '<p>'+v.comment+'</p>';
+                comments +=     '</section>';
 
-                                  comments +=     '<section class="post-footer">';
-                                    comments +=       '<div class="post-footer-option container">';
-                                      comments +=        ' <ul class="list-unstyled">';
-                                        comments +=           '<li class="li_Like"><a href="#" class = "btnLike"><i class="glyphicon glyphicon-thumbs-up"></i> Like</a></li>';
-                                        comments +=           '<li id="'+v._id+'" class="li_Comment"><a href="#" class="btnReply"><i class="glyphicon glyphicon-comment"></i> Comment</a></li>';
-                                        comments +=           '<li style="padding-left:25px;"><a href="">'+v.created_at+'</a></li>';
-                                        comments +=         '</ul>';
-                                        comments +=      ' </div>';
-                                        comments +=     '</section>';
-                                        comments +=   '</div>';
-                                      });
+                comments +=     '<section class="post-footer">';
+                comments +=       '<div class="post-footer-option container">';
+                comments +=        ' <ul class="list-unstyled">';
+                //comments +=           '<li class="li_Like"><a href="#" class = "btnLike"><i class="glyphicon glyphicon-thumbs-up"></i> Like</a></li>';
+                comments +=           '<li id="'+v._id+'" class="li_Comment"><a href="#" class="btnReply"><i class="glyphicon glyphicon-comment"></i> Comment <span>('+v.replies.length+')</span></a></li>';
+                comments +=           '<li style="padding-left:25px;"><a href="">'+v.created_at+'</a></li>';
+                comments +=         '</ul>';
+                comments +=      ' </div>';
+                comments +=     '</section>';
+                comments +=   '</div>';
+              });
               $('#comments').append(comments);
               $('#comments').scrollTop($('#comments').height()/2);
               SetCommentControlsVisible();
@@ -134,8 +134,8 @@
       $('#comments').scroll(function() {
         if($('#comments').scrollTop() == 0) {
           if(page>1){
-            page --;
-            LoadComment();
+            // page --;
+            // LoadComment();
           }
         }
       });
@@ -164,11 +164,11 @@
         type:'get',
         success:function(data){
           if(data.code == 200){
-            $('.li_Like').show();
+          //  $('.li_Like').show();
             $('.li_Comment').show();
           }else{
             $('.li_Comment').hide();
-            $('.li_Like').hide();
+          //  $('.li_Like').hide();
           }
         }
       });

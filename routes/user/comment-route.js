@@ -19,6 +19,7 @@ router.get('/list',(req,res)=>{
           subject:subject
         })
         .populate('user','fullname avatar')
+        .populate('replies','reply')
         .sort({created_at:-1})
         .skip((page-1)*commentSize)
         .limit(commentSize)

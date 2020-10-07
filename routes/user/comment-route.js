@@ -5,7 +5,9 @@ const Comment = require('../../models/comment-model');
 
 router.get('/list',(req,res)=>{
   const {page,group,subject} = req.query;
+
   let commentSize = config.commentSize;
+
   Comment.countDocuments({
     group:group,
     subject:subject
@@ -13,7 +15,22 @@ router.get('/list',(req,res)=>{
     if(err){
       console.log('count comments failed: '+new Errror(err));
     }else{
-      if(page*commentSize<=count){
+      if(count<commentSize){//nếu số lượng comment ít hơn kích thước
+        Comment.find({
+          group:group,
+          subject:subject
+        })
+        .populate('user','fullname avatar')
+        .populate('replies','reply')
+        .sort({created_at:-1})
+        .exec(function(err,comments){
+          if(err){
+            console.log('get comments failed: '+new Error(err));
+          }else{
+            res.send({code:200,msg:'Load comments successfully',comments:comments});
+          }
+        });
+      }else if(count >= commentSize && page*commentSize<=count){//nếu số lượng comment lớn hơn kích thước page
         Comment.find({
           group:group,
           subject:subject

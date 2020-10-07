@@ -11,6 +11,7 @@ const Document = require('../../models/document-model');
 const Config = require('../../models/config-model');
 const common = require('../../common/common');
 const middleware = require('../../middlewares/middleware');
+const common = require('../common/common');
 var session = require('express-session');
 
 
@@ -56,6 +57,7 @@ router.get('/init',(req,res)=>{
         fullname:'Nguyễn Hữu Trường',
         is_admin:true,
         is_censor:true,
+        member_code:common.MemberCode;
         avatar:'/user/images/photos/loggeduser.png'
       });
 

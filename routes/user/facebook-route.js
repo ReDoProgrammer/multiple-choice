@@ -4,6 +4,7 @@
 const router = require('express').Router();
 const User = require('../../models/user-model');
 const passport = require('passport');//#1
+const common = require('../common/common');
 FacebookStrategy = require('passport-facebook').Strategy;//#2
 
 //#3
@@ -29,7 +30,8 @@ router.get('/account', ensureAuthenticated, function(req, res) {
         User.create({
           username:id,
           fullname:req.user.displayName,
-          avatar:req.user.photos[0].value
+          avatar:req.user.photos[0].value,
+          member_code:common.MemberCode
         },function(err,usr){
           if(err){
             console.log('create user via facebook user failed: '+new Error(err));

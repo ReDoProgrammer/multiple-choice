@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const passport = require('passport');
 const config = require('../../configs/config');
+const common = require('../common/common');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const User = require('../../models/user-model');
 
@@ -19,7 +20,8 @@ passport.use(new GoogleStrategy({
         User.create({
           username:profile.id,
           fullname:profile.displayName,
-          avatar:profile.photos[0].value
+          avatar:profile.photos[0].value,
+          member_code:common.MemberCode
         }, function (err, user) {
           if(err){
             console.log('find or create user failed: '+new Error(err));

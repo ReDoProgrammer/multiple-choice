@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const User = require('../../models/user-model');
-
+const common = require('../common/common');
 
 router.post('/logout',(req,res)=>{
   req.session.destroy(function(err) {
@@ -18,7 +18,8 @@ router.post('/register',(req,res)=>{
   User.create({
     username:username,
     password:password,
-    fullname:fullname
+    fullname:fullname,
+    member_code:common.MemberCode
   },function(err,user){
     if(err){
       console.log('register account failed: ',new Error(err));

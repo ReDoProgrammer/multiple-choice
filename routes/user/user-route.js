@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const User = require('../../models/user-model');
-const common = require('../common/common');
+const common = require('../../common/common');
 
 router.post('/logout',(req,res)=>{
   req.session.destroy(function(err) {

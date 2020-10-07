@@ -4,7 +4,7 @@
 const router = require('express').Router();
 const User = require('../../models/user-model');
 const passport = require('passport');//#1
-const common = require('../common/common');
+const common = require('../../common/common');
 FacebookStrategy = require('passport-facebook').Strategy;//#2
 
 //#3

@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const passport = require('passport');
 const config = require('../../configs/config');
-const common = require('../common/common');
+const common = require('../../common/common');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const User = require('../../models/user-model');
 

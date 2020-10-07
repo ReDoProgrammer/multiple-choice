@@ -17,6 +17,7 @@ const jobRoutes = require('./routes/admin/job-route');
 const docTypeRoutes = require('./routes/admin/doctype-route');
 const documentRoutes = require('./routes/admin/document-route');
 const memberRoutes = require('./routes/admin/member-route');
+const newsRoutes = require('./routes/admin/news-route');
 
 
 
@@ -88,6 +89,7 @@ app.use('/admin/job',jobRoutes);
 app.use('/admin/document-type',docTypeRoutes);
 app.use('/admin/document',documentRoutes);
 app.use('/admin/member',memberRoutes);
+app.use('/admin/news',newsRoutes);
 
 //phần route user
 app.use('/thanh-vien',userRoutes);//route thành viên

@@ -148,7 +148,9 @@
           <%}%>
         </ol>
         <!-- content goes here... -->
-          <%- body %>
+        <div style="min-height:350px;">
+            <%- body %>
+        </div>
 
           <%- include('layouts/footer') %>
       </div><!-- contentpanel -->
@@ -177,5 +179,8 @@
   @font-face {
     font-family:Digital;
     src:url('/fonts/digital-7/digital-7.ttf') format('truetype')
+  }
+  .leftpanel{
+    background-color: #37474F;
   }
 </style>

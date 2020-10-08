@@ -83,7 +83,6 @@
     let subjectId = $('#direction li.active').attr('id');
 
     if(typeof subjectId !== 'undefined'){
-      console.log(subjectId);
       $.ajax({
         url:'/admin/document//list-by-subject',
         type:'get',
@@ -105,7 +104,6 @@
         }
       });
     }
-
     Rank();
   });
 
@@ -120,7 +118,6 @@
           subjectId:subjectId
         },
         success:function(data){
-          console.log(data);
           if(data.code == 200){
             $('#ranks').show();
             let ranks = '<ul class="list-unstyled mb20">';
@@ -130,7 +127,7 @@
               ranks +=   '<div class="col-xs-2">';
               ranks +=     '<h5>#'+(idx++)+'</h5>';
               ranks +=   '</div>';
-              ranks +=   '<div class="col-xs-8">';
+              ranks +=   '<div class="col-xs-6">';
               ranks +=     '<div class="media">';
               ranks +=       '<div class="media-left">';
               ranks +=        ' <img class="media-object photo-profile" src="'+v.user.avatar+'" alt="...">';
@@ -141,7 +138,10 @@
               ranks +=   '</div>';
               ranks +=   '</div>';
               ranks +=   '<div class="col-xs-2">';
-              ranks +=     '<h5>'+v.times+' lần</h5>';
+              ranks +=     '<h5>'+v.ratio.length+' lần</h5>';
+              ranks +=   '</div>';
+              ranks +=   '<div class="col-xs-2">';
+              ranks +=     '<h5>'+average(v.ratio)+' %</h5>';
               ranks +=   '</div>';
               ranks += '</div>';
             });
@@ -152,4 +152,6 @@
       });
     }
   }
+  const average = arr => arr.reduce( ( p, c ) => p + c, 0 ) / arr.length;
+
 </script>

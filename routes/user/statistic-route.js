@@ -25,14 +25,7 @@ router.post('/push',middleware.isLoggedIn,(req,res)=>{
                 }else{
                   if(stt){//if exist
                     Statistic.findOneAndUpdate({_id:stt._id},{
-                      times:(++stt.times),
-                      equals_100: (ratio==100?(++stt.equals_100):stt.equals_100),
-                      uper_90:((ratio>=90&&ratio<100)?(++stt.uper_90):stt.uper_90),
-                      uper_80:((ratio>=80&&ratio<90)?(++stt.uper_80):stt.uper_80),
-                      uper_70:((ratio>=70&&ratio<80)?(++stt.uper_70):stt.uper_70),
-                      uper_50:((ratio>=50&&ratio<70)?(++stt.uper_50):stt.uper_50),
-                      uper_30:((ratio>=30&&ratio<50)?(++stt.uper_30):stt.uper_30),
-                      lower_30:(ratio<30?(++stt.lower_30):stt.lower_30),
+                      $push:{ratio:ratio}
                     },function(err,s){
                       if(err){
                         console.log('push statistic failed: '+new Error(err));
@@ -44,13 +37,7 @@ router.post('/push',middleware.isLoggedIn,(req,res)=>{
                     Statistic.create({
                       user:req.session.user._id,
                       subject:sbj._id,
-                      equals_100: (ratio==100?1:0),
-                      uper_90:((ratio>=90&&ratio<100)?1:0),
-                      uper_80:((ratio>=80&&ratio<90)?1:0),
-                      uper_70:((ratio>=70&&ratio<80)?1:0),
-                      uper_50:((ratio>=50&&ratio<70)?1:0),
-                      uper_30:((ratio>=30&&ratio<50)?1:0),
-                      lower_30:(ratio<30?1:0),
+                      ratio:ratio
                     },function(err,statistic){
                       if(err){
                         console.log('create new statistic failed: '+new Error(err));
@@ -85,19 +72,18 @@ router.get('/profile',middleware.isLoggedIn,(req,res)=>{
 
 router.get('/ranks',(req,res)=>{
   let subjectId = req.query.subjectId;
-  console.log(subjectId);
-  if(subjectId && subjectId!='undefined'){
-    Statistic.find({subject:subjectId})
-    .populate('user','avatar member_code')
-    .sort({times:-1})
-    .exec(function(err,ranks){
-      if(err){
-        console.log('ranks in statistic/ranks failed: '+new Error(err));
-      }else{
-        res.send({code:200,msg:'get ranks successfully',ranks:ranks});
-      }
-    });
-  }
+  Statistic.find({subject:subjectId})
+  .sort({ratio:-1})
+  .populate('user','avatar member_code')
+  .exec(function(err,ranks){
+    if(err){
+      console.log('ranking failed: '+new Error(err));
+    }else{
+      res.send({code:200,msg:'ranking successfully',ranks:ranks});
+    }
+  });
 });
+
+
 
 module.exports = router;

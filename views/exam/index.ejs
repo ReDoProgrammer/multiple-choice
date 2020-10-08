@@ -1,47 +1,51 @@
 <!-- phần nội dung câu hỏi -->
-<div class="col-sm-12">
-  <div class="panel panel-primary list-announcement">
-    <div class="panel-heading" style="padding-top:5px; padding-bottom:5px;">
-      <div class="row">
-        <% if(user){%>
-          <div class="col-sm-2">
-            <h5 style = "text-transform: uppercase; margin-top:5px; padding-top:5px; padding-bottom:5px; color:#ffffff">MTS: <span id="candidate_code" class="text-danger" style="font-weight:bold;"><b><%=user.member_code%></b></span></h5>
-          </div>
-          <div class="col-sm-3 text-center">
-            <h5 class="col-form-label" id="candidate" style="color:#ffffff">Thí sinh: <span style="color:#FFFF33"><%=user.fullname%></span></h5>
-          </div>
-          <%}else{%>
-            <div class="col-sm-3 text-center">
-              <h5 class="col-form-label" id="candidate" style="color:#ffffff">Thí sinh: Guest</h5>
+<div class="row">
+  <div class="col-sm-12">
+    <div class="panel panel-primary list-announcement">
+      <div class="panel-heading" style="padding-top:5px; padding-bottom:5px;">
+        <div class="row">
+          <% if(user){%>
+            <div class="col-sm-2">
+              <h5 style = "text-transform: uppercase; margin-top:5px; padding-top:5px; padding-bottom:5px; color:#ffffff">MTS: <span id="candidate_code" class="text-danger" style="font-weight:bold;"><b><%=user.member_code%></b></span></h5>
             </div>
-            <%}%>
+            <div class="col-sm-3 text-center">
+              <h5 class="col-form-label" id="candidate" style="color:#ffffff">Thí sinh: <span style="color:#FFFF33"><%=user.fullname%></span></h5>
+            </div>
+            <%}else{%>
+              <div class="col-sm-3 text-center">
+                <h5 class="col-form-label" id="candidate" style="color:#ffffff">Thí sinh: Guest</h5>
+              </div>
+              <%}%>
 
-            <div class="col-sm-3 text-center">
-              <h5 style="color:#ffffff">Thời gian làm bài: <span id="totalTime" style="color:#FFFF33">45:00</span> phút</h5>
-            </div>
-            <div class="col-sm-3 text-center">
-              <h5 class="col-form-label" id="countdown" style="color:#ffffff">Còn lại: <span id="remainTime" style="color:#FFFF33"></span></h5>
-            </div>
-            <div class="col-sm-1 text-center">
-              <button type="button" id="btnDoExam" class="btn btn-sm btn-warning" style="margin-top:4px;">Làm bài</button>
+              <div class="col-sm-3 text-center">
+                <h5 style="color:#ffffff">Thời gian làm bài: <span id="totalTime" style="color:#FFFF33">45:00</span> phút</h5>
+              </div>
+              <div class="col-sm-3 text-center">
+                <h5 class="col-form-label" id="countdown" style="color:#ffffff">Còn lại: <span id="remainTime" style="color:#FFFF33"></span></h5>
+              </div>
+              <div class="col-sm-1 text-center">
+                <button type="button" id="btnDoExam" class="btn btn-sm btn-warning" style="margin-top:4px;">Làm bài</button>
+              </div>
             </div>
           </div>
-        </div>
-        <div class="panel-body">
-          <ul class="list-unstyled mb20" id="questions">
-          </ul>
-        </div>
-        <div class="panel-footer">
-          <button class="btn btn-primary btn-block" id="btnApplyExam">Kết thúc và nộp bài thi</button>
+          <div class="panel-body">
+            <ul class="list-unstyled mb20" id="questions">
+            </ul>
+          </div>
+          <div class="panel-footer">
+            <button class="btn btn-primary btn-block" id="btnApplyExam">Kết thúc và nộp bài thi</button>
+          </div>
         </div>
       </div>
-    </div>
+</div>
     <!-- kết thúc phần nội dung câu hỏi  -->
-    <div class="col-sm-6">
-      <%- include('statistic') %>
-    </div>
-    <div class="col-sm-6">
-      <%- include('../layouts/comment') %>
+    <div class="row">
+      <div class="col-sm-6">
+        <%- include('statistic') %>
+      </div>
+      <div class="col-sm-6">
+        <%- include('../layouts/comment') %>
+      </div>
     </div>
 
     <%- include('comment') %>
@@ -409,10 +413,6 @@
 
   <!-- khai báo source font của đồng hồ -->
   <style media="screen">
-    @font-face {
-      font-family:Digital;
-      src:url('/fonts/digital-7/digital-7.ttf') format('truetype')
-    }
 
     /* set các thuộc tính của đồng hồ ở góc */
     #topCountDown {

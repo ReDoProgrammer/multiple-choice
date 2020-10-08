@@ -151,6 +151,7 @@ router.get('/fetch-and-insert',middleware.isAdmin,(req,res)=>{
 });
 router.post('/fetch-and-insert',middleware.isAdmin,(req,res)=>{
   let subject = req.body.subject;
+  //fetch theo từng môn
   let url = 'http://tracnghiem.redoapp.com/admin/questions-cqdp';
   let options = {json: true};
   request(url, options, (error, ress, body) => {

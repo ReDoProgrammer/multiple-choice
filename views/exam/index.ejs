@@ -123,313 +123,313 @@
                             content +='</li>';
                             idx++;
                           });
-                          if(content.length > 0){
-                            //ẩn div thống kê khi làm bài
-                            $('#statistic').hide();
+              if(questions.length > 0){
+                //ẩn div thống kê khi làm bài
+                $('#statistic').hide();
 
-                            //khởi tạo các giá trị mặc định khi bắt đầu làm bài
-                            overtime = false;
-                            correct = 0;
-                            notAsw = [];
-                            onExam = true;
+                //khởi tạo các giá trị mặc định khi bắt đầu làm bài
+                overtime = false;
+                correct = 0;
+                notAsw = [];
+                onExam = true;
 
-                            //khi làm bài thì hiện đồng hồ lên
-                            $('#countdown').show();
-                            $('#topCountDown').show();
+                //khi làm bài thì hiện đồng hồ lên
+                $('#countdown').show();
+                $('#topCountDown').show();
 
-                            totalSeconds = constTime;
-                            intervalId = setInterval(startTimer, 1000);
-                            $('#questions').append(content);
-                            $(this).hide();
-                            $('#btnApplyExam').show();
-                          }else{
-                            $('#questions').append('<div class="text-center"><h1 class="text-warning">Hệ thống câu hỏi đang được cập nhật. Chân thành cảm ơn sự ủng hộ của bạn!</h1></div>');
-                          }
-
-
-                        }
-                      }
-                    });
-
-                  });
-
-                  $('#btnApplyExam').click(function(){
+                totalSeconds = constTime;
+                intervalId = setInterval(startTimer, 1000);
+                $('#questions').append(content);
+                $('#btnDoExam').hide();
+                $('#btnApplyExam').show();
+              }else{
+                $('#questions').append('<div class="text-center"><h1 class="text-warning">Hệ thống câu hỏi đang được cập nhật. Chân thành cảm ơn sự ủng hộ của bạn!</h1></div>');
+              }
 
 
-                    //nếu chưa hết giờ làm bài
-                    if(!overtime){
-                      $('#questions li').each(function(index,v){
-                        let ch = $(v).find('input[type="radio"]:checked').attr('class');
-                        let asw = '';
-                        switch (ch) {
-                          case 'rdOptionA':
-                          break;
-                          case 'rdOptionB':
-                          break;
-                          case 'rdOptionC':
-                          break;
-                          case 'rdOptionD':
-                          break;
-                          default:
-                          let qi = $(v).find('label>span.quest-number').text();
-                          notAsw.push(qi);
-                          break;
-                        }
-                      });
-                      if(notAsw.length > 0 && confirm('Những câu hỏi \n'+notAsw+'\n chưa chọn đáp án. Bạn vẫn muốn tiếp tục?')==true){
-                        //set countdown khi kết thúc làm bài
-                        clearInterval(intervalId);
-                        totalSeconds = constTime;
-                        onExam = false;
-                        //khi kết thúc bài kiểm tra thì ẩn đồng hồ
-                        $('#countdown').hide();
-                        $('#topCountDown').hide();
-                        //hiện lại nút "làm bài"
-                        $('#btnDoExam').show();
+          }
+        }
+      });
 
-                        //ẩn nút "nộp bài"
-                        $(this).hide();
-                        CheckResult();
-                      }else{
-                        if(notAsw.length == 0){
-                          //set countdown khi kết thúc làm bài
-                          clearInterval(intervalId);
-                          totalSeconds = constTime;
-                          onExam = false;
-                          //khi kết thúc bài kiểm tra thì ẩn đồng hồ
-                          $('#countdown').hide();
-                          $('#topCountDown').hide();
-                          CheckResult();
-                          //hiện lại nút "làm bài"
-                          $('#btnDoExam').show();
+    });
 
-                          //ẩn nút "nộp bài"
-                          $(this).hide();
-                        }
-                      }
-                    }
-                    else{//nếu đã hết thời gian làm bài
-                      //set countdown khi kết thúc làm bài
-                      clearInterval(intervalId);
-                      totalSeconds = constTime;
-                      onExam = false;
-                      //khi kết thúc bài kiểm tra thì ẩn đồng hồ
-                      $('#countdown').hide();
-                      $('#topCountDown').hide();
-                      //hiện lại nút "làm bài"
-                      $('#btnDoExam').show();
-
-                      //ẩn nút "nộp bài"
-                      $(this).hide();
-                      CheckResult();
-                    }
-                  });
-
-                  function CheckResult(){
-                    //duyệt các câu hỏi
-                    $('#questions li').each(function(index,v){
-                      //lấy id của câu hỏi
-                      let id = $(v).attr('id');
-
-                      //biến đánh dấu trạng thái có tiếp tục nộp bài khi có câu hỏi chưa trả lời
-                      let cont = true;
-
-                      // //lấy đáp án đã được chọn ứng với mỗi câu
-                      let ch = $(v).find('input[type="radio"]:checked').attr('class');
-
-                      //lấy đáp án được chọn
-                      let asw = '';
-                      switch (ch) {
-                        case 'rdOptionA':
-                        asw = 'A';
-                        break;
-                        case 'rdOptionB':
-                        asw = 'B';
-                        break;
-                        case 'rdOptionC':
-                        asw = 'C';
-                        break;
-                        case 'rdOptionD':
-                        asw = 'D';
-                        break;
-                        default: asw = 'N';
-                        break;
-                      }
-
-                      //tìm ra câu hỏi tương ứng trong mãng dựa vào id câu hỏi lấy đượcanvas
-                      var qs = questions.find(x=>x._id === id);
-
-                      //đánh dấu câu trả lời đúng
-                      if(qs){
-                        $('#'+id+' > fieldset > span.rdOption'+qs.answer).css("background-color", "yellow");
-                        if(asw == qs.answer){
-                          correct++;
-                        }
-                        if(qs.description.length > 0){
-                          $('#'+id+' > fieldset.description > p.description').html('<hr><h6 class = "text-warning"><span class = "font-weight-bold"><u>Chú thích: </u></span><span class="text-info"><i>'+qs.description+'</i></span></h6>');
-                        }
-                      }
-                    });
+    $('#btnApplyExam').click(function(){
 
 
-                    //thống kê kết quả làm bài
-                    $('#statistic').show();//hiện bảng thống kê
-                    //chi tiết kết quả làm bài
-                    $('#answered').text((questions.length-notAsw.length) + ' câu');
-                    $('#correct').text(correct + ' câu');
-                    $('#wrong').text((questions.length - correct - notAsw.length)+ ' câu');
-                    $('#notyet').text(notAsw.length + ' câu');
+      //nếu chưa hết giờ làm bài
+      if(!overtime){
+        $('#questions li').each(function(index,v){
+          let ch = $(v).find('input[type="radio"]:checked').attr('class');
+          let asw = '';
+          switch (ch) {
+            case 'rdOptionA':
+            break;
+            case 'rdOptionB':
+            break;
+            case 'rdOptionC':
+            break;
+            case 'rdOptionD':
+            break;
+            default:
+            let qi = $(v).find('label>span.quest-number').text();
+            notAsw.push(qi);
+            break;
+          }
+        });
+        if(notAsw.length > 0 && confirm('Những câu hỏi \n'+notAsw+'\n chưa chọn đáp án. Bạn vẫn muốn tiếp tục?')==true){
+          //set countdown khi kết thúc làm bài
+          clearInterval(intervalId);
+          totalSeconds = constTime;
+          onExam = false;
+          //khi kết thúc bài kiểm tra thì ẩn đồng hồ
+          $('#countdown').hide();
+          $('#topCountDown').hide();
+          //hiện lại nút "làm bài"
+          $('#btnDoExam').show();
 
-                    let ratio = ((correct/questions.length)*100).toFixed(1);
-                    $('#ratio').text(ratio+'%');
-                    PushStatistic(ratio);
-                    if(ratio==100){
-                      $('#evaluate').text('Thật tuyệt vời. Kiến thức bạn nắm được là tuyệt đối');
-                      $('#evaluate').addClass('text-success');
-                    }else{
-                      if(ratio>=90){
-                        $('#evaluate').text('Thật tuyệt vời. Kiến thức bạn nắm được gần như là tuyệt đối');
-                        $('#evaluate').addClass('text-success');
-                      }else{
-                        if(ratio>=80){
-                          $('#evaluate').text('Việc thi đậu không còn là vấn đề khó của bạn nữa!');
-                          $('#evaluate').addClass('text-success');
-                        }else{
-                          if(ratio>=70){
-                            $('#evaluate').text('Mọi việc đang tiến triển rất tốt. Cố lên bạn tôi ơi!');
-                            $('#evaluate').addClass('text-primary');
-                          }else{
-                            if(ratio>=50){
-                              $('#evaluate').text('Kết quả tạm chấp nhận. Nhưng chưa đủ. Cố gắng lên!');
-                              $('#evaluate').addClass('text-warning');
-                            }else{
-                              if(ratio>=30){
-                                $('#evaluate').text('Có vẻ bạn chưa thực sự nghiêm túc dành nhiều thời gian học bài!');
-                                $('#evaluate').addClass('text-danger');
-                              }else{
-                                $('#evaluate').text('Có lẽ bạn nên nghĩ đến việc khác thích hợp hơn là học bài!');
-                                $('#evaluate').addClass('text-danger');
-                              }
-                            }
-                          }
-                        }
-                      }
-                    }
+          //ẩn nút "nộp bài"
+          $(this).hide();
+          CheckResult();
+        }else{
+          if(notAsw.length == 0){
+            //set countdown khi kết thúc làm bài
+            clearInterval(intervalId);
+            totalSeconds = constTime;
+            onExam = false;
+            //khi kết thúc bài kiểm tra thì ẩn đồng hồ
+            $('#countdown').hide();
+            $('#topCountDown').hide();
+            CheckResult();
+            //hiện lại nút "làm bài"
+            $('#btnDoExam').show();
 
-                    //---> kết thúc thống kê chi tiết kết quả làm bài
+            //ẩn nút "nộp bài"
+            $(this).hide();
+          }
+        }
+      }
+      else{//nếu đã hết thời gian làm bài
+        //set countdown khi kết thúc làm bài
+        clearInterval(intervalId);
+        totalSeconds = constTime;
+        onExam = false;
+        //khi kết thúc bài kiểm tra thì ẩn đồng hồ
+        $('#countdown').hide();
+        $('#topCountDown').hide();
+        //hiện lại nút "làm bài"
+        $('#btnDoExam').show();
 
-                    // gọi tới hàm thống kê kết quả các bài thi của thành viên trong template /layout/statistic.ejs
-                    StatistisUserSummaryExam();
-                  }
+        //ẩn nút "nộp bài"
+        $(this).hide();
+        CheckResult();
+      }
+    });
 
-                  //hàm thống kê kết quả làm bài của thành viên cập nhật vào dữ liệu
-                  function PushStatistic(ratio){
-                    var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
-                    if(hashes.length == 2){
-                      let group =(hashes[0].split('='))[1];
-                      let subject = (hashes[1].split('='))[1];
-                      $.ajax({
-                        url:'/statistic/push',
-                        type:'post',
-                        data:{
-                          group:group,
-                          subject:subject,
-                          ratio:ratio
-                        },
-                        success:function(data){
-                          if(data.code == 200){
-                            console.log(data);
-                          }
-                        }
-                      });
-                    }
+    function CheckResult(){
+      //duyệt các câu hỏi
+      $('#questions li').each(function(index,v){
+        //lấy id của câu hỏi
+        let id = $(v).attr('id');
 
-                  }
-                  //sự kiện comment trên từng câu hỏi
-                  $(document).on('click', '.commentOnQuestion', function (e) {
-                    e.preventDefault();
-                    let id = $(this).closest('li').attr('id');
-                    let question = $(this).closest('li').find('label').find('strong').text();
-                    $('#pushedQuestion').text(question);
-                    $('#txtPushedQuestionId').val(id);
-                    $('#txtCommentQuestion').val('');
-                    $('#comment-on-question').modal();
-                  });//-->kết thúc sự kiện comment trên từng câu hỏi
+        //biến đánh dấu trạng thái có tiếp tục nộp bài khi có câu hỏi chưa trả lời
+        let cont = true;
 
-                </script>
+        // //lấy đáp án đã được chọn ứng với mỗi câu
+        let ch = $(v).find('input[type="radio"]:checked').attr('class');
 
-                <!-- phần xử lý count down -->
-                <script type="text/javascript">
-                  var constTime = 45*60+1;//biến lưu thời gian làm bài
-                  let hour = 0;
-                  let minute = 0;
-                  let seconds = 0;
-                  let totalSeconds = constTime;
-                  let intervalId = null;
-                  function startTimer() {
-                    --totalSeconds;
-                    hour = Math.floor(totalSeconds /3600);
-                    minute = Math.floor((totalSeconds - hour*3600)/60);
-                    seconds = totalSeconds - (hour*3600 + minute*60);
-                    let remain = '<span id="hour"></span>:<span id="minute"></span>:<span id="seconds"></span>';
-                    let zremain = '<span id="zhour"></span>:<span id="zminute"></span>:<span id="zseconds"></span>';
+        //lấy đáp án được chọn
+        let asw = '';
+        switch (ch) {
+          case 'rdOptionA':
+          asw = 'A';
+          break;
+          case 'rdOptionB':
+          asw = 'B';
+          break;
+          case 'rdOptionC':
+          asw = 'C';
+          break;
+          case 'rdOptionD':
+          asw = 'D';
+          break;
+          default: asw = 'N';
+          break;
+        }
 
-                    $('#remainTime').html(remain);
-                    $("#hour").text(hour<10?'0'+hour:hour);
-                    $("#minute").text(minute<10?'0'+minute:minute);
-                    $("#seconds").text(seconds<10?'0'+seconds:seconds);
+        //tìm ra câu hỏi tương ứng trong mãng dựa vào id câu hỏi lấy đượcanvas
+        var qs = questions.find(x=>x._id === id);
 
-                    $('#topCountDown').html(zremain);
-                    $("#zhour").text(hour<10?'0'+hour:hour);
-                    $("#zminute").text(minute<10?'0'+minute:minute);
-                    $("#zseconds").text(seconds<10?'0'+seconds:seconds);
-                    if(totalSeconds<1){//nếu hết thời gian làm bài
-                      alert('Thời gian làm bài của bạn đã hết');
-                      overtime = true;//set trạng thái hết giờ là true
-                      $('#btnApplyExam').click();//gọi tới sự kiện nộp bài
-                    }
-                  }
-                </script>
-                <!-- kết thúc phần countdown -->
-
-                <!-- phần đồng hồ nổi lên khi cuộn -->
-                <script type="text/javascript">
-                  window.onscroll = function() {scrollFunction()};
-                  function scrollFunction() {
-                    //nếu cuộn trên tọa độ > 20 & trong trạng thái đang làm bài thì hiện đồng hồ ở góc lên
-                    if ((document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) && onExam) {
-                      $('#topCountDown').css("display", "block");;
-                    } else {//ngược lại thì ẩn đồng hồ ở góc
-                      $('#topCountDown').css("display", "none");;
-                    }
-                  }
-                </script>
+        //đánh dấu câu trả lời đúng
+        if(qs){
+          $('#'+id+' > fieldset > span.rdOption'+qs.answer).css("background-color", "yellow");
+          if(asw == qs.answer){
+            correct++;
+          }
+          if(qs.description.length > 0){
+            $('#'+id+' > fieldset.description > p.description').html('<hr><h6 class = "text-warning"><span class = "font-weight-bold"><u>Chú thích: </u></span><span class="text-info"><i>'+qs.description+'</i></span></h6>');
+          }
+        }
+      });
 
 
+      //thống kê kết quả làm bài
+      $('#statistic').show();//hiện bảng thống kê
+      //chi tiết kết quả làm bài
+      $('#answered').text((questions.length-notAsw.length) + ' câu');
+      $('#correct').text(correct + ' câu');
+      $('#wrong').text((questions.length - correct - notAsw.length)+ ' câu');
+      $('#notyet').text(notAsw.length + ' câu');
 
-                <!-- khai báo source font của đồng hồ -->
-                <style media="screen">
-                  @font-face {
-                    font-family:Digital;
-                    src:url('/fonts/digital-7/digital-7.ttf') format('truetype')
-                  }
+      let ratio = ((correct/questions.length)*100).toFixed(1);
+      $('#ratio').text(ratio+'%');
+      PushStatistic(ratio);
+      if(ratio==100){
+        $('#evaluate').text('Thật tuyệt vời. Kiến thức bạn nắm được là tuyệt đối');
+        $('#evaluate').addClass('text-success');
+      }else{
+        if(ratio>=90){
+          $('#evaluate').text('Thật tuyệt vời. Kiến thức bạn nắm được gần như là tuyệt đối');
+          $('#evaluate').addClass('text-success');
+        }else{
+          if(ratio>=80){
+            $('#evaluate').text('Việc thi đậu không còn là vấn đề khó của bạn nữa!');
+            $('#evaluate').addClass('text-success');
+          }else{
+            if(ratio>=70){
+              $('#evaluate').text('Mọi việc đang tiến triển rất tốt. Cố lên bạn tôi ơi!');
+              $('#evaluate').addClass('text-primary');
+            }else{
+              if(ratio>=50){
+                $('#evaluate').text('Kết quả tạm chấp nhận. Nhưng chưa đủ. Cố gắng lên!');
+                $('#evaluate').addClass('text-warning');
+              }else{
+                if(ratio>=30){
+                  $('#evaluate').text('Có vẻ bạn chưa thực sự nghiêm túc dành nhiều thời gian học bài!');
+                  $('#evaluate').addClass('text-danger');
+                }else{
+                  $('#evaluate').text('Có lẽ bạn nên nghĩ đến việc khác thích hợp hơn là học bài!');
+                  $('#evaluate').addClass('text-danger');
+                }
+              }
+            }
+          }
+        }
+      }
 
-                  /* set các thuộc tính của đồng hồ ở góc */
-                  #topCountDown {
-                    display: none;
-                    position: fixed;
-                    bottom: 10px;
-                    right: 10px;
-                    z-index: 99;
-                    font-size: 20px;
-                    font-family:"Digital";
-                    border: none;
-                    outline: none;
-                    background-color: #000;
-                    color: #FFF;
-                    cursor: pointer;
-                    padding: 5px;
-                    border-radius: 4px;
-                    border: solid 5px #CCCCCC;
-                  }
-                </style>
+      //---> kết thúc thống kê chi tiết kết quả làm bài
+
+      // gọi tới hàm thống kê kết quả các bài thi của thành viên trong template /layout/statistic.ejs
+      StatistisUserSummaryExam();
+    }
+
+    //hàm thống kê kết quả làm bài của thành viên cập nhật vào dữ liệu
+    function PushStatistic(ratio){
+      var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+      if(hashes.length == 2){
+        let group =(hashes[0].split('='))[1];
+        let subject = (hashes[1].split('='))[1];
+        $.ajax({
+          url:'/statistic/push',
+          type:'post',
+          data:{
+            group:group,
+            subject:subject,
+            ratio:ratio
+          },
+          success:function(data){
+            if(data.code == 200){
+              console.log(data);
+            }
+          }
+        });
+      }
+
+    }
+    //sự kiện comment trên từng câu hỏi
+    $(document).on('click', '.commentOnQuestion', function (e) {
+      e.preventDefault();
+      let id = $(this).closest('li').attr('id');
+      let question = $(this).closest('li').find('label').find('strong').text();
+      $('#pushedQuestion').text(question);
+      $('#txtPushedQuestionId').val(id);
+      $('#txtCommentQuestion').val('');
+      $('#comment-on-question').modal();
+    });//-->kết thúc sự kiện comment trên từng câu hỏi
+
+  </script>
+
+  <!-- phần xử lý count down -->
+  <script type="text/javascript">
+    var constTime = 45*60+1;//biến lưu thời gian làm bài
+    let hour = 0;
+    let minute = 0;
+    let seconds = 0;
+    let totalSeconds = constTime;
+    let intervalId = null;
+    function startTimer() {
+      --totalSeconds;
+      hour = Math.floor(totalSeconds /3600);
+      minute = Math.floor((totalSeconds - hour*3600)/60);
+      seconds = totalSeconds - (hour*3600 + minute*60);
+      let remain = '<span id="hour"></span>:<span id="minute"></span>:<span id="seconds"></span>';
+      let zremain = '<span id="zhour"></span>:<span id="zminute"></span>:<span id="zseconds"></span>';
+
+      $('#remainTime').html(remain);
+      $("#hour").text(hour<10?'0'+hour:hour);
+      $("#minute").text(minute<10?'0'+minute:minute);
+      $("#seconds").text(seconds<10?'0'+seconds:seconds);
+
+      $('#topCountDown').html(zremain);
+      $("#zhour").text(hour<10?'0'+hour:hour);
+      $("#zminute").text(minute<10?'0'+minute:minute);
+      $("#zseconds").text(seconds<10?'0'+seconds:seconds);
+      if(totalSeconds<1){//nếu hết thời gian làm bài
+        alert('Thời gian làm bài của bạn đã hết');
+        overtime = true;//set trạng thái hết giờ là true
+        $('#btnApplyExam').click();//gọi tới sự kiện nộp bài
+      }
+    }
+  </script>
+  <!-- kết thúc phần countdown -->
+
+  <!-- phần đồng hồ nổi lên khi cuộn -->
+  <script type="text/javascript">
+    window.onscroll = function() {scrollFunction()};
+    function scrollFunction() {
+      //nếu cuộn trên tọa độ > 20 & trong trạng thái đang làm bài thì hiện đồng hồ ở góc lên
+      if ((document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) && onExam) {
+        $('#topCountDown').css("display", "block");;
+      } else {//ngược lại thì ẩn đồng hồ ở góc
+        $('#topCountDown').css("display", "none");;
+      }
+    }
+  </script>
+
+
+
+  <!-- khai báo source font của đồng hồ -->
+  <style media="screen">
+    @font-face {
+      font-family:Digital;
+      src:url('/fonts/digital-7/digital-7.ttf') format('truetype')
+    }
+
+    /* set các thuộc tính của đồng hồ ở góc */
+    #topCountDown {
+      display: none;
+      position: fixed;
+      bottom: 10px;
+      right: 10px;
+      z-index: 99;
+      font-size: 20px;
+      font-family:"Digital";
+      border: none;
+      outline: none;
+      background-color: #000;
+      color: #FFF;
+      cursor: pointer;
+      padding: 5px;
+      border-radius: 4px;
+      border: solid 5px #CCCCCC;
+    }
+  </style>

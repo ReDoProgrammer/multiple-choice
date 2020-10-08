@@ -6,6 +6,7 @@ Ví dụ: kiến thức chung, kiến thức chuyên ngành, tiếng anh, tin h�
 const router = require('express').Router();
 const Group = require('../../models/group-model');
 const Subject = require('../../models/subject-model');
+const Question = require('../../models/question-model');
 const middleware = require('../../middlewares/middleware');
 
 router.get('/',middleware.isAdmin,(req,res)=>{
@@ -91,7 +92,20 @@ router.post('/update',middleware.isAdmin,(req,res)=>{
 });
 
 router.delete('/delete',middleware.isAdmin,(req,res)=>{
-
+  let id = req.body.id;
+  Subject.deleteOne({_id:id},function(err){
+    if(err){
+      console.log('delete subject failed: '+new Error(err));
+    }else{
+      Question.deleteMany({subject:id},function(err){
+        if(err){
+          console.log('delete questions after subject deleted failed: '+new Error(err));
+        }else{
+          res.send({code:200,msg:'Xóa môn học và các câu hỏi liên quan thành công!'});
+        }
+      });
+    }
+  })
 });
 
 

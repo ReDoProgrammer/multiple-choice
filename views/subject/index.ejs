@@ -149,13 +149,48 @@
               d +=    '<td>'+r.name+'</td>';
               d +=    '<td>'+r.meta+'</td>';
               d +=    '<td>'+r.description+'</td>';
-              d +=    '<td></td>';
-              d +=    '</tr>';
+              d +=    '<td>';
+              d +=      '<button class ="btn btn-xs btnView" data-view = "'+r._id+'" ><i class="text-info fa fa-eye" aria-hidden="true"></i></button>';
+              d +=      '<button class ="btn btn-xs btnUpdate" data-update = "'+r._id+'"><i class="text-warning fa fa-edit" aria-hidden="true"></i></button>';
+              d +=      '<button class ="btn btn-xs btnDelete" data-delete = "'+r._id+'"><i class="text-danger fa fa-trash" aria-hidden="true"></i></button>';
+              d +=    '</td>';
+              d +=  '</tr>';
             });
             $('#tblData').append(d);
           }
         }
       });
     }
+
+
+      //sự kiện click của nut reset
+   $('#tblData').on('click', '.btnUpdate', function() {
+     question_id =  $(this).data('update');
+   });
+   //sự kiện click của button view trên mỗi hàng của table
+   $('#tblData').on('click', '.btnView', function() {
+     let id =  $(this).data('view');
+   });
+   // //sự kiện nút xóa
+   $('#tblData').on('click', '.btnDelete', function() {
+     let id = $(this).data('delete');
+     var r = confirm("Xóa môn học này sẽ xóa các câu hỏi liên quan.\nBạn chắc muốn xóa môn học này?");
+     if(r == true){
+       $.ajax({
+         type: 'delete',
+         url: '/admin/subject/delete',
+         data:{
+           id:id
+         },
+         success: function(data){
+           alert(data.msg);
+           LoadData();
+         },
+         error: function(err){
+           console.log(err);
+         }
+       });
+     }
+   });
 
   </script>

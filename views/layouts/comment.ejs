@@ -28,11 +28,12 @@
     var page = 1;
     var group = '';
     var subject = '';
+    var isOver = false;
     $(document).ready(function(){
       //gọi tới hàm load comment khi page đc load xong
 
       GetGroupAndSubject();
-      // LoadComment();
+      LoadComment();
       $('#btnCreateComment').click(function(){
         let comment = $('#txtComment').val().trim();
         if(comment.length > 0){
@@ -79,7 +80,13 @@
           },
           success:function(data){
             if(data.code == 200){
+              console.log(data);
               let comments = '';
+              if(data.comments.length == 0){
+                isOver = true;
+              }else{
+                isOver = false;
+              }
               $.each(data.comments,function(k,v){
                 comments +=  '<div class="comment_line">';
                 comments +=     '<section class="post-heading">';
@@ -143,8 +150,11 @@
       //khi scroll tới cuối
       $('#comments').on('scroll', function() {
         if ($(this).scrollTop() + $(this).innerHeight() >=  $(this)[0].scrollHeight) {
-          page++;
-          LoadComment();
+
+          if(!isOver){
+            page++;
+            LoadComment();
+          }
         }
       });
     });

@@ -15,7 +15,7 @@ var statistics = '';
 
     StatistisUserSummaryExam();
   });
-const average = arr => arr.reduce( ( p, c ) => p + c, 0 ) / arr.length;
+const tltb = arr => arr.reduce( ( p, c ) => p + c, 0 ) / arr.length;
   function StatistisUserSummaryExam(){
     $.ajax({
       url:'/statistic/profile',
@@ -36,7 +36,7 @@ const average = arr => arr.reduce( ( p, c ) => p + c, 0 ) / arr.length;
                       $.each(s.statistics,function(l,st){
                         statistics +='<div class = "subject-item">'
                           statistics += '<h5 style="padding-left:10px"> <span> <i class="fa fa-hand-o-right text-info" aria-hidden="true"></i></span> Số lần thi:<span class="text-warning"> '+st.ratio.length+'</span> lần</h5>';
-                          statistics += '<h5 style="padding-left:10px"> <span> <i class="fa fa-hand-o-right text-info" aria-hidden="true"></i></span> Tỉ lệ trung bình:<span class="text-warning"> '+average(st.ratio).toFixed(2)+'</span> %</h5>';
+                          statistics += '<h5 style="padding-left:10px"> <span> <i class="fa fa-hand-o-right text-info" aria-hidden="true"></i></span> Tỉ lệ trung bình:<span class="text-warning"> '+tltb(st.ratio).toFixed(2)+'</span> %</h5>';
                         statistics +='</div>';
                       });
                     }

@@ -146,92 +146,98 @@ router.get('/total-pages',middleware.isAdmin,(req,res)=>{
   });
 });
 
-router.get('/fetch-and-insert',middleware.isAdmin,(req,res)=>{
-  res.render('question/fetch',{layout:'admin-layout'});
-});
-router.post('/fetch-and-insert',middleware.isAdmin,(req,res)=>{
-  let subject = req.body.subject;
-  //fetch theo từng môn
-  // let url = 'http://tracnghiem.redoapp.com/admin/questions-cqdp';
-  let url = 'http://tracnghiem.redoapp.com/admin/questions-htct';
-  let options = {json: true};
-  request(url, options, (error, ress, body) => {
-    if (error) {
-      return  console.log(error)
-    };
-
-    if (!error && ress.statusCode == 200) {
-      let questions = body.questions.map(s=>{
-        let q = {};
-        q['question']    =s.question;
-        q['option_a']    =s.option_a;
-        q['option_b']    =s.option_b;
-        q['option_c']    =s.option_c;
-        q['option_d']    =s.option_d;
-        q['answer']      =s.answer;
-        q['description']    =s.remark;
-        q['option_d']    =s.option_d;
-        q['created_by'] = req.session.user._id;
-        q['subject'] = subject;
-        q['is_actived'] = true;
-        return q;
-      });
-      Question.insertMany(questions,function(err,result){
-        if(err){
-          console.log('fetch question failed: '+new Error(err));
-        }else{
-          Subject.findOneAndUpdate({_id:subject},{$push:{questions:result}},(err,s)=>{
-            if(err){
-              console.log('push questions into subject failed: '+new Error(err));
-            }else{
-              res.send({code:200,msg:'sao chép câu hỏi thành công'});
-            }
-          });
-
-        }
-      });
-    };
-  });
-});
+// router.get('/fetch-and-insert',middleware.isAdmin,(req,res)=>{
+//   res.render('question/fetch',{layout:'admin-layout'});
+// });
+// router.post('/fetch-and-insert',middleware.isAdmin,(req,res)=>{
+//   let subject = req.body.subject;
+//   //fetch theo từng môn
+//   // let url = 'http://tracnghiem.redoapp.com/admin/questions-cqdp';
+//   let url = 'http://tracnghiem.redoapp.com/admin/questions-htct';
+//   let options = {json: true};
+//   request(url, options, (error, ress, body) => {
+//     if (error) {
+//       return  console.log(error)
+//     };
+//
+//     if (!error && ress.statusCode == 200) {
+//       let questions = body.questions.map(s=>{
+//         let q = {};
+//         q['question']    =s.question;
+//         q['option_a']    =s.option_a;
+//         q['option_b']    =s.option_b;
+//         q['option_c']    =s.option_c;
+//         q['option_d']    =s.option_d;
+//         q['answer']      =s.answer;
+//         q['description']    =s.remark;
+//         q['option_d']    =s.option_d;
+//         q['created_by'] = req.session.user._id;
+//         q['subject'] = subject;
+//         q['is_actived'] = true;
+//         return q;
+//       });
+//       Question.insertMany(questions,function(err,result){
+//         if(err){
+//           console.log('fetch question failed: '+new Error(err));
+//         }else{
+//           Subject.findOneAndUpdate({_id:subject},{$push:{questions:result}},(err,s)=>{
+//             if(err){
+//               console.log('push questions into subject failed: '+new Error(err));
+//             }else{
+//               res.send({code:200,msg:'sao chép câu hỏi thành công'});
+//             }
+//           });
+//
+//         }
+//       });
+//     };
+//   });
+// });
 
 //tìm kiếm trên layout
 router.get('/search',(req,res)=>{
   let {group,subject,search} = req.query;
-
-  if(group.length > 0 && subject.length > 0){
-    Group.findOne({meta:group},function(err,gr){
-      if(err){
-        console.log('find group in /admin/question/search failed: '+new Error(err));
-      }else{
-        if(gr){
-          Subject.findOne({meta:subject,group:gr._id},function(err,sbj){
+  if(group){
+    if(subject){
+      Question.find({question: { $regex: search, $options: "i" },subject:subject})
+      .limit(10)
+      .exec(function(err,questions){
+        if(err){
+          console.log('find question in subject failed: '+new Error(err));
+        }else{
+          res.send({code:200,msg:'find questions in subject successfully',questions:questions});
+        }
+      });
+    }else{
+      Subject.find({group:group})
+      .distinct('_id',function(err,subjectIds){
+        if(err){
+          console.log('find subjects in group failed: '+new Error(err));
+        }else{
+          Question.find({question: { $regex: search, $options: "i" },subject:{$in:subjectIds}})
+          .limit(10)
+          .exec(function(err,questions){
             if(err){
-              console.log('find subject in /admin/question/search failed: '+new Error(err));
+              console.log('find question in subjects in group failed: '+new Error(err));
             }else{
-              if(sbj){
-                Question.find({
-                  subject:sbj._id,
-                  question: { $regex: search, $options: "i" }
-                },function(err,questions){
-                  if(err){
-                    console.log('find question in /admin/question/search failed: '+new Error(err));
-                  }else{
-                    console.log(questions);
-                  }
-                });
-              }else{
-                console.log('subject is not exists in /admin/question/search');
-              }
+              res.send({code:200,msg:'find question in group successfully',questions:questions});
             }
           });
-        }else{
-          console.log('group is not exists in /admin/question/search');
         }
+      });
+    }
+  }else{
+    Question.find({question: { $regex: search, $options: "i" }})
+    .limit(10)
+    .exec(function(err,questions){
+      if(err){
+        console.log('find question without group and subject failed: '+new Error(err));
+      }else{
+        res.send({code:200,msg:'find question successfully',questions:questions});
       }
     });
-  }else{
-
   }
+
 });
 
 module.exports = router;

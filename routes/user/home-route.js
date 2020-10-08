@@ -9,6 +9,44 @@ router.get('/',(req,res)=>{
   res.render('home/index',{layout:'user-layout',user:req.session.user,group:null,subject:null});
 });
 
+router.get('/tim-kiem',(req,res)=>{
+  let {group,subject,key} = req.query;
+  if(group){//nếu biến group có giá trị => tìm kiếm group
+    Group.findOne({meta:group},function(err,gr){
+      if(err){//nếu có lỗi trong quá trình tìm kiếm
+        console.log('find group in home/view failed: '+new Error(err));
+      }else{
+        if(!gr){//nếu không tìm thấy group tương ứng
+          res.render('404',{layout:'404',msg:'Không tồn tại lớp: '+group});
+        }else{
+          if(subject){//nếu có giá trị của meta subject
+            Subject.findOne({group:gr._id,meta:subject},function(err,sbj){
+              if(err){//nếu có lỗi trong tìm kiếm subject
+                console.log('can not find subject '+subject + 'in group: '+gr.name+'. Error: '+new Error(err));
+              }else{//nếu tìm kiếm thành công
+                if(!sbj){//nếu subject trả về không có giá trị = null?
+                  res.render('404',{layout:'404',msg:'Không tồn tại môn:'+subject+' của group: '+gr.name});
+                }else{//nếu tìm thấy
+                  res.render('home/search',{layout:'user-layout',group:gr,subject:sbj,user:req.session.user,key:key});
+                }
+              }
+            });
+          }else{//nếu không có giá trị meta subject => trả về những subject thuộc group đã tìm thấy
+            Subject.find({group:gr._id},function(err,subjects){
+              if(err){
+                console.log('can not find any subject belongs to '+gr.name+'. Error: '+new Error(err));
+              }else{
+                res.render('home/search',{layout:'user-layout',group:gr,subjects:subjects,user:req.session.user,key:key});
+              }
+            });
+          }
+        }
+      }
+    });
+  }else{
+    res.render('home/search',{layout:'user-layout',user:req.session.user,key:key});
+  }
+});
 router.get('/view',(req,res)=>{
   let {group,subject} = req.query;
   if(group){//nếu biến group có giá trị => tìm kiếm group
@@ -83,19 +121,6 @@ router.get('/detail',(req,res)=>{
   }
 });
 
-router.get('/s',(req,res)=>{
-  let {group,subject,key} = req.query;
-
-  if(group){
-    if(subject){
-      console.log({subject,key});
-    }else{
-      console.log({group,key});
-    }
-  }else{
-    console.log(key);
-  }
-});
 
 
 module.exports = router;

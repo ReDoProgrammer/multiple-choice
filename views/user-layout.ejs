@@ -141,7 +141,7 @@
         <ol class="breadcrumb breadcrumb-quirk" id="direction">
           <li><a href="/"><i class="fa fa-home mr5"></i> Home</a></li>
           <%if(locals.group){%>
-            <li id="<%= group._id %>"><a href="/view?group=<%=group.meta%>"><%= (group.name) %></a></li>
+            <li id="<%= group._id %>" class="li_group"><a href="/view?group=<%=group.meta%>"><%= (group.name) %></a></li>
             <% if(locals.subject){%>
               <li class="active" id="<%= subject._id %>"><a href="/view?group=<%=group.meta%>&subject=<%=subject.meta%>"><%= (subject.name) %></a></li>
             <%}%>

@@ -2,21 +2,21 @@
   <ul class="headermenu">
     <li>
       <div id="noticePanel" class="btn-group">
-        <button class="btn btn-notice alert-notice" data-toggle="dropdown">
+        <!-- <button class="btn btn-notice alert-notice" data-toggle="dropdown">
           <i class="fa fa-globe"></i>
-        </button>
+        </button> -->
         <div id="noticeDropdown" class="dropdown-menu dm-notice pull-right">
           <div role="tabpanel">
             <!-- Nav tabs -->
-            <ul class="nav nav-tabs nav-justified" role="tablist">
+            <!-- <ul class="nav nav-tabs nav-justified" role="tablist">
               <li class="active"><a data-target="#notification" data-toggle="tab">Notifications (2)</a></li>
               <li><a data-target="#reminders" data-toggle="tab">Reminders (4)</a></li>
-            </ul>
+            </ul> -->
 
             <!-- Tab panes -->
             <div class="tab-content">
               <div role="tabpanel" class="tab-pane active" id="notification">
-                <ul class="list-group notice-list">
+                <!-- <ul class="list-group notice-list">
                   <li class="list-group-item unread">
                     <div class="row">
                       <div class="col-xs-2">
@@ -75,11 +75,11 @@
                       </div>
                     </div>
                   </li>
-                </ul>
-                <a class="btn-more" href="#">View More Notifications <i class="fa fa-long-arrow-right"></i></a>
+                </ul> -->
+                <!-- <a class="btn-more" href="#">View More Notifications <i class="fa fa-long-arrow-right"></i></a> -->
               </div><!-- tab-pane -->
 
-              <div role="tabpanel" class="tab-pane" id="reminders">
+              <!-- <div role="tabpanel" class="tab-pane" id="reminders">
                 <h1 id="todayDay" class="today-day">...</h1>
                 <h3 id="todayDate" class="today-date">...</h3>
 
@@ -138,7 +138,7 @@
                   </li>
                 </ul>
                 <a class="btn-more" href="#">View More Events <i class="fa fa-long-arrow-right"></i></a>
-              </div>
+              </div> -->
             </div>
           </div>
         </div>
@@ -157,19 +157,19 @@
           <span class="caret"></span>
         </button>
         <ul class="dropdown-menu pull-right">
-          <li><a href="profile.html"><i class="glyphicon glyphicon-user"></i> My Profile</a></li>
-          <li><a href="#"><i class="glyphicon glyphicon-cog"></i> Account Settings</a></li>
+          <!-- <li><a href="profile.html"><i class="glyphicon glyphicon-user"></i> My Profile</a></li>
+          <li><a href="#"><i class="glyphicon glyphicon-cog"></i> Account Settings</a></li> -->
           <li><a href="#" id="btnContributeQuestion"><i class="glyphicon glyphicon-question-sign"></i> Đóng góp câu hỏi</a></li>
-          <li><a href="/user/logout"><i class="glyphicon glyphicon-log-out"></i> Log Out</a></li>
+          <li><a href="#" id="aLogout"><i class="glyphicon glyphicon-log-out"></i> Đăng xuất</a></li>
         </ul>
       </div>
     </li>
-    <li>
+    <!-- <li>
       <button id="chatview" class="btn btn-chat alert-notice">
         <span class="badge-alert"></span>
         <i class="fa fa-comments-o"></i>
       </button>
-    </li>
+    </li> -->
   </ul>
 </div><!-- header-right -->
 
@@ -179,5 +179,19 @@
   $('#btnContributeQuestion').click(function(e){
     e.preventDefault();
     $('#modalQuestion').modal();
+  });
+
+  $('#aLogout').click(function(e){
+    e.preventDefault();
+    $.ajax({
+      url:'/thanh-vien/logout',
+      type:'post',
+      success:function(data){
+        if(data.code == 200){
+          alert(data.msg);
+          location.reload();
+        }
+      }
+    })
   });
 </script>

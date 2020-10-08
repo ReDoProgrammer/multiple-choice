@@ -85,16 +85,19 @@ router.get('/profile',middleware.isLoggedIn,(req,res)=>{
 
 router.get('/ranks',(req,res)=>{
   let subjectId = req.query.subjectId;
-  Statistic.find({subject:subjectId})
-  .populate('user','avatar member_code')
-  .sort({times:-1})
-  .exec(function(err,ranks){
-    if(err){
-      console.log('ranks in statistic/ranks failed: '+new Error(err));
-    }else{
-      res.send({code:200,msg:'get ranks successfully',ranks:ranks});
-    }
-  });
+  console.log(subjectId);
+  if(subjectId && subjectId!='undefined'){
+    Statistic.find({subject:subjectId})
+    .populate('user','avatar member_code')
+    .sort({times:-1})
+    .exec(function(err,ranks){
+      if(err){
+        console.log('ranks in statistic/ranks failed: '+new Error(err));
+      }else{
+        res.send({code:200,msg:'get ranks successfully',ranks:ranks});
+      }
+    });
+  }
 });
 
 module.exports = router;

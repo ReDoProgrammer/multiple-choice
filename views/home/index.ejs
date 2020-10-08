@@ -112,8 +112,7 @@
 
   function Rank(){
     let subjectId = $('#direction li.active').attr('id');
-
-    if(typeof subjectId !== 'undefined'){
+    if(subjectId != 'undefined'){
       $.ajax({
         url:'/statistic/ranks',
         type:'get',
@@ -121,6 +120,7 @@
           subjectId:subjectId
         },
         success:function(data){
+          console.log(data);
           if(data.code == 200){
             $('#ranks').show();
             let ranks = '<ul class="list-unstyled mb20">';

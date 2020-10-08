@@ -119,7 +119,9 @@
         },
         success:function(data){
           if(data.code == 200){
-            $('#ranks').show();
+            if(data.ranks.length > 0){
+              $('#ranks').show();
+            }
             let ranks = '<ul class="list-unstyled mb20">';
               let idx = 1;
             $.each(data.ranks,function(k,v){

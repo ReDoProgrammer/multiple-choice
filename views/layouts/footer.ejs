@@ -53,19 +53,19 @@
           </div>
           <div class="col-xs-9">
             <h5 class="text-danger">Hiện tại</h5>
-            <h5 class="text-info statistic_number">143</h5>
+            <h5 class="text-info statistic_number" id="current_visitors"></h5>
           </div>
         </li>
-        <li class = "outer-wrapper">
+        <!-- <li class = "outer-wrapper">
           <div class="col-xs-3 frame">
             <i class="fa fa-flag-o icon" aria-hidden="true"></i>
           </div>
           <div class="col-xs-9">
             <h5 class="text-danger">Tổng lượt truy cập</h5>
-            <h5 class="text-info statistic_number">1432</h5>
+            <h5 class="text-info statistic_number"></h5>
           </div>
-        </li>
-        <li class = "outer-wrapper">
+        </li> -->
+        <!-- <li class = "outer-wrapper">
           <div class="col-xs-3 frame">
             <i class="fa fa-users icon" aria-hidden="true"></i>
           </div>
@@ -73,8 +73,8 @@
             <h5 class="text-danger">Thành viên</h5>
             <h5 class="text-info statistic_number">423</h5>
           </div>
-        </li>
-        <li class = "outer-wrapper">
+        </li> -->
+        <!-- <li class = "outer-wrapper">
           <div class="col-xs-3 frame">
             <i class="fa fa-check-square-o icon" aria-hidden="true"></i>
           </div>
@@ -82,11 +82,25 @@
             <h5 class="text-danger">Lượt làm bài</h5>
             <h5 class="text-info statistic_number">1432</h5>
           </div>
-        </li>
+        </li> -->
       </ul>
     </div>
   </div>
 </div>
+<script src="http://sv.redoapp.com/socket.io/socket.io.js" charset="utf-8"></script>
+
+<script type="text/javascript">
+
+  $(document).ready(function(){
+    var socket = io.connect("http://sv.redoapp.com/");
+    socket.on('counter', function (data) {
+      $('#current_visitors').text(data.count);
+    });
+  });
+</script>
+
+
+
 
 <style media="screen">
   #footer{

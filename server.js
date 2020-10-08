@@ -10,28 +10,34 @@ const passport = require('passport');
 
 //phần routes của admin
 const adminRoutes = require('./routes/admin/admin-route');
-const groupRoutes = require('./routes/admin/group-route');
-const subjectRoutes = require('./routes/admin/subject-route');
-const questionRoutes = require('./routes/admin/question-route');
-const jobRoutes = require('./routes/admin/job-route');
-const docTypeRoutes = require('./routes/admin/doctype-route');
+const configRoutes = require('./routes/admin/config-route');
 const documentRoutes = require('./routes/admin/document-route');
+const docTypeRoutes = require('./routes/admin/doctype-route');
+const groupRoutes = require('./routes/admin/group-route');
+const jobRoutes = require('./routes/admin/job-route');
 const memberRoutes = require('./routes/admin/member-route');
 const newsRoutes = require('./routes/admin/news-route');
+const questionRoutes = require('./routes/admin/question-route');
+const subjectRoutes = require('./routes/admin/subject-route');
+
+
+
+
+
 
 
 
 //phần route của user hoặc guest
-const userRoutes = require('./routes/user/user-route');
-const homeRoutes = require('./routes/user/home-route');
+const censorRoutes = require('./routes/user/censor-route');
+const commentRoutes = require('./routes/user/comment-route');
+const contributeQuestionRoutes = require('./routes/user/contribute-question-route');
 const examRoutes = require('./routes/user/exam-route');
 const facebookRoutes = require('./routes/user/facebook-route');
 const googleRoutes = require('./routes/user/google-route');
-const commentRoutes = require('./routes/user/comment-route');
+const homeRoutes = require('./routes/user/home-route');
 const replytRoutes = require('./routes/user/reply-route');
-const contributeQuestionRoutes = require('./routes/user/contribute-question-route');
-const censorRoutes = require('./routes/user/censor-route');
 const statisticRoutes = require('./routes/user/statistic-route');
+const userRoutes = require('./routes/user/user-route');
 
 
 app.set('view engine','ejs');//set view engine cho nodejs
@@ -82,28 +88,33 @@ app.use(bodyParser.json());
 */
 //phần routes admin
 app.use('/admin',adminRoutes);
-app.use('/admin/group',groupRoutes);
-app.use('/admin/subject',subjectRoutes);
-app.use('/admin/question',questionRoutes);
-app.use('/admin/job',jobRoutes);
-app.use('/admin/document-type',docTypeRoutes);
+app.use('/admin/config',configRoutes);
 app.use('/admin/document',documentRoutes);
+app.use('/admin/document-type',docTypeRoutes);
+app.use('/admin/group',groupRoutes);
+app.use('/admin/job',jobRoutes);
 app.use('/admin/member',memberRoutes);
 app.use('/admin/news',newsRoutes);
+app.use('/admin/question',questionRoutes);
+app.use('/admin/subject',subjectRoutes);
+
+
+
+
+
 
 //phần route user
-app.use('/thanh-vien',userRoutes);//route thành viên
+
+app.use('/censor',censorRoutes);//route kiểm duyệt câu hỏi
+app.use('/comment',commentRoutes);//route bình luận
+app.use('/contribute-question',contributeQuestionRoutes);//đóng góp câu hỏi
+app.use('/lam-bai-thi',examRoutes);//route làm bài thi
 app.use('/',facebookRoutes);//route facebook
 app.use('/',googleRoutes);//route google
 app.use('/',homeRoutes);//route trang chủ
-app.use('/censor',censorRoutes);//route kiểm duyệt câu hỏi
-// app.use('/view',examRoutes);//route làm bài thi
-app.use('/comment',commentRoutes);//route bình luận
 app.use('/reply',replytRoutes);//route trả lời bình luận
-app.use('/contribute-question',contributeQuestionRoutes);//đóng góp câu hỏi
-app.use('/lam-bai-thi',examRoutes);//route làm bài thi
 app.use('/statistic',statisticRoutes);//route thống kê kết quả làm bài
-
+app.use('/thanh-vien',userRoutes);//route thành viên
 
 
 mongoose.connect(config.mongodb.mongodb,{

@@ -49,8 +49,8 @@
         $('#header_right_authenticated').show();
         $('#header_right_not_authenticated').hide();
         console.log('load-top-right:',user);
-        $('#trAvatar').attr('src',user.user.avatar);
-        $('#trFullname').text(user.user.fullname);
+        $('#trAvatar').attr('src',user.avatar);
+        $('#trFullname').text(user.fullname);
       }else{
         $('#header_right_authenticated').hide();
         $('#header_right_not_authenticated').show();

@@ -18,7 +18,6 @@ function onSuccess(googleUser) {
               'userId': 'me'
           });
           request.execute(function (resp) {
-            console.log(resp);
             if(resp.code == 401){
                 onFailure(resp.message);
                 signOut();

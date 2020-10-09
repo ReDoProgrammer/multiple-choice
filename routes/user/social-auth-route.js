@@ -8,7 +8,30 @@ const common = require('../../common/common');
 
 router.get('/facebook/register-or-login',(req,res)=>{
   let {id,name,avatar} = req.query;
-  console.log({id,name,avatar});
+  User.findOne({username:id},function(err,user){
+    if(err){
+      console.log('find user auth with facebook failed: '+new Error(err));
+    }else{
+      if(user){
+        req.session.user = user;
+        res.send({code:200,msg:'Đăng nhập thành công!',user:user});
+      }else{
+        User.create({
+          username:id,
+          fullname:name,
+          member_code:common.MemberCode(),
+          avatar:avatar
+        },function(err,user){
+          if(err){
+            console.log('create new user with facebook failed: '+new Error(err));
+          }else{
+            req.session.user = user;
+            res.send({code:200,msg:'Đăng ký tài khoản thành công!',user:user});
+          }
+        })
+      }
+    }
+  })
 });
 
 module.exports = router;

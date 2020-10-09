@@ -41,7 +41,6 @@
 </div><!-- leftpanel-userinfo -->
 <script type="text/javascript">
   $(document).ready(function(){
-    var socket = io("https://redoapp.com/");
     socket.on('load-profile',(user)=>{
       console.log(user);
       $('#avatar').attr('src',user.avatar);

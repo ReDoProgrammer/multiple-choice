@@ -151,7 +151,7 @@ io.on('connection',function(socket){
   });
 
   socket.on('user-logout',()=>{
-    socket.emit('user-logout');
+    socket.emit('user-logout',members[socket.id].type);
   });
 
 

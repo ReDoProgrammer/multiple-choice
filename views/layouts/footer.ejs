@@ -87,11 +87,11 @@
     </div>
   </div>
 </div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.5/socket.io.min.js"></script>
 
+<script src="socket.io/socket.io.js" charset="utf-8"></script>
 
 <script type="text/javascript">
-
+  var socket = io("http://localhost:8080");
   $(document).ready(function(){
     var socket = io.connect("http://sv.redoapp.com/");
     socket.on('counter', function (data) {

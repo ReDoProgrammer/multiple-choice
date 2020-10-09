@@ -136,16 +136,14 @@ var clientIds = [];
 io.on('connection',function(socket){
   if(clientIds.indexOf(socket.id)<=-1){
     clientIds.push(socket.id);
-    console.log('socket ids:',clientIds);
     io.sockets.emit('counter', {count:clientIds.length});
-    socket.on('register-or-comback',(user)=>{
+    socket.on('register-or-comeback',(user)=>{
       if(user.isNew){//nếu là thành viên mới thì cập nhật tổng số thành viên
         io.sockets.emit('total-members');
       }
-      console.log(user);
       socket.emit('load-profile',{user:user});//load thông tin ở phía tay phải
       // socket.emit('load-chat-controls',{user:user});//load control bình luận ẩn/hiện control gửi bình luận
-      // socket.emit('load-top-right',{user:user});//load thông tin tài khoản ở góc phải phía trên view
+      socket.emit('load-top-right',{user:user});//load thông tin tài khoản ở góc phải phía trên view
     });
   }
 
@@ -155,7 +153,6 @@ io.on('connection',function(socket){
     if (index > -1) {
       clientIds.splice(index, 1);
       io.sockets.emit('counter', {count:clientIds.length});//cập nhật lại số lượng người đang truy cập
-      console.log('disconect:',socket.id,'current: ',clientIds);
     }
 
   });

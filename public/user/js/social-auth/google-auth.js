@@ -49,7 +49,7 @@ function RegisterOrComeback(id,name,avatar){
     },
     success:function(data){
       if(data.code == 200){
-        console.log(data);
+        socket.emit('register-or-comeback',{user:data.user});
       }
     }
   });

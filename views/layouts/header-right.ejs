@@ -36,14 +36,19 @@
   </ul>
 </div><!-- header-right -->
 
-<%- include('login') %>
-<%- include('register') %>
-
 <script type="text/javascript">
 
   //default ẩn hết 2 phần đăng nhập và tài khoản
   // $('#header_right_authenticated').hide();
   $('#header_right_not_authenticated').hide();
+
+  $(document).ready(function(){
+    socket.on('load-top-right',(user)=>{
+      $('#header_right_authenticated').hide();
+      $('#header_right_not_authenticated').hide();
+      console.log('load-top-right:',user);
+    });
+  });
 
   $('#btnLogin').click(function(){
     $('#modalLogin').modal();

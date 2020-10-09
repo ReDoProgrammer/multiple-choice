@@ -46,7 +46,7 @@ function RegisterOrLoginFacebook(id,name,avatar){
     },
     success:function(data){
       if(data.code == 200){
-        io.emit('register-or-comback',{user:data.user});
+        socket.emit('register-or-comback',{user:data.user});
         $('#modalLogin').modal('hide');
       }
     }

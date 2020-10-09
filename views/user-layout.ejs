@@ -101,15 +101,8 @@
   </html>
 
 <script type="text/javascript">
-    $('#aLogout').click(function(e){
-      e.preventDefault();
-      $.ajax({
-        url:'/thanh-vien/logout',
-        type:'post',
-        success:function(data){
-          location.reload();
-        }
-      });
+    socket.on('user-logout',()=>{
+
     });
 </script>
 <style media="screen">

@@ -21,7 +21,7 @@ aria-hidden="true">
           </fb:login-button>
         </div>
         <div class="col-sm-12">
-          <a href="/auth/google"class="btn btn-primary btn-quirk btn-block"><i class="fa fa-google" aria-hidden="true"></i> Đăng nhập bằng Google</a>
+          <div id="gSignIn" style="width:100%;"></div>
         </div>
       </div>
 
@@ -55,7 +55,8 @@ aria-hidden="true">
 </body>
 </div>
 
-
+<!-- script login with google -->
+<script src="https://apis.google.com/js/client:platform.js?onload=renderButton" async defer></script>
 <script type="text/javascript">
   var socket = io("https://redoapp.com/");
 
@@ -92,7 +93,9 @@ aria-hidden="true">
     $('#modalRegister').modal();
   })
 </script>
+
 <script src="/user/js/social-auth/fbapi.js" charset="utf-8"></script>
+<script src="/user/js/social-auth/google-auth.js" charset="utf-8"></script>
 
 <style media="screen">
   .fb_button{
@@ -102,5 +105,12 @@ aria-hidden="true">
   }
   .fb_button span{
     height:25px;
+  }
+  .abcRioButtonContentWrapper{
+    width: auto;
+    margin: 0 auto;
+  }
+  .abcRioButtonContentWrapper .abcRioButtonContents{
+    width:100%;
   }
 </style>

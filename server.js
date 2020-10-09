@@ -142,7 +142,7 @@ io.on('connection',function(socket){
       if(data.isNew){//nếu là thành viên mới thì cập nhật tổng số thành viên
         io.sockets.emit('total-members');
       }
-      members[data.user.username] = {data.type};
+      members[data.user.username] = data.type;
       console.log('members:',members);
       socket.emit('load-profile',data.user);//load thông tin ở phía tay phải
       // socket.emit('load-chat-controls',{user:user});//load control bình luận ẩn/hiện control gửi bình luận

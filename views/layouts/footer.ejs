@@ -91,9 +91,9 @@
 <script src="socket.io/socket.io.js" charset="utf-8"></script>
 
 <script type="text/javascript">
-  var socket = io("http://localhost:8080");
+
   $(document).ready(function(){
-    var socket = io.connect("http://sv.redoapp.com/");
+    var socket = io("http://localhost:8080");
     socket.on('counter', function (data) {
       $('#current_visitors').text(data.count);
     });

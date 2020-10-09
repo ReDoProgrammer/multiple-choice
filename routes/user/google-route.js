@@ -36,7 +36,9 @@ passport.use(new GoogleStrategy({
 }
 ));
 
-
+router.get('/google-auth',(req,res)=>{
+  res.render('google',{layout:'google'});
+});
 router.get('/auth/google',passport.authenticate('google', { scope: ['profile'] }));
 
 router.get('/auth/google/callback',passport.authenticate('google', { failureRedirect: '/login' }),function(req, res) {

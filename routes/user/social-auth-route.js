@@ -34,4 +34,32 @@ router.get('/facebook/register-or-login',(req,res)=>{
   })
 });
 
+router.get('/google/register-or-login',(req,res)=>{
+  let {id,name,avatar} = req.query;
+  User.findOne({username:id},function(err,user){
+    if(err){
+      console.log('find user auth with google failed: '+new Error(err));
+    }else{
+      if(user){
+        req.session.user = user;
+        res.send({code:200,msg:'Đăng nhập thành công!',user:user,isNew:false,type:'google'});
+      }else{
+        User.create({
+          username:id,
+          fullname:name,
+          member_code:common.MemberCode(),
+          avatar:avatar
+        },function(err,user){
+          if(err){
+            console.log('create new user with facebook failed: '+new Error(err));
+          }else{
+            req.session.user = user;
+            res.send({code:200,msg:'Đăng ký tài khoản thành công!',user:user,isNew:true,type:'google'});
+          }
+        })
+      }
+    }
+  })
+});
+
 module.exports = router;

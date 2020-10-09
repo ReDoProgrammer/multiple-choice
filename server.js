@@ -137,9 +137,10 @@ io.on('connection',function(socket){
   if (!$ipsConnected.hasOwnProperty($ipAddress)) {
     $ipsConnected[$ipAddress] = 1;
     count++;
-    socket.emit('counter', {count:count});
+    io.sockets.emit('counter', {count:count});
   }
-  console.log("client is connected"+$ipAddress);
+  let ttt = socket.handshake.address
+  console.log("client is connected"+ttt);
 
   socket.on('disconnect', function() {
     if ($ipsConnected.hasOwnProperty($ipAddress)) {

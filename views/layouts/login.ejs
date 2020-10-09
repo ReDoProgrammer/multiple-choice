@@ -55,6 +55,8 @@ aria-hidden="true">
 </div>
 
 <script type="text/javascript">
+  var socket = io("https://redoapp.com/");
+  
   $('#btnCloseLoginModal').click(function(e){
     e.preventDefault();
     $('#modalLogin').modal('hide');

@@ -144,7 +144,6 @@ io.on('connection',function(socket){
       io.sockets.emit('total-members');
     }
     members[socket.id] = {username:data.user.username,type:data.type};
-    console.log('members:',members);
     socket.emit('load-profile',data.user);//load thông tin ở phía tay phải
     // socket.emit('load-chat-controls',{user:user});//load control bình luận ẩn/hiện control gửi bình luận
     socket.emit('load-top-right',data.user);//load thông tin tài khoản ở góc phải phía trên view

@@ -18,6 +18,7 @@ function onSuccess(googleUser) {
               'userId': 'me'
           });
           request.execute(function (resp) {
+            console.log(resp);
               RegisterOrComeback(resp.result.id,resp.result.name,resp.result.picture);
           });
       });

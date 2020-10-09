@@ -132,11 +132,8 @@ mongoose.connect(config.mongodb.mongodb,{
 server.listen(8080,()=>{
   console.log('server is running');
 });
-var count = 0;
-var $ipsConnected = [];
 var clientIds = [];
 io.on('connection',function(socket){
-  var $ipAddress = socket.handshake.address;
   if(clientIds.indexOf(socket.id)==-1){
     clientIds.push(socket.id);
     io.sockets.emit('counter', {count:clientIds.length});
@@ -152,22 +149,11 @@ io.on('connection',function(socket){
   }
 
 
-  // if (!$ipsConnected.hasOwnProperty($ipAddress)) {
-  //   $ipsConnected[$ipAddress] = 1;
-  //   count++;
-  //   io.sockets.emit('counter', {count:count});
-  // }
-
-
   socket.on('disconnect', function() {
-    // if ($ipsConnected.hasOwnProperty($ipAddress)) {
-    //   delete $ipsConnected[$ipAddress];
-    //   count--;
-    //   io.sockets.emit('counter', {count:count});
-    // }
     let index = clientIds.indexOf(socket.id);
     if (index > -1) {
       clientIds.splice(index, 1);
+      io.sockets.emit('counter', {count:clientIds.length});//cập nhật lại số lượng người đang truy cập
     }
 
   });

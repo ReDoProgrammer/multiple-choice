@@ -48,7 +48,7 @@ function RegisterOrLoginFacebook(id,name,avatar){
     success:function(data){
       if(data.code == 200){
         if(data.isNew){
-          io.emit('new-member');
+          io.emit('register-or-comback',{user:data.user});
         }
       }
     }

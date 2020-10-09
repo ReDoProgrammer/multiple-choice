@@ -41,6 +41,9 @@
    function statusChangeCallback(response){
      if(response.status == 'connected'){
        console.log('logged in and authenticated: ',response);
+       FB.api('/me?fields=name',function(res){
+         console.log(res);
+       })
      }else{
        console.log('you are not logged in');
      }

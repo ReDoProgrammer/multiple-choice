@@ -45,7 +45,7 @@
 
   $(document).ready(function(){
     socket.on('load-top-right',(user)=>{
-      if(user){
+      if(user!=1){
         console.log('user in header right: ',user);
         $('#header_right_authenticated').show();
         $('#header_right_not_authenticated').hide();

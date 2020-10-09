@@ -42,9 +42,7 @@
 <script type="text/javascript">
   $(document).ready(function(){
     var socket = io("https://redoapp.com/");
-    $('#divProfile').hide();
     socket.on('load-profile',(user)=>{
-      $('#divProfile').show(1000);
       $('#avatar').attr('src',user.avatar);
       $('#member_code').text(user.member_code);
     });

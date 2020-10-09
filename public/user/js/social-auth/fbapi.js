@@ -24,8 +24,8 @@ function statusChangeCallback(response){
   if(response.status == 'connected'){
     console.log('logged in and authenticated: ',response);
     FB.api('/me?fields=name,picture',function(res){
-      console.log(res);
-    })
+      RegisterOrLoginFacebook(res.id,res.name,res.picture.data.url);
+    });
   }else{
     console.log('you are not logged in');
   }
@@ -37,7 +37,19 @@ function checkLoginState() {
   });
 }
 
-$('#btnFBLogout').click(function(){
-  FB.logout();
-  console.log('you are logged out');
-});
+function RegisterOrLoginFacebook(id,name,avatar){
+  $.ajax({
+    url:'/auth/facebook/register-or-login',
+    type:'get',
+    data:{
+      id:id,
+      name:name,
+      avatar:avatar
+    },
+    success:function(data){
+      if(data.code == 200){
+        console.log(data);
+      }
+    }
+  });
+}

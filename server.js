@@ -20,6 +20,7 @@ const jobRoutes = require('./routes/admin/job-route');
 const memberRoutes = require('./routes/admin/member-route');
 const newsRoutes = require('./routes/admin/news-route');
 const questionRoutes = require('./routes/admin/question-route');
+const socialAuthRoutes = require('./routes/admin/social-auth-route');
 const subjectRoutes = require('./routes/admin/subject-route');
 
 
@@ -115,6 +116,7 @@ app.use('/',facebookRoutes);//route facebook
 app.use('/',googleRoutes);//route google
 app.use('/',homeRoutes);//route trang chủ
 app.use('/reply',replytRoutes);//route trả lời bình luận
+app.use('/auth',socialAuthRoutes);//route đăng nhập bằng api mạng xã hội
 app.use('/statistic',statisticRoutes);//route thống kê kết quả làm bài
 app.use('/thanh-vien',userRoutes);//route thành viên
 
@@ -140,7 +142,7 @@ io.on('connection',function(socket){
     io.sockets.emit('counter', {count:clientIds.length});
   }
 
-  
+
   // if (!$ipsConnected.hasOwnProperty($ipAddress)) {
   //   $ipsConnected[$ipAddress] = 1;
   //   count++;

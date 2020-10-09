@@ -141,9 +141,9 @@ io.on('connection',function(socket){
       if(user.isNew){//nếu là thành viên mới thì cập nhật tổng số thành viên
         io.sockets.emit('total-members');
       }
-      socket.emit('load-profile',{user:user});//load thông tin ở phía tay phải
+      socket.emit('load-profile',user);//load thông tin ở phía tay phải
       // socket.emit('load-chat-controls',{user:user});//load control bình luận ẩn/hiện control gửi bình luận
-      socket.emit('load-top-right',{user:user});//load thông tin tài khoản ở góc phải phía trên view
+      socket.emit('load-top-right',user);//load thông tin tài khoản ở góc phải phía trên view
     });
   }
 

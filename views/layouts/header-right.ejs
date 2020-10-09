@@ -15,7 +15,8 @@
     </li>
   </ul>
 </div><!-- header-right -->
-
+<%- include('login') %>
+<%- include('register') %>
 
 <div class="header-right" id="header_right_not_authenticated">
   <ul class="headermenu">
@@ -44,7 +45,7 @@
 
   $(document).ready(function(){
     socket.on('load-top-right',(user)=>{
-      $('#header_right_authenticated').hide();
+      $('#header_right_authenticated').show();
       $('#header_right_not_authenticated').hide();
       console.log('load-top-right:',user);
     });

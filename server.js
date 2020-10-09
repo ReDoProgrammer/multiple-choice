@@ -134,7 +134,7 @@ server.listen(8080,()=>{
 });
 var clientIds = [];
 io.on('connection',function(socket){
-  if(clientIds.includes(socket.id)){
+  if(clientIds.indexOf(socket.id)<=-1){
     clientIds.push(socket.id);
     io.sockets.emit('counter', {count:clientIds.length});
     socket.on('register-or-comback',(user)=>{

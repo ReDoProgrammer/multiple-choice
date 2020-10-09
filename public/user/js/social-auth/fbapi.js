@@ -5,7 +5,6 @@ window.fbAsyncInit = function() {
     xfbml      : true,
     version    : 'v8.0'
   });
-
   FB.getLoginStatus(function(response) {
     statusChangeCallback(response);
   });
@@ -47,9 +46,8 @@ function RegisterOrLoginFacebook(id,name,avatar){
     },
     success:function(data){
       if(data.code == 200){
-        if(data.isNew){
-          io.emit('register-or-comback',{user:data.user});
-        }
+        io.emit('register-or-comback',{user:data.user});
+        $('#modalLogin').modal('hide');
       }
     }
   });

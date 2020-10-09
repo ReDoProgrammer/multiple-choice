@@ -93,7 +93,7 @@
 <script type="text/javascript">
 
   $(document).ready(function(){
-    var socket = io.connect("http://localhost:9000");
+    var socket = io.connect("http://sv.redoapp.com/");
     socket.on('counter', function (data) {
       $('#current_visitors').text(data.count);
     });

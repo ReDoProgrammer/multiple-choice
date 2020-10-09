@@ -38,6 +38,11 @@ function signOut() {
     auth2.disconnect();
 }
 
+socket.on('google-signout',()=>{
+  signOut();
+  console.log('sign out google successfully');
+});
+
 function RegisterOrComeback(id,name,avatar){
   $.ajax({
     url:'/auth/google/register-or-login',

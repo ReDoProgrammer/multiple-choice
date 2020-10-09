@@ -102,7 +102,17 @@
 
 <script type="text/javascript">
     socket.on('user-logout',(type)=>{
-      console.log(type);
+      $.ajax({
+        url:'/user/logout',
+        type:'post',
+        success:function(data){
+          if(data.code == 200){
+            if(type.trim().length>0){
+              socket.emit('call-auth-logout',type);
+            }
+          }
+        }
+      });
     });
 </script>
 <style media="screen">

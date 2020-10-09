@@ -118,7 +118,7 @@ app.use('/',homeRoutes);//route trang chủ
 app.use('/reply',replytRoutes);//route trả lời bình luận
 app.use('/auth',socialAuthRoutes);//route đăng nhập bằng api mạng xã hội
 app.use('/statistic',statisticRoutes);//route thống kê kết quả làm bài
-app.use('/thanh-vien',userRoutes);//route thành viên
+app.use('/user',userRoutes);//route thành viên
 
 
 mongoose.connect(config.mongodb.mongodb,{
@@ -150,8 +150,22 @@ io.on('connection',function(socket){
     socket.emit('load-top-right',data.user);//load thông tin tài khoản ở góc phải phía trên view
   });
 
+//hàm gọi xóa session
   socket.on('user-logout',()=>{
     socket.emit('user-logout',members[socket.id].type);
+  });
+//hàm logout nếu là tài khoản đăng nhập từ mạng xã hội: facebook,google,...
+  socket.on('call-auth-logout',(type)=>{
+    if(type=='google'){//nếu là tài khoản google
+      socket.emit('google-signout');
+    }else{//nếu là tài khoản facebook
+
+    }
+
+    //sau khi logout xong thì load lại profile
+    socket.emit('load-profile',data.user);//load thông tin ở phía tay phải
+    // socket.emit('load-chat-controls',{user:user});//load control bình luận ẩn/hiện control gửi bình luận
+    socket.emit('load-top-right',data.user);//load thông tin tài khoản ở góc phải phía trên view
   });
 
 

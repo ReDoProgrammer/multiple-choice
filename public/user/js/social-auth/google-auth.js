@@ -19,13 +19,17 @@ function onSuccess(googleUser) {
           });
           request.execute(function (resp) {
             console.log(resp);
+            if(resp.code == 401){
+                onFailure(resp.message);
+                signOut();
+            }else{
               RegisterOrComeback(resp.result.id,resp.result.name,resp.result.picture);
+            }
+
           });
       });
     } catch (error) {
       onFailure(error)
-    } finally {
-      signOut();
     }
 }
 

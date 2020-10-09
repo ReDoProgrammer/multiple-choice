@@ -31,9 +31,7 @@ function onFailure(error) {
 function signOut() {
     var auth2 = gapi.auth2.getAuthInstance();
     auth2.signOut().then(function () {
-        document.getElementsByClassName("userContent")[0].innerHTML = '';
-        document.getElementsByClassName("userContent")[0].style.display = "none";
-        document.getElementById("gSignIn").style.display = "block";
+      console.log('signout google account successfully');
     });
     auth2.disconnect();
 }

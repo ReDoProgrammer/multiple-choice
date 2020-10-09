@@ -139,12 +139,11 @@ io.on('connection',function(socket){
     clientIds.push(socket.id);
     io.sockets.emit('counter', {count:clientIds.length});
     socket.on('register-or-comeback',(data)=>{
-      console.log(data);
       if(data.isNew){//nếu là thành viên mới thì cập nhật tổng số thành viên
         io.sockets.emit('total-members');
       }
-      members[socket.id] = data.user.username;
-      console.log(data);
+      members[socket.id] = {data.user.username,data.type};
+      console.log('members:',members);
       socket.emit('load-profile',data.user);//load thông tin ở phía tay phải
       // socket.emit('load-chat-controls',{user:user});//load control bình luận ẩn/hiện control gửi bình luận
       socket.emit('load-top-right',data.user);//load thông tin tài khoản ở góc phải phía trên view

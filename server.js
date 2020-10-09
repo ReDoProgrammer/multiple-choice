@@ -132,21 +132,30 @@ server.listen(8080,()=>{
 });
 var count = 0;
 var $ipsConnected = [];
+var clientIds = [];
 io.on('connection',function(socket){
   var $ipAddress = socket.handshake.address;
-  if (!$ipsConnected.hasOwnProperty($ipAddress)) {
-    $ipsConnected[$ipAddress] = 1;
-    count++;
-    io.sockets.emit('counter', {count:count});
+  if(clientIds.indexOf(socket.id)==-1){
+    clientIds.push(socket.id);
+    io.sockets.emit('counter', {count:clientIds.length});
   }
-  let ttt = socket.handshake.address
-  console.log("client is connected"+ttt);
+  // if (!$ipsConnected.hasOwnProperty($ipAddress)) {
+  //   $ipsConnected[$ipAddress] = 1;
+  //   count++;
+  //   io.sockets.emit('counter', {count:count});
+  // }
+
 
   socket.on('disconnect', function() {
-    if ($ipsConnected.hasOwnProperty($ipAddress)) {
-      delete $ipsConnected[$ipAddress];
-      count--;
-      io.sockets.emit('counter', {count:count});
+    // if ($ipsConnected.hasOwnProperty($ipAddress)) {
+    //   delete $ipsConnected[$ipAddress];
+    //   count--;
+    //   io.sockets.emit('counter', {count:count});
+    // }
+    const index = clientIds.indexOf(socket.id);
+    if (index > -1) {
+      clientIds.splice(index, 1);
     }
+
   });
 });

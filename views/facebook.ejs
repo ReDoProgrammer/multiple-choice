@@ -6,10 +6,19 @@
   </head>
   <body>
     <h1>hello world</h1>
-    <fb:login-button
+    <fb:login-button class="fb_button"
       scope="public_profile,email"
-      onlogin="checkLoginState();">
+      onlogin="checkLoginState();"
+      length="long" size="large"
+      >
+        <span style= "margin-right: 10px; padding:10px; margin:10px;">Đăng nhập bằng Facebook</span>
     </fb:login-button>
+
+
+    <button id="customBtn">
+  <span class="icon"></span>
+  <span class="buttonText">Facebook</span>
+</button>
     <button type="button" id="btnFBLogout">Logout</button>
   </body>
 </html>
@@ -60,3 +69,7 @@
       console.log('you are logged out');
     });
 </script>
+
+<style media="screen">
+  
+</style>

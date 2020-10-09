@@ -11,8 +11,20 @@ aria-hidden="true">
 
     <div class="panel-body">
 
-      <a href="/auth/facebook"class="btn btn-primary btn-quirk btn-block"><i class="fa fa-facebook-square" aria-hidden="true"></i> Đăng nhập bằng Facebook</a>
-      <a href="/auth/google"class="btn btn-primary btn-quirk btn-block"><i class="fa fa-google" aria-hidden="true"></i> Đăng nhập bằng Google</a>
+      <div class="row">
+        <div class="col-sm-12">
+          <fb:login-button class="fb_button"
+            scope="public_profile,email"
+            onlogin="checkLoginState();"
+            >
+              <span style= "width: 300px; padding: 10px 0;">Đăng nhập bằng Facebook</span>
+          </fb:login-button>
+        </div>
+        <div class="col-sm-12">
+          <a href="/auth/google"class="btn btn-primary btn-quirk btn-block"><i class="fa fa-google" aria-hidden="true"></i> Đăng nhập bằng Google</a>
+        </div>
+      </div>
+
       <div class="or">hoặc</div>
 
         <div class="form-group mb10">
@@ -70,10 +82,21 @@ aria-hidden="true">
       }
     });
   });
-
   $('#btnRegisterSuddently').click(function(e){
     e.preventDefault();
     $('#modalLogin').modal('hide');
     $('#modalRegister').modal();
   })
 </script>
+<script src="/user/js/social-auth/fbapi.js" charset="utf-8"></script>
+
+<style media="screen">
+  .fb_button{
+    height:25px;
+    display:block;
+    margin: 0 auto;
+  }
+  .fb_button span{
+    height:25px;
+  }
+</style>

@@ -20,7 +20,6 @@ const jobRoutes = require('./routes/admin/job-route');
 const memberRoutes = require('./routes/admin/member-route');
 const newsRoutes = require('./routes/admin/news-route');
 const questionRoutes = require('./routes/admin/question-route');
-const socialAuthRoutes = require('./routes/admin/social-auth-route');
 const subjectRoutes = require('./routes/admin/subject-route');
 
 
@@ -39,6 +38,7 @@ const facebookRoutes = require('./routes/user/facebook-route');
 const googleRoutes = require('./routes/user/google-route');
 const homeRoutes = require('./routes/user/home-route');
 const replytRoutes = require('./routes/user/reply-route');
+const socialAuthRoutes = require('./routes/user/social-auth-route');
 const statisticRoutes = require('./routes/user/statistic-route');
 const userRoutes = require('./routes/user/user-route');
 

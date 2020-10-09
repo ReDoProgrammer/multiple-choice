@@ -156,6 +156,7 @@ io.on('connection',function(socket){
 
 
   socket.on('disconnect', function() {
+    delete members[socket.id];//xóa bộ nhớ catch về tài khoản thành viên
     let index = clientIds.indexOf(socket.id);
     if (index > -1) {
       clientIds.splice(index, 1);

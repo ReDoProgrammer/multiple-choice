@@ -44,13 +44,13 @@
   $('#header_right_not_authenticated').hide();
 
   $(document).ready(function(){
-    socket.on('load-top-right',(data)=>{
-      if(data){
-        console.log('user in header right: ',data);
+    socket.on('load-top-right',(user)=>{
+      if(user){
+        console.log('user in header right: ',user);
         $('#header_right_authenticated').show();
         $('#header_right_not_authenticated').hide();
-        $('#trAvatar').attr('src',data.user.avatar);
-        $('#trFullname').text(data.user.fullname);
+        $('#trAvatar').attr('src',user.avatar);
+        $('#trFullname').text(user.fullname);
       }else{
         $('#header_right_authenticated').hide();
         $('#header_right_not_authenticated').show();

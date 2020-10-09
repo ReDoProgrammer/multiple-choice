@@ -139,6 +139,8 @@ io.on('connection',function(socket){
     clientIds.push(socket.id);
     io.sockets.emit('counter', {count:clientIds.length});
   }
+
+  
   // if (!$ipsConnected.hasOwnProperty($ipAddress)) {
   //   $ipsConnected[$ipAddress] = 1;
   //   count++;

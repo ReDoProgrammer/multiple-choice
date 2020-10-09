@@ -76,5 +76,7 @@ router.get('/count',(req,res)=>{
   });
 });
 
-
+router.get('/auth-statuts',(req,res)=>{
+  res.send({connected:(req.session.user?true:false)});
+});
 module.exports = router;

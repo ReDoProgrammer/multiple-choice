@@ -136,6 +136,7 @@ var clientIds = [];
 io.on('connection',function(socket){
   if(clientIds.indexOf(socket.id)<=-1){
     clientIds.push(socket.id);
+    console.log('socket ids:',clientIds);
     io.sockets.emit('counter', {count:clientIds.length});
     socket.on('register-or-comback',(user)=>{
       if(user.isNew){//nếu là thành viên mới thì cập nhật tổng số thành viên

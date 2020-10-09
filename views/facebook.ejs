@@ -10,6 +10,7 @@
       scope="id,displayName,photos"
       onlogin="checkLoginState();">
     </fb:login-button>
+    <button type="button" id="btnFBLogout">Logout</button>
   </body>
 </html>
 
@@ -41,7 +42,7 @@
      if(response.status == 'connected'){
        console.log('logged in and authenticated: ',response);
      }else{
-       console.log('you are logged in');
+       console.log('you are not logged in');
      }
    }
 
@@ -50,4 +51,9 @@
         statusChangeCallback(response);
       });
     }
+
+    $('#btnFBLogout').click(function(){
+      FB.logout();
+      console.log('you are logged out');
+    });
 </script>

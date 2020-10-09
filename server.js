@@ -130,14 +130,14 @@ mongoose.connect(config.mongodb.mongodb,{
 	console.log('connect database successfully');
 });
 server.listen(8080,()=>{
-  console.log('server is running');
+  console.log('server is running ...');
 });
 var clientIds = [];
 io.on('connection',function(socket){
   if(clientIds.indexOf(socket.id)==-1){
     clientIds.push(socket.id);
     io.sockets.emit('counter', {count:clientIds.length});
-    io.sockets.on('register-or-comback',(user)=>{
+    socket.on('register-or-comback',(user)=>{
       if(user.isNew){//nếu là thành viên mới thì cập nhật tổng số thành viên
         io.sockets.emit('total-members');
       }

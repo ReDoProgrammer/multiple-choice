@@ -41,6 +41,7 @@
 </div><!-- leftpanel-userinfo -->
 <script type="text/javascript">
   $(document).ready(function(){
+    var socket = io("https://redoapp.com/");
     $('#divProfile').hide();
     socket.on('load-profile',(user)=>{
       $('#divProfile').show(1000);

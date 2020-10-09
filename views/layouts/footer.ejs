@@ -88,12 +88,12 @@
   </div>
 </div>
 
-<script src="socket.io/socket.io.js" charset="utf-8"></script>
+<script src="https://redoapp.com/socket.io/socket.io.js" charset="utf-8"></script>
 
 <script type="text/javascript">
 
   $(document).ready(function(){
-    var socket = io("http://localhost:8080");
+    var socket = io("https://redoapp.com/");
     socket.on('counter', function (data) {
       $('#current_visitors').text(data.count);
     });

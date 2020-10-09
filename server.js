@@ -140,6 +140,9 @@ io.on('connection',function(socket){
   if(clientIds.indexOf(socket.id)==-1){
     clientIds.push(socket.id);
     io.sockets.emit('counter', {count:clientIds.length});
+    io.sockets.on('new-member',()=>{
+      io.sockets.emit('total-members');
+    });
   }
 
 

@@ -68,7 +68,7 @@ router.post('/login',(req,res)=>{
 router.get('/count',(req,res)=>{
   User.countDocuments({},function(err,total){
     if(err){
-      res.send({code:500,msg:'Thống kê thành viên thất bại:'+new Error(err)});
+      console.log('count users failed: '+new Error(err));
     }else{
       res.send({code:200,msg:'Thống kê số thành viên thành công',count:total});
     }

@@ -22,7 +22,6 @@ window.fbAsyncInit = function() {
 
 function statusChangeCallback(response){
   if(response.status == 'connected'){
-    console.log('logged in and authenticated: ',response);
     FB.api('/me?fields=name,picture',function(res){
       RegisterOrLoginFacebook(res.id,res.name,res.picture.data.url);
     });
@@ -48,7 +47,9 @@ function RegisterOrLoginFacebook(id,name,avatar){
     },
     success:function(data){
       if(data.code == 200){
-        console.log(data);
+        if(data.isNew){
+          io.emit('new-member');
+        }
       }
     }
   });

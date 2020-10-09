@@ -65,15 +65,15 @@
             <h5 class="text-info statistic_number"></h5>
           </div>
         </li> -->
-        <!-- <li class = "outer-wrapper">
+        <li class = "outer-wrapper">
           <div class="col-xs-3 frame">
             <i class="fa fa-users icon" aria-hidden="true"></i>
           </div>
           <div class="col-xs-9">
             <h5 class="text-danger">Thành viên</h5>
-            <h5 class="text-info statistic_number">423</h5>
+            <h5 class="text-info statistic_number" id="totalUsers"></h5>
           </div>
-        </li> -->
+        </li>
         <!-- <li class = "outer-wrapper">
           <div class="col-xs-3 frame">
             <i class="fa fa-check-square-o icon" aria-hidden="true"></i>
@@ -97,7 +97,25 @@
     socket.on('counter', function (data) {
       $('#current_visitors').text(data.count);
     });
+    socket.on('total-members',()=>{
+      TotalMembers();
+    });
+
+    TotalMembers();
+
   });
+
+  function TotalMembers(){
+    $.ajax({
+      url:'/thanh-vien/count',
+      type:'get',
+      success:function(data){
+        if(data.code == 200){
+          $('#totalUsers').text(data.count);
+        }
+      }
+    });
+  }
 </script>
 
 

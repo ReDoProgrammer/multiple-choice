@@ -14,7 +14,7 @@ router.get('/facebook/register-or-login',(req,res)=>{
     }else{
       if(user){
         req.session.user = user;
-        res.send({code:200,msg:'Đăng nhập thành công!',user:user});
+        res.send({code:200,msg:'Đăng nhập thành công!',user:user,isNew:false});
       }else{
         User.create({
           username:id,
@@ -26,7 +26,7 @@ router.get('/facebook/register-or-login',(req,res)=>{
             console.log('create new user with facebook failed: '+new Error(err));
           }else{
             req.session.user = user;
-            res.send({code:200,msg:'Đăng ký tài khoản thành công!',user:user});
+            res.send({code:200,msg:'Đăng ký tài khoản thành công!',user:user,isNew:true});
           }
         })
       }

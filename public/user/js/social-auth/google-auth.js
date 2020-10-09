@@ -12,14 +12,20 @@ function renderButton() {
 
 // Sign-in success callback
 function onSuccess(googleUser) {
-    gapi.client.load('oauth2', 'v2', function () {
-        var request = gapi.client.oauth2.userinfo.get({
-            'userId': 'me'
-        });
-        request.execute(function (resp) {
-            RegisterOrComeback(resp.result.id,resp.result.name,resp.result.picture);
-        });
-    });
+    try {
+      gapi.client.load('oauth2', 'v2', function () {
+          var request = gapi.client.oauth2.userinfo.get({
+              'userId': 'me'
+          });
+          request.execute(function (resp) {
+              RegisterOrComeback(resp.result.id,resp.result.name,resp.result.picture);
+          });
+      });
+    } catch (error) {
+      onFailure(error)
+    } finally {
+      signOut();
+    }
 }
 
 // Sign-in failure callback

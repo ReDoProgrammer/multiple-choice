@@ -155,6 +155,7 @@ io.on('connection',function(socket){
     if (index > -1) {
       clientIds.splice(index, 1);
       io.sockets.emit('counter', {count:clientIds.length});//cập nhật lại số lượng người đang truy cập
+      console.log('disconect:',socket.id,'current: ',clientIds);
     }
 
   });

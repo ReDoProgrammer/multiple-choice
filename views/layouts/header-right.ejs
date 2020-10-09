@@ -40,13 +40,13 @@
 <script type="text/javascript">
 
   //default ẩn hết 2 phần đăng nhập và tài khoản
-  // $('#header_right_authenticated').hide();
-  $('#header_right_not_authenticated').hide();
+  $('#header_right_authenticated').hide();
+  $('#header_right_not_authenticated').show();
 
   $(document).ready(function(){
     socket.on('load-top-right',(user)=>{
+      console.log('user:', user);
       if(user!=1){
-        console.log('user in header right: ',user);
         $('#header_right_authenticated').show();
         $('#header_right_not_authenticated').hide();
         $('#trAvatar').attr('src',user.avatar);

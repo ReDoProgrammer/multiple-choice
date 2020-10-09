@@ -45,15 +45,14 @@
 
   $(document).ready(function(){
     socket.on('load-top-right',(user)=>{
-      console.log('user:', user);
       if(user!=1){
-        $('#header_right_authenticated').show();
-        $('#header_right_not_authenticated').hide();
+        $('#header_right_authenticated').show(500);
+        $('#header_right_not_authenticated').hide(500);
         $('#trAvatar').attr('src',user.avatar);
         $('#trFullname').text(user.fullname);
       }else{
-        $('#header_right_authenticated').hide();
-        $('#header_right_not_authenticated').show();
+        $('#header_right_authenticated').hide(500);
+        $('#header_right_not_authenticated').show(500);
       }
     });
   });
@@ -81,19 +80,5 @@
   $('#btnContributeQuestion').click(function(e){
     e.preventDefault();
     $('#modalQuestion').modal();
-  });
-
-  $('#aLogout').click(function(e){
-    e.preventDefault();
-    $.ajax({
-      url:'/thanh-vien/logout',
-      type:'post',
-      success:function(data){
-        if(data.code == 200){
-          alert(data.msg);
-          location.reload();
-        }
-      }
-    })
   });
 </script>

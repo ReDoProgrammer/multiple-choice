@@ -38,7 +38,6 @@ function signOut() {
 
 socket.on('google-signout',()=>{
   signOut();
-  console.log('sign out google successfully');
 });
 
 function RegisterOrComeback(id,name,avatar){

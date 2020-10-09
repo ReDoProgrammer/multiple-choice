@@ -6,8 +6,8 @@
 
   </div>
 </div>
-<% if(user) { %>
-  <div class="post-footer-comment-wrapper">
+
+  <div class="post-footer-comment-wrapper" id="cmBtnComment">
     <div class="comment-form">
       <div class="input-group mb15">
         <input type="text" class="form-control" id="txtComment">
@@ -17,7 +17,7 @@
       </div>
     </div>
   </div>
-  <%}%>
+
 
 <%- include('reply-modal') %>
 
@@ -29,7 +29,18 @@
     var group = '';
     var subject = '';
     var isOver = false;
+
     $(document).ready(function(){
+
+      $('#cmBtnComment').hide();
+      socket.on('load-chat-controls',(user)=>{
+        if(user!=1){
+          $('#cmBtnComment').show(500);
+        }else{
+          $('#cmBtnComment').hide(500);
+        }
+      });
+
       //gọi tới hàm load comment khi page đc load xong
 
       GetGroupAndSubject();

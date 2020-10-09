@@ -5,11 +5,17 @@
     <div class="media leftpanel-profile" id="divProfile">
       <div class="media-left">
         <a href="#">
-          <img src="" alt="" class="media-object img-circle" id="avatar">
+          <img src="" alt="" class="media-object img-circle" id="lpAvatar">
         </a>
       </div>
       <div class="media-body">
-        <h4 class="media-heading">MTS: <span style="font-size:18px; color: yellow" id="member_code"> </span><a data-toggle="collapse" data-target="#loguserinfo" class="pull-right"><i class="fa fa-angle-down"></i></a></h4>
+        <h4 class="media-heading">
+          <span style="font-size:18px; color: yellow" id="lpFullname"></span>
+          <a data-toggle="collapse" data-target="#loguserinfo" class="pull-right">
+            <i class="fa fa-angle-down"></i>
+          </a>
+        </h4>
+        MTS:<span id="lpMemberCode" style="text-align:center; font-size:14px; color:red; font-weight:bold; padding-top:20px;padding-left:10px;"></span>
       </div>
     </div><!-- leftpanel-profile -->
 
@@ -26,9 +32,9 @@
     <ul class="nav nav-tabs nav-justified nav-sidebar" style="padding-bottom:0; margin-bottom:1px;">
         <li class="tooltips active" data-toggle="tooltip" title="Main Menu"><a data-toggle="tab" data-target="#mainmenu"><i class="tooltips fa fa-ellipsis-h"></i></a></li>
         <!-- <li class="tooltips unread" data-toggle="tooltip" title="Check Mail"><a data-toggle="tab" data-target="#emailmenu"><i class="tooltips fa fa-envelope"></i></a></li> -->
-        <li class="tooltips" data-toggle="tooltip" title="Thống kê"><a data-toggle="tab" data-target="#user-statistic"><i class="fa fa-bar-chart" aria-hidden="true"></i></a></li>
+        <li class="tooltips" data-toggle="tooltip" title="Thống kê" id="lpLiStatistic"><a data-toggle="tab" data-target="#lpUserStatistic"><i class="fa fa-bar-chart" aria-hidden="true"></i></a></li>
         <!-- <li class="tooltips" data-toggle="tooltip" title="Settings"><a data-toggle="tab" data-target="#settings"><i class="fa fa-cog"></i></a></li> -->
-        <li class="tooltips" data-toggle="tooltip" title="Log Out"><a href="#" id="aLogout"><i class="fa fa-sign-out"></i></a></li>
+        <li class="tooltips" data-toggle="tooltip" title="Log Out" id="lpLiLogout"><a href="#" id="lpALogout"><i class="fa fa-sign-out"></i></a></li>
     </ul>
 
     <div class="tab-content">
@@ -45,8 +51,35 @@
 
 
       <script type="text/javascript">
-        var g = $.when();
+
         $(document).ready(function(){
+          $('#divProfile').hide();
+          $('#lpLiStatistic').hide();
+          $('#lpLiLogout').hide();
+          $('#lpUserStatistic').hide();
+          socket.on('load-profile',(user)=>{
+            if(user!=1){
+              $('#divProfile').show(500);
+              $('#lpFullname').text(user.fullname);
+              $('#lpAvatar').attr('src',user.avatar);
+              $('#lpMemberCode').text(user.member_code);
+              $('#lpLiStatistic').show(500);
+              $('#lpLiLogout').show(500);
+              $('#lpLiStatistic').show(500);
+            }else{
+              $('#divProfile').hide(1000);
+              $('#lpLiStatistic').hide(1000);
+              $('#lpLiLogout').hide(1000);
+              $('#lpLiStatistic').hide(1000);
+            }
+          });
+          $('#lpALogout').click(function(e){
+            e.preventDefault();
+            socket.emit('user-logout');
+          })
+
+
+
           $.ajax({
             url:'/admin/group/list',
             type:'get',
@@ -122,7 +155,7 @@
 
       <!-- ################### statistic LIST ################### -->
 
-      <div class="tab-pane" id="user-statistic">
+      <div class="tab-pane" id="lpUserStatistic">
 
       </div>
 
@@ -146,7 +179,7 @@
             type:'get',
             success:function(data){
               if(data.code == 200){
-                $('#user-statistic').empty();
+                $('#lpUserStatistic').empty();
                 $.each(data.statistics,function(k,g){
                   if(g.subjects.length > 0){
                       statistics +=  '<div class="panel panel-primary" style="margin-bottom:2px; margin-top:0;">';
@@ -170,7 +203,7 @@
                   }
 
                 });
-                $('#user-statistic').html(statistics);
+                $('#lpUserStatistic').html(statistics);
                               }
             }
           });

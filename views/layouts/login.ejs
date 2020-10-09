@@ -43,6 +43,7 @@ aria-hidden="true">
         <div class="form-group">
             <h4 class="text-danger" id="msgSignIn"></h4>
           <button class="btn btn-success btn-quirk btn-block" id="btnSignIn">Đăng nhập</button>
+          <button type="button" id="btnFBLogout">Logout</button>
         </div>
 
       <hr class="invisible">
@@ -54,9 +55,10 @@ aria-hidden="true">
 </body>
 </div>
 
+
 <script type="text/javascript">
   var socket = io("https://redoapp.com/");
-  
+
   $('#btnCloseLoginModal').click(function(e){
     e.preventDefault();
     $('#modalLogin').modal('hide');

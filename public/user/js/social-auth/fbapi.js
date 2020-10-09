@@ -35,6 +35,10 @@ function checkLoginState() {
   });
 }
 
+$('#btnFBLogout').click(function(){
+    FB.logout();
+});
+
 function RegisterOrLoginFacebook(id,name,avatar){
   $.ajax({
     url:'/auth/facebook/register-or-login',

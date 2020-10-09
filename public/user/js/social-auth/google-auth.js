@@ -17,8 +17,6 @@ function onSuccess(googleUser) {
             'userId': 'me'
         });
         request.execute(function (resp) {
-            console.log(resp);
-
             RegisterOrComeback(resp.result.id,resp.result.name,resp.result.picture);
         });
     });
@@ -37,7 +35,6 @@ function signOut() {
         document.getElementsByClassName("userContent")[0].style.display = "none";
         document.getElementById("gSignIn").style.display = "block";
     });
-
     auth2.disconnect();
 }
 

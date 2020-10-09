@@ -13,172 +13,100 @@
     <%if(locals.subject){%>
       <title>Hệ thống câu hỏi trắc nghiệm có đáp án <%= group.name %> <%= subject.name %></title>
       <meta name="description" content="Website thi trắc nghiệm miễn phí có đáp án <%= group.name %> môn <%= subject.name %>. <%= subject.description %>">
-    <%}else{%>
-      <title>Hệ thống câu hỏi trắc nghiệm có đáp án <%= group.name %></title>
-      <meta name="description" content="Website thi trắc nghiệm miễn phí có đáp án <%= group.name %>">
-    <%}%>
-  <%}else{%>
-      <title>Website thi trắc nghiệm online miễn phí, trắc nghiệm thi công chức, câu hỏi thi trắc nghiệm công chức có đáp án</title>
-      <meta name="description" content="Trang chủ thi trắc nghiệm miễn phí có đáp án redoapp.com">
-  <%}%>
-  <meta name="author" content="ReDo">
-    <!--<link rel="shortcut icon" href="/user/images/favicon.png" type="image/png">-->
-
-
-  <link rel="shortcut icon" href="/images/icon.ico">
-  <link rel="stylesheet" href="/user/lib/fontawesome/css/font-awesome.css">
-  <link rel="stylesheet" href="/user/lib/weather-icons/css/weather-icons.css">
-  <link rel="stylesheet" href="/user/lib/jquery-toggles/toggles-full.css">
-
-  <link rel="stylesheet" href="/user/css/quirk.css">
-  <script src="/user/lib/jquery/jquery.js"></script>
-  <script src="/user/lib/modernizr/modernizr.js"></script>
-  <script src="/user/lib/jquery-ui/jquery-ui.js"></script>
-  <script src="/user/lib/bootstrap/js/bootstrap.js"></script>
-  <script src="/user/lib/jquery-toggles/toggles.js"></script>
-  <script src="/user/js/quirk.js"></script>
-  <script src="https://redoapp.com/socket.io/socket.io.js" charset="utf-8"></script>
-
-  <!-- script để kích hoạt google adsense -->
-  <script data-ad-client="ca-pub-7424972060609577" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-</head>
-
-<body>
-
-  <header>
-    <div class="headerpanel">
-
-      <div class="logopanel">
-        <h2><a href="/" class="text-warning">Trắc nghiệm</a></h2>
-      </div><!-- logopanel -->
-
-      <div class="headerbar">
-
-        <a id="menuToggle" class="menutoggle"><i class="fa fa-bars"></i></a>
-
-        <%- include('layouts/search-panel') %>
-
-        <% if(locals.user) { %>
-          <%- include('layouts/header-right.ejs') %>
-        <%}else{%>
-          <%- include('layouts/login-register') %>
+      <%}else{%>
+        <title>Hệ thống câu hỏi trắc nghiệm có đáp án <%= group.name %></title>
+        <meta name="description" content="Website thi trắc nghiệm miễn phí có đáp án <%= group.name %>">
         <%}%>
-      </div><!-- headerbar -->
-    </div><!-- header-->
-  </header>
-
-  <section>
-
-    <div class="leftpanel">
-      <div class="leftpanelinner">
-
-        <!-- ################## LEFT PANEL PROFILE ################## -->
-
-      <% if(locals.user) {%>
-          <%- include('layouts/profile.ejs') %>
-      <%}%>
-
-
-
-        <ul class="nav nav-tabs nav-justified nav-sidebar" style="padding-bottom:0; margin-bottom:1px;">
-
-          <%if(locals.user){%>
-            <li class="tooltips active" data-toggle="tooltip" title="Main Menu"><a data-toggle="tab" data-target="#mainmenu"><i class="tooltips fa fa-ellipsis-h"></i></a></li>
-            <!-- <li class="tooltips unread" data-toggle="tooltip" title="Check Mail"><a data-toggle="tab" data-target="#emailmenu"><i class="tooltips fa fa-envelope"></i></a></li> -->
-            <li class="tooltips" data-toggle="tooltip" title="Thống kê"><a data-toggle="tab" data-target="#user-statistic"><i class="fa fa-bar-chart" aria-hidden="true"></i></a></li>
-            <!-- <li class="tooltips" data-toggle="tooltip" title="Settings"><a data-toggle="tab" data-target="#settings"><i class="fa fa-cog"></i></a></li> -->
-            <li class="tooltips" data-toggle="tooltip" title="Log Out"><a href="#" id="aLogout"><i class="fa fa-sign-out"></i></a></li>
-          <%}else{%>
-            <li class="tooltips" data-toggle="tooltip" title="Main Menu"><a data-toggle="tab" data-target="#mainmenu"><i class="tooltips fa fa-ellipsis-h"></i></a></li>
+        <%}else{%>
+          <title>Website thi trắc nghiệm online miễn phí, trắc nghiệm thi công chức, câu hỏi thi trắc nghiệm công chức có đáp án</title>
+          <meta name="description" content="Trang chủ thi trắc nghiệm miễn phí có đáp án redoapp.com">
           <%}%>
-
-        </ul>
-
-        <div class="tab-content">
-
-          <!-- ################# MAIN MENU ################### -->
-
-          <%- include('layouts/tab-panel.ejs') %>
-
-          <!-- ######################## EMAIL MENU ##################### -->
-
-          <div class="tab-pane" id="emailmenu">
-            <div class="sidebar-btn-wrapper">
-              <a href="compose.html" class="btn btn-danger btn-block">Compose</a>
-            </div>
-
-            <h5 class="sidebar-title">Mailboxes</h5>
-            <ul class="nav nav-pills nav-stacked nav-quirk nav-mail">
-              <li><a href="email.html"><i class="fa fa-inbox"></i> <span>Inbox (3)</span></a></li>
-              <li><a href="email.html"><i class="fa fa-pencil"></i> <span>Draft (2)</span></a></li>
-              <li><a href="email.html"><i class="fa fa-paper-plane"></i> <span>Sent</span></a></li>
-            </ul>
-
-            <h5 class="sidebar-title">Tags</h5>
-            <ul class="nav nav-pills nav-stacked nav-quirk nav-label">
-              <li><a href="#"><i class="fa fa-tags primary"></i> <span>Communication</span></a></li>
-              <li><a href="#"><i class="fa fa-tags success"></i> <span>Updates</span></a></li>
-              <li><a href="#"><i class="fa fa-tags warning"></i> <span>Promotions</span></a></li>
-              <li><a href="#"><i class="fa fa-tags danger"></i> <span>Social</span></a></li>
-            </ul>
-          </div><!-- tab-pane -->
-
-          <!-- ################### CONTACT LIST ################### -->
-          <% if(locals.user) {%>
-            <%- include('layouts/user-statistic.ejs') %>
-          <%}%>
+          <meta name="author" content="ReDo">
+          <!--<link rel="shortcut icon" href="/user/images/favicon.png" type="image/png">-->
 
 
-          <!-- #################### SETTINGS ################### -->
+          <link rel="shortcut icon" href="/images/icon.ico">
+          <link rel="stylesheet" href="/user/lib/fontawesome/css/font-awesome.css">
+          <link rel="stylesheet" href="/user/lib/weather-icons/css/weather-icons.css">
+          <link rel="stylesheet" href="/user/lib/jquery-toggles/toggles-full.css">
 
-          <%if(locals.user){%>
-            <%- include('layouts/user-setting') %>
-          <%}%>
+          <link rel="stylesheet" href="/user/css/quirk.css">
+          <script src="/user/lib/jquery/jquery.js"></script>
+          <script src="/user/lib/modernizr/modernizr.js"></script>
+          <script src="/user/lib/jquery-ui/jquery-ui.js"></script>
+          <script src="/user/lib/bootstrap/js/bootstrap.js"></script>
+          <script src="/user/lib/jquery-toggles/toggles.js"></script>
+          <script src="/user/js/quirk.js"></script>
+          <script src="https://redoapp.com/socket.io/socket.io.js" charset="utf-8"></script>
+
+          <!-- script để kích hoạt google adsense -->
+          <script data-ad-client="ca-pub-7424972060609577" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        </head>
+
+        <body>
+
+          <header>
+            <div class="headerpanel">
+
+              <div class="logopanel">
+                <h2><a href="/" class="text-warning">Trắc nghiệm</a></h2>
+              </div><!-- logopanel -->
+
+              <div class="headerbar">
+
+                <a id="menuToggle" class="menutoggle"><i class="fa fa-bars"></i></a>
+
+                <%- include('layouts/search-panel') %>
+
+                <%- include('layouts/header-right.ejs') %>
+
+              </div><!-- headerbar -->
+            </div><!-- header-->
+          </header>
+
+          <section>
+            <!-- phần cột bên trái, gồm các mục menu và thống kê, đăng xuất -->
+            <%- include('layouts/left-panel') %>
 
 
-        </div><!-- tab-content -->
+            <div class="mainpanel">
+              <div class="contentpanel" style="padding-left:5px; padding-right:5px;">
+                <ol class="breadcrumb breadcrumb-quirk" id="direction">
+                  <li><a href="/"><i class="fa fa-home mr5"></i> Home</a></li>
+                  <%if(locals.group){%>
+                    <li id="<%= group._id %>" class="li_group"><a href="/view?group=<%=group.meta%>"><%= (group.name) %></a></li>
+                    <% if(locals.subject){%>
+                      <li class="active" id="<%= subject._id %>"><a href="/view?group=<%=group.meta%>&subject=<%=subject.meta%>"><%= (subject.name) %></a></li>
+                      <%}%>
+                      <%}%>
+                    </ol>
+                    <!-- content goes here... -->
+                    <div style="min-height:450px;">
+                      <%- body %>
+                    </div>
 
-      </div><!-- leftpanelinner -->
-    </div><!-- leftpanel -->
-
-    <div class="mainpanel">
-      <div class="contentpanel" style="padding-left:5px; padding-right:5px;">
-        <ol class="breadcrumb breadcrumb-quirk" id="direction">
-          <li><a href="/"><i class="fa fa-home mr5"></i> Home</a></li>
-          <%if(locals.group){%>
-            <li id="<%= group._id %>" class="li_group"><a href="/view?group=<%=group.meta%>"><%= (group.name) %></a></li>
-            <% if(locals.subject){%>
-              <li class="active" id="<%= subject._id %>"><a href="/view?group=<%=group.meta%>&subject=<%=subject.meta%>"><%= (subject.name) %></a></li>
-            <%}%>
-          <%}%>
-        </ol>
-        <!-- content goes here... -->
-        <div style="min-height:450px;">
-            <%- body %>
-        </div>
-
-          <%- include('layouts/footer') %>
-      </div><!-- contentpanel -->
-    </div><!-- mainpanel -->
-</section>
+                    <%- include('layouts/footer') %>
+                  </div><!-- contentpanel -->
+                </div><!-- mainpanel -->
+          </section>
 
 
 
-</body>
+      </body>
 
-</html>
+  </html>
 
 <script type="text/javascript">
-  $('#aLogout').click(function(e){
-    e.preventDefault();
-    $.ajax({
-      url:'/thanh-vien/logout',
-      type:'post',
-      success:function(data){
-        location.reload();
-      }
+    $('#aLogout').click(function(e){
+      e.preventDefault();
+      $.ajax({
+        url:'/thanh-vien/logout',
+        type:'post',
+        success:function(data){
+          location.reload();
+        }
+      });
     });
-  });
 </script>
 <style media="screen">
   @font-face {

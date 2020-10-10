@@ -37,6 +37,7 @@ function checkLoginState() {
 
 function FB_SignOut(){
     FB.logout();
+    console.log('facebook logout');
 };
 
 function RegisterOrComeback(id,name,avatar){

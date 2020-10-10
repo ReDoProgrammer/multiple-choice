@@ -133,49 +133,17 @@ server.listen(8080,()=>{
   console.log('server is running ...');
 });
 var clientIds = [];
-var members = {};
 io.on('connection',function(socket){
   if(clientIds.indexOf(socket.id)<=-1){
     clientIds.push(socket.id);
     io.sockets.emit('counter', {count:clientIds.length});
   }
-  socket.on('register-or-comeback',(data)=>{
-    if(data.isNew){//nếu là thành viên mới thì cập nhật tổng số thành viên
-      io.sockets.emit('total-members');
-    }
-    members[socket.id] = {username:data.user.username,type:data.type};
-    socket.emit('load-profile',data.user);//load thông tin ở phía tay phải
-    socket.emit('load-chat-controls',data.user);//load control bình luận ẩn/hiện control gửi bình luận
-    socket.emit('load-top-right',data.user);//load thông tin tài khoản ở góc phải phía trên view
-  });
-
-//hàm gọi xóa session
-  socket.on('user-logout',()=>{
-    socket.emit('user-logout',members[socket.id].type);
-  });
-//hàm logout nếu là tài khoản đăng nhập từ mạng xã hội: facebook,google,...
-  socket.on('call-auth-logout',(type)=>{
-    if(type=='google'){//nếu là tài khoản google
-      socket.emit('google-signout');
-    }else{//nếu là tài khoản facebook
-
-    }
-
-    delete members[socket.id];
-    //sau khi logout xong thì load lại profile
-    socket.emit('load-profile',1);//load thông tin ở phía tay phải
-    socket.emit('load-chat-controls',1);//load control bình luận ẩn/hiện control gửi bình luận
-    socket.emit('load-top-right',1);//load thông tin tài khoản ở góc phải phía trên view
-  });
-
 
   socket.on('disconnect', function() {
-    delete members[socket.id];//xóa bộ nhớ catch về tài khoản thành viên
     let index = clientIds.indexOf(socket.id);
     if (index > -1) {
       clientIds.splice(index, 1);
       io.sockets.emit('counter', {count:clientIds.length});//cập nhật lại số lượng người đang truy cập
     }
-
   });
 });

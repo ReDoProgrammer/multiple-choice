@@ -96,12 +96,7 @@
     socket.on('counter', function (data) {
       $('#current_visitors').text(data.count);
     });
-    socket.on('total-members',()=>{
-      TotalMembers();
-    });
-
     TotalMembers();
-
   });
 
   function TotalMembers(){

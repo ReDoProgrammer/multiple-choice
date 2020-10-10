@@ -89,15 +89,11 @@
       });
 
       $('#btnDoExam').click(function(){
-
-        var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
-        let group =(hashes[0].split('='))[1];
-        let subject = (hashes[1].split('='))[1];
+        let subject = $('#direction').find('li.active').attr('id');
         $.ajax({
           url:'/lam-bai-thi/random-questions',
           type:'get',
           data:{
-            group:group,
             subject:subject
           },
           success:function(data){

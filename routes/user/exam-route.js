@@ -33,48 +33,17 @@ router.get('/',(req,res)=>{
 
 router.get('/random-questions',(req,res)=>{
   let questionNumber = config.questionNumber;
-  let group = req.query.group;
   let subject = req.query.subject;
-  Subject.findOne({meta:subject},function(err,s){
+  Question.aggregate([
+    {$match: {subject: subject,is_actived:true}},
+    {$sample: {size: 55}}
+  ], function(err, questions) {
     if(err){
-      res.send({code:500,type:'danger',msg:'can not find subject '+new Error(err)});
+      console.log('get random questions failed: '+new Error(err));
     }else{
-      // Question.findRandom({subject:s._id}, {}, {limit: questionNumber}, function(err, results) {
-      //   if (err) {
-      //     res.send({code:500,type:'danger',msg:'can not get random question: '+new Error(err)});
-      //   }else{
-      //     res.send({code:200,type:'success',msg:'get random questions successfully',questions:results});
-      //   }
-      // });
-
-
-      // Question.countDocuments({subject:s._id},function(err,count){
-      //   let random = Math.floor(Math.random() * (count-55));
-      //   Question.find({subject:s._id})
-      //   .skip(random)
-      //   .limit(55)
-      //   .exec(function(err,questions){
-      //      res.send({code:200,type:'success',msg:'get random questions successfully',questions:questions});
-      //   })
-      //
-      // });
-
-      Question.aggregate([
-          {$match: {subject: s._id,is_actived:true}},
-          {$sample: {size: 55}}
-      ], function(err, questions) {
-          // const unique = Array.from(new Set(questions));
-          // console.log(unique.length);
-          if(err){
-            console.log('get random questions failed: '+new Error(err));
-          }else{
-            res.send({code:200,type:'success',msg:'get random questions successfully',questions:questions});
-          }          
-      });
+      res.send({code:200,type:'success',msg:'get random questions successfully',questions:questions});
     }
   });
-
-
 });
 
 module.exports = router;

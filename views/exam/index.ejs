@@ -42,9 +42,7 @@
 </div>
 <!-- kết thúc phần nội dung câu hỏi  -->
 <div class="row">
-  <div class="col-sm-6">
-    <%- include('statistic') %>
-  </div>
+  <%- include('statistic') %>
   <div class="col-sm-6">
     <%- include('../layouts/comment') %>
   </div>
@@ -81,6 +79,7 @@
   $(document).ready(function(){
     $('#eiUserProfile').hide(); //mặc định ẩn thông tin thành viên
     $('#ecCommentOnRow').hide();
+    $('#esStatistic').hide();//ẩn div thống kê kết quả làm bài thi
 
     //load thông tin thành viên
     $.ajax({
@@ -166,6 +165,7 @@
                         $('#questions').append(content);
                         $('#btnDoExam').hide();
                         $('#btnApplyExam').show();
+                        $('#esStatistic').hide(200);//ẩn div thống kê khi bắt đầu làm bài
                       }else{
                         $('#questions').append('<div class="text-center"><h1 class="text-warning">Hệ thống câu hỏi đang được cập nhật. Chân thành cảm ơn sự ủng hộ của bạn!</h1></div>');
                       }
@@ -213,6 +213,7 @@
 
                     //ẩn nút "nộp bài"
                     $(this).hide();
+                    $('#esStatistic').show(400);
                     CheckResult();
                   }else{
                     if(notAsw.length == 0){
@@ -223,9 +224,11 @@
                       //khi kết thúc bài kiểm tra thì ẩn đồng hồ
                       $('#countdown').hide();
                       $('#topCountDown').hide();
+                      $('#esStatistic').show(400);
                       CheckResult();
                       //hiện lại nút "làm bài"
-                      $('#btnDoExam').show();
+                      $('#btnDoExam').show(300);
+
 
                       //ẩn nút "nộp bài"
                       $(this).hide();
@@ -246,6 +249,7 @@
                   //ẩn nút "nộp bài"
                   $(this).hide();
                   CheckResult();
+                  $('#esStatistic').show(400);
                 }
               });
 

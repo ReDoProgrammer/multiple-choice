@@ -10,18 +10,18 @@
       <div class="modal-body">
         <p class="text-primary" id="pushedQuestion"></p>
       </div>
-      <% if(user) { %>
-        <div class="modal-footer">
-          <label for="" id="lblCommentMsg" class="text-danger"></label>
-          <input type="text" id="txtPushedQuestionId" value="" hidden>
-          <div class="input-group mb15">
-            <input type="text" class="form-control" id="txtCommentQuestion" style="border: solid 1px #696c74;">
-            <span class="input-group-btn">
-              <button type="button" class="btn btn-default" id="btnCommentQuestion"><i class="fa fa-send-o text-primary"></i></button>
-            </span>
-          </div>
+
+      <div class="modal-footer" id="ecCommentOnRow">
+        <label for="" id="lblCommentMsg" class="text-danger"></label>
+        <input type="text" id="txtPushedQuestionId" value="" hidden>
+        <div class="input-group mb15">
+          <input type="text" class="form-control" id="txtCommentQuestion" style="border: solid 1px #696c74;">
+          <span class="input-group-btn">
+            <button type="button" class="btn btn-default" id="btnCommentQuestion"><i class="fa fa-send-o text-primary"></i></button>
+          </span>
         </div>
-      <%}%>
+      </div>
+
     </div>
   </div>
 </div>
@@ -121,4 +121,4 @@
                               }
                             });
                           }
-</script>
+                        </script>

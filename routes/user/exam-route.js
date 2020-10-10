@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const config = require('../../configs/config');
+const mongoose=require('mongoose');
 const Question = require('../../models/question-model');
 const Group = require('../../models/group-model');
 const Subject = require('../../models/subject-model');
@@ -22,7 +23,7 @@ router.get('/',(req,res)=>{
             if(!sb){
               res.render('404',{layout:'404',msg:'môn '+subject+' không tồn tại'});
             }else{
-              res.render('exam/index',{layout:'user-layout',user:req.session.user,group:gr,subject:sb});
+              res.render('exam/index',{layout:'user-layout',group:gr,subject:sb});
             }
           }
         })
@@ -33,9 +34,10 @@ router.get('/',(req,res)=>{
 
 router.get('/random-questions',(req,res)=>{
   let questionNumber = config.questionNumber;
-  let subject = req.query.subject;
+  let subjectId = req.query.subject;
+
   Question.aggregate([
-    {$match: {subject: subject,is_actived:true}},
+    {$match: {subject:mongoose.Types.ObjectId(subjectId),is_actived:true}},
     {$sample: {size: 55}}
   ], function(err, questions) {
     if(err){

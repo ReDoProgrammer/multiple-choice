@@ -6,7 +6,7 @@ const Question = require('../../models/question-model');
 router.get('/',(req,res)=>{
   let group = req.query.group;
   let subject = req.query.subject;
-  res.render('home/index',{layout:'user-layout',user:req.session.user,group:null,subject:null});
+  res.render('home/index',{layout:'user-layout',user:req.session.user});
 });
 
 router.get('/tim-kiem',(req,res)=>{
@@ -27,7 +27,7 @@ router.get('/tim-kiem',(req,res)=>{
                 if(!sbj){//nếu subject trả về không có giá trị = null?
                   res.render('404',{layout:'404',msg:'Không tồn tại môn:'+subject+' của group: '+gr.name});
                 }else{//nếu tìm thấy
-                  res.render('home/search',{layout:'user-layout',group:gr,subject:sbj,user:req.session.user,key:key});
+                  res.render('home/search',{layout:'user-layout',group:gr,subject:sbj,key:key});
                 }
               }
             });
@@ -36,7 +36,7 @@ router.get('/tim-kiem',(req,res)=>{
               if(err){
                 console.log('can not find any subject belongs to '+gr.name+'. Error: '+new Error(err));
               }else{
-                res.render('home/search',{layout:'user-layout',group:gr,subjects:subjects,user:req.session.user,key:key});
+                res.render('home/search',{layout:'user-layout',group:gr,subjects:subjects,key:key});
               }
             });
           }
@@ -44,7 +44,7 @@ router.get('/tim-kiem',(req,res)=>{
       }
     });
   }else{
-    res.render('home/search',{layout:'user-layout',user:req.session.user,key:key});
+    res.render('home/search',{layout:'user-layout',key:key});
   }
 });
 router.get('/view',(req,res)=>{
@@ -65,7 +65,7 @@ router.get('/view',(req,res)=>{
                 if(!sbj){//nếu subject trả về không có giá trị = null?
                   res.render('404',{layout:'404',msg:'Không tồn tại môn:'+subject+' của group: '+gr.name});
                 }else{//nếu tìm thấy
-                  res.render('home/index',{layout:'user-layout',group:gr,subject:sbj,user:req.session.user});
+                  res.render('home/index',{layout:'user-layout',group:gr,subject:sbj});
                 }
               }
             });
@@ -74,7 +74,7 @@ router.get('/view',(req,res)=>{
               if(err){
                 console.log('can not find any subject belongs to '+gr.name+'. Error: '+new Error(err));
               }else{
-                res.render('home/index',{layout:'user-layout',group:gr,subjects:subjects,user:req.session.user});
+                res.render('home/index',{layout:'user-layout',group:gr,subjects:subjects});
               }
             });
           }

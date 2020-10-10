@@ -146,53 +146,53 @@ router.get('/total-pages',middleware.isAdmin,(req,res)=>{
   });
 });
 
-// router.get('/fetch-and-insert',middleware.isAdmin,(req,res)=>{
-//   res.render('question/fetch',{layout:'admin-layout'});
-// });
-// router.post('/fetch-and-insert',middleware.isAdmin,(req,res)=>{
-//   let subject = req.body.subject;
-//   //fetch theo từng môn
-//   // let url = 'http://tracnghiem.redoapp.com/admin/questions-cqdp';
-//   let url = 'http://tracnghiem.redoapp.com/admin/questions-htct';
-//   let options = {json: true};
-//   request(url, options, (error, ress, body) => {
-//     if (error) {
-//       return  console.log(error)
-//     };
-//
-//     if (!error && ress.statusCode == 200) {
-//       let questions = body.questions.map(s=>{
-//         let q = {};
-//         q['question']    =s.question;
-//         q['option_a']    =s.option_a;
-//         q['option_b']    =s.option_b;
-//         q['option_c']    =s.option_c;
-//         q['option_d']    =s.option_d;
-//         q['answer']      =s.answer;
-//         q['description']    =s.remark;
-//         q['option_d']    =s.option_d;
-//         q['created_by'] = req.session.user._id;
-//         q['subject'] = subject;
-//         q['is_actived'] = true;
-//         return q;
-//       });
-//       Question.insertMany(questions,function(err,result){
-//         if(err){
-//           console.log('fetch question failed: '+new Error(err));
-//         }else{
-//           Subject.findOneAndUpdate({_id:subject},{$push:{questions:result}},(err,s)=>{
-//             if(err){
-//               console.log('push questions into subject failed: '+new Error(err));
-//             }else{
-//               res.send({code:200,msg:'sao chép câu hỏi thành công'});
-//             }
-//           });
-//
-//         }
-//       });
-//     };
-//   });
-// });
+router.get('/fetch-and-insert',middleware.isAdmin,(req,res)=>{
+  res.render('question/fetch',{layout:'admin-layout'});
+});
+router.post('/fetch-and-insert',middleware.isAdmin,(req,res)=>{
+  let subject = req.body.subject;
+  //fetch theo từng môn
+  // let url = 'http://tracnghiem.redoapp.com/admin/questions-cqdp';
+  let url = 'http://tracnghiem.redoapp.com/admin/questions-htct';
+  let options = {json: true};
+  request(url, options, (error, ress, body) => {
+    if (error) {
+      return  console.log(error)
+    };
+
+    if (!error && ress.statusCode == 200) {
+      let questions = body.questions.map(s=>{
+        let q = {};
+        q['question']    =s.question;
+        q['option_a']    =s.option_a;
+        q['option_b']    =s.option_b;
+        q['option_c']    =s.option_c;
+        q['option_d']    =s.option_d;
+        q['answer']      =s.answer;
+        q['description']    =s.remark;
+        q['option_d']    =s.option_d;
+        q['created_by'] = req.session.user._id;
+        q['subject'] = subject;
+        q['is_actived'] = true;
+        return q;
+      });
+      Question.insertMany(questions,function(err,result){
+        if(err){
+          console.log('fetch question failed: '+new Error(err));
+        }else{
+          Subject.findOneAndUpdate({_id:subject},{$push:{questions:result}},(err,s)=>{
+            if(err){
+              console.log('push questions into subject failed: '+new Error(err));
+            }else{
+              res.send({code:200,msg:'sao chép câu hỏi thành công'});
+            }
+          });
+
+        }
+      });
+    };
+  });
+});
 
 //tìm kiếm trên layout
 router.get('/search',(req,res)=>{

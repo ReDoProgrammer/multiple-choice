@@ -20,7 +20,7 @@ function onSuccess(googleUser) {
           request.execute(function (resp) {
             if(resp.code == 401){
                 onFailure(resp.message);
-                signOut();
+                GG_SignOut();
             }else{
               RegisterOrComeback(resp.result.id,resp.result.name,resp.result.picture);
             }
@@ -38,17 +38,13 @@ function onFailure(error) {
 }
 
 // Sign out the user
-function signOut() {
+function GG_SignOut() {
     var auth2 = gapi.auth2.getAuthInstance();
     auth2.signOut().then(function () {
       console.log('signout google account successfully');
     });
     auth2.disconnect();
 }
-
-socket.on('google-signout',()=>{
-  signOut();
-});
 
 function RegisterOrComeback(id,name,avatar){
   $.ajax({
@@ -61,8 +57,9 @@ function RegisterOrComeback(id,name,avatar){
     },
     success:function(data){
       if(data.code == 200){
-        socket.emit('register-or-comeback',data);
+        // socket.emit('register-or-comeback',data);
         $('#modalLogin').modal('hide');
+        LoadProfile();
       }
     }
   });

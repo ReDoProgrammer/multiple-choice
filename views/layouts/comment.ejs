@@ -33,13 +33,13 @@
     $(document).ready(function(){
 
       $('#cmBtnComment').hide();
-      socket.on('load-chat-controls',(user)=>{
-        if(user!=1){
-          $('#cmBtnComment').show(500);
-        }else{
-          $('#cmBtnComment').hide(500);
-        }
-      });
+      // socket.on('load-chat-controls',(user)=>{
+      //   if(user!=1){
+      //     $('#cmBtnComment').show(500);
+      //   }else{
+      //     $('#cmBtnComment').hide(500);
+      //   }
+      // });
 
       //gọi tới hàm load comment khi page đc load xong
 

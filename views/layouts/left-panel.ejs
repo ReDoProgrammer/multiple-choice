@@ -57,25 +57,25 @@
           $('#lpLiStatistic').hide();
           $('#lpLiLogout').hide();
           $('#lpUserStatistic').hide();
-          socket.on('load-profile',(user)=>{
-            if(user!=1){
-              $('#divProfile').show(500);
-              $('#lpFullname').text(user.fullname);
-              $('#lpAvatar').attr('src',user.avatar);
-              $('#lpMemberCode').text(user.member_code);
-              $('#lpLiStatistic').show(500);
-              $('#lpLiLogout').show(500);
-              $('#lpLiStatistic').show(500);
-            }else{
-              $('#divProfile').hide(1000);
-              $('#lpLiStatistic').hide(1000);
-              $('#lpLiLogout').hide(1000);
-              $('#lpLiStatistic').hide(1000);
-            }
-          });
+          // socket.on('load-profile',(user)=>{
+          //   if(user!=1){
+          //     $('#divProfile').show(500);
+          //     $('#lpFullname').text(user.fullname);
+          //     $('#lpAvatar').attr('src',user.avatar);
+          //     $('#lpMemberCode').text(user.member_code);
+          //     $('#lpLiStatistic').show(500);
+          //     $('#lpLiLogout').show(500);
+          //     $('#lpLiStatistic').show(500);
+          //   }else{
+          //     $('#divProfile').hide(1000);
+          //     $('#lpLiStatistic').hide(1000);
+          //     $('#lpLiLogout').hide(1000);
+          //     $('#lpLiStatistic').hide(1000);
+          //   }
+          // });
           $('#lpALogout').click(function(e){
             e.preventDefault();
-            socket.emit('user-logout');
+            Logout();            
           })
 
 
@@ -99,6 +99,8 @@
               });
               ;
             });
+
+
           </script>
 
           <style media="screen">

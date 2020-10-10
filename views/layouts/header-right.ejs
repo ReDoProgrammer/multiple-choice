@@ -59,7 +59,8 @@
 
   $('#trLogout').click(function(e){
     e.preventDefault();
-    socket.emit('user-logout');
+    // socket.emit('user-logout');
+    Logout();
   });
 
   $('#btnLogin').click(function(){

@@ -44,6 +44,70 @@
           <script data-ad-client="ca-pub-7424972060609577" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
           <script type="text/javascript">
             var socket = io("https://redoapp.com/");
+            function LoadProfile(){
+              $.ajax({
+                url:'/user/profile',
+                type:'get',
+                success:function(data){
+                  if(data.code == 200){
+//sidebar profile
+                     $('#divProfile').show(200);
+                     $('#lpFullname').text(data.user.fullname);
+                     $('#lpAvatar').attr('src',data.user.avatar);
+                     $('#lpMemberCode').text(data.user.member_code);
+                     $('#lpLiStatistic').show(200);
+                     $('#lpLiLogout').show(200);
+                     $('#lpLiStatistic').show(200);
+//top right profile
+                     $('#header_right_authenticated').show(200);
+                     $('#header_right_not_authenticated').hide(200);
+                     $('#trAvatar').attr('src',data.user.avatar);
+                     $('#trFullname').text(data.user.fullname);
+//comment controls
+                     $('#cmBtnComment').show(200);
+                  }else{
+                    if(data.code == 401){
+                       $('#divProfile').hide(200);
+                       $('#lpLiStatistic').hide(200);
+                       $('#lpLiLogout').hide(200);
+                       $('#lpLiStatistic').hide(200);
+                       $('#header_right_authenticated').hide(200);
+                       $('#header_right_not_authenticated').show(200);
+                       $('#cmBtnComment').hide(200);
+                    }
+                  }
+                }
+              });
+            }
+
+            function Logout(){
+              $.ajax({//ajax load profile để lấy loại tài khoản: google,facebook hay loại đăng ký thường
+                url:'/user/profile',
+                type:'get',
+                success:function(d){
+                  if(d.code == 200){
+                    $.ajax({
+                      url:'/user/logout',
+                      type:'post',
+                      success:function(data){
+                        if(data.code == 200){
+                          switch (d) {//tùy theo loại tài khoản
+                            case 'google'://nếu là google
+                              GG_SignOut();
+                              break;
+                            default:
+
+                          }
+                          LoadProfile();
+                        }
+                      }
+                    });
+                  }
+                }
+              });
+
+
+            }
           </script>
         </head>
 
@@ -114,6 +178,7 @@
         }
       });
     });
+
 </script>
 <style media="screen">
   @font-face {

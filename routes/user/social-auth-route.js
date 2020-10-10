@@ -20,7 +20,8 @@ router.get('/facebook/register-or-login',(req,res)=>{
           username:id,
           fullname:name,
           member_code:common.MemberCode(),
-          avatar:avatar
+          avatar:avatar,
+          account_type:'facebook'
         },function(err,user){
           if(err){
             console.log('create new user with facebook failed: '+new Error(err));
@@ -48,7 +49,8 @@ router.get('/google/register-or-login',(req,res)=>{
           username:id,
           fullname:name,
           member_code:common.MemberCode(),
-          avatar:avatar
+          avatar:avatar,
+          account_type:'google'
         },function(err,user){
           if(err){
             console.log('create new user with facebook failed: '+new Error(err));

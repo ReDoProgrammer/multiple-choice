@@ -34,7 +34,9 @@ router.post('/register',(req,res)=>{
 
 router.get('/profile',(req,res)=>{
   if(req.session.user){
-    res.send({user:req.session.user});
+    res.send({code:200,user:req.session.user});
+  }else{
+    res.send({code:401,msg:'user is not logged in'});
   }
 });
 
@@ -76,7 +78,4 @@ router.get('/count',(req,res)=>{
   });
 });
 
-router.get('/auth-statuts',(req,res)=>{
-  res.send({connected:(req.session.user?true:false)});
-});
 module.exports = router;

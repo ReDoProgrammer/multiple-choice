@@ -25,7 +25,8 @@ const UserSchema = new Schema({
   statistics:[{
     type:Schema.Types.ObjectId,
     ref:'statistic'
-  }]
+  }],
+  account_type:{type:String,default:''}
 });
 
 UserSchema.pre('save', function(next) {

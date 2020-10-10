@@ -22,7 +22,7 @@ window.fbAsyncInit = function() {
 function statusChangeCallback(response){
   if(response.status == 'connected'){
     FB.api('/me?fields=name,picture',function(res){
-      RegisterOrLoginFacebook(res.id,res.name,res.picture.data.url);
+      RegisterOrComeback(res.id,res.name,res.picture.data.url);
     });
   }else{
     console.log('you are not logged in');
@@ -39,7 +39,7 @@ $('#btnFBLogout').click(function(){
     FB.logout();
 });
 
-function RegisterOrLoginFacebook(id,name,avatar){
+function RegisterOrComeback(id,name,avatar){
   $.ajax({
     url:'/auth/facebook/register-or-login',
     type:'get',
@@ -50,7 +50,7 @@ function RegisterOrLoginFacebook(id,name,avatar){
     },
     success:function(data){
       if(data.code == 200){
-        // socket.emit('register-or-comback',{user:data.user});
+        LoadProfile();
         $('#modalLogin').modal('hide');
       }
     }

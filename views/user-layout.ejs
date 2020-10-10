@@ -57,23 +57,22 @@
                      $('#lpMemberCode').text(data.user.member_code);
                      $('#lpLiStatistic').show(200);
                      $('#lpLiLogout').show(200);
-                     $('#lpLiStatistic').show(200);
+
 //top right profile
                      $('#header_right_authenticated').show(200);
-                     $('#header_right_not_authenticated').hide(200);
+                     $('#header_right_not_authenticated').hide();
                      $('#trAvatar').attr('src',data.user.avatar);
                      $('#trFullname').text(data.user.fullname);
 //comment controls
                      $('#cmBtnComment').show(200);
                   }else{
                     if(data.code == 401){
-                       $('#divProfile').hide(200);
-                       $('#lpLiStatistic').hide(200);
-                       $('#lpLiLogout').hide(200);
-                       $('#lpLiStatistic').hide(200);
-                       $('#header_right_authenticated').hide(200);
+                       $('#divProfile').hide();
+                       $('#lpLiStatistic').hide();
+                       $('#lpLiLogout').hide();
+                       $('#header_right_authenticated').hide();
                        $('#header_right_not_authenticated').show(200);
-                       $('#cmBtnComment').hide(200);
+                       $('#cmBtnComment').hide();
                     }
                   }
                 }

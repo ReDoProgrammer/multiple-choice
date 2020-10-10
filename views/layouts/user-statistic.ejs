@@ -9,34 +9,33 @@ biến toàn cục
 var statistics = '';
 
 
-
-
   $(document).ready(function(){
-
     StatistisUserSummaryExam();
   });
-const tltb = arr => arr.reduce( ( p, c ) => p + c, 0 ) / arr.length;
+  // const tltb = arr => arr.reduce( ( p, c ) => p + c, 0 ) / arr.length;
   function StatistisUserSummaryExam(){
+    console.log('statistic');
     $.ajax({
       url:'/statistic/profile',
       type:'get',
       success:function(data){
+        console.log('data',data);
         if(data.code == 200){
           $('#user-statistic').empty();
           $.each(data.statistics,function(k,g){
             if(g.subjects.length > 0){
                 statistics +=  '<div class="panel panel-primary" style="margin-bottom:2px; margin-top:0;">';
-                  statistics +=  '<div class="panel-heading" style="padding-top:5px;padding-bottom:5px;">';
-                      statistics +=    '<h4 class="panel-title" style = "margin-top:2px;margin-bottom:2px; font-size:14px;">'+g.name+'</h4>';
-                  statistics +=  '</div>';
-                  statistics +=  '<div class="panel-body" style="padding-top:2px; padding-bottom:2px; ">';
-                  $.each(g.subjects,function(j,s){
+                statistics +=  '<div class="panel-heading" style="padding-top:5px;padding-bottom:5px;">';
+                statistics +=    '<h4 class="panel-title" style = "margin-top:2px;margin-bottom:2px; font-size:14px;">'+g.name+'</h4>';
+                statistics +=  '</div>';
+                statistics +=  '<div class="panel-body" style="padding-top:2px; padding-bottom:2px; ">';
+                $.each(g.subjects,function(j,s){
                     if(s.statistics.length > 0){
                       statistics += '<h4 class="text-success"><span><i class="fa fa-desktop text-danger" aria-hidden="true"></i></span> '+s.name+'</h4>';
                       $.each(s.statistics,function(l,st){
                         statistics +='<div class = "subject-item">'
-                          statistics += '<h5 style="padding-left:10px"> <span> <i class="fa fa-hand-o-right text-info" aria-hidden="true"></i></span> Số lần thi:<span class="text-warning"> '+st.ratio.length+'</span> lần</h5>';
-                          statistics += '<h5 style="padding-left:10px"> <span> <i class="fa fa-hand-o-right text-info" aria-hidden="true"></i></span> Tỉ lệ trung bình:<span class="text-warning"> '+tltb(st.ratio).toFixed(2)+'</span> %</h5>';
+                        statistics += '<h5 style="padding-left:10px"> <span> <i class="fa fa-hand-o-right text-info" aria-hidden="true"></i></span> Số lần thi:<span class="text-warning"> '+st.ratio.length+'</span> lần</h5>';
+                        statistics += '<h5 style="padding-left:10px"> <span> <i class="fa fa-hand-o-right text-info" aria-hidden="true"></i></span> Tỉ lệ trung bình:<span class="text-warning"> '+tltb(st.ratio).toFixed(2)+'</span> %</h5>';
                         statistics +='</div>';
                       });
                     }
@@ -47,14 +46,6 @@ const tltb = arr => arr.reduce( ( p, c ) => p + c, 0 ) / arr.length;
 
           });
           $('#user-statistic').html(statistics);
-          // $('#user-statistic .subject-item').each(function(k,v){
-          //   if($(v).find('h5').length==0){
-          //     console.log($(v));
-          //   }
-          // });
-
-
-
         }
       }
     });

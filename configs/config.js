@@ -14,7 +14,7 @@ module.exports={
     callbackURL:'https://redoapp.com/auth/google/callback'
   },
   pageSize:20,
-  commentSize:5,
+  commentSize:10,
   questionNumber:55,
   timeRemain: 45,
   secretKey:'how_can_i_help_you?',

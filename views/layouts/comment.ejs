@@ -31,20 +31,10 @@
     var isOver = false;
 
     $(document).ready(function(){
-
       $('#cmBtnComment').hide();
-      // socket.on('load-chat-controls',(user)=>{
-      //   if(user!=1){
-      //     $('#cmBtnComment').show(500);
-      //   }else{
-      //     $('#cmBtnComment').hide(500);
-      //   }
-      // });
-
-      //gọi tới hàm load comment khi page đc load xong
-
       GetGroupAndSubject();
-      LoadComment();
+    });
+
       $('#btnCreateComment').click(function(){
         let comment = $('#txtComment').val().trim();
         if(comment.length > 0){
@@ -80,93 +70,106 @@
 
 
       function LoadComment(){
-        $.ajax({
-          url:'/comment/list',
-          type:'get',
-          data:{
-            page:page,
-            group:group,
-            subject:subject
-          },
-          success:function(data){
-            if(data.code == 200){
-              let comments = '';
-              if(data.comments.length == 0){
-                isOver = true;
-              }else{
-                isOver = false;
+        if(!isOver){
+          $.ajax({
+            url:'/comment/list',
+            type:'get',
+            data:{
+              page:page,
+              group:group,
+              subject:subject
+            },
+            success:function(data){
+              if(data.code == 200){
+                let comments = '';
+                if(data.comments.length == 0){
+                  isOver = true;
+                  return;
+                }else{
+                  // $('#comments').empty();
+                  $.each(data.comments,function(k,v){
+                    comments +=  '<div class="comment_line">';
+                    comments +=     '<section class="post-heading">';
+                    comments +=       '<div class="row">';
+                    comments +=         '<div class="col-md-12">';
+                    comments +=           '<div class="media">';
+                    comments +=             '<div class="media-left">';
+                    comments +=               '<a href="#">';
+                    comments +=                ' <img class="media-object photo-profile" src="'+v.user.avatar+'" alt="...">';
+                    comments +=               '</a>';
+                    comments +=             '</div>';
+                    comments +=             '<div class="media-body">';
+                    comments +=               '<a href="#" class="anchor-username"><h4 class="media-heading">'+v.user.fullname+'</h4></a>';
+                    comments +=            ' </div>';
+                    comments +=           '</div>';
+                    comments +=        ' </div>';
+                    comments +=      ' </div>';
+                    comments +=    ' </section>';
+
+                    comments +=     '<section class="post-body">';
+                    comments +=       '<p>'+v.comment+'</p>';
+                    comments +=     '</section>';
+
+                    comments +=     '<section class="post-footer">';
+                    comments +=       '<div class="post-footer-option container">';
+                    comments +=        ' <ul class="list-unstyled">';
+                    //comments +=           '<li class="li_Like"><a href="#" class = "btnLike"><i class="glyphicon glyphicon-thumbs-up"></i> Like</a></li>';
+                    comments +=           '<li id="'+v._id+'" class="li_Comment"><a href="#" class="btnReply"><i class="glyphicon glyphicon-comment"></i> Comment <span>('+v.replies.length+')</span></a></li>';
+                    comments +=           '<li style="padding-left:25px;"><a href="">'+v.created_at+'</a></li>';
+                    comments +=         '</ul>';
+                    comments +=      ' </div>';
+                    comments +=     '</section>';
+                    comments +=   '</div>';
+                  });
+                  $('#comments').append(comments);
+                }
               }
-              $.each(data.comments,function(k,v){
-                comments +=  '<div class="comment_line">';
-                comments +=     '<section class="post-heading">';
-                comments +=       '<div class="row">';
-                comments +=         '<div class="col-md-12">';
-                comments +=           '<div class="media">';
-                comments +=             '<div class="media-left">';
-                comments +=               '<a href="#">';
-                comments +=                ' <img class="media-object photo-profile" src="'+v.user.avatar+'" alt="...">';
-                comments +=               '</a>';
-                comments +=             '</div>';
-                comments +=             '<div class="media-body">';
-                comments +=               '<a href="#" class="anchor-username"><h4 class="media-heading">'+v.user.fullname+'</h4></a>';
-                comments +=            ' </div>';
-                comments +=           '</div>';
-                comments +=        ' </div>';
-                comments +=      ' </div>';
-                comments +=    ' </section>';
-
-                comments +=     '<section class="post-body">';
-                comments +=       '<p>'+v.comment+'</p>';
-                comments +=     '</section>';
-
-                comments +=     '<section class="post-footer">';
-                comments +=       '<div class="post-footer-option container">';
-                comments +=        ' <ul class="list-unstyled">';
-                //comments +=           '<li class="li_Like"><a href="#" class = "btnLike"><i class="glyphicon glyphicon-thumbs-up"></i> Like</a></li>';
-                comments +=           '<li id="'+v._id+'" class="li_Comment"><a href="#" class="btnReply"><i class="glyphicon glyphicon-comment"></i> Comment <span>('+v.replies.length+')</span></a></li>';
-                comments +=           '<li style="padding-left:25px;"><a href="">'+v.created_at+'</a></li>';
-                comments +=         '</ul>';
-                comments +=      ' </div>';
-                comments +=     '</section>';
-                comments +=   '</div>';
-              });
-              $('#comments').append(comments);
-              $('#comments').scrollTop($('#comments').height()/2);
-              SetCommentControlsVisible();
             }
-          }
-        });
+          });
+        }
+
       }
 
       function GetGroupAndSubject(){
-        var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
-        if(hashes.length==2){
-          group =(hashes[0].split('='))[1];
-          subject = (hashes[1].split('='))[1];
+        group = $('.li_group').data('group');
+        subject = $('#direction').find('li.active').data('subject');
+        if(group){
+          if(!subject){
+            subject ='';
+          }
+        }else{
+          group='';
+          subject ='';
         }
+        LoadComment();
       }
 
       //khi scroll lên top
       $('#comments').scroll(function() {
         if($('#comments').scrollTop() == 0) {
-          if(page>1){
-            // page --;
-            // LoadComment();
-          }
+          // console.log('top:',page);
+          // if(page>1){
+          //   page --;
+          //   LoadComment();
+          //   $('#comments').scrollTop($(this).innerHeight()-10);
+          // }
         }
       });
 
       //khi scroll tới cuối
       $('#comments').on('scroll', function() {
-        if ($(this).scrollTop() + $(this).innerHeight() >=  $(this)[0].scrollHeight) {
-
+        // console.log('current y',$(this).scrollTop(),'innder height: ',$(this).innerHeight(),'scroll height:',$(this)[0].scrollHeight);
+        if ($(this).scrollTop() + $(this).innerHeight() >=  $(this)[0].scrollHeight-1) {
           if(!isOver){
             page++;
             LoadComment();
+            $('#comments').scrollTop($(this)[0].scrollHeight/2-100);
+          }else{
+            // $('#comments').scrollTop($(this).innerHeight()-10);
           }
         }
       });
-    });
+
 
 
     $('#txtComment').keyup(function(e){
@@ -176,22 +179,7 @@
       }
     });
 
-//hàm kiểm tra xem có đăng nhập hay không. Nếu không đăng nhập thì ẩn nút like và comment
-    function SetCommentControlsVisible(){
-      $.ajax({
-        url:'/comment/check-logged-in',
-        type:'get',
-        success:function(data){
-          if(data.code == 200){
-          //  $('.li_Like').show();
-            $('.li_Comment').show();
-          }else{
-            $('.li_Comment').hide();
-          //  $('.li_Like').hide();
-          }
-        }
-      });
-    }
+
 
   </script>
 

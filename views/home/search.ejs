@@ -27,7 +27,6 @@
       },
       success:function(data){
         if(data.code == 200){
-          console.log(data);
           let result = '<ul class="list-unstyled mb20">';
           $.each(data.questions,function(k,v){
             result += '<li><h4 class="text-danger">'+v.question+'</h4>';

@@ -16,7 +16,7 @@ router.get('/',(req,res)=>{
       if(!gr){
         res.render('404',{layout:'404',msg:group+' không tồn tại'});
       }else{
-        Subject.findOne({meta:subject},function(err,sb){
+        Subject.findOne({meta:subject,group:gr._id},function(err,sb){
           if(err){
             console.log('find subject in home->view failed: '+new Error(err));
           }else{

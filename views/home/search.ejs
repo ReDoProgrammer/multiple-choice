@@ -16,7 +16,7 @@
   $(document).ready(function(){
     let group = $('#direction').find('li.li_group').attr('id');
     let subject = $('#direction').find('li.active').attr('id');
-    let search = $('#txtSearch').val();
+    let search = $('#txtSearch').val().trim();
     $.ajax({
       url:'/admin/question/search',
       type:'get',

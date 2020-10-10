@@ -80,38 +80,6 @@
               });
             }
 
-            function Logout(){
-              $.ajax({//ajax load profile để lấy loại tài khoản: google,facebook hay loại đăng ký thường
-                url:'/user/profile',
-                type:'get',
-                success:function(d){
-                  if(d.code == 200){
-                    console.log(d);
-                    $.ajax({
-                      url:'/user/logout',
-                      type:'post',
-                      success:function(data){
-                        if(data.code == 200){
-                          switch (d) {//tùy theo loại tài khoản
-                            case 'google'://nếu là google
-                              GG_SignOut();
-                              break;
-                            case 'facebook':
-                              FB_SignOut();
-                              break;
-                            default:
-
-                          }
-                          LoadProfile();
-                        }
-                      }
-                    });
-                  }
-                }
-              });
-
-
-            }
           </script>
         </head>
 
@@ -182,7 +150,36 @@
         }
       });
     });
+    function Logout(){
+      $.ajax({//ajax load profile để lấy loại tài khoản: google,facebook hay loại đăng ký thường
+        url:'/user/profile',
+        type:'get',
+        success:function(d){
+          if(d.code == 200){
+            console.log(d);
+            $.ajax({
+              url:'/user/logout',
+              type:'post',
+              success:function(data){
+                if(data.code == 200){
+                  switch (d) {//tùy theo loại tài khoản
+                    case 'google'://nếu là google
+                      GG_SignOut();
+                      break;
+                    case 'facebook':
+                      FB_SignOut();
+                      break;
+                    default:
 
+                  }
+                  LoadProfile();
+                }
+              }
+            });
+          }
+        }
+      });    
+    }
 </script>
 <style media="screen">
   @font-face {

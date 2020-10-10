@@ -35,9 +35,9 @@ function checkLoginState() {
   });
 }
 
-$('#btnFBLogout').click(function(){
+function FB_SignOut(){
     FB.logout();
-});
+};
 
 function RegisterOrComeback(id,name,avatar){
   $.ajax({

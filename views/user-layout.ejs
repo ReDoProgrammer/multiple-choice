@@ -86,6 +86,7 @@
                 type:'get',
                 success:function(d){
                   if(d.code == 200){
+                    console.log(d);
                     $.ajax({
                       url:'/user/logout',
                       type:'post',
@@ -94,6 +95,9 @@
                           switch (d) {//tùy theo loại tài khoản
                             case 'google'://nếu là google
                               GG_SignOut();
+                              break;
+                            case 'facebook':
+                              FB_SignOut();
                               break;
                             default:
 

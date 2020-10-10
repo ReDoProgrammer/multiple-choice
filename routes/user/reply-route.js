@@ -20,7 +20,6 @@ router.get('/list',middleware.isLoggedIn,(req,res)=>{
 
 router.post('/create',middleware.isLoggedIn,(req,res)=>{
   let {commentId,reply} = req.body;
-  console.log({commentId,reply});
   Reply.create({
     reply: reply,
     user:req.session.user._id,

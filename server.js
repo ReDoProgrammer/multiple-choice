@@ -139,6 +139,10 @@ io.on('connection',function(socket){
     io.sockets.emit('counter', {count:clientIds.length});
   }
 
+  socket.on('reply-comment',(id)=>{
+    console.log('id comment: ',id);
+  });
+
   socket.on('disconnect', function() {
     let index = clientIds.indexOf(socket.id);
     if (index > -1) {

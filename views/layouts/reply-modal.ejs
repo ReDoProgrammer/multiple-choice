@@ -116,6 +116,7 @@ aria-hidden="true">
         if(data.code == 200){
           $('#txtReply').val('');
           LoadReplies(commentId);
+          Notyfication(commentId);
         }
       }
     });
@@ -128,6 +129,9 @@ aria-hidden="true">
     }
 });
 
+  function Notyfication(id){
+    socket.emit('reply-comment',id);
+  }
 
 </script>
 <style media="screen">

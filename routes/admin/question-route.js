@@ -99,8 +99,10 @@ router.get('/list-with-conditions',(req,res)=>{
   let is_actived = checked=='true'?true:false;
   Question.find({
     subject:subject,
-    question: { $regex: search, $options: "i" },
-    _id:{ $regex: search, $options: "i" },
+    $or:[
+      question: { $regex: search, $options: "i" },
+      _id:search
+    ],
     is_actived:is_actived
   })
   .populate('created_by','fullname')

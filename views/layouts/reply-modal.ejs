@@ -137,9 +137,10 @@ aria-hidden="true">
         id:id
       },success:function(data){
         console.log(data);
+        socket.emit('reply-comment',{id:id,user:data.comment.user});
       }
     });
-    socket.emit('reply-comment',{id:id,user:data.comment.user});
+
   }
   socket.on('push-notification',(id)=>{
 

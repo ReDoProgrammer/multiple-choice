@@ -100,8 +100,8 @@ router.get('/list-with-conditions',(req,res)=>{
   Question.find({
     subject:subject,
     $or:[
-      question: { $regex: search, $options: "i" },
-      _id:search
+      {question: { $regex: search, $options: "i" }},
+      {_id:search}
     ],
     is_actived:is_actived
   })

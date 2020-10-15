@@ -88,7 +88,20 @@ router.post('/add',middleware.isAdmin,(req,res)=>{
 });
 
 router.post('/update',middleware.isAdmin,(req,res)=>{
-
+  let {id,group,name,meta,description,order} = req.body;
+  Subject.findOneAndUpdate({_id:id},{
+    group:group,
+    name:name,
+    meta:meta,
+    description:description,
+    order:order
+  },(err,subject)=>{
+    if(err){
+      console.log('update subject failed: '+new Error(err));
+    }else{
+      res.send({code:200,msg:'Cập nhật môn học thành công'});
+    }
+  });
 });
 
 router.delete('/delete',middleware.isAdmin,(req,res)=>{
@@ -108,6 +121,15 @@ router.delete('/delete',middleware.isAdmin,(req,res)=>{
   })
 });
 
-
+router.get('/detail',middleware.isAdmin,(req,res)=>{
+  let id = req.query.id;
+  Subject.findById(id,function(err,subject){
+    if(err){
+      console.log('find subject by id failed: '+new Error(err));
+    }else{
+      res.send({code:200,msg:'find question by id successfully',subject:subject});
+    }
+  });
+});
 
 module.exports = router;

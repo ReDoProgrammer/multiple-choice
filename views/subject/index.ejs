@@ -58,6 +58,11 @@
 
 
   $('#btnAddSubject').click(function(){
+    id='';
+    $('#txtSubjectName').val('');
+    $('#txtSubjectMeta').val('');
+    $('#txtSubjectDescription').val('');
+    $('#txtSubjectOrder').val('');
     $('#divAddOrUpdate').removeAttr('hidden',100);
   });
 
@@ -81,7 +86,8 @@
       $('#msg').text('Vui lòng nhập tên số thứ tự xuất hiện trên menu');
       return;
     }
-    if(id.length == 0){//thêm mới môn học
+
+    if(id.trim().length == 0){//thêm mới môn học
       $.ajax({
         url:'/admin/subject/add',
         type:'post',
@@ -105,7 +111,25 @@
         }
       });
     }else{//cập nhật môn học
-
+      $.ajax({
+        url:'/admin/subject/update',
+        type:'post',
+        data:{
+          id:id,
+          name:name,
+          meta:meta,
+          group:group,
+          description:description,
+          order:order
+        },
+        success:(data)=>{
+          if(data.code == 200){
+            alert(data.msg);
+            $('#btnAddSubject').click();
+            LoadData();
+          }
+        }
+      });
     }
 
   });
@@ -165,7 +189,22 @@
 
       //sự kiện click của nut reset
    $('#tblData').on('click', '.btnUpdate', function() {
-     question_id =  $(this).data('update');
+     id =  $(this).data('update');
+     $.ajax({
+       url:'/admin/subject/detail',
+       type:'get',
+       data:{
+         id:id
+       },
+       success:function(data){
+           $('#divAddOrUpdate').removeAttr('hidden',100);
+           $('#txtSubjectName').val(data.subject.name);
+           $('#txtSubjectMeta').val(data.subject.meta);
+           $('#txtSubjectDescription').val(data.subject.description);
+           $('#txtSubjectOrder').val(data.subject.order);
+           $('#group').text();
+       }
+     });
    });
    //sự kiện click của button view trên mỗi hàng của table
    $('#tblData').on('click', '.btnView', function() {

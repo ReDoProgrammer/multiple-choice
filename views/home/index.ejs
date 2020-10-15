@@ -30,7 +30,7 @@
                 <li>
                   <h4 class="text-success"><%=r.name%> <a href="/view?group=<%=group.meta%>&subject=<%=r.meta%>"><i class="fa fa-info-circle text-warning" aria-hidden="true"></i> <span class="text-danger">Chi tiết</span></a></h4>
                   <%if(r.questions.length > 0){%>
-                      <p style="padding-left:10px;">Với <span class="text-danger"><b><%=r.questions.length%></b></span> câu hỏi từ <%=r.description%></p>
+                      <p style="padding-left:10px;">Với <span class="text-danger"><b><%=r.questions.length%></b></span> câu hỏi từ <%- r.description%></p>
                   <%}else{%>
                       <p style="padding-left:10px;"><%=r.description%></p>
                   <%}%>

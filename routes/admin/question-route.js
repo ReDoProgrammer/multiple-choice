@@ -100,6 +100,7 @@ router.get('/list-with-conditions',(req,res)=>{
   Question.find({
     subject:subject,
     question: { $regex: search, $options: "i" },
+    _id:{ $regex: search, $options: "i" },
     is_actived:is_actived
   })
   .populate('created_by','fullname')

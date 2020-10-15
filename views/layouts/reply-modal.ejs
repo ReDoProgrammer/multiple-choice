@@ -130,8 +130,20 @@ aria-hidden="true">
 });
 
   function Notyfication(id){
-    socket.emit('reply-comment',id);
+    $.ajax({
+      url:'/comment/detail',
+      type:'get',
+      data:{
+        id:id
+      },success:function(data){
+        console.log(data);
+      }
+    });
+    socket.emit('reply-comment',{id:id,user:data.comment.user});
   }
+  socket.on('push-notification',(id)=>{
+
+  });
 
 </script>
 <style media="screen">

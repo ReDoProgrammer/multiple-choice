@@ -68,4 +68,15 @@ router.get('/check-logged-in',(req,res)=>{
   }
 });
 
+router.get('/detail',(req,res)=>{
+  let id = req.query.id;
+  Comment.findById(id,(err,comment)=>{
+    if(err){
+      console.log('find comment by id failed: '+new Error(err));
+    }else{
+      res.send({code:200,msg:'get comment by id successfully',comment:comment});
+    }
+  });
+});
+
 module.exports = router;

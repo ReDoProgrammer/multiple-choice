@@ -17,10 +17,10 @@
       <div class="panel-body" style="min-height:200px;">
         <%if(locals.group){%>
           <%if(locals.subject){%>
-            <p>
+            <label>
               <%=subject.description%>
-              <%=subject.questions.length%>
-            </p>
+
+            </label>
             <div id="divSummary"> </div>
             <div class="text-center" style="padding-bottom:10px;">
               <a href="/lam-bai-thi?group=<%=group.meta%>&subject=<%=subject.meta%>" class="btn btn-primary">Làm bài thi</a>

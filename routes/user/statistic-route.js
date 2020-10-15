@@ -75,6 +75,7 @@ router.get('/ranks',(req,res)=>{
   Statistic.find({subject:subjectId})
   .sort({ratio:-1})
   .populate('user','avatar member_code')
+  .limit(10)
   .exec(function(err,ranks){
     if(err){
       console.log('ranking failed: '+new Error(err));

@@ -1,4 +1,5 @@
 const router = require('express').Router();
+const mongoose=require('mongoose');
 const Group = require('../../models/group-model');
 const Subject = require('../../models/subject-model');
 const Question = require('../../models/question-model');
@@ -101,7 +102,7 @@ router.get('/list-with-conditions',(req,res)=>{
     subject:subject,
     $or:[
       {question: { $regex: search, $options: "i" }},
-      {_id:search}
+      {_id:{$in:[mongoose.Types.ObjectId(search)]}}
     ],
     is_actived:is_actived
   })

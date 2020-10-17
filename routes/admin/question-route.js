@@ -102,7 +102,7 @@ router.get('/list-with-conditions',(req,res)=>{
     subject:subject,
     $or:[
       {question: { $regex: search, $options: "i" }},
-      {_id:{$in:[mongoose.Types.ObjectId(search)]}}
+      {_id:mongoose.Types.ObjectId(search)}
     ],
     is_actived:is_actived
   })

@@ -106,8 +106,15 @@
     $('#modalRegister').modal();
   });
 
-  socket.on('push-notification',(data)=>{
-    console.log(data);
+  socket.on('push-notification',(result)=>{
+    $.ajax({
+      url:'/comment/notification',
+      type:'get',
+      data:result,
+      success:function(data){
+        console.log(data);
+      }
+    });
   });
 </script>
 

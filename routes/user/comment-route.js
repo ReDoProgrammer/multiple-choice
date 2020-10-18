@@ -79,4 +79,10 @@ router.get('/detail',(req,res)=>{
   });
 });
 
+//router trả về thông báo trả lời bình luận
+router.get('/notification',(req,res)=>{
+  let {id,user} = req.query;
+  console.log({id,user});
+});
+
 module.exports = router;

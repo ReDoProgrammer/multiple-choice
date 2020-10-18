@@ -140,7 +140,7 @@ io.on('connection',function(socket){
   }
 
   socket.on('reply-comment',(data)=>{
-    console.log(data);
+    socket.emit('push-notification',data);
   });
 
   socket.on('disconnect', function() {

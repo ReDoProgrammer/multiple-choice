@@ -105,6 +105,10 @@
   $('#btnRegister').click(function(){
     $('#modalRegister').modal();
   });
+
+  socket.on('push-notification',(data)=>{
+    console.log(data);
+  });
 </script>
 
 

@@ -116,7 +116,7 @@ aria-hidden="true">
         if(data.code == 200){
           $('#txtReply').val('');
           LoadReplies(commentId);
-          Notyfication(commentId);
+          Notification(commentId);
         }
       }
     });
@@ -129,7 +129,7 @@ aria-hidden="true">
     }
 });
 
-  function Notyfication(id){
+  function Notification(id){
     $.ajax({
       url:'/comment/detail',
       type:'get',

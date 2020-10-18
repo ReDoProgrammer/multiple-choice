@@ -136,15 +136,10 @@ aria-hidden="true">
       data:{
         id:id
       },success:function(data){
-        console.log(data);
         socket.emit('reply-comment',{id:id,user:data.comment.user});
       }
     });
-
   }
-  socket.on('push-notification',(id)=>{
-
-  });
 
 </script>
 <style media="screen">

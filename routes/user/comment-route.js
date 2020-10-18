@@ -2,6 +2,7 @@ const router = require('express').Router();
 const config = require('../../configs/config');
 const middleware = require('../../middlewares/middleware');
 const Comment = require('../../models/comment-model');
+const Reply = require('../../models/reply-model');
 
 router.get('/list',(req,res)=>{
   const {page,group,subject} = req.query;
@@ -79,10 +80,28 @@ router.get('/detail',(req,res)=>{
   });
 });
 
-//router trả về thông báo trả lời bình luận
 router.get('/notification',(req,res)=>{
   let {id,user} = req.query;
   console.log({id,user});
+  Reply.find({
+    comment:id,
+    user:user
+  })
+  .populate({path:'user',select:'fullname username avatar'})
+  .sort({'created_at':-1})
+  .limit(1)
+  .populate({path:'comment',populate:{path:'user',select:'fullname avatar username'}})
+  .exec(function(err,replies){
+    if(replies.length == 1){
+      let reply = replies[0];
+      if(req.session.user.username == reply.comment.user.username){
+        res.send({code:200,msg:'someone has just replied a comment',reply:reply});
+      }else{
+        console.log('you have just reply your own comment');
+      }
+    }
+
+  });
 });
 
 module.exports = router;

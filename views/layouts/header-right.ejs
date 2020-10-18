@@ -2,7 +2,7 @@
   <ul class="headermenu">
     <li>
       <div id="noticePanel" class="btn-group">
-        <button class="btn btn-notice alert-notice" data-toggle="dropdown">
+        <button class="btn btn-notice" data-toggle="dropdown" id="btnNotice">
           <i class="fa fa-globe text-primary"></i>
         </button>
         <div id="noticeDropdown" class="dropdown-menu dm-notice pull-right">
@@ -14,20 +14,9 @@
 
             <!-- danh sách thông báo -->
             <div class="tab-content">
-              <div role="tabpanel" class="tab-pane active" id="notification">
-                <ul class="list-group notice-list">
-                  <li class="list-group-item unread">
-                    <div class="row">
-                      <div class="col-xs-2">
-                        <i class="fa fa-envelope"></i>
-                      </div>
-                      <div class="col-xs-10">
-                        <h5><a href="#">New message from Weno Carasbong</a></h5>
-                        <small>June 20, 2015</small>
-                        <span>Soluta nobis est eligendi optio cumque...</span>
-                      </div>
-                    </div>
-                  </li>
+              <div role="tabpanel" class="tab-pane active">
+                <ul class="list-group notice-list" id="notification">
+
                 </ul>
                 <a class="btn-more" href="#">View More Notifications <i class="fa fa-long-arrow-right"></i></a>
               </div>
@@ -113,9 +102,31 @@
       data:result,
       success:function(data){
         console.log(data);
+        if(data.code == 200){
+          if(!$('#btnNotice').hasClass('alert-notice')){
+            $('#btnNotice').addClass('alert-notice');
+          }
+          let noti = '';
+          noti += '<li class="list-group-item unread">';
+          noti +=   '<div class="row">';
+          noti +=     '<div class="col-xs-2">';
+          noti +=       '<img src="'+data.reply.user.avatar+'" alt="" style="height:20px; width:auto; border-radius:50%;">';
+          noti +=     '</div>';
+          noti +=     '<div class="col-xs-10">';
+          noti +=       '<h5><a href="#"><span class="text-danger">'+data.reply.user.fullname+'</span> trả lời một bình luận của bạn</a></h5>';
+          noti +=       '<small>'+data.reply.comment.created_at+'</small>';
+          noti +=       '<span>'+data.reply.comment.comment+'</span>';
+          noti +=     '</div>';
+          noti +=   '</div>';
+          noti += '</li>';
+          $('#notification').append(noti);
+        }
+
+
       }
     });
   });
+
 </script>
 
 

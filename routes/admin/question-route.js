@@ -100,10 +100,7 @@ router.get('/list-with-conditions',(req,res)=>{
   let is_actived = checked=='true'?true:false;
   Question.find({
     subject:subject,
-    $or:[
-      {question: { $regex: search, $options: "i" }},
-      {_id:mongoose.Types.ObjectId(search)}
-    ],
+    question: { $regex: search, $options: "i" },    
     is_actived:is_actived
   })
   .populate('created_by','fullname')

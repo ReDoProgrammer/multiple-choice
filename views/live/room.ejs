@@ -26,13 +26,11 @@
 <script type="text/javascript">
   socket.on('candidate-in-room',(data)=>{
     let canidates = '<ul class="list-unstyled mb20">';
-    let idx = 1;
     $('#current_candidates').text(data.length);
     $.each(data,function(k,v){
 
       canidates +=  '<div class="row">';
       canidates +=   '<div class="col-xs-2">';
-      canidates +=     '<h6>#'+(idx++)+'</h6>';
       canidates +=   '</div>';
       canidates +=   '<div class="col-xs-6">';
       canidates +=     '<div class="media">';
@@ -40,7 +38,7 @@
       canidates +=        ' <img class="media-object photo-profile" src="'+v.user.avatar+'" style="width=15px; height:15px; border-radius: 50%; border:1px solid black; margin:2px;">';
       canidates +=     '</div>';
       canidates +=     '<div class="media-body">';
-      canidates +=         '<h4 class="media-heading">'+v.user.member_code+'</h4>';
+      canidates +=         '<h6 class="media-heading">'+v.user.member_code+'</h6>';
       canidates +=     '</div>';
       canidates +=   '</div>';
       canidates +=   '</div>';

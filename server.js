@@ -37,6 +37,7 @@ const examRoutes = require('./routes/user/exam-route');
 const facebookRoutes = require('./routes/user/facebook-route');
 const googleRoutes = require('./routes/user/google-route');
 const homeRoutes = require('./routes/user/home-route');
+const liveRoutes = require('./routes/user/lived-exam-route');
 const replytRoutes = require('./routes/user/reply-route');
 const socialAuthRoutes = require('./routes/user/social-auth-route');
 const statisticRoutes = require('./routes/user/statistic-route');
@@ -115,6 +116,7 @@ app.use('/lam-bai-thi',examRoutes);//route làm bài thi
 app.use('/',facebookRoutes);//route facebook
 app.use('/',googleRoutes);//route google
 app.use('/',homeRoutes);//route trang chủ
+app.use('/live',liveRoutes);//route làm bài trực tuyến
 app.use('/reply',replytRoutes);//route trả lời bình luận
 app.use('/auth',socialAuthRoutes);//route đăng nhập bằng api mạng xã hội
 app.use('/statistic',statisticRoutes);//route thống kê kết quả làm bài
@@ -141,6 +143,11 @@ io.on('connection',function(socket){
 
   socket.on('reply-comment',(data)=>{
     socket.emit('push-notification',data);
+  });
+
+  //thành viên mới tham gia phòng thi
+  socket.on('new-candidate-join',(data)=>{
+    console.log(data);
   });
 
   socket.on('disconnect', function() {

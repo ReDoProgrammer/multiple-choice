@@ -68,19 +68,19 @@
           let rooms = '';
           let index = 1;
           $.each(data.rooms,function(k,v){
-            rooms = '<tr id = "'+v._id+'">';
-              rooms+= '<td>'+(index++)+'</td>';
-              rooms+=   '<td style="font-weight:bold; color:#FF6600">'+v.subject.name+'</td>';
-              rooms+=   '<td id="current_members">0</td>';
-              rooms+=   '<td>'
-                rooms+=   '<input type="button" name="join" value="Join" class="btn btn-sm btn-warning">';
-                rooms+=   '</td>';
-                rooms+= '</tr>';
-              });
-              $('#roomslist').append(rooms);
-            }
-          }
-        });
+            rooms+= '<tr id = "'+v._id+'">';
+            rooms+= '<td>'+(index++)+'</td>';
+            rooms+=   '<td style="font-weight:bold; color:#FF6600">'+v.subject.name+'</td>';
+            rooms+=   '<td id="current_members">0</td>';
+            rooms+=   '<td>'
+            rooms+=   '<input type="button" name="join" value="Join" class="btn btn-sm btn-warning">';
+            rooms+=   '</td>';
+            rooms+= '</tr>';
+          });
+          $('#roomslist').append(rooms);
+      }
+    }
+  });
 
 
 

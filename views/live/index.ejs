@@ -21,6 +21,9 @@
   <!-- /.card-body -->
 </div>
 
+<!-- include room modal -->
+<%- include('room') %>
+
 <script type="text/javascript">
   $(document).ready(function(){
     LoadRooms();
@@ -35,8 +38,9 @@
               user:data.user,
               room:room_id
             };
-            console.log(candidate);
             socket.emit('new-candidate-join',candidate);
+            $('#modalRoom').modal();
+
           }else{
             alert('Bạn phải đăng nhập mới tham gia phòng thi được!')
           }

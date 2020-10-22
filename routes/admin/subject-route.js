@@ -29,6 +29,16 @@ router.get('/list',(req,res)=>{
   });
 });
 
+router.get('/list-all',(req,res)=>{
+  Subject.find({is_actived:true},function(err,subjects){
+    if(err){
+      console.log('list all subjects failed: '+new Error(err));
+    }else{
+      res.send({code:200,msg:'list all subjects successsfully',subjects:subjects});
+    }
+  });
+});
+
 router.get('/list-by-group',(req,res)=>{
   let group = req.query.group;
   let is_actived = req.query.is_actived;

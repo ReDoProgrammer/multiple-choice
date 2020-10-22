@@ -4,7 +4,12 @@
   </div>
   <!-- /.card-header -->
   <div class="card-body" style="margin-top:10px;">
-    <table class="table table-bordered table-warning table-striped ">
+    <div class="row">
+      <div class="col-sm-12 text-right">
+        <button type="button" class="btn btn-success" id="btnCreate"><i class="fa fa-plus" aria-hidden="true"></i> Tạo phòng thi</button>
+      </div>
+    </div>
+    <table class="table table-bordered table-warning table-striped" style="margin-top:10px;">
       <thead>
         <tr>
           <th>Phòng</th>
@@ -23,6 +28,9 @@
 
 <!-- include room modal -->
 <%- include('room') %>
+
+<!-- include create new live room modal -->
+<%- include('add-room-modal') %>
 
 <script type="text/javascript">
   $(document).ready(function(){
@@ -62,6 +70,21 @@
     rooms+= '</tr>';
     $('#roomslist').append(rooms);
   }
+
+  $('#btnCreate').click(function(){
+      $('#AddRoomModal').modal();
+    $.ajax({
+      url:'/live/permission',
+      type:'get',
+      success:function(data){
+          if(data.code == 200){
+            $('#AddRoomModal').modal();
+          }else{
+            alert(data.msg);
+          }
+      }
+    });
+  });
 
 
 </script>

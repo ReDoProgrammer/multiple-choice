@@ -1,6 +1,6 @@
 <div class="panel-info">
   <div class="panel-heading">
-  <h1 style="font-size:17px; padding:5px; text-transform:uppercase; color:#fff; margin:5px; text-align:right;">Danh sách phòng thi online</h1>
+    <h1 style="font-size:17px; padding:5px; text-transform:uppercase; color:#fff; margin:5px; text-align:right;">Danh sách phòng thi online</h1>
   </div>
   <!-- /.card-header -->
   <div class="card-body" style="margin-top:10px;">
@@ -59,32 +59,46 @@
   });
 
   function LoadRooms(){
-    $('#roomslist').empty();
-    let rooms = '<tr id = "room-001">';
-    rooms+= '<td>0001</td>';
-    rooms+=   '<td style="font-weight:bold; color:#FF6600">Luật cán bộ công chức</td>';
-    rooms+=   '<td id="current_members">00</td>';
-    rooms+=   '<td>'
-    rooms+=   '<input type="button" name="join" value="Join" class="btn btn-sm btn-warning">';
-    rooms+=   '</td>';
-    rooms+= '</tr>';
-    $('#roomslist').append(rooms);
-  }
-
-  $('#btnCreate').click(function(){
-      $('#AddRoomModal').modal();
     $.ajax({
-      url:'/live/permission',
+      url:'/live/list',
       type:'get',
       success:function(data){
-          if(data.code == 200){
-            $('#AddRoomModal').modal();
-          }else{
-            alert(data.msg);
+        if(data.code == 200){
+          $('#roomslist').empty();
+          let rooms = '';
+          let index = 1;
+          $.each(data.rooms,function(k,v){
+            rooms = '<tr id = "'+v._id+'">';
+              rooms+= '<td>'+(index++)+'</td>';
+              rooms+=   '<td style="font-weight:bold; color:#FF6600">'+v.subject.name+'</td>';
+              rooms+=   '<td id="current_members">0</td>';
+              rooms+=   '<td>'
+                rooms+=   '<input type="button" name="join" value="Join" class="btn btn-sm btn-warning">';
+                rooms+=   '</td>';
+                rooms+= '</tr>';
+              });
+              $('#roomslist').append(rooms);
+            }
           }
+        });
+
+
+
       }
-    });
-  });
+
+      $('#btnCreate').click(function(){
+        $.ajax({
+          url:'/live/permission',
+          type:'get',
+          success:function(data){
+            if(data.code == 200){
+              $('#AddRoomModal').modal();
+            }else{
+              alert(data.msg);
+            }
+          }
+        });
+      });
 
 
-</script>
+    </script>

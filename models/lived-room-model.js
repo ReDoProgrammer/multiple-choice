@@ -22,7 +22,8 @@ const livedRoomSchema = new Schema({
   users:[{
     type: Schema.Types.ObjectId,
     ref:'user'
-  }]
+  }],
+  is_opened:{type:Boolean,default:true}
 });
 
 

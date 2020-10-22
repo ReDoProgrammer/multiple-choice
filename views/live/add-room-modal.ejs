@@ -43,13 +43,19 @@
 
   $('#btnCreatNewRoom').click(function(){
     let subject_id = $( "#subjects option:selected" ).val();
-    console.log(subject_id);
-    // $.ajax({
-    //   url:'/live/create',
-    //   type:'post',
-    //   data:{
-    //     id:
-    //   }
-    // });
+    $.ajax({
+      url:'/live/create',
+      type:'post',
+      data:{
+        id:subject_id
+      },
+      success:function(data){
+        if(data.code == 200){
+          alert(data.msg);
+          $('#AddRoomModal').modal('hide');
+          LoadRooms();
+        }
+      }
+    });
   });
 </script>

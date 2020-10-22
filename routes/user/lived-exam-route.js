@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const LivedRoom = require('../../models/lived-room-model');
+const Subject = require('../../models/subject-model');
 const middleware = require('../../middlewares/middleware');
 
 router.get('/',(req,res)=>{
@@ -22,14 +23,34 @@ router.get('/permission',(req,res)=>{
   }
 });
 
+
 router.post('/create',(req,res)=>{
   if(req.session.user.is_admin){
+    let id = req.body.id;
     LivedRoom.create({
-
-    })
+      subject:id
+    },function(err,room){
+      if(err){
+        console.log('create new live room failed: '+new Error(err));
+      }else{
+        res.send({code:200,msg:'Tạo phòng thi trực tuyến thành công'});
+      }
+    });
   }else{
     res.send({code:401,msg:'Tính năng này hiện tại chỉ admin mới có quyền thao tác'});
   }
+});
+
+router.get('/list',(req,res)=>{
+  LivedRoom.find({is_opened:true})
+  .populate('subject','name')
+  .exec(function(err,rooms){
+    if(err){
+      console.log('list rooms failed: '+new Error(err));
+    }else{
+      res.send({code:200,msg:'load rooms successfully',rooms:rooms});
+    }
+  });
 });
 
 module.exports = router;

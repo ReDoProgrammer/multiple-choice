@@ -135,6 +135,7 @@ server.listen(8080,()=>{
   console.log('server is running ...');
 });
 var clientIds = [];
+var candidates_in_rooms=[];
 io.on('connection',function(socket){
   if(clientIds.indexOf(socket.id)<=-1){
     clientIds.push(socket.id);
@@ -147,6 +148,8 @@ io.on('connection',function(socket){
 
   //thành viên mới tham gia phòng thi
   socket.on('new-candidate-join',(data)=>{
+    candidates_in_rooms.push(data);
+    socket.emit('candidate-in-room',candidates_in_rooms);
     console.log(data);
   });
 

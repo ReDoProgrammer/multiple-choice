@@ -8,7 +8,26 @@
         </button>
       </div>
       <div class="modal-body">
-        <p>Modal body text goes here.</p>
+        <div class="row">
+          <div class="col-md-10 col-sm-12">
+
+          </div>
+          <div class="col-md-2 col-sm-12">
+            <div class="panel-info">
+              <div class="panel-heading">
+              <h1 style="font-size:17px; padding:5px; text-transform:uppercase; color:#fff; margin:5px; text-align:right;">Danh sách thí sinh (<span id="current_candidates" style="color:#AA0000;">1</span>)</h1>
+              </div>
+              <!-- /.card-header -->
+              <div class="panel-body" style="margin-top:10px;">
+                <input type="hidden" id="room_id" value="">
+                <div id="candidates">
+
+                </div>
+              </div>
+              <!-- /.card-body -->
+            </div>
+          </div>
+        </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-primary">Save changes</button>
@@ -17,3 +36,29 @@
     </div>
   </div>
 </div>
+
+<script type="text/javascript">
+  socket.on('candidate-in-room',(candidate)=>{
+    let canidates = '<ul class="list-unstyled mb20">';
+    let idx = 1;
+    $.each(candidates,function(k,v){
+      canidates +=  '<div class="row">';
+      canidates +=   '<div class="col-xs-2">';
+      canidates +=     '<h5>#'+(idx++)+'</h5>';
+      canidates +=   '</div>';
+      canidates +=   '<div class="col-xs-6">';
+      canidates +=     '<div class="media">';
+      canidates +=       '<div class="media-left">';
+      canidates +=        ' <img class="media-object photo-profile" src="'+v.user.avatar+'" alt="...">';
+      canidates +=     '</div>';
+      canidates +=     '<div class="media-body">';
+      canidates +=         '<h4 class="media-heading">'+v.user.member_code+'</h4>';
+      canidates +=     '</div>';
+      canidates +=   '</div>';
+      canidates +=   '</div>';
+      canidates += '</div>';
+    });
+    canidates +='</ul>';
+    $('#candidates').append(canidates);
+  })
+</script>

@@ -39,6 +39,7 @@
               room:room_id
             };
             socket.emit('new-candidate-join',candidate);
+            $('#room_id').val(room_id);
             $('#modalRoom').modal();
 
           }else{

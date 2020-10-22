@@ -37,8 +37,9 @@
   socket.on('candidate-in-room',(data)=>{
     let canidates = '<ul class="list-unstyled mb20">';
     let room_id = $('#room_id').val();
-    $('#current_candidates').text(data.length);
-    $('#roomslist > tr#'+room_id+' > td.current_members').text(1);
+    let members = data.filter(x=>x.room_id == room_id);
+    $('#current_candidates').text(members.length);
+    $('#roomslist > tr#'+room_id+' > td.current_members').text(members.length);
     $.each(data,function(k,v){
 
       canidates +=  '<div class="row">';

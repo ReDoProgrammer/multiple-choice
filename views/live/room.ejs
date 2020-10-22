@@ -40,6 +40,7 @@
     let members = data.filter(x=>x.room == room_id);
     $('#current_candidates').text(members.length);
     $('#roomslist > tr#'+room_id+' > td.current_members').text(members.length);
+    $('#candidates').empty();
     $.each(members,function(k,v){
 
       canidates +=  '<div class="row">';

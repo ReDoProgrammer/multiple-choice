@@ -10,12 +10,12 @@
       <div class="modal-body">
         <div class="row">
           <div class="col-xs-10">
-            <select class="" id="subjects">
+            <select class="form-control" id="subjects">
 
             </select>
           </div>
           <div class="col-xs-2">
-            <button type="button" class="btn btn-success">Tạo phòng</button>
+            <button type="button" class="btn btn-success" id="btnCreatNewRoom">Tạo phòng</button>
           </div>
         </div>
       </div>
@@ -38,5 +38,18 @@
         }
       }
     });
+  });
+
+
+  $('#btnCreatNewRoom').click(function(){
+    let subject_id = $( "#subjects option:selected" ).val();
+    console.log(subject_id);
+    // $.ajax({
+    //   url:'/live/create',
+    //   type:'post',
+    //   data:{
+    //     id:
+    //   }
+    // });
   });
 </script>

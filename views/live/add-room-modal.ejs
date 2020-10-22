@@ -30,7 +30,11 @@
       type:'get',
       success:function(data){
         if(data.code == 200){
-          console.log(data);
+          let subjects = '';
+          $.each(data.subjects,function(k,v){
+            subjects += '<option value="'+v._id+'">'+v.name+'</option>';
+          });
+          $('#subjects').append(subjects);
         }
       }
     });

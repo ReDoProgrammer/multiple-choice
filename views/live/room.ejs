@@ -6,6 +6,7 @@
           <div class="panel-success">
             <div class="panel-heading">
               <button type="button" class="btn btn-sm btn-warning">Bắt đầu</button>
+              <input type="hiddend" id="room_id" value="">
             </div>
             <!-- /.card-header -->
             <div class="card-body" style="margin-top:10px;" id="questions">
@@ -35,7 +36,9 @@
 <script type="text/javascript">
   socket.on('candidate-in-room',(data)=>{
     let canidates = '<ul class="list-unstyled mb20">';
+    let room_id = $('#room_id').val();
     $('#current_candidates').text(data.length);
+    $('#roomslist > tr#'+room_id+' > td.current_members').text(1);
     $.each(data,function(k,v){
 
       canidates +=  '<div class="row">';

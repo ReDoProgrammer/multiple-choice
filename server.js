@@ -149,7 +149,6 @@ io.on('connection',function(socket){
   //thành viên mới tham gia phòng thi
   socket.on('new-candidate-join',(data)=>{
     candidates_in_rooms.push(data);
-    console.log(candidates_in_rooms[0]);
     socket.emit('candidate-in-room',candidates_in_rooms);
     console.log(data);
   });

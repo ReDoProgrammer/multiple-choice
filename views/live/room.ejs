@@ -38,28 +38,29 @@
 </div>
 
 <script type="text/javascript">
-  socket.on('candidate-in-room',(candidate)=>{
-    let canidates = '<ul class="list-unstyled mb20">';
-    let idx = 1;
-    $.each(candidates,function(k,v){
-      console.log(k.user);
-      // canidates +=  '<div class="row">';
-      // canidates +=   '<div class="col-xs-2">';
-      // canidates +=     '<h5>#'+(idx++)+'</h5>';
-      // canidates +=   '</div>';
-      // canidates +=   '<div class="col-xs-6">';
-      // canidates +=     '<div class="media">';
-      // canidates +=       '<div class="media-left">';
-      // canidates +=        ' <img class="media-object photo-profile" src="'+v.user.avatar+'" alt="...">';
-      // canidates +=     '</div>';
-      // canidates +=     '<div class="media-body">';
-      // canidates +=         '<h4 class="media-heading">'+v.user.member_code+'</h4>';
-      // canidates +=     '</div>';
-      // canidates +=   '</div>';
-      // canidates +=   '</div>';
-      // canidates += '</div>';
-    });
-    canidates +='</ul>';
-    $('#candidates').append(canidates);
-  })
+  socket.on('candidate-in-room',(data)=>{
+    // let canidates = '<ul class="list-unstyled mb20">';
+    // let idx = 1;
+    console.log(data);
+    // $.each(candidates,function(k,v){
+    //   console.log(k.user);
+    //   // canidates +=  '<div class="row">';
+    //   // canidates +=   '<div class="col-xs-2">';
+    //   // canidates +=     '<h5>#'+(idx++)+'</h5>';
+    //   // canidates +=   '</div>';
+    //   // canidates +=   '<div class="col-xs-6">';
+    //   // canidates +=     '<div class="media">';
+    //   // canidates +=       '<div class="media-left">';
+    //   // canidates +=        ' <img class="media-object photo-profile" src="'+v.user.avatar+'" alt="...">';
+    //   // canidates +=     '</div>';
+    //   // canidates +=     '<div class="media-body">';
+    //   // canidates +=         '<h4 class="media-heading">'+v.user.member_code+'</h4>';
+    //   // canidates +=     '</div>';
+    //   // canidates +=   '</div>';
+    //   // canidates +=   '</div>';
+    //   // canidates += '</div>';
+    // });
+    // canidates +='</ul>';
+    // $('#candidates').append(canidates);
+  });
 </script>

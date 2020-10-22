@@ -5,8 +5,17 @@
         <div class="col-md-8 col-sm-12 col-xs-12">
 
         </div>
-        <div class="col-md-4 col-sm-12 col-xs-12" id="candidates">
+        <div class="col-md-4 col-sm-12 col-xs-12">
+          <div class="panel-info">
+            <div class="panel-heading">
+            <h1 style="font-size:17px; padding:5px; text-transform:uppercase; color:#fff; margin:5px; text-align:right;">Thành viên hiện tại (<span id="current_candidates" style="color:red;" >1</span>)</h1>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body" style="margin-top:10px;" id="candidates">
 
+            </div>
+            <!-- /.card-body -->
+          </div>
         </div>
       </div>
     </div>
@@ -18,6 +27,7 @@
   socket.on('candidate-in-room',(data)=>{
     let canidates = '<ul class="list-unstyled mb20">';
     let idx = 1;
+    $('#current_candidates').text(data.length);
     $.each(data,function(k,v){
 
       canidates +=  '<div class="row">';
@@ -27,7 +37,7 @@
       canidates +=   '<div class="col-xs-6">';
       canidates +=     '<div class="media">';
       canidates +=       '<div class="media-left">';
-      canidates +=        ' <img class="media-object photo-profile" src="'+v.user.avatar+'" alt="...">';
+      canidates +=        ' <img class="media-object photo-profile" src="'+v.user.avatar+'" style="width=15px; height:auto;">';
       canidates +=     '</div>';
       canidates +=     '<div class="media-body">';
       canidates +=         '<h4 class="media-heading">'+v.user.member_code+'</h4>';

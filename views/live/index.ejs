@@ -1,6 +1,6 @@
 <div class="panel-info">
   <div class="panel-heading">
-  <h1 style="font-size:17px; padding:5px; text-transform:uppercase; color:#fff; margin:5px;">Danh sách phòng thi online</h1>
+  <h1 style="font-size:17px; padding:5px; text-transform:uppercase; color:#fff; margin:5px; text-align:right;">Danh sách phòng thi online</h1>
   </div>
   <!-- /.card-header -->
   <div class="card-body" style="margin-top:10px;">
@@ -13,7 +13,7 @@
           <th style="width: 40px"></th>
         </tr>
       </thead>
-      <tbody id="rooms">
+      <tbody id="roomslist">
 
       </tbody>
     </table>
@@ -23,30 +23,40 @@
 
 <script type="text/javascript">
   $(document).ready(function(){
-    $('#rooms').append(
-      '<tr id = "room-001">'
-      +'<td>0001</td>'
-      +  '<td style="font-weight:bold; color:#FF6600">Luật cán bộ công chức</td>'
-      +  '<td id="current_members">00</td>'
-      +  '<td>'
-      +  '<input type="button" name="join" value="Join" class="btn btn-sm btn-warning">'
-      +  '</td>'
-      +'</tr>'
-    );
+    LoadRooms();
+    $(document).on('click',"input[name='join']",function() {
+      let room_id = $(this).closest("tr").attr('id');
+      $.ajax({
+        url:'/live/check-login',
+        type:'get',
+        success:function(data){
+          if(data.code == 200){
+            candidate = {
+              user:data.user,
+              room:room_id
+            };
+            console.log(candidate);
+            // socket.emit('new-candidate-join',)
+          }else{
+            alert('Bạn phải đăng nhập mới tham gia phòng thi được!')
+          }
+        }
+      });
+    });
   });
 
-	$(document).on('click',"input[name='join']",function() {
-    let room_id = $(this).closest("tr").attr('id');
-    $.ajax({
-      url:'/live/check-login',
-      type:'get',
-      success:function(data){
-        if(data.code!=200){
-          alert('Vui lòng đăng nhập thành viên để tham gia phòng thi');
-        }else{
-          socket.emit('new-candidate-join',{data.user,room_id});
-        }
-      }
-    });
-});
+  function LoadRooms(){
+    $('#roomslist').empty();
+    let rooms = '<tr id = "room-001">';
+    rooms+= '<td>0001</td>';
+    rooms+=   '<td style="font-weight:bold; color:#FF6600">Luật cán bộ công chức</td>';
+    rooms+=   '<td id="current_members">00</td>';
+    rooms+=   '<td>'
+    rooms+=   '<input type="button" name="join" value="Join" class="btn btn-sm btn-warning">';
+    rooms+=   '</td>';
+    rooms+= '</tr>';
+    $('#roomslist').append(rooms);
+  }
+
+
 </script>

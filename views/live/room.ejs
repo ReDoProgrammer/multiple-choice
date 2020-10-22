@@ -1,41 +1,18 @@
-<div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true" id="modalRoom">
-  <div class="modal-dialog" role="document">
+<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
     <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Modal title</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <div class="row">
-          <div class="col-md-10 col-sm-12">
+      <div class="row">
+        <div class="col-md-8 col-sm-12 col-xs-12">
 
-          </div>
-          <div class="col-md-2 col-sm-12">
-            <div class="panel-info">
-              <div class="panel-heading">
-              <h1 style="font-size:17px; padding:5px; text-transform:uppercase; color:#fff; margin:5px; text-align:right;">Danh sách thí sinh (<span id="current_candidates" style="color:#AA0000;">1</span>)</h1>
-              </div>
-              <!-- /.card-header -->
-              <div class="panel-body" style="margin-top:10px;">
-                <input type="hidden" id="room_id" value="">
-                <div id="candidates">
-
-                </div>
-              </div>
-              <!-- /.card-body -->
-            </div>
-          </div>
         </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-primary">Save changes</button>
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <div class="col-md-4 col-sm-12 col-xs-12" id="candidates">
+
+        </div>
       </div>
     </div>
   </div>
 </div>
+
 
 <script type="text/javascript">
   socket.on('candidate-in-room',(data)=>{

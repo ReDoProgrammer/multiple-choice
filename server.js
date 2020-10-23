@@ -148,7 +148,6 @@ io.on('connection',function(socket){
 
 //sự kiện tạo mới phòng hoặc join vào 1 phòng đã có
   socket.on('join-room',(data)=>{
-    console.log(data);
     socket.join(data.room);
     socket.room_id = data.room;
     candidates_in_rooms.push(data.candidate);
@@ -159,7 +158,7 @@ io.on('connection',function(socket){
       }
       io.sockets.emit('load-rooms',rooms);
     }
-    io.sockets.emit('users-in-current-room',io.sockets.clients(socket.room_id));
+    io.sockets.emit('users-in-current-room',io.sockets.clients(data.room));
   });
 
   socket.on('user-finish',()=>{

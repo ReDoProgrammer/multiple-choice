@@ -196,7 +196,7 @@
   });
 
   $('#modalRoom').on('hidden.bs.modal', function (e) {
-    socket.emit('disconnect');
+    location.reload();
   });
 </script>
 

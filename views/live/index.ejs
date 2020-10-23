@@ -58,8 +58,6 @@
       let subject_id = $(this).closest("tr").data("subject");
       let room_name = $(this).closest("tr").find('td.room_name').text();
 
-      console.log('room name: ',room_name);
-
       $.ajax({
         url: "/live/check-login",
         type: "get",
@@ -123,7 +121,7 @@
               v.subject.name +
               "</td>";
               rooms +=
-              '<td style="font-weight:bold; color:#FF6600" class = "room_name">' +
+              '<td style="font-weight:bold; color:#FF6600">' +
                 (new Date(v.started_time)).toLocaleString() +
               "</td>";
             rooms += '<td class="current_members">0</td>';

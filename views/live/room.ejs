@@ -76,7 +76,7 @@
 
   socket.on('users-in-room',(data)=>{
     console.log('total: ',data.users.length);
-    $('#current_candidates').val(data.users.length<10?('0'+data.users.length):data.users.length);
+    $('#current_candidates').val(data.users.length);
   });
   
 

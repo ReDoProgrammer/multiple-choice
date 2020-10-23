@@ -59,20 +59,21 @@
 
   socket.on('populate-exam',(data)=>{
     let room_id = $('#room_id').val();
-    let questions = data.filter(x=>x.room == room_id);
-    let q = '';
-    $.each(questions,function(k,v){
-       q+=   '<div class="row">';
-       q+=     '<h5 class = "text-danger">'+v.question+'</h5>';
-       q+=     '<fieldset>';
-       q+=       '<label class="A"><input type="radio" name="'+v._id+'" value="A. ">'+v.option_a+'</label>';
-       q+=       '<label class="B"><input type="radio" name="'+v._id+'" value="B. ">'+v.option_b+'</label>';
-       q+=       '<label class="C"><input type="radio" name="'+v._id+'" value="C. ">'+v.option_c+'</label>';
-       q+=       '<label class="D"><input type="radio" name="'+v._id+'" value="D. ">'+v.option_d+'</label>';
-       q+=     '</fieldset>';
-       q+=   '</div>';
-       q+=   '<hr>';
-    });
-    $('#questions').append(q);
+    if(data.room == room_id){
+      let q = '';
+      $.each(questions,function(k,v){
+         q+=   '<div class="row">';
+         q+=     '<h5 class = "text-danger">'+v.question+'</h5>';
+         q+=     '<fieldset>';
+         q+=       '<label class="A"><input type="radio" name="'+v._id+'" value="A. ">'+v.option_a+'</label>';
+         q+=       '<label class="B"><input type="radio" name="'+v._id+'" value="B. ">'+v.option_b+'</label>';
+         q+=       '<label class="C"><input type="radio" name="'+v._id+'" value="C. ">'+v.option_c+'</label>';
+         q+=       '<label class="D"><input type="radio" name="'+v._id+'" value="D. ">'+v.option_d+'</label>';
+         q+=     '</fieldset>';
+         q+=   '</div>';
+         q+=   '<hr>';
+      });
+      $('#questions').append(q);
+    }
   });
 </script>

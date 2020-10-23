@@ -123,11 +123,30 @@
   });
 
   function checkResult(){
+    if(checkAllChecked()){
+      console.log('checked all');
+    }else{
+      console.log('not checked all');
+    }
+
+    // $("#questions div").each(function (index, v) {
+    //   let id = $(this).attr('id');
+    //   let choice = $(v).find('input[type="radio"]:checked').val();
+    //   if (typeof choice === "undefined") {
+    //      console.log('not checked');
+    //   }
+
+    // });
+  }
+
+  function checkAllChecked(){
     $("#questions div").each(function (index, v) {
-      let id = $(this).attr('id');
       let choice = $(v).find('input[type="radio"]:checked').val();
-      console.log(choice);
+      if (typeof choice === "undefined") {
+         return false;
+      }     
     });
+    return true;
   }
 
   //lắng nghe sự kiện công bố đáp án

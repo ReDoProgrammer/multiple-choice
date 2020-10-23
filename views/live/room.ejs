@@ -99,8 +99,7 @@
           socket.emit("send-exam", d);
           //ẩn nút bắt đầu
           $("#btnStart").hide();
-          //hiện nút nộp bài và kết thúc bài thi
-          $("#btnFinish").show(100);
+          
         }
       },
     });
@@ -139,6 +138,9 @@
     });
     users += "</ul>";
     $("#users_list").append(users);
+    
+    //hiện nút nộp bài và kết thúc bài thi
+    $("#btnFinish").show(100);
   });
 
   //public danh sách câu hỏi

@@ -150,6 +150,7 @@ io.on('connection',function(socket){
   socket.on('join-room',data=>{
     socket.join(data.room);
     socket.room_id = data.room;
+    candidates_in_rooms.push(data);
     if(data.isNew){//nếu là tạo mới room
       rooms = [];
       for(r in socket.adapter.rooms){
@@ -162,13 +163,6 @@ io.on('connection',function(socket){
 
   socket.on('user-finish',()=>{
     io.sockets.in(socket.room_id).emit('users-finished');
-  });
-
-
-  //thành viên mới tham gia phòng thi
-  socket.on('new-candidate-join',(data)=>{
-    candidates_in_rooms.push(data);
-    io.sockets.emit('candidate-in-room',candidates_in_rooms);
   });
 
   socket.on('send-exam',(data)=>{

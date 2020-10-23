@@ -181,7 +181,7 @@ io.on('connection',function(socket){
   });
 
   socket.on('send-exam',(data)=>{
-    io.sockets.emit('populate-exam',data);
+    io.sockets.in(socket.room_id).emit('populate-exam',data);
   });
 
   socket.on('disconnect', function() {

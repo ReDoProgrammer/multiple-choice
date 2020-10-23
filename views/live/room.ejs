@@ -96,8 +96,7 @@
             room: room_id,
             duration:data.duration
           };
-          console.log(d);
-          //gọi tới sự kiện send-exam để public tới tất cả các thành viên trong room danh sách câu hỏi
+            //gọi tới sự kiện send-exam để public tới tất cả các thành viên trong room danh sách câu hỏi
           socket.emit("send-exam", d);
           //ẩn nút bắt đầu
           $("#btnStart").hide();
@@ -148,7 +147,6 @@
     // $('#roomslist > tr#'+data.room+' > td > input').attr('disabled', true);
     // $('#roomslist > tr#'+data.room+' > td > input').attr("value", "Đang thi");   
 
-    if (data.room == room_id) {
       let q = "";
       let idx = 1;
       $.each(data.questions, function (k, v) {
@@ -195,7 +193,6 @@
       
       //gọi lại sự kiện load room để cập nhật trạng thái room
       socket.emit('add-room');
-    }
   });
 </script>
 

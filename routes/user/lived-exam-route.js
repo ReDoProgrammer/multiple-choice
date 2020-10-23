@@ -44,7 +44,7 @@ router.post('/create',(req,res)=>{
       if(err){
         console.log('create new live room failed: '+new Error(err));
       }else{
-        res.send({code:200,msg:'Tạo phòng thi trực tuyến thành công'});
+        res.send({code:200,msg:'Tạo phòng thi trực tuyến thành công',room:room});
       }
     });
   }else{

@@ -125,7 +125,8 @@
   function checkResult(){
     $("#questions div").each(function (index, v) {
       let id = $(this).attr('id');
-      console.log(id);
+      let choice = $(v).find('input[type="radio"]:checked').attr("class");
+      console.log(choice);
     });
   }
 

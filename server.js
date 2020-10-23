@@ -186,6 +186,7 @@ io.on('connection',function(socket){
   socket.on('disconnect', function() {
     let index = clientIds.indexOf(socket.id);
     userLeave(socket.id);//xóa user khỏi room khi disconnect
+    let user = getCurrentUser(socket_id);
     io.to(user.room).emit('users-in-room', {
       room: user.room,
       users: getRoomUsers(user.room)

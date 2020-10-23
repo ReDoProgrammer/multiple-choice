@@ -150,7 +150,7 @@ router.post('/finish',middleware.isLoggedIn,(req,res)=>{
     if(err){
       console.log('save lived exam result failed: '+new Error(err));
     }else{
-      res.send({code:200,msg:'Lưu kết quả bài kiểm thi thành công'});
+      res.send({code:200,msg:'Lưu kết quả bài kiểm thi thành công',exam:exam});
     }
   })
 });

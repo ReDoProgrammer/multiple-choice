@@ -159,8 +159,6 @@ io.on('connection',function(socket){
     const user = userJoin(socket.id, username,avatar,member_code, room);
 
     socket.join(user.room);
-
-    console.log('room:',user.room);
     // Send users and room info
     io.to(user.room).emit('users-in-room', {
       room: user.room,

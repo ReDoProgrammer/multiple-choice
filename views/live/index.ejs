@@ -36,9 +36,9 @@
   $(document).ready(function(){
     LoadRooms();
 
-  
+    var room_id;
     $(document).on('click',"input[name='join']",function() {
-      let room_id = $(this).closest("tr").attr('id');
+      room_id = $(this).closest("tr").attr('id');
       let subject_id = $(this).closest("tr").data('subject');
       $.ajax({
         url:'/live/check-login',
@@ -50,7 +50,6 @@
               room:room_id
             };
             socket.emit('new-candidate-join',candidate);
-            $('#room_id').val(room_id);
             $('#subject_id').val(subject_id);
             $('#modalRoom').modal();
           }else{

@@ -61,7 +61,7 @@
     let room_id = $('#room_id').val();
     if(data.room == room_id){
       let q = '';
-      $.each(questions,function(k,v){
+      $.each(data.questions,function(k,v){
          q+=   '<div class="row">';
          q+=     '<h5 class = "text-danger">'+v.question+'</h5>';
          q+=     '<fieldset>';

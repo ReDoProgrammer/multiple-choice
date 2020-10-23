@@ -79,8 +79,8 @@
   socket.on("users-in-rooms", rooms => {
     // console.log({rooms});
     $('#roomslist > tr').each(function() {
-      let users = rooms.filter(x=>x.room === $(this).attr('id')).length;
-      console.log(users);
+      let current_users = rooms.filter(x=>x.room === $(this).attr('id')).length;
+      $('#roomslist > tr#'+$(this).attr('id')).text(current_users);
     });
   });
   function LoadRooms() {

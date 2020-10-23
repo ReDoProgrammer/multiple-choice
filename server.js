@@ -181,6 +181,7 @@ io.on('connection',function(socket){
   });
 
   socket.on('send-exam',(data)=>{
+    console.log(data);
     io.sockets.in(socket.room_id).emit('populate-exam',data);
   });
 

@@ -105,7 +105,7 @@
       users +=        '<div class="media-left">';
       users +=          ' <img class="media-object photo-profile" src="' +u.avatar +'" alt="'+u.member_code+'">';
       users +=        '</div>';
-      users +=        '<div class="media-right">';
+      users +=        '<div class="media-body">';
       users +=          '<h4 class="text-danger">' + u.member_code + '</h4>';
       users +=        '</div>';
       users +=      '</div>';
@@ -164,10 +164,23 @@
 </script>
 
 <style>
-  .photo-profile{
+
+.photo-profile{
       border:1px solid #DDD;
       border-radius: 50%;
       width:30px;
       height:30px;
+    }
+
+    .anchor-username h4{
+      font-weight:bold;
+    }
+
+    .media-body{
+      padding-top:0;
+    }
+
+    .fa-bullhorn{
+      font-size:18px;
     }
 </style>

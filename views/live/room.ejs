@@ -138,18 +138,18 @@
   //hàm lưu kết quả làm bài
   function pushResult() {  
     let result = [];
-    $("#questions div").each(function (index, v) {
+    $("#questions div").each(async function (index, v) {
       let question_id = $(this).attr('id');
       let choice = $(v).find('input[type="radio"]:checked').val();
       if (typeof choice === "undefined") {
         choice = '';
       }
-      result.push({
+      await result.push({
         question_id:question_id,
         choice:choice
       });
     });
-    console.log(result);
+    console.log('result:',result);
   }
 
   //hàm kiểm tra xem các câu hỏi đã được tick hết chưa

@@ -80,8 +80,8 @@
     // console.log({rooms});
     $('#roomslist > tr').each(function() {
       let current_users = rooms.filter(x=>x.room === $(this).attr('id')).length;
-      console.log('#roomslist > tr#'+$(this).attr('id')+'');
-      $('#roomslist > tr#'+$(this).attr('id')+'').val(current_users);
+      console.log('#roomslist > tr#'+$(this).attr('id')+'',current_users);
+      $('#roomslist > tr#'+$(this).attr('id')+'').html(current_users);
     });
   });
   function LoadRooms() {

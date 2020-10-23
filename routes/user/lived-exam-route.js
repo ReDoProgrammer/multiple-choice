@@ -24,6 +24,16 @@ router.get('/permission',(req,res)=>{
   }
 });
 
+router.get('/destroy-all-rooms',middleware.is_admin,(req,res)=>{
+  LivedRoom.deleteMany({},function(err){
+    if(err){
+      console.log('destroy all rooms failed: '+new Error(err));
+    }else{
+      res.send({code:200,msg:'destroy all rooms successfully'});
+    }
+  })
+});
+
 
 router.post('/create',(req,res)=>{
   if(req.session.user.is_admin){

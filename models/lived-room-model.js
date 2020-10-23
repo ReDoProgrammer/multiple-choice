@@ -28,7 +28,7 @@ const livedRoomSchema = new Schema({
     ref:'user'
   }],
   started_time:{type: Date},
-  is_opened:{type:Boolean,default:true}
+  status:{type:Number,default:-1}
 });
 
 

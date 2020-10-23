@@ -115,6 +115,7 @@
           $("#roomslist").empty();
           let rooms = "";
           let index = 1;
+          console.log(data.rooms);
           $.each(data.rooms, function (k, v) {
             rooms +=
               '<tr id = "' + v._id + '" data-subject="' + v.subject._id + '" data-master="'+v.created_by+'">';

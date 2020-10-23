@@ -190,15 +190,15 @@ io.on('connection',function(socket){
       io.sockets.emit('counter', {count:clientIds.length});//cập nhật lại số lượng người đang truy cập
     }
 
+    //lấy user rời phòng
     const user = userLeave(socket.id);
 
     if (user) {
-      console.log(user);
-      
-      // io.to(user.room).emit('users-in-room', {
-      //   room: user.room,
-      //   users: getRoomUsers(user.room)
-      // });
+      //cập nhật lại users có trong phòng      
+      io.to(user.room).emit('users-in-room', {
+        room: user.room,
+        users: getRoomUsers(user.room)
+      });
     }
   });
 });

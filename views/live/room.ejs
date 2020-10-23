@@ -196,8 +196,8 @@
   });
 
   $('#modalRoom').on('hidden.bs.modal', function (e) {
-    Client.emit('disconnect');
-})
+    socket.emit('disconnect');
+  });
 </script>
 
 <style>

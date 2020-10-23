@@ -2,30 +2,40 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header bg-danger">
-        <h5 class="modal-title" style="color:#FF6600; text-transform:uppercase;">Tạo mới phòng thi trực tuyến</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <h5
+          class="modal-title"
+          style="color: #ff6600; text-transform: uppercase"
+        >
+          Tạo mới phòng thi trực tuyến
+        </h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
         <div class="row">
           <div class="col-xs-6">
-            <select class="form-control" id="subjects">
-
-            </select>
+            <select class="form-control" id="subjects"></select>
           </div>
           <div class="col-xs-4">
             <div class="form-group">
-              <div class='input-group date' id='started_time'>
-                 <input type='text' class="form-control" />
-                 <span class="input-group-addon">
-                 <span class="glyphicon glyphicon-calendar"></span>
-                 </span>
+              <div class="input-group date" id="started_time">
+                <input type="text" class="form-control" />
+                <span class="input-group-addon">
+                  <span class="glyphicon glyphicon-calendar"></span>
+                </span>
               </div>
-           </div>
+            </div>
           </div>
           <div class="col-xs-2">
-            <button type="button" class="btn btn-success" id="btnCreatNewRoom">Tạo phòng</button>
+            <button type="button" class="btn btn-success" id="btnCreatNewRoom">
+              Tạo phòng
+            </button>
           </div>
         </div>
       </div>
@@ -33,51 +43,66 @@
   </div>
 </div>
 
-<link href="/user/lib/datetimepicker/bootstrap/css/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen">
-<script type="text/javascript" src="/user/lib/datetimepicker/bootstrap/js/bootstrap-datetimepicker.js" charset="UTF-8"></script>
-<script type="text/javascript" src="/user/lib/datetimepicker/bootstrap/js/locales/bootstrap-datetimepicker.fr.js" charset="UTF-8"></script>
+<link
+  href="/user/lib/datetimepicker/bootstrap/css/bootstrap-datetimepicker.min.css"
+  rel="stylesheet"
+  media="screen"
+/>
+<script
+  type="text/javascript"
+  src="/user/lib/datetimepicker/bootstrap/js/bootstrap-datetimepicker.js"
+  charset="UTF-8"
+></script>
+<script
+  type="text/javascript"
+  src="/user/lib/datetimepicker/bootstrap/js/locales/bootstrap-datetimepicker.fr.js"
+  charset="UTF-8"
+></script>
 
 <script type="text/javascript">
-  $(document).ready(function(){
+  $(document).ready(function () {
     $.ajax({
-      url:'/admin/subject/list-all',
-      type:'get',
-      success:function(data){
-        if(data.code == 200){
-          let subjects = '';
-          $.each(data.subjects,function(k,v){
-            subjects += '<option value="'+v._id+'">'+v.name+'</option>';
+      url: "/admin/subject/list-all",
+      type: "get",
+      success: function (data) {
+        if (data.code == 200) {
+          let subjects = "";
+          $.each(data.subjects, function (k, v) {
+            subjects += '<option value="' + v._id + '">' + v.name + "</option>";
           });
-          $('#subjects').append(subjects);
+          $("#subjects").append(subjects);
         }
-      }
+      },
     });
 
     $(function () {
-        $('#started_time').datetimepicker({
-          timeZone: 'Europe/Rome',
-        format: 'D/MM/YYYY',
-        locale: 'it'
-        });
+      $("#started_time").datetimepicker({
+        weekStart: 1,
+        todayBtn: 1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 2,
+        forceParse: 0,
+        showMeridian: 1,
+      });
     });
   });
 
-
-  $('#btnCreatNewRoom').click(function(){
-    let subject_id = $( "#subjects option:selected" ).val();
+  $("#btnCreatNewRoom").click(function () {
+    let subject_id = $("#subjects option:selected").val();
     $.ajax({
-      url:'/live/create',
-      type:'post',
-      data:{
-        id:subject_id
+      url: "/live/create",
+      type: "post",
+      data: {
+        id: subject_id,
       },
-      success:function(data){
-        if(data.code == 200){
+      success: function (data) {
+        if (data.code == 200) {
           alert(data.msg);
-          socket.emit('add-room');
-          $('#AddRoomModal').modal('hide');
+          socket.emit("add-room");
+          $("#AddRoomModal").modal("hide");
         }
-      }
+      },
     });
   });
 </script>

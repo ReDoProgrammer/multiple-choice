@@ -150,7 +150,6 @@ io.on('connection',function(socket){
   socket.on('new-candidate-join',(data)=>{
     candidates_in_rooms.push(data);
     io.sockets.emit('candidate-in-room',candidates_in_rooms);
-    console.log(data);
   });
 
   socket.on('disconnect', function() {

@@ -142,6 +142,7 @@ router.get("/list", (req, res) => {
 
 router.post('/finish',middleware.isLoggedIn,(req,res)=>{
   let {result,room} = req.body;
+  console.log({result,room});
   LivedExam.create({
     room:room,
     user:req.session.user._id,

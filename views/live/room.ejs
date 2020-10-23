@@ -38,18 +38,19 @@
 
   $('#btnStart').click(function(){
     let subject_id = $('#subject_id').val();
-    console.log(subject_id);
-    // $.ajax({
-    //   url:'/live/generate-questions',
-    //   type:'post',
-    //   data:{
-    //     subject:subject_id
-    //   },
-    //   success:function(data){
-    //     if(data.code == 200){
-    //       socket.emit('send-exam',data.questions);
-    //     }
-    //   }
-    // });
+    let room_id = $('#room_id').val();
+    $.ajax({
+      url:'/live/generate-exam',
+      type:'post',
+      data:{
+        room:room_id,
+        subject:subject_id
+      },
+      success:function(data){
+        if(data.code == 200){
+          socket.emit('send-exam',data.questions);
+        }
+      }
+    });
   });
 </script>

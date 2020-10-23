@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const LivedRoom = require('../../models/lived-room-model');
-const Subject = require('../../models/subject-model');
+const Question = require('../../models/question-model');
 const middleware = require('../../middlewares/middleware');
 
 router.get('/',(req,res)=>{
@@ -39,6 +39,20 @@ router.post('/create',(req,res)=>{
   }else{
     res.send({code:401,msg:'Tính năng này hiện tại chỉ admin mới có quyền thao tác'});
   }
+});
+
+router.post('/generate-exam',middleware.isLoggedIn,(req,res)=>{
+  let {room,subject} = req.body;
+  Question.aggregate([
+    {$match: {subject:mongoose.Types.ObjectId(subject),is_actived:true}},
+    {$sample: {size: 55}}
+  ], function(err, questions) {
+    if(err){
+      console.log('get random questions failed: '+new Error(err));
+    }else{
+      res.send({code:200,type:'success',msg:'get random questions successfully',questions:questions});
+    }
+  });
 });
 
 router.get('/list',(req,res)=>{

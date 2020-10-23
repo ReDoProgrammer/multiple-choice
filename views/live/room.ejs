@@ -122,18 +122,12 @@
           socket.emit("user-finish");
           pushResult();
         }
+      }else{
+        pushResult();
       }
-    }
-    // $.ajax({
-    //   url:'/live/finish',
-    //   type:'post',
-    //   data:{
-    //     result:result
-    //   },
-    //   success:function(data){
-    //     console.log(data);
-    //   }
-    // });
+    }else{//đã hết giờ
+      pushResult();
+    }   
   });
 
   //hàm lưu kết quả làm bài
@@ -161,7 +155,7 @@
       success:function(data){
         if(data.code == 200){
           alert(data.msg);
-          console.log(data.exam);
+          $('#btnFinish').hide();         
         }
       }
     });
@@ -182,7 +176,12 @@
 
   //lắng nghe sự kiện công bố đáp án
   socket.on("populate-answers", () => {
-    console.log("populate-answer");
+    $("#questions div").each(function (index, v) {
+      let question_id = $(v).attr('id');
+      let question = questions.find(x=>x._id === question_id);
+      console.log({question_id,question});
+      
+    });
   });
 
   //load danh sách thành viên hiện có trong room

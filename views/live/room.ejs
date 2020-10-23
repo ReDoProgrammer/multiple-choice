@@ -72,6 +72,7 @@
 
   //load current member in each rooms
   socket.on('candidate-in-room',(data)=>{
+    alert('r: '+room_id);
     let canidates = '<ul class="list-unstyled mb20">';
     let members = data.filter(x=>x.room == room_id);
     $('#current_candidates').text(members.length);

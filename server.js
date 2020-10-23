@@ -147,19 +147,19 @@ io.on('connection',function(socket){
   });
 
 //sự kiện tạo mới phòng hoặc join vào 1 phòng đã có
-  socket.on('join-room',data=>{
+  socket.on('join-room',(data)=>{
     console.log(data);
-    socket.join(data.room);
-    socket.room_id = data.room;
-    candidates_in_rooms.push(data);
-    if(data.isNew){//nếu là tạo mới room
-      rooms = [];
-      for(r in socket.adapter.rooms){
-        room.push(r);
-      }
-      io.sockets.emit('load-rooms',rooms);
-    }
-    io.sockets.emit('users-in-each-room',candidates_in_rooms);
+    // socket.join(data.room);
+    // socket.room_id = data.room;
+    // candidates_in_rooms.push(data);
+    // if(data.isNew){//nếu là tạo mới room
+    //   rooms = [];
+    //   for(r in socket.adapter.rooms){
+    //     room.push(r);
+    //   }
+    //   io.sockets.emit('load-rooms',rooms);
+    // }
+    // io.sockets.emit('users-in-each-room',candidates_in_rooms);
   });
 
   socket.on('user-finish',()=>{

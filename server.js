@@ -187,10 +187,11 @@ io.on('connection',function(socket){
     let index = clientIds.indexOf(socket.id);
     userLeave(socket.id);//xóa user khỏi room khi disconnect
     let user = getCurrentUser(socket.id);
-    io.to(user.room).emit('users-in-room', {
-      room: user.room,
-      users: getRoomUsers(user.room)
-    });
+    console.log(user);
+    // io.to(user.room).emit('users-in-room', {
+    //   room: user.room,
+    //   users: getRoomUsers(user.room)
+    // });
     
     if (index > -1) {
       clientIds.splice(index, 1);

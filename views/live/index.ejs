@@ -53,6 +53,7 @@
     // sự kiện click button jon phòng trên từng hàng tương ứng mỗi phòng
     $(document).on("click", "input[name='join']", function () {
       let room_id = $(this).closest("tr").attr("id");
+      let master = $(this).closest("tr").data("master");
       let subject_id = $(this).closest("tr").data("subject");
       $.ajax({
         url: "/live/check-login",
@@ -67,6 +68,11 @@
               isNew: false,
             };
             socket.emit("join-room",candidate);
+            if(data.user._id === master){
+              $('#btnStart').show();
+            }else{
+              $('#btnStart').hide();
+            }
             $("#subject_id").val(subject_id);
             $("#room_id").val(room_id);
             $("#modalRoom").modal();
@@ -86,6 +92,7 @@
   socket.on("users-in-rooms", rooms => {
     $('#roomslist > tr').each(function() {
       let current_users = rooms.filter(x=>x.room === $(this).attr('id')).length;
+
       $('#roomslist > tr#'+$(this).attr('id')+' > td.current_members').text(current_users<10?'0'+current_users:current_users);
     });
   });
@@ -137,9 +144,3 @@
   });
 </script>
 
-<style>
-  .current_users{
-    text-align: center;
-    font-family:"Digital";
-  }
-</style>

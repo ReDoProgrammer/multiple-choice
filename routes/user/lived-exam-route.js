@@ -2,6 +2,7 @@ const router = require('express').Router();
 const LivedRoom = require('../../models/lived-room-model');
 const Question = require('../../models/question-model');
 const middleware = require('../../middlewares/middleware');
+const mongoose=require('mongoose');
 
 router.get('/',(req,res)=>{
   res.render('live/index',{layout:'user-layout'});

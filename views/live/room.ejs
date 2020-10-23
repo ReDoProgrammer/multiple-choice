@@ -99,31 +99,22 @@
     let idx = 1;
     $.each(data.users, function (k, v) {
       users += '<div class="row">';
-      users += '<div class="col-xs-2">';
-      users += "<h5>#" + idx++ + "</h5>";
-      users += "</div>";
-      users += '<div class="col-xs-6">';
-      users += '<div class="media">';
-      users += '<div class="media-left">';
-      users +=
-        ' <img class="media-object photo-profile" src="' +
-        v.user.avatar +
-        '" alt="...">';
-      users += "</div>";
-      users += '<div class="media-body">';
-      users += '<h4 class="media-heading">' + v.user.member_code + "</h4>";
-      users += "</div>";
-      users += "</div>";
-      users += "</div>";
-      users += '<div class="col-xs-2">';
-      users += "<h5>" + v.ratio.length + " lần</h5>";
-      users += "</div>";
-      users += '<div class="col-xs-2">';
-      users += "<h5>" + average(v.ratio).toFixed(2) + " %</h5>";
-      users += "</div>";
-      users += "</div>";
+      users +=    '<div class="col-xs-2">';
+      users +=      '<h5># '+ idx++ + '</h5>';
+      users +=    '</div>';
+      users +=    '<div class="col-xs-10">';
+      users +=      '<div class="media">';
+      users +=        '<div class="media-left">';
+      users +=          ' <img class="media-object photo-profile" src="' +v.user.avatar +'" alt="'+v.user.member_code+'">';
+      users +=        '</div>';
+      users +=        '<div class="media-body">';
+      users +=          '<h4 class="text-danger">' + v.user.member_code + '</h4>';
+      users +=        '</div>';
+      users +=      '</div>';
+      users +=    '</div>';
+      users += '</div>';
     });
-    users += "</ul>";
+    users += '</ul>';
     $("#users_list").append(users);
   });
 

@@ -35,10 +35,8 @@
 <script type="text/javascript">
   $(document).ready(function(){
     LoadRooms();
-
-    var room_id;
     $(document).on('click',"input[name='join']",function() {
-      room_id = $(this).closest("tr").attr('id');
+      let room_id = $(this).closest("tr").attr('id');
       let subject_id = $(this).closest("tr").data('subject');
       $.ajax({
         url:'/live/check-login',
@@ -51,6 +49,7 @@
             };
             socket.emit('new-candidate-join',candidate);
             $('#subject_id').val(subject_id);
+            $('#room_id').val(room_id);
             $('#modalRoom').modal();
           }else{
             alert('Bạn phải đăng nhập mới tham gia phòng thi được!')

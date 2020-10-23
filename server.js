@@ -151,7 +151,7 @@ io.on('connection',function(socket){
     console.log(data);
     socket.join(data.room);
     socket.room_id = data.room;
-    candidates_in_rooms.push(data);
+    candidates_in_rooms.push(data.candidate);
     if(data.isNew){//nếu là tạo mới room
       rooms = [];
       for(r in socket.adapter.rooms){

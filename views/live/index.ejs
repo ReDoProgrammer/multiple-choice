@@ -78,7 +78,7 @@
 
   socket.on("users-in-rooms", rooms => {
     // console.log({rooms});
-    $('#roomslist > tbody  > tr').each(function() {
+    $('#roomslist > tr').each(function() {
       console.log('row id:',$(this).attr(id));
     });
   });

@@ -22,7 +22,10 @@
                 </button>
                 <input type="hidden" id="room_id" value="" />
                 <input type="hidden" id="subject_id" value="" />
-                <h6 id="room_name" style="color:#fff; text-transform: uppercase;"></h6>
+                <h6
+                  id="room_name"
+                  style="color: #fff; text-transform: uppercase"
+                ></h6>
               </div>
               <!-- /.card-header -->
               <div class="panel-body" style="margin-top: 10px">
@@ -32,11 +35,17 @@
               <!-- /.card-body -->
             </div>
           </div>
-          <div class="col-md-2 col-sm-4 col-xs-12" style="border-left:1px solid #DDD">
+          <div
+            class="col-md-2 col-sm-4 col-xs-12"
+            style="border-left: 1px solid #ddd"
+          >
             <div class="panel-success">
               <div class="panel-heading">
                 <h6 style="color: #fff">
-                  Hiện tại (<span id="current_users" class="text-warning">0</span>)</h6>
+                  Hiện tại (<span id="current_users" class="text-warning"
+                    >0</span
+                  >)
+                </h6>
               </div>
               <!-- /.card-header -->
               <div
@@ -82,7 +91,7 @@
           //gọi tới sự kiện send-exam để public tới tất cả các thành viên trong room danh sách câu hỏi
           socket.emit("send-exam", d);
           //ẩn nút bắt đầu
-          $('#btnStart').hide();
+          $("#btnStart").hide();
           //hiện nút nộp bài và kết thúc bài thi
           $("#btnFinish").show(100);
         }
@@ -99,25 +108,30 @@
     $("#current_users").text(
       data.users.length < 10 ? "0" + data.users.length : data.users.length
     );
-    $('#users_list').empty();
+    $("#users_list").empty();
     let users = '<ul class="list-unstyled mb20">';
     let idx = 1;
     $.each(data.users, function (k, u) {
       users += '<div class="row">';
-      users +=    '<div class="col-xs-12">';
-      users +=      '<div class="media">';
-      users +=        '<div class="media-left">';
-      users +=          ' <img class="media-object photo-profile" src="' +u.avatar +'" alt="'+u.member_code+'">';
-      users +=        '</div>';
-      users +=        '<div class="media-body">';
-      users +=          '<h4 class="text-danger">' + u.member_code + '</h4>';
-      users +=        '</div>';
-      users +=      '</div>';
-      users +=    '</div>';
-      users += '</div>';
+      users += '<div class="col-xs-12">';
+      users += '<div class="media">';
+      users += '<div class="media-left">';
+      users +=
+        ' <img class="media-object photo-profile" src="' +
+        u.avatar +
+        '" alt="' +
+        u.member_code +
+        '">';
+      users += "</div>";
+      users += '<div class="media-body">';
+      users += '<h4 class="text-danger">' + u.member_code + "</h4>";
+      users += "</div>";
+      users += "</div>";
+      users += "</div>";
+      users += "</div>";
     });
-    users += '</ul>';
-    $("#users_list").append(users);    
+    users += "</ul>";
+    $("#users_list").append(users);
   });
 
   //public danh sách câu hỏi
@@ -169,23 +183,34 @@
 </script>
 
 <style>
+  .photo-profile {
+    border: 1px solid #ddd;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+  }
 
-.photo-profile{
-      border:1px solid #DDD;
-      border-radius: 50%;
-      width:30px;
-      height:30px;
-    }
+  .anchor-username h4 {
+    font-weight: bold;
+  }
 
-    .anchor-username h4{
-      font-weight:bold;
-    }
+  .media-body {
+    padding-top: 0;
+  }
 
-    .media-body{
-      padding-top:0;
-    }
+  .fa-bullhorn {
+    font-size: 18px;
+  }
+  .modal-dialog {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+  }
 
-    .fa-bullhorn{
-      font-size:18px;
-    }
+  .modal-content {
+    height: auto;
+    min-height: 100%;
+    border-radius: 0;
+  }
 </style>

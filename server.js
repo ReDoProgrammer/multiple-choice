@@ -148,6 +148,7 @@ io.on('connection',function(socket){
 
 //sự kiện tạo mới phòng hoặc join vào 1 phòng đã có
   socket.on('join-room',data=>{
+    console.log(data);
     socket.join(data.room);
     socket.room_id = data.room;
     candidates_in_rooms.push(data);

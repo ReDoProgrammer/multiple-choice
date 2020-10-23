@@ -6,8 +6,9 @@ function userJoin(socket_id, username,avatar,member_code, room) {
   if(index ==-1){//chỉ add user khi socket của user đó chưa có trong room
     const user = {socket_id, username,avatar,member_code, room };
     users.push(user);
+    return user;
   }
-  return user;
+  return null;
 }
 
 // Get current user

@@ -35,11 +35,12 @@ router.get('/destroy-all-rooms',middleware.isAdmin,(req,res)=>{
 });
 
 
-router.post('/create',(req,res)=>{
+router.post('/create',middleware.isLoggedIn,(req,res)=>{
   if(req.session.user.is_admin){
     let id = req.body.id;
     LivedRoom.create({
-      subject:id
+      subject:id,
+      created_by:req.session.user._id
     },function(err,room){
       if(err){
         console.log('create new live room failed: '+new Error(err));

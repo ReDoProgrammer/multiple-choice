@@ -145,7 +145,8 @@
     let room_id = $("#room_id").val();
 
     //không cho user khác tham gia vào room sau khi bắt đầu bài thi
-    $('#roomslist > tr#'+room_id+' > input').attr('disabled', true);
+    // $('#roomslist > tr#'+room_id+' > input').attr('disabled', true);
+    console.log({room_id});
 
     if (data.room == room_id) {
       let q = "";

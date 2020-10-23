@@ -38,19 +38,18 @@ router.get('/destroy-all-rooms',middleware.isAdmin,(req,res)=>{
 
 router.post('/create',middleware.isLoggedIn,(req,res)=>{
   if(req.session.user.is_admin){
-    let {id,started_time} = req.body;
-    let d = new Date(started_time);
-    console.log({d});
-    // LivedRoom.create({
-    //   subject:id,
-    //   created_by:req.session.user._id
-    // },function(err,room){
-    //   if(err){
-    //     console.log('create new live room failed: '+new Error(err));
-    //   }else{
-    //     res.send({code:200,msg:'Tạo phòng thi trực tuyến thành công',room:room});
-    //   }
-    // });
+    let {id,started_time} = req.body;   
+    LivedRoom.create({
+      subject:id,
+      created_by:req.session.user._id,
+      started_time:new Date(started_time)
+    },function(err,room){
+      if(err){
+        console.log('create new live room failed: '+new Error(err));
+      }else{
+        res.send({code:200,msg:'Tạo phòng thi trực tuyến thành công',room:room});
+      }
+    });
   }else{
     res.send({code:401,msg:'Tính năng này hiện tại chỉ admin mới có quyền thao tác'});
   }

@@ -29,6 +29,7 @@ router.get('/destroy-all-rooms',middleware.isAdmin,(req,res)=>{
     if(err){
       console.log('destroy all rooms failed: '+new Error(err));
     }else{
+      LivedRoom.collection.destroy();
       res.send({code:200,msg:'destroy all rooms successfully'});
     }
   });

@@ -19,10 +19,15 @@ const livedRoomSchema = new Schema({
     type:Schema.Types.ObjectId,
     ref:'question'
   }],
+  registers:[{
+    type:Schema.Types.ObjectId,
+    ref:'user'
+  }],
   users:[{
     type: Schema.Types.ObjectId,
     ref:'user'
   }],
+  started_time:{type: Date},
   is_opened:{type:Boolean,default:true}
 });
 

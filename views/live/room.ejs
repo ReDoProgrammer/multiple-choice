@@ -124,7 +124,8 @@
 
   function checkResult(){
     $("#questions div").each(function (index, v) {
-      console.log(v);
+      let id = $(v).find('h5').attr("id");
+      console.log(id);
     });
   }
 

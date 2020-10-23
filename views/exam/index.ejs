@@ -2,40 +2,71 @@
 <div class="row">
   <div class="col-sm-12">
     <div class="panel panel-primary list-announcement">
-      <div class="panel-heading" style="padding-top:5px; padding-bottom:5px;">
+      <div class="panel-heading" style="padding-top: 5px; padding-bottom: 5px">
         <div class="row">
           <div id="eiUserProfile">
-            <div class="col-sm-2" >
-              <h5 style = "text-transform: uppercase; margin-top:5px; padding-top:5px; padding-bottom:5px; color:#ffffff">MTS: <span id="candidate_code" class="text-danger" style="font-weight:bold;"><b id="eiMemberCode"></b></span></h5>
+            <div class="col-sm-2">
+              <h5
+                style="
+                  text-transform: uppercase;
+                  margin-top: 5px;
+                  padding-top: 5px;
+                  padding-bottom: 5px;
+                  color: #ffffff;
+                "
+              >
+                MTS:
+                <span
+                  id="candidate_code"
+                  class="text-danger"
+                  style="font-weight: bold"
+                  ><b id="eiMemberCode"></b
+                ></span>
+              </h5>
             </div>
             <div class="col-sm-3 text-center">
-              <h5 class="col-form-label" id="candidate" style="color:#ffffff">Thí sinh: <span style="color:#FFFF33" id="eiFullname"></span></h5>
+              <h5 class="col-form-label" id="candidate" style="color: #ffffff">
+                Thí sinh: <span style="color: #ffff33" id="eiFullname"></span>
+              </h5>
             </div>
           </div>
 
-
           <div class="col-sm-3 text-center" id="eiNoneUser">
-            <h5 class="col-form-label" id="candidate" style="color:#ffffff">Thí sinh: Guest</h5>
+            <h5 class="col-form-label" id="candidate" style="color: #ffffff">
+              Thí sinh: Guest
+            </h5>
           </div>
 
-
           <div class="col-sm-3 text-center">
-            <h5 style="color:#ffffff">Thời gian làm bài: <span id="totalTime" style="color:#FFFF33">45:00</span> phút</h5>
+            <h5 style="color: #ffffff">
+              Thời gian làm bài:
+              <span id="totalTime" style="color: #ffff33">45:00</span> phút
+            </h5>
           </div>
           <div class="col-sm-3 text-center">
-            <h5 class="col-form-label" id="countdown" style="color:#ffffff">Còn lại: <span id="remainTime" style="color:#FFFF33"></span></h5>
+            <h5 class="col-form-label" id="countdown" style="color: #ffffff">
+              Còn lại: <span id="remainTime" style="color: #ffff33"></span>
+            </h5>
           </div>
           <div class="col-sm-1 text-center">
-            <button type="button" id="btnDoExam" class="btn btn-sm btn-warning" style="margin-top:4px;">Làm bài</button>
+            <button
+              type="button"
+              id="btnDoExam"
+              class="btn btn-sm btn-warning"
+              style="margin-top: 4px"
+            >
+              Làm bài
+            </button>
           </div>
         </div>
       </div>
       <div class="panel-body">
-        <ul class="list-unstyled mb20" id="questions">
-        </ul>
+        <ul class="list-unstyled mb20" id="questions"></ul>
       </div>
       <div class="panel-footer">
-        <button class="btn btn-primary btn-block" id="btnApplyExam">Kết thúc và nộp bài thi</button>
+        <button class="btn btn-primary btn-block" id="btnApplyExam">
+          Kết thúc và nộp bài thi
+        </button>
       </div>
     </div>
   </div>
@@ -43,19 +74,12 @@
 <!-- kết thúc phần nội dung câu hỏi  -->
 <div class="row">
   <%- include('statistic') %>
-  <div class="col-sm-6">
-    <%- include('../layouts/comment') %>
-  </div>
+  <div class="col-sm-6"><%- include('../layouts/comment') %></div>
 </div>
 
 <%- include('comment') %>
 
-
-
-<div id="topCountDown">
-</div>
-
-
+<div id="topCountDown"></div>
 
 <script type="text/javascript">
   /*
@@ -76,384 +100,441 @@
   //biến đánh dấu trạng thái đang làm bài kiểm tra hay không
   let onExam = false;
 
-  $(document).ready(function(){
-    $('#eiUserProfile').hide(); //mặc định ẩn thông tin thành viên
-    $('#ecCommentOnRow').hide();
-    $('#esStatistic').hide();//ẩn div thống kê kết quả làm bài thi
+  $(document).ready(function () {
+    $("#eiUserProfile").hide(); //mặc định ẩn thông tin thành viên
+    $("#ecCommentOnRow").hide();
+    $("#esStatistic").hide(); //ẩn div thống kê kết quả làm bài thi
 
     //load thông tin thành viên
     $.ajax({
-      url:'/user/profile',
-      type:'get',
-      success:function(data){
-        if(data.code == 200){//nếu có thành viên
-          $('#eiNoneUser').hide();//ẩn div guest
-          $('#eiUserProfile').show(200);//hiện div thành viên
-          $('#ecCommentOnRow').show();
-          $('#eiMemberCode').text(data.user.member_code);
-          $('#eiFullname').text(data.user.fullname);
-        }else{
-          $('#eiUserProfile').hide();
-          $('#ecCommentOnRow').hide();
-          $('#eiNoneUser').show(200);
+      url: "/user/profile",
+      type: "get",
+      success: function (data) {
+        if (data.code == 200) {
+          //nếu có thành viên
+          $("#eiNoneUser").hide(); //ẩn div guest
+          $("#eiUserProfile").show(200); //hiện div thành viên
+          $("#ecCommentOnRow").show();
+          $("#eiMemberCode").text(data.user.member_code);
+          $("#eiFullname").text(data.user.fullname);
+        } else {
+          $("#eiUserProfile").hide();
+          $("#ecCommentOnRow").hide();
+          $("#eiNoneUser").show(200);
+        }
+      },
+    });
+
+    //ẩn nút nộp bài khi page đc load
+    $("#btnApplyExam").hide();
+
+    //ẩn div thống kê kết quả làm bài khi page đc load
+    $("#statistic").hide();
+
+    //khi load page thì ẩn đồng hồ
+    $("#countdown").hide();
+    $("#topCountDown").hide();
+  });
+
+  $("#btnDoExam").click(function () {
+    let subject = $("#direction").find("li.active").attr("id");
+    $.ajax({
+      url: "/lam-bai-thi/random-questions",
+      type: "get",
+      data: {
+        subject: subject,
+      },
+      success: function (data) {
+        if (data.code == 200) {
+          $("#questions").empty();
+          let content = "";
+          let idx = 1;
+          questions = data.questions;
+          $.each(questions, function (k, r) {
+            content += '<li class="form-group" id="' + r._id + '">';
+            content +=
+              '<label for="question">Câu hỏi <span class="quest-number">' +
+              idx +
+              '</span>:<span class = "text-danger"><strong class="q-content"> ' +
+              r.question +
+              '</strong></span> <a href="#" class="commentOnQuestion"><i class="fa fa-comments-o text-warning" aria-hidden="true"></i></a></label>';
+            content += '<fieldset id="group' + idx + '">';
+            content +=
+              '<input type="radio" name="group' +
+              idx +
+              '" class="rdOptionA" > a. <span class = "text-primary rdOptionA">' +
+              r.option_a +
+              "</span>";
+            content += "</fieldset>";
+            content += '<fieldset id="group' + idx + '">';
+            content +=
+              '<input type="radio" name="group' +
+              idx +
+              '" class="rdOptionB" > b. <span class = "text-primary rdOptionB">' +
+              r.option_b +
+              "</span>";
+            content += "</fieldset>";
+            content += '<fieldset id="group' + idx + '">';
+            content +=
+              '<input type="radio" name="group' +
+              idx +
+              '" class="rdOptionC" > c. <span class = "text-primary rdOptionC">' +
+              r.option_c +
+              "</span>";
+            content += "</fieldset>";
+            content += '<fieldset id="group' + idx + '">';
+            content +=
+              '<input type="radio" name="group' +
+              idx +
+              '" class="rdOptionD" > d. <span class = "text-primary rdOptionD  ">' +
+              r.option_d +
+              "</span>";
+            content += "</fieldset>";
+            content += '<fieldset class ="description">';
+            content += '<p class = "description"></p>';
+            content += "</fieldset>";
+            content += "</li>";
+            idx++;
+          });
+          if (questions.length > 0) {
+            //ẩn div thống kê khi làm bài
+            $("#statistic").hide();
+
+            //khởi tạo các giá trị mặc định khi bắt đầu làm bài
+            overtime = false;
+            correct = 0;
+            notAsw = [];
+            onExam = true;
+
+            //khi làm bài thì hiện đồng hồ lên
+            $("#countdown").show();
+            $("#topCountDown").show();
+
+            totalSeconds = constTime;
+            intervalId = setInterval(startTimer, 1000);
+            $("#questions").append(content);
+            $("#btnDoExam").hide();
+            $("#btnApplyExam").show();
+            $("#esStatistic").hide(200); //ẩn div thống kê khi bắt đầu làm bài
+          } else {
+            $("#questions").append(
+              '<div class="text-center"><h1 class="text-warning">Hệ thống câu hỏi đang được cập nhật. Chân thành cảm ơn sự ủng hộ của bạn!</h1></div>'
+            );
+          }
+        }
+      },
+    });
+  });
+
+  $("#btnApplyExam").click(function () {
+    //nếu chưa hết giờ làm bài
+    if (!overtime) {
+      $("#questions li").each(function (index, v) {
+        let ch = $(v).find('input[type="radio"]:checked').attr("class");
+        let asw = "";
+        switch (ch) {
+          case "rdOptionA":
+            break;
+          case "rdOptionB":
+            break;
+          case "rdOptionC":
+            break;
+          case "rdOptionD":
+            break;
+          default:
+            let qi = $(v).find("label>span.quest-number").text();
+            notAsw.push(qi);
+            break;
+        }
+      });
+      if (
+        notAsw.length > 0 &&
+        confirm(
+          "Những câu hỏi \n" +
+            notAsw +
+            "\n chưa chọn đáp án. Bạn vẫn muốn tiếp tục?"
+        ) == true
+      ) {
+        //set countdown khi kết thúc làm bài
+        clearInterval(intervalId);
+        totalSeconds = constTime;
+        onExam = false;
+        //khi kết thúc bài kiểm tra thì ẩn đồng hồ
+        $("#countdown").hide();
+        $("#topCountDown").hide();
+        //hiện lại nút "làm bài"
+        $("#btnDoExam").show();
+
+        //ẩn nút "nộp bài"
+        $(this).hide();
+        $("#esStatistic").show(400);
+        CheckResult();
+      } else {
+        if (notAsw.length == 0) {
+          //set countdown khi kết thúc làm bài
+          clearInterval(intervalId);
+          totalSeconds = constTime;
+          onExam = false;
+          //khi kết thúc bài kiểm tra thì ẩn đồng hồ
+          $("#countdown").hide();
+          $("#topCountDown").hide();
+          $("#esStatistic").show(400);
+          CheckResult();
+          //hiện lại nút "làm bài"
+          $("#btnDoExam").show(300);
+
+          //ẩn nút "nộp bài"
+          $(this).hide();
+        }
+      }
+    } else {
+      //nếu đã hết thời gian làm bài
+      //set countdown khi kết thúc làm bài
+      clearInterval(intervalId);
+      totalSeconds = constTime;
+      onExam = false;
+      //khi kết thúc bài kiểm tra thì ẩn đồng hồ
+      $("#countdown").hide();
+      $("#topCountDown").hide();
+      //hiện lại nút "làm bài"
+      $("#btnDoExam").show();
+
+      //ẩn nút "nộp bài"
+      $(this).hide();
+      CheckResult();
+      $("#esStatistic").show(400);
+    }
+  });
+
+  function CheckResult() {
+    //duyệt các câu hỏi
+    $("#questions li").each(function (index, v) {
+      //lấy id của câu hỏi
+      let id = $(v).attr("id");
+
+      //biến đánh dấu trạng thái có tiếp tục nộp bài khi có câu hỏi chưa trả lời
+      let cont = true;
+
+      // //lấy đáp án đã được chọn ứng với mỗi câu
+      let ch = $(v).find('input[type="radio"]:checked').attr("class");
+
+      //lấy đáp án được chọn
+      let asw = "";
+      switch (ch) {
+        case "rdOptionA":
+          asw = "A";
+          break;
+        case "rdOptionB":
+          asw = "B";
+          break;
+        case "rdOptionC":
+          asw = "C";
+          break;
+        case "rdOptionD":
+          asw = "D";
+          break;
+        default:
+          asw = "N";
+          break;
+      }
+
+      //tìm ra câu hỏi tương ứng trong mãng dựa vào id câu hỏi lấy đượcanvas
+      var qs = questions.find((x) => x._id === id);
+
+      //đánh dấu câu trả lời đúng
+      if (qs) {
+        $("#" + id + " > fieldset > span.rdOption" + qs.answer).css(
+          "background-color",
+          "yellow"
+        );
+        if (asw == qs.answer) {
+          correct++;
+        }
+        if (qs.description.length > 0) {
+          $("#" + id + " > fieldset.description > p.description").html(
+            '<hr><h6 class = "text-warning"><span class = "font-weight-bold"><u>Chú thích: </u></span><span class="text-info"><i>' +
+              qs.description +
+              "</i></span></h6>"
+          );
         }
       }
     });
 
-    //ẩn nút nộp bài khi page đc load
-    $('#btnApplyExam').hide();
+    //thống kê kết quả làm bài
+    $("#statistic").show(); //hiện bảng thống kê
+    //chi tiết kết quả làm bài
+    $("#answered").text(questions.length - notAsw.length + " câu");
+    $("#correct").text(correct + " câu");
+    $("#wrong").text(questions.length - correct - notAsw.length + " câu");
+    $("#notyet").text(notAsw.length + " câu");
 
-    //ẩn div thống kê kết quả làm bài khi page đc load
-    $('#statistic').hide();
-
-    //khi load page thì ẩn đồng hồ
-    $('#countdown').hide();
-    $('#topCountDown').hide();
-  });
-
-  $('#btnDoExam').click(function(){
-    let subject = $('#direction').find('li.active').attr('id');
-    $.ajax({
-      url:'/lam-bai-thi/random-questions',
-      type:'get',
-      data:{
-        subject:subject
-      },
-      success:function(data){
-        if(data.code == 200){
-          $('#questions').empty();
-          let content = '';
-          let idx = 1;
-          questions = data.questions;
-          $.each(questions,function(k,r){
-            content +='<li class="form-group" id="'+r._id+'">';
-              content +='<label for="question">Câu hỏi <span class="quest-number">'+idx+'</span>:<span class = "text-danger"><strong class="q-content"> '+r.question+'</strong></span> <a href="#" class="commentOnQuestion"><i class="fa fa-comments-o text-warning" aria-hidden="true"></i></a></label>';
-              content += '<fieldset id="group'+idx+'">';
-                content += '<input type="radio" name="group'+idx+'" class="rdOptionA" > a. <span class = "text-primary rdOptionA">'+r.option_a+'</span>';
-                content += '</fieldset>';
-                content += '<fieldset id="group'+idx+'">';
-                  content += '<input type="radio" name="group'+idx+'" class="rdOptionB" > b. <span class = "text-primary rdOptionB">'+r.option_b+'</span>';
-                  content += '</fieldset>';
-                  content += '<fieldset id="group'+idx+'">';
-                    content += '<input type="radio" name="group'+idx+'" class="rdOptionC" > c. <span class = "text-primary rdOptionC">'+r.option_c+'</span>';
-                    content += '</fieldset>';
-                    content += '<fieldset id="group'+idx+'">';
-                      content += '<input type="radio" name="group'+idx+'" class="rdOptionD" > d. <span class = "text-primary rdOptionD  ">'+r.option_d+'</span>';
-                      content += '</fieldset>';
-                      content +='<fieldset class ="description">';
-                        content += '<p class = "description"></p>';
-                        content += '</fieldset>';
-                        content +='</li>';
-                        idx++;
-                      });
-                      if(questions.length > 0){
-                        //ẩn div thống kê khi làm bài
-                        $('#statistic').hide();
-
-                        //khởi tạo các giá trị mặc định khi bắt đầu làm bài
-                        overtime = false;
-                        correct = 0;
-                        notAsw = [];
-                        onExam = true;
-
-                        //khi làm bài thì hiện đồng hồ lên
-                        $('#countdown').show();
-                        $('#topCountDown').show();
-
-                        totalSeconds = constTime;
-                        intervalId = setInterval(startTimer, 1000);
-                        $('#questions').append(content);
-                        $('#btnDoExam').hide();
-                        $('#btnApplyExam').show();
-                        $('#esStatistic').hide(200);//ẩn div thống kê khi bắt đầu làm bài
-                      }else{
-                        $('#questions').append('<div class="text-center"><h1 class="text-warning">Hệ thống câu hỏi đang được cập nhật. Chân thành cảm ơn sự ủng hộ của bạn!</h1></div>');
-                      }
-
-
-                    }
-                  }
-                });
-
-              });
-
-              $('#btnApplyExam').click(function(){
-
-
-                //nếu chưa hết giờ làm bài
-                if(!overtime){
-                  $('#questions li').each(function(index,v){
-                    let ch = $(v).find('input[type="radio"]:checked').attr('class');
-                    let asw = '';
-                    switch (ch) {
-                      case 'rdOptionA':
-                      break;
-                      case 'rdOptionB':
-                      break;
-                      case 'rdOptionC':
-                      break;
-                      case 'rdOptionD':
-                      break;
-                      default:
-                      let qi = $(v).find('label>span.quest-number').text();
-                      notAsw.push(qi);
-                      break;
-                    }
-                  });
-                  if(notAsw.length > 0 && confirm('Những câu hỏi \n'+notAsw+'\n chưa chọn đáp án. Bạn vẫn muốn tiếp tục?')==true){
-                    //set countdown khi kết thúc làm bài
-                    clearInterval(intervalId);
-                    totalSeconds = constTime;
-                    onExam = false;
-                    //khi kết thúc bài kiểm tra thì ẩn đồng hồ
-                    $('#countdown').hide();
-                    $('#topCountDown').hide();
-                    //hiện lại nút "làm bài"
-                    $('#btnDoExam').show();
-
-                    //ẩn nút "nộp bài"
-                    $(this).hide();
-                    $('#esStatistic').show(400);
-                    CheckResult();
-                  }else{
-                    if(notAsw.length == 0){
-                      //set countdown khi kết thúc làm bài
-                      clearInterval(intervalId);
-                      totalSeconds = constTime;
-                      onExam = false;
-                      //khi kết thúc bài kiểm tra thì ẩn đồng hồ
-                      $('#countdown').hide();
-                      $('#topCountDown').hide();
-                      $('#esStatistic').show(400);
-                      CheckResult();
-                      //hiện lại nút "làm bài"
-                      $('#btnDoExam').show(300);
-
-
-                      //ẩn nút "nộp bài"
-                      $(this).hide();
-                    }
-                  }
-                }
-                else{//nếu đã hết thời gian làm bài
-                  //set countdown khi kết thúc làm bài
-                  clearInterval(intervalId);
-                  totalSeconds = constTime;
-                  onExam = false;
-                  //khi kết thúc bài kiểm tra thì ẩn đồng hồ
-                  $('#countdown').hide();
-                  $('#topCountDown').hide();
-                  //hiện lại nút "làm bài"
-                  $('#btnDoExam').show();
-
-                  //ẩn nút "nộp bài"
-                  $(this).hide();
-                  CheckResult();
-                  $('#esStatistic').show(400);
-                }
-              });
-
-              function CheckResult(){
-                //duyệt các câu hỏi
-                $('#questions li').each(function(index,v){
-                  //lấy id của câu hỏi
-                  let id = $(v).attr('id');
-
-                  //biến đánh dấu trạng thái có tiếp tục nộp bài khi có câu hỏi chưa trả lời
-                  let cont = true;
-
-                  // //lấy đáp án đã được chọn ứng với mỗi câu
-                  let ch = $(v).find('input[type="radio"]:checked').attr('class');
-
-                  //lấy đáp án được chọn
-                  let asw = '';
-                  switch (ch) {
-                    case 'rdOptionA':
-                    asw = 'A';
-                    break;
-                    case 'rdOptionB':
-                    asw = 'B';
-                    break;
-                    case 'rdOptionC':
-                    asw = 'C';
-                    break;
-                    case 'rdOptionD':
-                    asw = 'D';
-                    break;
-                    default: asw = 'N';
-                    break;
-                  }
-
-                  //tìm ra câu hỏi tương ứng trong mãng dựa vào id câu hỏi lấy đượcanvas
-                  var qs = questions.find(x=>x._id === id);
-
-                  //đánh dấu câu trả lời đúng
-                  if(qs){
-                    $('#'+id+' > fieldset > span.rdOption'+qs.answer).css("background-color", "yellow");
-                    if(asw == qs.answer){
-                      correct++;
-                    }
-                    if(qs.description.length > 0){
-                      $('#'+id+' > fieldset.description > p.description').html('<hr><h6 class = "text-warning"><span class = "font-weight-bold"><u>Chú thích: </u></span><span class="text-info"><i>'+qs.description+'</i></span></h6>');
-                    }
-                  }
-                });
-
-
-                //thống kê kết quả làm bài
-                $('#statistic').show();//hiện bảng thống kê
-                //chi tiết kết quả làm bài
-                $('#answered').text((questions.length-notAsw.length) + ' câu');
-                $('#correct').text(correct + ' câu');
-                $('#wrong').text((questions.length - correct - notAsw.length)+ ' câu');
-                $('#notyet').text(notAsw.length + ' câu');
-
-                let ratio = ((correct/questions.length)*100).toFixed(1);
-                $('#ratio').text(ratio+'%');
-                PushStatistic(ratio);
-                if(ratio==100){
-                  $('#evaluate').text('Thật tuyệt vời. Kiến thức bạn nắm được là tuyệt đối');
-                  $('#evaluate').addClass('text-success');
-                }else{
-                  if(ratio>=90){
-                    $('#evaluate').text('Thật tuyệt vời. Kiến thức bạn nắm được gần như là tuyệt đối');
-                    $('#evaluate').addClass('text-success');
-                  }else{
-                    if(ratio>=80){
-                      $('#evaluate').text('Việc thi đậu không còn là vấn đề khó của bạn nữa!');
-                      $('#evaluate').addClass('text-success');
-                    }else{
-                      if(ratio>=70){
-                        $('#evaluate').text('Mọi việc đang tiến triển rất tốt. Cố lên bạn tôi ơi!');
-                        $('#evaluate').addClass('text-primary');
-                      }else{
-                        if(ratio>=50){
-                          $('#evaluate').text('Kết quả tạm chấp nhận. Nhưng chưa đủ. Cố gắng lên!');
-                          $('#evaluate').addClass('text-warning');
-                        }else{
-                          if(ratio>=30){
-                            $('#evaluate').text('Có vẻ bạn chưa thực sự nghiêm túc dành nhiều thời gian học bài!');
-                            $('#evaluate').addClass('text-danger');
-                          }else{
-                            $('#evaluate').text('Có lẽ bạn nên nghĩ đến việc khác thích hợp hơn là học bài!');
-                            $('#evaluate').addClass('text-danger');
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-
-                //---> kết thúc thống kê chi tiết kết quả làm bài
-
-                // gọi tới hàm thống kê kết quả các bài thi của thành viên trong template /layout/statistic.ejs
-                StatistisUserSummaryExam();
+    let ratio = ((correct / questions.length) * 100).toFixed(1);
+    $("#ratio").text(ratio + "%");
+    PushStatistic(ratio);
+    if (ratio == 100) {
+      $("#evaluate").text(
+        "Thật tuyệt vời. Kiến thức bạn nắm được là tuyệt đối"
+      );
+      $("#evaluate").addClass("text-success");
+    } else {
+      if (ratio >= 90) {
+        $("#evaluate").text(
+          "Thật tuyệt vời. Kiến thức bạn nắm được gần như là tuyệt đối"
+        );
+        $("#evaluate").addClass("text-success");
+      } else {
+        if (ratio >= 80) {
+          $("#evaluate").text(
+            "Việc thi đậu không còn là vấn đề khó của bạn nữa!"
+          );
+          $("#evaluate").addClass("text-success");
+        } else {
+          if (ratio >= 70) {
+            $("#evaluate").text(
+              "Mọi việc đang tiến triển rất tốt. Cố lên bạn tôi ơi!"
+            );
+            $("#evaluate").addClass("text-primary");
+          } else {
+            if (ratio >= 50) {
+              $("#evaluate").text(
+                "Kết quả tạm chấp nhận. Nhưng chưa đủ. Cố gắng lên!"
+              );
+              $("#evaluate").addClass("text-warning");
+            } else {
+              if (ratio >= 30) {
+                $("#evaluate").text(
+                  "Có vẻ bạn chưa thực sự nghiêm túc dành nhiều thời gian học bài!"
+                );
+                $("#evaluate").addClass("text-danger");
+              } else {
+                $("#evaluate").text(
+                  "Có lẽ bạn nên nghĩ đến việc khác thích hợp hơn là học bài!"
+                );
+                $("#evaluate").addClass("text-danger");
               }
+            }
+          }
+        }
+      }
+    }
 
-              //hàm thống kê kết quả làm bài của thành viên cập nhật vào dữ liệu
-              function PushStatistic(ratio){
-                var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
-                if(hashes.length == 2){
-                  let group =(hashes[0].split('='))[1];
-                  let subject = (hashes[1].split('='))[1];
-                  $.ajax({
-                    url:'/statistic/push',
-                    type:'post',
-                    data:{
-                      group:group,
-                      subject:subject,
-                      ratio:ratio
-                    },
-                    success:function(data){
-                      if(data.code == 200){
-                        console.log(data);
-                      }
-                    }
-                  });
-                }
+    //---> kết thúc thống kê chi tiết kết quả làm bài
 
-              }
-              //sự kiện comment trên từng câu hỏi
-              $(document).on('click', '.commentOnQuestion', function (e) {
-                e.preventDefault();
-                let id = $(this).closest('li').attr('id');
-                let question = $(this).closest('li').find('label').find('strong').text();
-                $('#pushedQuestion').text(question);
-                $('#txtPushedQuestionId').val(id);
-                $('#txtCommentQuestion').val('');
-                $('#comment-on-question').modal();
-              });//-->kết thúc sự kiện comment trên từng câu hỏi
+    // gọi tới hàm thống kê kết quả các bài thi của thành viên trong template /layout/statistic.ejs
+    StatistisUserSummaryExam();
+  }
 
-            </script>
+  //hàm thống kê kết quả làm bài của thành viên cập nhật vào dữ liệu
+  function PushStatistic(ratio) {
+    var hashes = window.location.href
+      .slice(window.location.href.indexOf("?") + 1)
+      .split("&");
+    if (hashes.length == 2) {
+      let group = hashes[0].split("=")[1];
+      let subject = hashes[1].split("=")[1];
+      $.ajax({
+        url: "/statistic/push",
+        type: "post",
+        data: {
+          group: group,
+          subject: subject,
+          ratio: ratio,
+        },
+        success: function (data) {
+          if (data.code == 200) {
+            console.log(data);
+          }
+        },
+      });
+    }
+  }
+  //sự kiện comment trên từng câu hỏi
+  $(document).on("click", ".commentOnQuestion", function (e) {
+    e.preventDefault();
+    let id = $(this).closest("li").attr("id");
+    let question = $(this).closest("li").find("label").find("strong").text();
+    $("#pushedQuestion").text(question);
+    $("#txtPushedQuestionId").val(id);
+    $("#txtCommentQuestion").val("");
+    $("#comment-on-question").modal();
+  }); //-->kết thúc sự kiện comment trên từng câu hỏi
+</script>
 
-            <!-- phần xử lý count down -->
-            <script type="text/javascript">
-              var constTime = 45*60+1;//biến lưu thời gian làm bài
-              let hour = 0;
-              let minute = 0;
-              let seconds = 0;
-              let totalSeconds = constTime;
-              let intervalId = null;
-              function startTimer() {
-                --totalSeconds;
-                hour = Math.floor(totalSeconds /3600);
-                minute = Math.floor((totalSeconds - hour*3600)/60);
-                seconds = totalSeconds - (hour*3600 + minute*60);
-                let remain = '<span id="hour"></span>:<span id="minute"></span>:<span id="seconds"></span>';
-                let zremain = '<span id="zhour"></span>:<span id="zminute"></span>:<span id="zseconds"></span>';
+<!-- phần xử lý count down -->
+<script type="text/javascript">
+  var constTime = 45 * 60 + 1; //biến lưu thời gian làm bài
+  let hour = 0;
+  let minute = 0;
+  let seconds = 0;
+  let totalSeconds = constTime;
+  let intervalId = null;
+  function startTimer() {
+    --totalSeconds;
+    hour = Math.floor(totalSeconds / 3600);
+    minute = Math.floor((totalSeconds - hour * 3600) / 60);
+    seconds = totalSeconds - (hour * 3600 + minute * 60);
+    let remain =
+      '<span id="hour"></span>:<span id="minute"></span>:<span id="seconds"></span>';
+    let zremain =
+      '<span id="zhour"></span>:<span id="zminute"></span>:<span id="zseconds"></span>';
 
-                $('#remainTime').html(remain);
-                $("#hour").text(hour<10?'0'+hour:hour);
-                $("#minute").text(minute<10?'0'+minute:minute);
-                $("#seconds").text(seconds<10?'0'+seconds:seconds);
+    $("#remainTime").html(remain);
+    $("#hour").text(hour < 10 ? "0" + hour : hour);
+    $("#minute").text(minute < 10 ? "0" + minute : minute);
+    $("#seconds").text(seconds < 10 ? "0" + seconds : seconds);
 
-                $('#topCountDown').html(zremain);
-                $("#zhour").text(hour<10?'0'+hour:hour);
-                $("#zminute").text(minute<10?'0'+minute:minute);
-                $("#zseconds").text(seconds<10?'0'+seconds:seconds);
-                if(totalSeconds<1){//nếu hết thời gian làm bài
-                  alert('Thời gian làm bài của bạn đã hết');
-                  overtime = true;//set trạng thái hết giờ là true
-                  $('#btnApplyExam').click();//gọi tới sự kiện nộp bài
-                }
-              }
-            </script>
-            <!-- kết thúc phần countdown -->
+    $("#topCountDown").html(zremain);
+    $("#zhour").text(hour < 10 ? "0" + hour : hour);
+    $("#zminute").text(minute < 10 ? "0" + minute : minute);
+    $("#zseconds").text(seconds < 10 ? "0" + seconds : seconds);
+    if (totalSeconds < 1) {
+      //nếu hết thời gian làm bài
+      alert("Thời gian làm bài của bạn đã hết");
+      overtime = true; //set trạng thái hết giờ là true
+      $("#btnApplyExam").click(); //gọi tới sự kiện nộp bài
+    }
+  }
+</script>
+<!-- kết thúc phần countdown -->
 
-            <!-- phần đồng hồ nổi lên khi cuộn -->
-            <script type="text/javascript">
-              window.onscroll = function() {scrollFunction()};
-              function scrollFunction() {
-                //nếu cuộn trên tọa độ > 20 & trong trạng thái đang làm bài thì hiện đồng hồ ở góc lên
-                if ((document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) && onExam) {
-                  $('#topCountDown').css("display", "block");;
-                } else {//ngược lại thì ẩn đồng hồ ở góc
-                  $('#topCountDown').css("display", "none");;
-                }
-              }
-            </script>
+<!-- phần đồng hồ nổi lên khi cuộn -->
+<script type="text/javascript">
+  window.onscroll = function () {
+    scrollFunction();
+  };
+  function scrollFunction() {
+    //nếu cuộn trên tọa độ > 20 & trong trạng thái đang làm bài thì hiện đồng hồ ở góc lên
+    if (
+      (document.body.scrollTop > 20 ||
+        document.documentElement.scrollTop > 20) &&
+      onExam
+    ) {
+      $("#topCountDown").css("display", "block");
+    } else {
+      //ngược lại thì ẩn đồng hồ ở góc
+      $("#topCountDown").css("display", "none");
+    }
+  }
+</script>
 
-
-
-            <!-- khai báo source font của đồng hồ -->
-            <style media="screen">
-
-              /* set các thuộc tính của đồng hồ ở góc */
-              #topCountDown {
-                display: none;
-                position: fixed;
-                bottom: 10px;
-                right: 10px;
-                z-index: 99;
-                font-size: 20px;
-                font-family:"Digital";
-                border: none;
-                outline: none;
-                background-color: #000;
-                color: #FFF;
-                cursor: pointer;
-                padding: 5px;
-                border-radius: 4px;
-                border: solid 5px #CCCCCC;
-              }
-            </style>
+<!-- khai báo source font của đồng hồ -->
+<style media="screen">
+  /* set các thuộc tính của đồng hồ ở góc */
+  #topCountDown {
+    display: none;
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    z-index: 99;
+    font-size: 20px;
+    font-family: "Digital";
+    border: none;
+    outline: none;
+    background-color: #000;
+    color: #fff;
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 4px;
+    border: solid 5px #cccccc;
+  }
+</style>

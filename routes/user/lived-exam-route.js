@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const LivedRoom = require("../../models/lived-room-model");
+const LivedExam = require("../../models/lived-exam-model");
 const Question = require("../../models/question-model");
 const middleware = require("../../middlewares/middleware");
 const mongoose = require("mongoose");
@@ -137,6 +138,11 @@ router.get("/list", (req, res) => {
         res.send({ code: 200, msg: "load rooms successfully", rooms: rooms });
       }
     });
+});
+
+router.post('/finish',middleware.isLoggedIn,(req,res)=>{
+  let result = req.body.result;
+  console.log(result);
 });
 
 module.exports = router;

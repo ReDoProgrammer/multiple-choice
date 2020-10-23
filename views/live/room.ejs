@@ -108,7 +108,25 @@
 
   $("#btnFinish").click(function () {
     socket.emit("user-finish");
+
+    checkResult();
+    // $.ajax({
+    //   url:'/live/finish',
+    //   type:'post',
+    //   data:{
+    //     result:result
+    //   },
+    //   success:function(data){
+    //     console.log(data);
+    //   }
+    // });
   });
+
+  function checkResult(){
+    $("#questions row").each(function (index, v) {
+      console.log(v);
+    });
+  }
 
   //lắng nghe sự kiện công bố đáp án
   socket.on('populate-answers',()=>{

@@ -55,6 +55,7 @@
     // sự kiện click button jon phòng trên từng hàng tương ứng mỗi phòng
     $(document).on("click", "input[name='join']", function () {
       let room_id = $(this).closest("tr").attr("id");
+      console.log(room_id);
       let master = $(this).closest("tr").data("master");
       let subject_id = $(this).closest("tr").data("subject");
       let room_name = $(this).closest("tr").find('td.room_name').text();

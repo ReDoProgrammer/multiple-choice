@@ -184,18 +184,21 @@ io.on('connection',function(socket){
   });
 
   socket.on('disconnect', function() {
-    let index = clientIds.indexOf(socket.id);
-    userLeave(socket.id);//xóa user khỏi room khi disconnect
-    let user = getCurrentUser(socket.id);
-    console.log(user);
-    // io.to(user.room).emit('users-in-room', {
-    //   room: user.room,
-    //   users: getRoomUsers(user.room)
-    // });
-    
+    let index = clientIds.indexOf(socket.id);    
     if (index > -1) {
       clientIds.splice(index, 1);
       io.sockets.emit('counter', {count:clientIds.length});//cập nhật lại số lượng người đang truy cập
+    }
+
+    const user = userLeave(socket.id);
+
+    if (user) {
+      console.log(user);
+      
+      // io.to(user.room).emit('users-in-room', {
+      //   room: user.room,
+      //   users: getRoomUsers(user.room)
+      // });
     }
   });
 });

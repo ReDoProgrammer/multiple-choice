@@ -183,7 +183,8 @@ io.on('connection',function(socket){
       let users = getRoomUsers(user.room);
 
       //tìm ra người chưa hoàn thành bài thi
-      let chk = users.find(x=>!x.finised);
+      let chk = users.find(x=>x.finised == false);
+      console.log(users);
       if(!chk){//nếu không có <=> tất cả đã hoàn thành bài thi
         io.to(user.room).emit('populate-answers');//gọi tới sự kiện công bố đáp án
       }else{

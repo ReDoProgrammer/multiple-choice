@@ -179,7 +179,7 @@ io.on('connection',function(socket){
     const user = getCurrentUser(socket.id);
     if (user) {
       //cập nhật lại users có trong phòng      
-      user.finised = true;
+      user.finished = true;
       let users = getRoomUsers(user.room);
 
       //tìm ra người chưa hoàn thành bài thi

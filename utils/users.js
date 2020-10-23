@@ -23,10 +23,9 @@ function getAllRoooms(){
 
 // User leaves chat
 function userLeave(socket_id) {
-  const index = users.findIndex(user => user.socket_id === socket_id);
-  console.log(socket_id+' has left');
+  const index = users.findIndex(user => user.socket_id === socket_id);  
   if (index !== -1) {
-    return users.splice(index, 1)[0];
+    return users.splice(index, 1)[0];    
   }
 }
 

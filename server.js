@@ -172,7 +172,7 @@ io.on('connection',function(socket){
     });
 
     //return all rooms info
-    io.sockets.emit('users-in-rooms',getAllRoooms());
+    // io.sockets.emit('users-in-rooms',getAllRoooms());
   });
 
   socket.on('user-finish',()=>{
@@ -186,6 +186,11 @@ io.on('connection',function(socket){
   socket.on('disconnect', function() {
     let index = clientIds.indexOf(socket.id);
     userLeave(socket.id);//xóa user khỏi room khi disconnect
+    io.to(user.room).emit('users-in-room', {
+      room: user.room,
+      users: getRoomUsers(user.room)
+    });
+    
     if (index > -1) {
       clientIds.splice(index, 1);
       io.sockets.emit('counter', {count:clientIds.length});//cập nhật lại số lượng người đang truy cập

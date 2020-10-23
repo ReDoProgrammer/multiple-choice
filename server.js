@@ -146,6 +146,18 @@ io.on('connection',function(socket){
     socket.emit('push-notification',data);
   });
 
+//sự kiện tạo mới phòng hoặc join vào 1 phòng đã có
+  socket.on('join-room',data=>{
+    socket.join(data.room);
+    socket.room_id = data.room;
+    if(data.isNew){//nếu là tạo mới room
+      rooms = [];
+      for(r in socket.adapter.rooms){
+        room.push(r);
+      }
+      io.sockets.emit('load-rooms',rooms);
+    }
+  });
   //thành viên mới tham gia phòng thi
   socket.on('new-candidate-join',(data)=>{
     candidates_in_rooms.push(data);

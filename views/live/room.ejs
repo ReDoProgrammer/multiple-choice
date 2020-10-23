@@ -10,12 +10,19 @@
               <input type="hidden" id="subject_id" value="">
             </div>
             <!-- /.card-header -->
-            <div class="panel-body" style="margin-top:10px;" id="questions">
+            <div class="panel-body" style="margin-top:10px;" >
+              <!-- khu vực load câu hỏi -->
+              <div class="row" id="questions">
+
+              </div>
+
+              <!-- button kết thúc và nộp  bài thi -->
               <div class="row">
                 <div class="col-sm-12">
                   <button type="button" id="btnFinish" class="btn btn-success">Kết thúc và nộp bài thi</button>
                 </div>
               </div>
+
             </div>
             <!-- /.card-body -->
           </div>
@@ -40,7 +47,7 @@
 <script type="text/javascript">
   $(document).ready(function(){
     $('#questions').empty();
-    // $('#btnFinish').hide();
+    $('#btnFinish').hide();
   });
   $('#btnStart').click(function(){
     let subject_id = $('#subject_id').val();

@@ -60,6 +60,9 @@
     });
   });
 
+  socket.on('load-rooms',()=>{
+    LoadRooms();
+  });
   function LoadRooms(){
     $.ajax({
       url:'/live/list',
@@ -88,19 +91,19 @@
 
       }
 
-      $('#btnCreate').click(function(){
-        $.ajax({
-          url:'/live/permission',
-          type:'get',
-          success:function(data){
-            if(data.code == 200){
-              $('#AddRoomModal').modal();
-            }else{
-              alert(data.msg);
-            }
+  $('#btnCreate').click(function(){
+      $.ajax({
+        url:'/live/permission',
+        type:'get',
+        success:function(data){
+          if(data.code == 200){
+            $('#AddRoomModal').modal();
+          }else{
+            alert(data.msg);
           }
-        });
+        }
       });
+    });
 
 
-    </script>
+</script>

@@ -157,8 +157,7 @@ io.on('connection',function(socket){
   });
 
 //sự kiện tạo mới 
-  socket.on('add-room',({room,user})=>{
-    pushRoom({room,user});
+  socket.on('add-room',()=>{
     io.sockets.emit('load-rooms');
   });
 

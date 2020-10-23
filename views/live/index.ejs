@@ -78,7 +78,10 @@
     });
   });
 
-
+//socket load rooms
+  socket.on('load-rooms',()=>{
+    LoadRooms();
+  });
   //hiển thị users tương ứng mỗi phòng
   socket.on("users-in-rooms", rooms => {
     $('#roomslist > tr').each(function() {
@@ -88,6 +91,7 @@
   });
 
 
+  //hàm load danh sách phòng thi trực tuyến  
   function LoadRooms() {
     $.ajax({
       url: "/live/list",

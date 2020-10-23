@@ -155,7 +155,12 @@ io.on('connection',function(socket){
     socket.emit('push-notification',data);
   });
 
-//sự kiện tạo mới phòng hoặc join vào 1 phòng đã có
+//sự kiện tạo mới 
+  socket.on('add-room',()=>{
+    io.sockets.emit('load-rooms');
+  });
+
+  //join vào 1 phòng đã có
   socket.on('join-room',({ username,avatar,member_code, room })=>{
     const user = userJoin(socket.id, username,avatar,member_code, room);
 

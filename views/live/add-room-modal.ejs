@@ -52,7 +52,7 @@
       success:function(data){
         if(data.code == 200){
           alert(data.msg);
-          socket.emit('join-room',{room:data.room._id,isNew:true});
+          socket.emit('add-room');
           $('#AddRoomModal').modal('hide');
         }
       }

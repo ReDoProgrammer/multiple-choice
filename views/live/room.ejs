@@ -144,21 +144,7 @@
   socket.on("populate-exam", (data) => {
     //không cho user khác tham gia vào room sau khi bắt đầu bài thi
     // $('#roomslist > tr#'+data.room+' > td > input').attr('disabled', true);
-    // $('#roomslist > tr#'+data.room+' > td > input').attr("value", "Đang thi");
-    $.ajax({
-      url:'/live/change-status',
-      type:'post',
-      data:{
-        room:data.room,
-        status:0
-      },
-      success:function(data){
-        if(data.code == 200){
-          //emit tới server để load lại danh sách rooms
-          socket.emit("add-room");
-        }
-      }
-    });
+    // $('#roomslist > tr#'+data.room+' > td > input').attr("value", "Đang thi");   
 
     if (data.room == room_id) {
       let q = "";
@@ -204,6 +190,9 @@
 
       //hiện nút nộp bài và kết thúc bài thi
       $("#btnFinish").show(100);
+      
+      //gọi lại sự kiện load room để cập nhật trạng thái room
+      socket.emit('add-room');
     }
   });
 </script>

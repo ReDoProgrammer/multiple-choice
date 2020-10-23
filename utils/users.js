@@ -3,7 +3,7 @@ const users = [];//mảng lưu user
 // Join user to chat
 function userJoin(socket_id, username,avatar,member_code, room) {
   let chk = users.find(x=>x.socket_id == socket_id && x.room == room);
-  if(!chk){//chỉ add user khi user đó chưa có trong room
+  if(!chk){//chỉ add user khi user đó chưa có trong room tương ứng
     const user = {socket_id, username,avatar,member_code, room };
     users.push(user);
     return user;

@@ -75,7 +75,7 @@ router.post("/create", middleware.isLoggedIn, (req, res) => {
 
 router.post("/generate-exam", middleware.isLoggedIn, (req, res) => {
   let { room, subject } = req.body;
-  LivedRoom.findById(room, function (err, room) {
+  LivedRoom.findById(room, function (err, r) {//tìm ra phòng để lấy thông tin số câu hỏi, thời gian thi
     if (err) {
       console.log("find room failed: " + new Error(err));
     } else {
@@ -87,7 +87,7 @@ router.post("/generate-exam", middleware.isLoggedIn, (req, res) => {
               is_actived: true,
             },
           },
-          { $sample: { size: room.number_of_question } },
+          { $sample: { size: r.number_of_question } },
         ],
         function (err, questions) {
           if (err) {
@@ -104,7 +104,7 @@ router.post("/generate-exam", middleware.isLoggedIn, (req, res) => {
                 upsert: true,
                 new: true,
               },
-              function (err, room) {
+              function (err, result) {
                 if (err) {
                   console.log(
                     "push questions into room failed: " + new Error(err)
@@ -115,7 +115,7 @@ router.post("/generate-exam", middleware.isLoggedIn, (req, res) => {
                     type: "success",
                     msg: "get random questions successfully",
                     questions: questions,
-                    duration:room.duration
+                    duration:result.duration
                   });
                 }
               }

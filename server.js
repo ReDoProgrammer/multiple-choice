@@ -10,7 +10,7 @@ const passport = require('passport');
 const server = require('http').Server(app);
 const io = require('socket.io')(server);
 
-
+//những hàm liên quan đến user và room
 const {
   userJoin,
   getCurrentUser,
@@ -18,6 +18,11 @@ const {
   getRoomUsers,
   getAllRoooms
 } = require('./utils/users');
+
+const{
+  pushRoom,
+  getRoomMaster
+} = require('./utils/rooms');
 
 
 //phần routes của admin
@@ -156,7 +161,8 @@ io.on('connection',function(socket){
   });
 
 //sự kiện tạo mới 
-  socket.on('add-room',()=>{
+  socket.on('add-room',({room,user})=>{
+    pushRoom({room,user});
     io.sockets.emit('load-rooms');
   });
 
@@ -168,7 +174,8 @@ io.on('connection',function(socket){
     // Send users and room info
     io.to(user.room).emit('users-in-room', {
       room: user.room,
-      users: getRoomUsers(user.room)
+      users: getRoomUsers(user.room),
+      master:getRoomMaster(user.room)
     });
 
     //return all rooms info

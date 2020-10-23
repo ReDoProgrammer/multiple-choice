@@ -163,7 +163,6 @@ io.on('connection',function(socket){
 
   //join vào 1 phòng đã có
   socket.on('join-room',({ username,avatar,member_code, room })=>{
-    console.log({ username,avatar,member_code, room });
     const user = userJoin(socket.id, username,avatar,member_code, room);
     console.log(user.room);
     socket.join(user.room);

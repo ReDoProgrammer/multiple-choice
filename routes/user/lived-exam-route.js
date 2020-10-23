@@ -82,7 +82,7 @@ router.post('/generate-exam',middleware.isLoggedIn,(req,res)=>{
 });
 
 router.get('/list',(req,res)=>{
-  LivedRoom.find()
+  LivedRoom.find({status:{$in:[-1,0]}})
   .populate('subject','name')
   .exec(function(err,rooms){
     if(err){

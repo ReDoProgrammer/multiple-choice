@@ -34,7 +34,9 @@
 
 
 <script type="text/javascript">
-
+  $(document).ready(function(){
+    $('#questions').empty();
+  });
   $('#btnStart').click(function(){
     let subject_id = $('#subject_id').val();
     let room_id = $('#room_id').val();

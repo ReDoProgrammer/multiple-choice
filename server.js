@@ -185,15 +185,15 @@ io.on('connection',function(socket){
       //tìm ra người chưa hoàn thành bài thi
       let chk = users.find(x=>x.finished == false);
       console.log(users);
-      if(!chk){//nếu không có <=> tất cả đã hoàn thành bài thi
-        console.log('all');
-        io.to(user.room).emit('populate-answers');//gọi tới sự kiện công bố đáp án
-      }else{
+      if(chk){//nếu không có <=> tất cả đã hoàn thành bài thi
         console.log('not all');
         io.to(user.room).emit('users-in-room', {
           room: user.room,
           users: users
         });
+      }else{ 
+        console.log('all');
+        io.to(user.room).emit('populate-answers');//gọi tới sự kiện công bố đáp án
       }
       
     }

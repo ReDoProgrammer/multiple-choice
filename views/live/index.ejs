@@ -76,8 +76,9 @@
     });
   });
 
-  socket.on("load-rooms", (rooms) => {
-    LoadRooms();
+  socket.on("users-in-rooms", rooms => {
+    console.log({rooms});
+    // LoadRooms();
   });
   function LoadRooms() {
     $.ajax({

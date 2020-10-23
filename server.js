@@ -15,7 +15,8 @@ const {
   userJoin,
   getCurrentUser,
   userLeave,
-  getRoomUsers
+  getRoomUsers,
+  getAllRoooms
 } = require('./utils/users');
 
 
@@ -164,6 +165,9 @@ io.on('connection',function(socket){
       room: user.room,
       users: getRoomUsers(user.room)
     });
+
+    //return all rooms info
+    io.sockets.emit('users-in-rooms',getAllRoooms());
   });
 
   socket.on('user-finish',()=>{

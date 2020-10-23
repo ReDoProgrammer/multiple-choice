@@ -5,7 +5,7 @@
         <div class="col-md-10 col-sm-8 col-xs-12">
           <div class="panel-success">
             <div class="panel-heading">
-              <button type="button" class="btn btn-sm btn-warning">Bắt đầu</button>
+              <button type="button" class="btn btn-sm btn-warning" id="btnStart">Bắt đầu</button>
               <input type="hidden" id="room_id" value="">
             </div>
             <!-- /.card-header -->
@@ -60,5 +60,20 @@
     });
     canidates +='</ul>';
     $('#candidates').append(canidates);
+  });
+
+  $('#btnStart').click(function(){
+    $.ajax({
+      url:'/live/generate-questions',
+      type:'post',
+      data:{
+        subject:subject_id
+      },
+      success:function(data){
+        if(data.code == 200){
+          socket.emit('send-exam',data.questions);
+        }
+      }
+    });
   });
 </script>

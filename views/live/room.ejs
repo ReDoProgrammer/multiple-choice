@@ -180,6 +180,7 @@
       let question_id = $(v).attr('id');
       let question = questions.find(x=>x._id === question_id);
       console.log({question_id,question});
+      $('#'+question_id+' > fieldset > h6.'+question.answer+'').css('background-color','yellow');
       
     });
   });

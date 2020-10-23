@@ -150,7 +150,20 @@
         choice:choice
       });
     });
-    console.log('result:',result);
+    let room_id = $("#room_id").val();
+    $.ajax({
+      url:'/live/finish',
+      type:'post',
+      data:{
+        room:room_id,
+        result:result
+      },
+      success:function(data){
+        if(data.code == 200){
+          alert(data.msg);
+        }
+      }
+    });
   }
 
   //hàm kiểm tra xem các câu hỏi đã được tick hết chưa

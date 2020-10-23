@@ -141,8 +141,18 @@ router.get("/list", (req, res) => {
 });
 
 router.post('/finish',middleware.isLoggedIn,(req,res)=>{
-  let result = req.body.result;
-  console.log(result);
+  let {result,room} = req.body;
+  LivedExam.create({
+    room:room,
+    user:req.session.user._id,
+    result:result
+  },function(err,exam){
+    if(err){
+      console.log('save lived exam result failed: '+new Error(err));
+    }else{
+      res.send({code:200,msg:'Lưu kết quả bài kiểm thi thành công'});
+    }
+  })
 });
 
 module.exports = router;

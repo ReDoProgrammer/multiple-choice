@@ -11,7 +11,11 @@
             </div>
             <!-- /.card-header -->
             <div class="panel-body" style="margin-top:10px;" id="questions">
-
+              <div class="row">
+                <div class="col-sm-12">
+                  <button type="button" id="btnFinish" class="btn btn-success">Kết thúc và nộp bài thi</button>
+                </div>
+              </div>
             </div>
             <!-- /.card-body -->
           </div>
@@ -36,6 +40,7 @@
 <script type="text/javascript">
   $(document).ready(function(){
     $('#questions').empty();
+    $('#btnFinish').hide();
   });
   $('#btnStart').click(function(){
     let subject_id = $('#subject_id').val();
@@ -54,9 +59,15 @@
             room:room_id
           };
           socket.emit('send-exam',d);
+          $(this).hide();
+          $('#btnFinish').show(100);
         }
       }
     });
+  });
+
+  $('#btnFinish').click(function(){
+    socket.emit('user-finish');
   });
 
   socket.on('populate-exam',(data)=>{

@@ -38,8 +38,8 @@ router.get('/destroy-all-rooms',middleware.isAdmin,(req,res)=>{
 
 router.post('/create',middleware.isLoggedIn,(req,res)=>{
   if(req.session.user.is_admin){
-    let {id,stated_time} = req.body;
-    console.log({id,stated_time});
+    let {id,started_time} = req.body;
+    console.log({id,started_time});
     // LivedRoom.create({
     //   subject:id,
     //   created_by:req.session.user._id

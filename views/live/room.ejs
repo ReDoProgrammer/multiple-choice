@@ -79,7 +79,9 @@
     let canidates = '<ul class="list-unstyled mb20">';
     let members = data.filter(x=>x.room == room_id);
     $('#current_candidates').text(members.length);
-    $('#roomslist > tr#'+room_id+' > td.current_members').text(members.length);
+    $.each(data,function(k,v){
+      $('#roomslist > tr#'+v.room+' > td.current_members').text(v.length);
+    });
     $('#candidates').empty();
     $.each(members,function(k,v){
 

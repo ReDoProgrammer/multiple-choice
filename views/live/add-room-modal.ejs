@@ -19,10 +19,42 @@
       </div>
       <div class="modal-body">
         <div class="row">
-          <div class="col-xs-6">
-            <select class="form-control" id="subjects" style="border:1px solid #DDD"></select>
-          </div>
           <div class="col-xs-4">
+            <div class="form-group">
+              <label for="exampleInputEmail1">Môn thi</label>
+              <select class="form-control" id="subjects" style="border:1px solid #DDD"></select>
+            </div>
+          </div>
+          <div class="col-xs-2">
+            <div class="form-group">
+              <label for="duration">Thời gian(phút)</label>
+              <select class="form-control" id="duration">
+                <option value="10">10 phút</option>
+                <option value="20">20 phút</option>
+                <option value="30">30 phút</option>
+                <option value="40">40 phút</option>
+                <option value="60">60 phút</option>
+                <option value="90">90 phút</option>
+                <option value="120">120 phút</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-xs-2">
+            <div class="form-group">
+              <label for="number_of_question">Số câu hỏi</label>
+              <select class="form-control" id="number_of_question">
+                <option value="10">20 câu hỏi</option>
+                <option value="10">30 câu hỏi</option>
+                <option value="10">40 câu hỏi</option>
+                <option value="10">50 câu hỏi</option>
+                <option value="10">60 câu hỏi</option>
+                <option value="10">100 câu hỏi</option>
+                <option value="10">120 câu hỏi</option>
+                <option value="10">150 câu hỏi</option>                
+              </select>
+            </div>
+          </div>
+          <div class="col-xs-2">
             <div class="form-group">
               <div class="input-group date" id="datetimepicker">
                 <input type="text" class="form-control" style="border:1px solid #DDD" id="started_time"/>
@@ -96,8 +128,10 @@
       url: "/live/create",
       type: "post",
       data: {
-        id: $("#subjects option:selected").val(),
-        started_time:$('#started_time').val()
+        subject: $("#subjects option:selected").val(),
+        started_time:$('#started_time').val(),
+        duration:$("#duration option:selected").val(),
+        number_of_question:$("#number_of_question option:selected").val()
       },
       success: function (data) {
         if (data.code == 200) {

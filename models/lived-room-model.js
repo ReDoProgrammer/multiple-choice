@@ -10,7 +10,8 @@ const livedRoomSchema = new Schema({
     type:Schema.Types.ObjectId,
     ref:'subject'
   },
-  created_at:{type:String,default:common.currentTime},
+  number_of_questions:{type:Number,default:0},
+  duration:{type:Number,default:0},
   created_by:{
     type:Schema.Types.ObjectId,
     ref:'user'

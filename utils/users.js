@@ -1,8 +1,8 @@
-const users = [];
+const users = [];//mảng lưu user
 
 // Join user to chat
-function userJoin(id, username, room) {
-  const user = { id, username, room };
+function userJoin(id, username,avatar,member_code, room) {
+  const user = {socket_id, username,avatar,member_code, room };
 
   users.push(user);
 
@@ -10,13 +10,13 @@ function userJoin(id, username, room) {
 }
 
 // Get current user
-function getCurrentUser(id) {
-  return users.find(user => user.id === id);
+function getCurrentUser(socket_id) {
+  return users.find(user => user.socket_id === socket_id);
 }
 
 // User leaves chat
-function userLeave(id) {
-  const index = users.findIndex(user => user.id === id);
+function userLeave(socket_id) {
+  const index = users.findIndex(user => user.socket_id === socket_id);
 
   if (index !== -1) {
     return users.splice(index, 1)[0];

@@ -71,7 +71,7 @@
               room: room_id,
               isNew: false,
             };
-            console.log(candiate);
+            console.log(candidate);
             socket.emit("join-room",candidate);
             if(data.user._id === master){
               $('#btnStart').show();

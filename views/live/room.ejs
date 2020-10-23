@@ -22,8 +22,7 @@
               <h6 style = "color:#fff;">Hiện tại (<span id="current_candidates" class="text-danger">0</span>)</h6>
             </div>
             <!-- /.card-header -->
-            <div class="card-body" style="margin-top:10px;" id="candidates">
-
+            <div class="panel-body" style="margin-top:10px;" id="candidates">
             </div>
             <!-- /.card-body -->
           </div>
@@ -48,7 +47,6 @@
       },
       success:function(data){
         if(data.code == 200){
-          console.log(data.questions);
           let d = {
             questions:data.questions,
             room:room_id
@@ -60,6 +58,21 @@
   });
 
   socket.on('populate-exam',(data)=>{
-    console.log(data);
+    let room_id = $('#room_id').val();
+    let questions = data.filter(x=>x.room == room_id);
+    let q = '';
+    $.each(questions,function(k,v){
+       q+=   '<div class="row">';
+       q+=     '<h5 class = "text-danger">'+v.question+'</h5>';
+       q+=     '<fieldset>';
+       q+=       '<label class="A"><input type="radio" name="'+v._id+'" value="A. ">'+v.option_a+'</label>';
+       q+=       '<label class="B"><input type="radio" name="'+v._id+'" value="B. ">'+v.option_b+'</label>';
+       q+=       '<label class="C"><input type="radio" name="'+v._id+'" value="C. ">'+v.option_c+'</label>';
+       q+=       '<label class="D"><input type="radio" name="'+v._id+'" value="D. ">'+v.option_d+'</label>';
+       q+=     '</fieldset>';
+       q+=   '</div>';
+       q+=   '<hr>';
+    });
+    $('#questions').append(q);
   });
 </script>

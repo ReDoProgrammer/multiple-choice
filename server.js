@@ -153,7 +153,7 @@ io.on('connection',function(socket){
   });
 
   socket.on('send-exam',(data)=>{
-    console.log(data);
+    io.sockets.emit('populate-exam',data);
   });
 
   socket.on('disconnect', function() {

@@ -97,6 +97,7 @@
             duration:data.duration
           };
             //gọi tới sự kiện send-exam để public tới tất cả các thành viên trong room danh sách câu hỏi
+            console.log('ds cau hoi:',d);
           socket.emit("send-exam", d);
           //ẩn nút bắt đầu
           $("#btnStart").hide();

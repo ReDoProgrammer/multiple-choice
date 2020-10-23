@@ -157,6 +157,7 @@ io.on('connection',function(socket){
       }
       io.sockets.emit('load-rooms',rooms);
     }
+    io.sockets.emit('user-in-each-room',candidates_in_rooms);
   });
 
   socket.on('user-finish',()=>{

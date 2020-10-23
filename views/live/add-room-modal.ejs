@@ -24,8 +24,8 @@
           </div>
           <div class="col-xs-4">
             <div class="form-group">
-              <div class="input-group date" id="started_time">
-                <input type="text" class="form-control" style="border:1px solid #DDD"/>
+              <div class="input-group date" id="datetimepicker">
+                <input type="text" class="form-control" style="border:1px solid #DDD" id="started_time"/>
                 <span class="input-group-addon">
                   <span class="glyphicon glyphicon-calendar"></span>
                 </span>
@@ -78,7 +78,7 @@
     });
 
     $(function () {
-      $("#started_time").datetimepicker({
+      $("#datetimepicker").datetimepicker({
         weekStart: 1,
         todayBtn: 1,
         autoclose: 1,
@@ -91,12 +91,13 @@
   });
 
   $("#btnCreatNewRoom").click(function () {
-    let subject_id = $("#subjects option:selected").val();
+
     $.ajax({
       url: "/live/create",
       type: "post",
       data: {
-        id: subject_id,
+        id: $("#subjects option:selected").val(),
+        started_time:$('#started_time').val()
       },
       success: function (data) {
         if (data.code == 200) {

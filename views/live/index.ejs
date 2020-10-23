@@ -55,7 +55,7 @@
       let room_id = $(this).closest("tr").attr("id");
       let master = $(this).closest("tr").data("master");
       let subject_id = $(this).closest("tr").data("subject");
-      let room_name = $(this).closest("tr").find('td.room_name').val();
+      let room_name = $(this).closest("tr").find('.room_name').val();
       console.log(room_name);
 
       $.ajax({

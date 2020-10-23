@@ -141,7 +141,8 @@ router.get("/list", (req, res) => {
 });
 
 router.post('/finish',middleware.isLoggedIn,(req,res)=>{
-  let {result,room} = req.body;
+  let result = req.body.result;
+  let room = req.body.room;
   console.log({result,room});
   LivedExam.create({
     room:room,

@@ -61,7 +61,7 @@ router.post('/generate-exam',middleware.isLoggedIn,(req,res)=>{
         if(err){
           console.log('push questions into room failed: '+new Error(err));
         }else{
-          res.send({code:200,type:'success',msg:'get random questions successfully',questions:room.questions});
+          res.send({code:200,type:'success',msg:'get random questions successfully',questions:questions});
         }
       });
     }

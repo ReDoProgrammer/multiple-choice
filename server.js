@@ -176,7 +176,16 @@ io.on('connection',function(socket){
   });
 
   socket.on('user-finish',()=>{
-    io.sockets.in(socket.room_id).emit('users-finished');
+    const user = getCurrentUser(socket.id);
+
+    if (user) {
+      //cập nhật lại users có trong phòng      
+      user.finised = true;
+      let users = getRoomUsers(user.room);
+      console.log(users);
+      
+    }
+    // io.sockets.in(socket.room_id).emit('users-finished');
   });
 
   socket.on('send-exam',(data)=>{

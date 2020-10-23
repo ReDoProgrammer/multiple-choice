@@ -69,7 +69,7 @@
               avatar:data.user.avatar,
               member_code:data.user.member_code,
               room: room_id,
-              finished: true,
+              finished: false,
             };
             socket.emit("join-room",candidate);
             if(data.user._id === master){

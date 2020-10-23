@@ -49,7 +49,11 @@
       success:function(data){
         if(data.code == 200){
           console.log(data.questions);
-          socket.emit('send-exam',{data.questions,room:room_id});
+          let d = {
+            questions:data.questions,
+            room:room_id
+          };
+          socket.emit('send-exam',d);
         }
       }
     });

@@ -152,6 +152,10 @@ io.on('connection',function(socket){
     io.sockets.emit('candidate-in-room',candidates_in_rooms);
   });
 
+  socket.on('send-exam',(data)=>{
+    console.log(data);
+  });
+
   socket.on('disconnect', function() {
     let index = clientIds.indexOf(socket.id);
     if (index > -1) {

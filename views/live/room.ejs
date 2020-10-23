@@ -154,10 +154,10 @@
     $.ajax({
       url:'/live/finish',
       type:'post',
-      data:JSON.stringify({ 
+      data:{
         room:room_id,
-        result: rs 
-      }),
+        result:rs
+      },
       success:function(data){
         if(data.code == 200){
           alert(data.msg);

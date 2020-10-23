@@ -4,7 +4,7 @@ const users = [];//mảng lưu user
 function userJoin(socket_id, username,avatar,member_code, room) {
   let chk = users.find(x=>x.socket_id == socket_id);
   console.log(socket_id,chk);
-  if(!chk){//chỉ add user khi socket của user đó chưa có trong room
+  if(!chk){//chỉ add user khi user đó chưa có trong room
     const user = {socket_id, username,avatar,member_code, room };
     users.push(user);
     return user;

@@ -160,7 +160,7 @@ io.on('connection',function(socket){
 
     socket.join(user.room);
 
-    console.log({ username,avatar,member_code, room });
+    console.log('room:',user.room);
     // Send users and room info
     io.to(user.room).emit('users-in-room', {
       room: user.room,

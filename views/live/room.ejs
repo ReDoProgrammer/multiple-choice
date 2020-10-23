@@ -120,6 +120,7 @@
       if(!checkAllTicked()){//nếu chưa tick hết
         if(confirm("Bạn chưa trả lời hết câu hỏi. Vẫn muốn kết thúc?")){
           socket.emit("user-finish");
+          pushResult();
         }
       }
     }
@@ -138,13 +139,13 @@
   //hàm lưu kết quả làm bài
   function pushResult() {  
     let result = [];
-    $("#questions div").each(async function (index, v) {
+    $("#questions div").each(function (index, v) {
       let question_id = $(this).attr('id');
       let choice = $(v).find('input[type="radio"]:checked').val();
       if (typeof choice === "undefined") {
         choice = '';
       }
-      await result.push({
+      result.push({
         question_id:question_id,
         choice:choice
       });

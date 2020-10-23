@@ -19,10 +19,6 @@ const {
   getAllRoooms
 } = require('./utils/users');
 
-const{
-  pushRoom,
-  getRoomMaster
-} = require('./utils/rooms');
 
 
 //phần routes của admin
@@ -174,8 +170,7 @@ io.on('connection',function(socket){
     // Send users and room info
     io.to(user.room).emit('users-in-room', {
       room: user.room,
-      users: getRoomUsers(user.room),
-      master:getRoomMaster(user.room)
+      users: getRoomUsers(user.room)
     });
 
     //return all rooms info

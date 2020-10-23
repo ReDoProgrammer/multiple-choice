@@ -103,7 +103,7 @@
           let index = 1;
           $.each(data.rooms, function (k, v) {
             rooms +=
-              '<tr id = "' + v._id + '" data-subject="' + v.subject._id + '">';
+              '<tr id = "' + v._id + '" data-subject="' + v.subject._id + '" data-master="'+v.created_by+'">';
             rooms += "<td>" + index++ + "</td>";
             rooms +=
               '<td style="font-weight:bold; color:#FF6600">' +

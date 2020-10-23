@@ -123,7 +123,7 @@
   });
 
   function checkResult(){
-    if(checkAllChecked()){
+    if(checkAllTicked()){
       console.log('checked all');
     }else{
       console.log('not checked all');
@@ -139,15 +139,17 @@
     // });
   }
 
-  function checkAllChecked(){
+  //hàm kiểm tra xem các câu hỏi đã được tick hết chưa
+  function checkAllTicked(){
+    let chk = true;
     $("#questions div").each(function (index, v) {
       let choice = $(v).find('input[type="radio"]:checked').val();
       if (typeof choice === "undefined") {
-        console.log('get');
+        chk = false;
          return false;
       }     
     });
-    return true;
+    return chk;
   }
 
   //lắng nghe sự kiện công bố đáp án

@@ -1,7 +1,7 @@
 const users = [];//mảng lưu user
 
 // Join user to chat
-function userJoin(id, username,avatar,member_code, room) {
+function userJoin(socket_id, username,avatar,member_code, room) {
   const user = {socket_id, username,avatar,member_code, room };
 
   users.push(user);

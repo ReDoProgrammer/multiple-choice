@@ -159,7 +159,7 @@ io.on('connection',function(socket){
       }
       io.sockets.emit('load-rooms',rooms);
     }
-    io.sockets.emit('users-in-each-room',candidates_in_rooms);
+    io.sockets.emit('users-in-current-room',io.sockets.clients(socket.room_id));
   });
 
   socket.on('user-finish',()=>{

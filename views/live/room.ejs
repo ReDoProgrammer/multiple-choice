@@ -73,6 +73,11 @@
     socket.emit('user-finish');
   });
 
+
+  socket.on('users-in-current-room',(data)=>{
+    console.log(data);
+  });
+
   //load current member in each rooms
   socket.on('users-in-each-room',(data)=>{
     let room_id = $('#room_id').val();

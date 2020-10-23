@@ -30,6 +30,7 @@
         <tr>
           <th>Phòng</th>
           <th>Môn thi</th>
+          <th>Giờ thi</th>
           <th>Members</th>
           <th style="width: 40px"></th>
         </tr>
@@ -120,6 +121,10 @@
             rooms +=
               '<td style="font-weight:bold; color:#FF6600" class = "room_name">' +
               v.subject.name +
+              "</td>";
+              rooms +=
+              '<td style="font-weight:bold; color:#FF6600" class = "room_name">' +
+              v.subject.started_time +
               "</td>";
             rooms += '<td class="current_members">0</td>';
             rooms += "<td>";

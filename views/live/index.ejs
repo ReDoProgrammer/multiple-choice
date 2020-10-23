@@ -64,9 +64,10 @@
       canidates +='</ul>';
       $('#candidates').append(canidates);
     });
-    
+
     $(document).on('click',"input[name='join']",function() {
       let room_id = $(this).closest("tr").attr('id');
+      let subject_id = $(this).closest("tr").data('subject');
       $.ajax({
         url:'/live/check-login',
         type:'get',
@@ -78,6 +79,7 @@
             };
             socket.emit('new-candidate-join',candidate);
             $('#room_id').val(room_id);
+            $('#subject_id').val(subject_id);
             $('#modalRoom').modal();
           }else{
             alert('Bạn phải đăng nhập mới tham gia phòng thi được!')
@@ -97,7 +99,7 @@
           let rooms = '';
           let index = 1;
           $.each(data.rooms,function(k,v){
-            rooms+= '<tr id = "'+v._id+'">';
+            rooms+= '<tr id = "'+v._id+'" data-subject="'+v.subject._id+'">';
             rooms+= '<td>'+(index++)+'</td>';
             rooms+=   '<td style="font-weight:bold; color:#FF6600">'+v.subject.name+'</td>';
             rooms+=   '<td class="current_members">0</td>';

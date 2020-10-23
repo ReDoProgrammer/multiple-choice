@@ -7,6 +7,7 @@
             <div class="panel-heading">
               <button type="button" class="btn btn-sm btn-warning" id="btnStart">Bắt đầu</button>
               <input type="hidden" id="room_id" value="">
+              <input type="hidden" id="subject_id" value="">
             </div>
             <!-- /.card-header -->
             <div class="card-body" style="margin-top:10px;" id="questions">
@@ -36,17 +37,19 @@
 <script type="text/javascript">
 
   $('#btnStart').click(function(){
-    $.ajax({
-      url:'/live/generate-questions',
-      type:'post',
-      data:{
-        subject:subject_id
-      },
-      success:function(data){
-        if(data.code == 200){
-          socket.emit('send-exam',data.questions);
-        }
-      }
-    });
+    let subject_id = $('#subject_id').val();
+    console.log(subject_id);
+    // $.ajax({
+    //   url:'/live/generate-questions',
+    //   type:'post',
+    //   data:{
+    //     subject:subject_id
+    //   },
+    //   success:function(data){
+    //     if(data.code == 200){
+    //       socket.emit('send-exam',data.questions);
+    //     }
+    //   }
+    // });
   });
 </script>

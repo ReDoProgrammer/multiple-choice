@@ -158,7 +158,7 @@ io.on('connection',function(socket){
       }
       io.sockets.emit('load-rooms',rooms);
     }
-    io.sockets.emit('users-in-current-room',io.sockets.clients(data.room));
+    io.sockets.emit('users-in-current-room',io.sockets.adapter.rooms[data.room].sockets);
   });
 
   socket.on('user-finish',()=>{

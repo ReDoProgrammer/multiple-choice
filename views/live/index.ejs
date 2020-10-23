@@ -77,8 +77,10 @@
   });
 
   socket.on("users-in-rooms", rooms => {
-    console.log({rooms});
-    // LoadRooms();
+    // console.log({rooms});
+    $('#roomslist > tbody  > tr').each(function() {
+      console.log('row id:',$(this).attr(id));
+    });
   });
   function LoadRooms() {
     $.ajax({

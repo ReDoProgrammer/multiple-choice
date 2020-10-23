@@ -1,4 +1,11 @@
-<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="modalRoom">
+<div
+  class="modal fade bd-example-modal-lg"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="myLargeModalLabel"
+  aria-hidden="true"
+  id="modalRoom"
+>
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-body">
@@ -6,12 +13,18 @@
           <div class="col-md-10 col-sm-8 col-xs-12">
             <div class="panel-success">
               <div class="panel-heading">
-                <button type="button" class="btn btn-sm btn-warning" id="btnStart">Bắt đầu</button>
-                <input type="hidden" id="room_id" value="">
-                <input type="hidden" id="subject_id" value="">
+                <button
+                  type="button"
+                  class="btn btn-sm btn-warning"
+                  id="btnStart"
+                >
+                  Bắt đầu
+                </button>
+                <input type="hidden" id="room_id" value="" />
+                <input type="hidden" id="subject_id" value="" />
               </div>
               <!-- /.card-header -->
-              <div class="panel-body" style="margin-top:10px;" >
+              <div class="panel-body" style="margin-top: 10px">
                 <!-- khu vực load câu hỏi -->
                 <div id="questions"></div>
               </div>
@@ -21,83 +34,142 @@
           <div class="col-md-2 col-sm-4 col-xs-12">
             <div class="panel-success">
               <div class="panel-heading">
-                <h6 style = "color:#fff;">Hiện tại (<span id="current_candidates" class="text-warning">0</span>)</h6>
+                <h6 style="color: #fff">
+                  Hiện tại (<span id="current_users" class="text-warning">0</span>)</h6>
               </div>
               <!-- /.card-header -->
-              <div class="panel-body" style="margin-top:10px;" id="candidates">
-              </div>
+              <div
+                class="panel-body"
+                style="margin-top: 10px"
+                id="users_list"
+              ></div>
               <!-- /.card-body -->
             </div>
           </div>
         </div>
       </div>
       <div class="modal-footer">
-         <button type="button" class="btn btn-primary" id="btnFinish">Kết thúc & Nộp bài</button>
-       </div>
+        <button type="button" class="btn btn-primary" id="btnFinish">
+          Kết thúc & Nộp bài
+        </button>
+      </div>
     </div>
-
   </div>
 </div>
 
-
 <script type="text/javascript">
-  $(document).ready(function(){
-    $('#questions').empty();
-    $('#btnFinish').hide();
+  $(document).ready(function () {
+    $("#questions").empty();
+    $("#btnFinish").hide();
   });
-  $('#btnStart').click(function(){
-    let subject_id = $('#subject_id').val();
-    let room_id = $('#room_id').val();
+  $("#btnStart").click(function () {
+    let subject_id = $("#subject_id").val();
+    let room_id = $("#room_id").val();
     $.ajax({
-      url:'/live/generate-exam',
-      type:'post',
-      data:{
-        room:room_id,
-        subject:subject_id
+      url: "/live/generate-exam",
+      type: "post",
+      data: {
+        room: room_id,
+        subject: subject_id,
       },
-      success:function(data){
-        if(data.code == 200){
+      success: function (data) {
+        if (data.code == 200) {
           let d = {
-            questions:data.questions,
-            room:room_id
+            questions: data.questions,
+            room: room_id,
           };
-          socket.emit('send-exam',d);
+          socket.emit("send-exam", d);
           $(this).hide();
-          $('#btnFinish').show(100);
+          $("#btnFinish").show(100);
         }
-      }
+      },
     });
   });
 
-  $('#btnFinish').click(function(){
-    socket.emit('user-finish');
+  $("#btnFinish").click(function () {
+    socket.emit("user-finish");
   });
 
-
-  socket.on('users-in-room',(data)=>{
-    console.log('total: ',data.users.length);
-    $('#current_candidates').text(data.users.length<10?'0'+data.users.length:data.users.length);
+  socket.on("users-in-room", (data) => {
+    $("#current_users").text(
+      data.users.length < 10 ? "0" + data.users.length : data.users.length
+    );
+    $('#users_list').empty();
+    let users = '<ul class="list-unstyled mb20">';
+    let idx = 1;
+    $.each(data.users, function (k, v) {
+      users += '<div class="row">';
+      users += '<div class="col-xs-2">';
+      users += "<h5>#" + idx++ + "</h5>";
+      users += "</div>";
+      users += '<div class="col-xs-6">';
+      users += '<div class="media">';
+      users += '<div class="media-left">';
+      users +=
+        ' <img class="media-object photo-profile" src="' +
+        v.user.avatar +
+        '" alt="...">';
+      users += "</div>";
+      users += '<div class="media-body">';
+      users += '<h4 class="media-heading">' + v.user.member_code + "</h4>";
+      users += "</div>";
+      users += "</div>";
+      users += "</div>";
+      users += '<div class="col-xs-2">';
+      users += "<h5>" + v.ratio.length + " lần</h5>";
+      users += "</div>";
+      users += '<div class="col-xs-2">';
+      users += "<h5>" + average(v.ratio).toFixed(2) + " %</h5>";
+      users += "</div>";
+      users += "</div>";
+    });
+    users += "</ul>";
+    $("#users_list").append(users);
   });
-  
 
-  socket.on('populate-exam',(data)=>{
-    let room_id = $('#room_id').val();
-    if(data.room == room_id){
-      let q = '';
+  socket.on("populate-exam", (data) => {
+    let room_id = $("#room_id").val();
+    if (data.room == room_id) {
+      let q = "";
       let idx = 1;
-      $.each(data.questions,function(k,v){
-         q+=   '<div class="row">';
-         q+=     '<h5 class = "text-danger"><span class="text-success">Câu '+(idx++)+': </span>'+v.question+'</h5>';
-         q+=     '<fieldset>';
-         q+=       '<h6 class="A" style="line-height: 1.6; margin-left:10px;"><input type="radio" name="'+v._id+'" value="A"><span class="text-danger">A. </span>'+v.option_a+'</h6>';
-         q+=       '<h6 class="B" style="line-height: 1.6; margin-left:10px;"><input type="radio" name="'+v._id+'" value="B"><span class="text-danger">B. </span>'+v.option_b+'</h6>';
-         q+=       '<h6 class="C" style="line-height: 1.6; margin-left:10px;"><input type="radio" name="'+v._id+'" value="C"><span class="text-danger">C. </span>'+v.option_c+'</h6>';
-         q+=       '<h6 class="D" style="line-height: 1.6; margin-left:10px;"><input type="radio" name="'+v._id+'" value="D"><span class="text-danger">D. </span>'+v.option_d+'</h6>';
-         q+=     '</fieldset>';
-         q+=   '</div>';
-         q+=   '<hr>';
+      $.each(data.questions, function (k, v) {
+        q += '<div class="row">';
+        q +=
+          '<h5 class = "text-danger"><span class="text-success">Câu ' +
+          idx++ +
+          ": </span>" +
+          v.question +
+          "</h5>";
+        q += "<fieldset>";
+        q +=
+          '<h6 class="A" style="line-height: 1.6; margin-left:10px;"><input type="radio" name="' +
+          v._id +
+          '" value="A"><span class="text-danger">A. </span>' +
+          v.option_a +
+          "</h6>";
+        q +=
+          '<h6 class="B" style="line-height: 1.6; margin-left:10px;"><input type="radio" name="' +
+          v._id +
+          '" value="B"><span class="text-danger">B. </span>' +
+          v.option_b +
+          "</h6>";
+        q +=
+          '<h6 class="C" style="line-height: 1.6; margin-left:10px;"><input type="radio" name="' +
+          v._id +
+          '" value="C"><span class="text-danger">C. </span>' +
+          v.option_c +
+          "</h6>";
+        q +=
+          '<h6 class="D" style="line-height: 1.6; margin-left:10px;"><input type="radio" name="' +
+          v._id +
+          '" value="D"><span class="text-danger">D. </span>' +
+          v.option_d +
+          "</h6>";
+        q += "</fieldset>";
+        q += "</div>";
+        q += "<hr>";
       });
-      $('#questions').append(q);
+      $("#questions").append(q);
     }
   });
 </script>

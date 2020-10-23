@@ -49,6 +49,8 @@
 <script type="text/javascript">
   $(document).ready(function () {
     LoadRooms();
+
+    // sự kiện click button jon phòng trên từng hàng tương ứng mỗi phòng
     $(document).on("click", "input[name='join']", function () {
       let room_id = $(this).closest("tr").attr("id");
       let subject_id = $(this).closest("tr").data("subject");
@@ -76,14 +78,16 @@
     });
   });
 
+
+  //hiển thị users tương ứng mỗi phòng
   socket.on("users-in-rooms", rooms => {
-    // console.log({rooms});
     $('#roomslist > tr').each(function() {
       let current_users = rooms.filter(x=>x.room === $(this).attr('id')).length;
-      console.log('#roomslist > tr#'+$(this).attr('id')+'',current_users);
-      $('#roomslist > tr#'+$(this).attr('id')+' > td.current_members').text(current_users);
+      $('#roomslist > tr#'+$(this).attr('id')+' > td.current_members').text(current_users<10?'0'+current_users:current_users);
     });
   });
+
+
   function LoadRooms() {
     $.ajax({
       url: "/live/list",
@@ -128,3 +132,10 @@
     });
   });
 </script>
+
+<style>
+  .current_users{
+    text-align: center;
+    font-family:"Digital";
+  }
+</style>

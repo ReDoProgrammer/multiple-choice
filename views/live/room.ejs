@@ -137,10 +137,7 @@
       users += "</div>";
     });
     users += "</ul>";
-    $("#users_list").append(users);
-    
-    //hiện nút nộp bài và kết thúc bài thi
-    $("#btnFinish").show(100);
+    $("#users_list").append(users);    
   });
 
   //public danh sách câu hỏi
@@ -187,6 +184,9 @@
         q += "<hr>";
       });
       $("#questions").append(q);
+      
+      //hiện nút nộp bài và kết thúc bài thi
+      $("#btnFinish").show(100);
     }
   });
 </script>

@@ -47,7 +47,7 @@
               user:data.user,
               room:room_id
             };
-            socket.emit('new-candidate-join',candidate);
+            socket.emit('join-room',{room:room_id,isNew:false});
             $('#subject_id').val(subject_id);
             $('#room_id').val(room_id);
             $('#modalRoom').modal();

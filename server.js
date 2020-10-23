@@ -158,6 +158,12 @@ io.on('connection',function(socket){
       io.sockets.emit('load-rooms',rooms);
     }
   });
+
+  socket.on('user-finish',()=>{
+    io.sockets.in(socket.room_id).emit('users-finished');
+  });
+
+
   //thành viên mới tham gia phòng thi
   socket.on('new-candidate-join',(data)=>{
     candidates_in_rooms.push(data);

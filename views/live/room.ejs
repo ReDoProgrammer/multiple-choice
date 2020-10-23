@@ -138,14 +138,14 @@
 
   //hàm lưu kết quả làm bài
   function pushResult() {  
-    let result = [];
+    let rs = [];
     $("#questions div").each(function (index, v) {
       let question_id = $(this).attr('id');
       let choice = $(v).find('input[type="radio"]:checked').val();
       if (typeof choice === "undefined") {
         choice = '';
       }
-      result.push({
+      rs.push({
         question_id:question_id,
         choice:choice
       });
@@ -154,10 +154,10 @@
     $.ajax({
       url:'/live/finish',
       type:'post',
-      data:{
+      data:JSON.stringify({ 
         room:room_id,
-        result:result
-      },
+        result: rs 
+      }),
       success:function(data){
         if(data.code == 200){
           alert(data.msg);

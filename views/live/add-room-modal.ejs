@@ -91,7 +91,7 @@
   });
 
   $("#btnCreatNewRoom").click(function () {
-
+    console.log('time:',$('#started_time').val());
     $.ajax({
       url: "/live/create",
       type: "post",

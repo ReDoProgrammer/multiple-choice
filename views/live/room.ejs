@@ -143,6 +143,7 @@
     $("#questions div").each(function (index, v) {
       let choice = $(v).find('input[type="radio"]:checked').val();
       if (typeof choice === "undefined") {
+        console.log('get');
          return false;
       }     
     });

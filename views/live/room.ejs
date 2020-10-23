@@ -48,7 +48,8 @@
       },
       success:function(data){
         if(data.code == 200){
-          socket.emit('send-exam',data.questions);
+          console.log(data.questions);
+          // socket.emit('send-exam',data.questions);
         }
       }
     });

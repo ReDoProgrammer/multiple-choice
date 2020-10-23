@@ -81,6 +81,20 @@ router.post('/generate-exam',middleware.isLoggedIn,(req,res)=>{
   });
 });
 
+//hàm cập nhật lại trạng thái của room
+router.post('/change-status',(req,res)=>{
+  let {room,status} = req.body;
+  LivedRoom.findOneAndUpdate({_id:room},{
+    status:status
+  },function(err,room){
+    if(err){
+      console.log('update room status failed: '+ new Erro(err));
+    }else{
+      res.send({code:200,msg:'update room status successfully'});
+    }
+  });
+});
+
 router.get('/list',(req,res)=>{
   LivedRoom.find({status:{$in:[-1,0]}})
   .populate('subject','name')

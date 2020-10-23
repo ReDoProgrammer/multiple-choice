@@ -126,8 +126,14 @@
               "</td>";
             rooms += '<td class="current_members">0</td>';
             rooms += "<td>";
-            rooms +=
+            if(v.status == -1){
+              rooms +=
               '<input type="button" name="join" value="Join" class="btn btn-sm btn-warning">';
+            }else{
+              rooms +=
+              '<input type="button" name="join" value="Đang thi" disable class="btn btn-sm btn-danger">';
+            }
+            
             rooms += "</td>";
             rooms += "</tr>";
           });

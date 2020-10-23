@@ -10,6 +10,15 @@ const passport = require('passport');
 const server = require('http').Server(app);
 const io = require('socket.io')(server);
 
+
+const {
+  userJoin,
+  getCurrentUser,
+  userLeave,
+  getRoomUsers
+} = require('./utils/users');
+
+
 //phần routes của admin
 const adminRoutes = require('./routes/admin/admin-route');
 const configRoutes = require('./routes/admin/config-route');
@@ -135,7 +144,6 @@ server.listen(8080,()=>{
   console.log('server is running ...');
 });
 var clientIds = [];
-var candidates_in_rooms=[];
 io.on('connection',function(socket){
   if(clientIds.indexOf(socket.id)<=-1){
     clientIds.push(socket.id);
@@ -147,18 +155,17 @@ io.on('connection',function(socket){
   });
 
 //sự kiện tạo mới phòng hoặc join vào 1 phòng đã có
-  socket.on('join-room',(data)=>{
-    socket.join(data.room);
-    socket.room_id = data.room;
-    candidates_in_rooms.push(data.candidate);
-    if(data.isNew){//nếu là tạo mới room
-      rooms = [];
-      for(r in socket.adapter.rooms){
-        rooms.push(r);
-      }
-      io.sockets.emit('load-rooms',rooms);
-    }
-    io.sockets.emit('users-in-current-room',io.sockets.adapter.rooms[data.room].sockets);
+  socket.on('join-room',({ username,avatar,member_code, room })=>{
+    const user = userJoin(socket.id, username,avatar,member_code, room);
+
+    socket.join(user.room);
+
+    
+    // Send users and room info
+    io.to(user.room).emit('users-in-room', {
+      room: user.room,
+      users: getRoomUsers(user.room)
+    });
   });
 
   socket.on('user-finish',()=>{

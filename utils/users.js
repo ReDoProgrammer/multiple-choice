@@ -9,7 +9,7 @@ function userJoin(socket_id, username,avatar,member_code, room) {
     users.push(user);
     return user;
   }
-  return null;
+  return chk;
 }
 
 // Get current user

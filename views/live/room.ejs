@@ -80,6 +80,7 @@
     let members = data.filter(x=>x.room == room_id);
     $('#current_candidates').text(members.length);
     $.each(data,function(k,v){
+      console.log(v);
       $('#roomslist > tr#'+v.room+' > td.current_members').text(v.length);
     });
     $('#candidates').empty();

@@ -194,6 +194,10 @@
       //gọi lại sự kiện load room để cập nhật trạng thái room
       socket.emit('add-room');
   });
+
+  $('#modalRoom').on('hidden.bs.modal', function (e) {
+    console.log('closed');
+})
 </script>
 
 <style>

@@ -94,7 +94,9 @@
           let d = {
             questions: data.questions,
             room: room_id,
+            duration:data.duration
           };
+          console.log(d);
           //gọi tới sự kiện send-exam để public tới tất cả các thành viên trong room danh sách câu hỏi
           socket.emit("send-exam", d);
           //ẩn nút bắt đầu

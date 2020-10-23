@@ -2,10 +2,11 @@ const users = [];//mảng lưu user
 
 // Join user to chat
 function userJoin(socket_id, username,avatar,member_code, room) {
-  const user = {socket_id, username,avatar,member_code, room };
-
-  users.push(user);
-
+  let index = users.indexOf(socket.id);
+  if(index ==-1){//chỉ add user khi socket của user đó chưa có trong room
+    const user = {socket_id, username,avatar,member_code, room };
+    users.push(user);
+  }
   return user;
 }
 

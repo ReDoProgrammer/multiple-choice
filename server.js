@@ -187,6 +187,7 @@ io.on('connection',function(socket){
 
   socket.on('disconnect', function() {
     let index = clientIds.indexOf(socket.id);
+    userLeave(socket.id);//xóa user khỏi room khi disconnect
     if (index > -1) {
       clientIds.splice(index, 1);
       io.sockets.emit('counter', {count:clientIds.length});//cập nhật lại số lượng người đang truy cập

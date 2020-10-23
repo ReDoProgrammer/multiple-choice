@@ -177,12 +177,21 @@ io.on('connection',function(socket){
 
   socket.on('user-finish',()=>{
     const user = getCurrentUser(socket.id);
-
     if (user) {
       //cập nhật lại users có trong phòng      
       user.finised = true;
       let users = getRoomUsers(user.room);
-      console.log(users);
+
+      //tìm ra người chưa hoàn thành bài thi
+      let chk = users.find(x=>!x.finised);
+      if(!chk){//nếu không có <=> tất cả đã hoàn thành bài thi
+        io.to(user.room).emit('populate-answers');//gọi tới sự kiện công bố đáp án
+      }else{
+        io.to(user.room).emit('users-in-room', {
+          room: user.room,
+          users: users
+        });
+      }
       
     }
     // io.sockets.in(socket.room_id).emit('users-finished');

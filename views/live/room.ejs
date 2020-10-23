@@ -110,6 +110,11 @@
     socket.emit("user-finish");
   });
 
+  //lắng nghe sự kiện công bố đáp án
+  socket.on('populate-answers',()=>{
+    console.log('populate-answer');
+  });
+
   //load danh sách thành viên hiện có trong room
   socket.on("users-in-room", (data) => {
     $("#current_users").text(
@@ -199,6 +204,8 @@
       socket.emit('add-room');
   });
 
+
+  //khi đóng modal thì reload lại trang để xóa user đã thoát ra khỏi danh sách users trong room
   $('#modalRoom').on('hidden.bs.modal', function (e) {
     location.reload();
   });

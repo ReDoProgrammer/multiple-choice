@@ -155,7 +155,7 @@ io.on('connection',function(socket){
     if(data.isNew){//nếu là tạo mới room
       rooms = [];
       for(r in socket.adapter.rooms){
-        room.push(r);
+        rooms.push(r);
       }
       io.sockets.emit('load-rooms',rooms);
     }

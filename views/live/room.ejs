@@ -144,7 +144,7 @@
   socket.on("populate-exam", (data) => {
     //không cho user khác tham gia vào room sau khi bắt đầu bài thi
     $('#roomslist > tr#'+data.room+' > td > input').attr('disabled', true);
-    $('#roomslist > tr#'+data.room+' > td > input').value('Đang thi');
+    $('#roomslist > tr#'+data.room+' > td > input').prop("value", "Đang thi");
 
     if (data.room == room_id) {
       let q = "";

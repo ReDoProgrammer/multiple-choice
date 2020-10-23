@@ -113,13 +113,13 @@
   });
 
   $("#btnFinish").click(function () {
-    socket.emit("user-finish");
+    
 
     if (!time_over) {
       //nếu chưa hết thời gian làm bài
       if(!checkAllTicked()){//nếu chưa tick hết
         if(confirm("Bạn chưa trả lời hết câu hỏi. Vẫn muốn kết thúc?")){
-          console.log('chết mày rồi');
+          socket.emit("user-finish");
         }
       }
     }
@@ -135,17 +135,21 @@
     // });
   });
 
-  function checkResult() {
-    
-
-    // $("#questions div").each(function (index, v) {
-    //   let id = $(this).attr('id');
-    //   let choice = $(v).find('input[type="radio"]:checked').val();
-    //   if (typeof choice === "undefined") {
-    //      console.log('not checked');
-    //   }
-
-    // });
+  //hàm lưu kết quả làm bài
+  function pushResult() {  
+    let result = [];
+    $("#questions div").each(function (index, v) {
+      let question_id = $(this).attr('id');
+      let choice = $(v).find('input[type="radio"]:checked').val();
+      if (typeof choice === "undefined") {
+        choice = '';
+      }
+      result.push({
+        question_id:question_id,
+        choice:choice
+      });
+    });
+    console.log(result);
   }
 
   //hàm kiểm tra xem các câu hỏi đã được tick hết chưa

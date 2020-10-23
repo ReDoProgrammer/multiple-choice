@@ -55,9 +55,9 @@
       let room_id = $(this).closest("tr").attr("id");
       let master = $(this).closest("tr").data("master");
       let subject_id = $(this).closest("tr").data("subject");
-      let r = $(this).closest("tr");
-      let td = $(r).find('td.room_name').text();
-      console.log('room name: ',td);
+      let room_name = $(this).closest("tr").find('td.room_name').text();
+
+      console.log('room name: ',room_name);
 
       $.ajax({
         url: "/live/check-login",

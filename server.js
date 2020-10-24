@@ -19,6 +19,12 @@ const {
   getAllRoooms
 } = require('./utils/users');
 
+// những hàm liên quan tới đề thi lưu trữ trên RAM server
+const{
+  pushExam,
+  getExam,
+  removeExam
+} = require('./utils/exams');
 
 
 //phần routes của admin
@@ -198,6 +204,7 @@ io.on('connection',function(socket){
   });
 
   socket.on('send-exam',(data)=>{
+    console.log('data in send exam:',data);
     io.sockets.in(data.room).emit('populate-questions',data);
   });
 

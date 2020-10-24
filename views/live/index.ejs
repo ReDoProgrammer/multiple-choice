@@ -80,9 +80,9 @@
 
       let started_time =  $(this).closest("tr").find("td.started_time").data("time");
       let current_time = new Date();
-      let exam_date = new Date(started_time);
-      let distance_time = (exam_date.getTime() - current_time.getTime())/(60*60*1000);//quy ra phút
-      console.log({current_time,exam_date,distance_time});
+      let exam_time = new Date(started_time);
+      let distance_time = Math.round((((exam_time-current_time) % 86400000) % 3600000) / 60000); // minutes
+      console.log({current_time,exam_time,distance_time});
 
       let room_id = $(this).closest("tr").attr("id");
       let master = $(this).closest("tr").data("master");

@@ -82,7 +82,10 @@
       let current_time = new Date();
       let exam_time = new Date(started_time);
       let distance_time = Math.round((((exam_time-current_time) % 86400000) % 3600000) / 60000); // minutes
-      console.log({current_time,exam_time,distance_time});
+      if(distance_time>10){
+        alert('Chưa tới giờ thi\nVui lòng quay lại 10 phút trước giờ thi để tham gia vào phòng thi');
+        return;
+      }
 
       let room_id = $(this).closest("tr").attr("id");
       let master = $(this).closest("tr").data("master");

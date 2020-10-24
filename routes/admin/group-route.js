@@ -6,6 +6,8 @@
 
 const router = require('express').Router();
 const Group = require('../../models/group-model');
+const Subject = require('../../models/subject-model');
+const Question = require('../../models/question-model');
 const middleware = require('../../middlewares/middleware');
 
 router.get('/',middleware.isAdmin,(req,res)=>{
@@ -51,11 +53,35 @@ router.post('/create',middleware.isAdmin,(req,res)=>{
 });
 
 router.post('/update',middleware.isAdmin,(req,res)=>{
-
+  let {id,order,name,meta} = req.body;
+  Group.findOneAndUpdate({_id:id},{
+    order:order,
+    name:name,
+    meta:meta
+  },function(err,group){
+    if(err){
+      console.log('update group failed: '+new Error(err));
+    }else{
+      res.send({code:200,msg:'Cập nhật lớp học thành công'});
+    }
+  });
 });
 
 router.delete('/delete',middleware.isAdmin,(req,res)=>{
-
+  let id = req.body.id;
+  Group.deleteOne({_id:id},function(err){
+    if(err){
+      console.log('delete group failed: '+new Error(err));
+    }else{
+      Subject.find({group:id},function(err,subjects){
+        if(err){
+          console.log('can not find subjects after delete group: '+new Error(err));
+        }else{
+          // Subject.deleteOne({_id:{$in}})
+        }
+      })
+    }
+  })
 });
 
 router.get('/list',(req,res)=>{

@@ -2,24 +2,48 @@
   <div class="card-header">
     <div class="row">
       <div class="col-sm-2">
-          <input type="text" name="" class="form-control" placeholder="STT" id="txtGroupOrder">
+        <input
+          type="text"
+          name=""
+          class="form-control"
+          placeholder="STT"
+          id="txtGroupOrder"
+        />
       </div>
       <div class="col-sm-4">
-          <input type="text" name="" class="form-control" placeholder="Tên lớp" id="txtGroupName">
+        <input
+          type="text"
+          name=""
+          class="form-control"
+          placeholder="Tên lớp"
+          id="txtGroupName"
+        />
       </div>
       <div class="col-sm-4">
-          <input type="text" name="" class="form-control" placeholder="Thẻ meta của lớp, không dấu, ngăn cách nhau bởi kí tự -" id="txtGroupMeta">
+        <input
+          type="text"
+          name=""
+          class="form-control"
+          placeholder="Thẻ meta của lớp, không dấu, ngăn cách nhau bởi kí tự -"
+          id="txtGroupMeta"
+        />
       </div>
 
       <div class="col-sm-2">
-        <button type="button" class="btn btn-success" id="btnSave" style="width:100%"><i class="glyphicon-plus"></i> Lưu</button>
+        <button
+          type="button"
+          class="btn btn-success"
+          id="btnSave"
+          style="width: 100%"
+        >
+          <i class="glyphicon-plus"></i> Lưu
+        </button>
       </div>
-
     </div>
   </div>
   <!-- /.card-header -->
   <div class="card-body mt-4">
-    <table class="table table-bordered table-primary table-striped ">
+    <table class="table table-bordered table-primary table-striped">
       <thead>
         <tr>
           <th style="width: 10px">STT</th>
@@ -28,8 +52,7 @@
           <th style="width: 40px">Label</th>
         </tr>
       </thead>
-      <tbody id="tblData">
-      </tbody>
+      <tbody id="tblData"></tbody>
     </table>
   </div>
   <!-- /.card-body -->
@@ -39,79 +62,120 @@
   /*
     Khu vực khai báo biến toàn cục
   */
-  var group_id = '';
+  var group_id = "";
 
-  $(document).ready(function(){
+  $(document).ready(function () {
     LoadData();
-
 
     //sự kiên click button update trên mỗi dòng của table
     $(document).on("click", "input[name='update']", function () {
-      let group_id = $(this).closest("tr").attr("id");
-      let order = $(this).closest('tr').find('td.order').text();
-      let name = $(this).closest('tr').find('td.name').text();
-      let meta = $(this).closest('tr').find('td.meta').text();
-      console.log({group_id,order,name,meta});
-      
+      group_id = $(this).closest("tr").attr("id");
+      let order = $(this).closest("tr").find("td.order").text();
+      let name = $(this).closest("tr").find("td.name").text();
+      let meta = $(this).closest("tr").find("td.meta").text();
+      $("#txtGroupOrder").val(order);
+      $("#txtGroupName").val(name);
+      $("#txtGroupMeta").val(meta);
     });
-  });
 
-  $('#btnSave').click(function(){
-    let order = $('#txtGroupOrder').val().trim();
-    let name = $('#txtGroupName').val().trim();
-    let meta = $('#txtGroupMeta').val().trim();
-    if(order.length ==0 || name.length == 0 || meta.length == 0){
-      alert('Vui lòng nhập đủ thông tin');
-      return;
-    }
-    if(group_id.trim().length === 0){//nếu thêm mới
-      $.ajax({
-      url:'/admin/group/create',
-      type:'post',
-      data:{
-        order:order,
-        name:name,
-        meta:meta
-      },
-      success:function(data){
-        if(data.code==200){
-          LoadData();
-          $('#txtGroupOrder').val('');
-          $('#txtGroupName').val('');
-          $('#txtGroupMeta').val('');
-        }
+    // sự kiện xóa group
+    $(document).on("click", "input[name='delete']", function () {
+      if(confirm("Việc xóa lớp học sẽ kéo theo xóa môn học và các câu hỏi liên quan\n Bạn vẫn muốn xóa?")){
+        $.ajax({
+          url:'/admin/group/delete',
+          type:'delete',
+          data:{
+            id:$(this).closest("tr").attr("id")
+          },
+          success:function(data){
+            if(data.code == 200){
+              alert(data.msg);
+              LoadData();
+            }
+          }
+        });
       }
     });
-    }else{//nếu cập nhật
-
-    }
-    
   });
 
-  function LoadData(){
-    $.ajax({
-      url:'/admin/group/list',
-      type:'get',
-      data:{
-        is_actived:true
-      },
-      success:function(data){
-        if(data.code == 200){
-          $('#tblData').empty();
-          let d = '';
-          $.each(data.groups,function(k,r){
-            d += '<tr id = "'+r._id+'">';
-              d +=  '<td class = "order">'+r.order+'</td>';
-              d +=  '<td class = "name">'+r.name+'</td>';
-              d +=  '<td class = "meta">'+r.meta+'</td>';
-              d += '<td><input type = "button" name = "update" class = "btn btn-xs btn-warning" value = "Update" style = "border-radius:10%;"/>&nbsp;';
-              d += '<input type = "button" name = "delete" class = "btn btn-xs btn-danger" value = "Delete" style = "border-radius:10%;"/></td>';
-              d += '</tr>';
-            });
-            $('#tblData').append(d);
+  $("#btnSave").click(function () {
+    let order = $("#txtGroupOrder").val().trim();
+    let name = $("#txtGroupName").val().trim();
+    let meta = $("#txtGroupMeta").val().trim();
+    if (order.length == 0 || name.length == 0 || meta.length == 0) {
+      alert("Vui lòng nhập đủ thông tin");
+      return;
+    }
+    if (group_id.trim().length === 0) {
+      //nếu thêm mới
+      $.ajax({
+        url: "/admin/group/create",
+        type: "post",
+        data: {
+          order: order,
+          name: name,
+          meta: meta,
+        },
+        success: function (data) {
+          if (data.code == 200) {
+            LoadData();
+            $("#txtGroupOrder").val("");
+            $("#txtGroupName").val("");
+            $("#txtGroupMeta").val("");
           }
-        }
-      })
-    };
+        },
+      });
+    } else {
+      //nếu cập nhật
 
-  </script>
+      $.ajax({
+        url: "/admin/group/update",
+        type: "post",
+        data: {
+          id:group_id,
+          order: order,
+          name: name,
+          meta: meta
+        },
+        success: function (data) {
+          if (data.code == 200) {
+            alert(data.msg);
+            LoadData();
+            $("#txtGroupOrder").val("");
+            $("#txtGroupName").val("");
+            $("#txtGroupMeta").val("");
+            group_id='';
+          }
+        },
+      });
+    }
+  });
+
+  function LoadData() {
+    $.ajax({
+      url: "/admin/group/list",
+      type: "get",
+      data: {
+        is_actived: true,
+      },
+      success: function (data) {
+        if (data.code == 200) {
+          $("#tblData").empty();
+          let d = "";
+          $.each(data.groups, function (k, r) {
+            d += '<tr id = "' + r._id + '">';
+            d += '<td class = "order">' + r.order + "</td>";
+            d += '<td class = "name">' + r.name + "</td>";
+            d += '<td class = "meta">' + r.meta + "</td>";
+            d +=
+              '<td><input type = "button" name = "update" class = "btn btn-xs btn-warning" value = "Update" style = "border-radius:10%;"/>&nbsp;';
+            d +=
+              '<input type = "button" name = "delete" class = "btn btn-xs btn-danger" value = "Delete" style = "border-radius:10%;"/></td>';
+            d += "</tr>";
+          });
+          $("#tblData").append(d);
+        }
+      },
+    });
+  }
+</script>

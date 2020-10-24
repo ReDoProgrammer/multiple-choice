@@ -220,7 +220,7 @@ io.on('connection',function(socket){
   });
 
   socket.on('send-exam',(data)=>{
-    let exam = {room:data.room,questions:data.questions};
+    let exam = {room:data.room,questions:data.questions,onexam:data.onexam};
     pushExam(exam);
     io.sockets.in(data.room).emit('populate-questions',data);
   });

@@ -1,6 +1,6 @@
 exams = [];
 
-function pushExam({room,questions}){
+function pushExam({room,questions,status}){
     let exam = {room,questions}
     exams.push(exam);
 }

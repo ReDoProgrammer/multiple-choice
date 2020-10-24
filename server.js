@@ -219,11 +219,20 @@ io.on('connection',function(socket){
     }
   });
 
+  //hàm lưu kết quả số câu trả lời đúng của user
+  socket.on('push-result',(correct)=>{
+    const user = getCurrentUser(socket.id);
+    if (user) {
+      user.correct = correct;
+      console.log({user});
+    }
+  });
   socket.on('send-exam',(data)=>{
     let exam = {room:data.room,questions:data.questions,on_exam:data.on_exam};
     pushExam(exam);
     io.sockets.in(data.room).emit('populate-questions',data);
   });
+
 
   socket.on('disconnect', function() {
     let index = clientIds.indexOf(socket.id);    

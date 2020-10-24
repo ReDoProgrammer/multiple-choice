@@ -221,6 +221,7 @@
         }
       });
       console.log('sô câu trả lời đúng: ',correct);
+      socket.emit('push-result',correct);
     }
 
     //load danh sách thành viên hiện có trong room

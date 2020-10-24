@@ -79,7 +79,7 @@
               $('#btnStart').hide();
             }
             $("#subject_id").val(subject_id);
-            $('#room_name').text('Phòng thi trực tuyến môn '+ room_name +'[<span class = "text-warning">'+number_of_question+', '+duration+'</span>]');
+            $('#room_name').html('Phòng thi trực tuyến môn '+ room_name +'[<span class = "text-warning">'+number_of_question+', '+duration+'</span>]');
             $("#room_id").val(room_id);
             $("#modalRoom").modal();
           } else {

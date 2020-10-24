@@ -80,6 +80,12 @@
     // sự kiện click button jon phòng trên từng hàng tương ứng mỗi phòng
     $(document).on("click", "input[name='join']", function () {
       let room_name = $(this).closest("tr").find("td.room_name").text();
+      let duration = $(this).closest("tr").find("td.duration").text();
+      let number_of_question = $(this)
+        .closest("tr")
+        .find("td.number_of_question")
+        .text();
+
 
       let started_time =  $(this).closest("tr").find("td.started_time").data("time");
       let current_time = new Date();
@@ -87,6 +93,8 @@
       let distance_time = Math.round((((exam_time-current_time) % 86400000) % 3600000) / 60000); // minutes
       if(distance_time>10){
         $('span#room_name').text(room_name);
+        $('span#started_time').text(exam_time);
+        $('span#number_of_question').text(number_of_question);
         $('#modalPreventJoinRoom').modal();
         return;
       }
@@ -95,11 +103,7 @@
       let master = $(this).closest("tr").data("master");
       let subject_id = $(this).closest("tr").data("subject");
      
-      let duration = $(this).closest("tr").find("td.duration").text();
-      let number_of_question = $(this)
-        .closest("tr")
-        .find("td.number_of_question")
-        .text();
+      
       $.ajax({
         url: "/live/check-login",
         type: "get",

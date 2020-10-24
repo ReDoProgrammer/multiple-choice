@@ -56,7 +56,7 @@
 
     //sự kiện click đăng ký dự thi trên từng hàng của danh sách phòng
     $(document).on("click", "input[name='apply']", function () {
-      let room = $(this).attr('id');
+      let room_id = $(this).closest("tr").attr("id");
       console.log(room);
     });
 

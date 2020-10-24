@@ -22,22 +22,24 @@
         </button>
       </div>
     </div>
-    <table
-      class="table table-bordered table-warning table-striped"
-      style="margin-top: 10px"
-    >
-      <thead>
-        <tr>
-          <th>Phòng</th>
-          <th>Môn thi</th>
-          <th>Ngày thi</th>
-          <th>Thời gian thi</th>
-          <th>Số câu hỏi</th>         
-          <th style="width: 40px"></th>
-        </tr>
-      </thead>
-      <tbody id="roomslist"></tbody>
-    </table>
+    <div class="table-responsive">
+      <table
+        class="table table-bordered table-warning table-striped"
+        style="margin-top: 10px"
+      >
+        <thead>
+          <tr>
+            <th>Phòng</th>
+            <th>Môn thi</th>
+            <th>Ngày thi</th>
+            <th>Thời gian thi</th>
+            <th>Số câu hỏi</th>
+            <th style="width: 40px"></th>
+          </tr>
+        </thead>
+        <tbody id="roomslist"></tbody>
+      </table>
+    </div>
   </div>
   <!-- /.card-body -->
 </div>
@@ -57,9 +59,12 @@
       let room_id = $(this).closest("tr").attr("id");
       let master = $(this).closest("tr").data("master");
       let subject_id = $(this).closest("tr").data("subject");
-      let room_name = $(this).closest("tr").find('td.room_name').text();
-      let duration = $(this).closest("tr").find('td.duration').text();
-      let number_of_question = $(this).closest("tr").find('td.number_of_question').text();
+      let room_name = $(this).closest("tr").find("td.room_name").text();
+      let duration = $(this).closest("tr").find("td.duration").text();
+      let number_of_question = $(this)
+        .closest("tr")
+        .find("td.number_of_question")
+        .text();
       $.ajax({
         url: "/live/check-login",
         type: "get",
@@ -67,19 +72,27 @@
           if (data.code == 200) {
             candidate = {
               username: data.user.username,
-              avatar:data.user.avatar,
-              member_code:data.user.member_code,
+              avatar: data.user.avatar,
+              member_code: data.user.member_code,
               room: room_id,
               finished: false,
             };
-            socket.emit("join-room",candidate);
-            if(data.user._id === master){
-              $('#btnStart').show();
-            }else{
-              $('#btnStart').hide();
+            socket.emit("join-room", candidate);
+            if (data.user._id === master) {
+              $("#btnStart").show();
+            } else {
+              $("#btnStart").hide();
             }
             $("#subject_id").val(subject_id);
-            $('#room_name').html('Phòng thi trực tuyến môn <span style="color: #FFCC33; font-weight: bold; font-size:15px;">'+ room_name +'</span> (<span style="color: #FFFF00">'+number_of_question+' câu, '+duration+'</span>)');
+            $("#room_name").html(
+              'Phòng thi trực tuyến môn <span style="color: #FFCC33; font-weight: bold; font-size:15px;">' +
+                room_name +
+                '</span> (<span style="color: #FFFF00">' +
+                number_of_question +
+                " câu, " +
+                duration +
+                "</span>)"
+            );
             $("#room_id").val(room_id);
             $("#modalRoom").modal();
           } else {
@@ -90,23 +103,23 @@
     });
   });
 
-
-
-//socket load rooms
-  socket.on('load-rooms',()=>{
+  //socket load rooms
+  socket.on("load-rooms", () => {
     LoadRooms();
   });
   //hiển thị users tương ứng mỗi phòng
-  socket.on("users-in-rooms", rooms => {
-    $('#roomslist > tr').each(function() {
-      let current_users = rooms.filter(x=>x.room === $(this).attr('id')).length;
+  socket.on("users-in-rooms", (rooms) => {
+    $("#roomslist > tr").each(function () {
+      let current_users = rooms.filter((x) => x.room === $(this).attr("id"))
+        .length;
 
-      $('#roomslist > tr#'+$(this).attr('id')+' > td.current_members').text(current_users<10?'0'+current_users:current_users);
+      $("#roomslist > tr#" + $(this).attr("id") + " > td.current_members").text(
+        current_users < 10 ? "0" + current_users : current_users
+      );
     });
   });
 
-
-  //hàm load danh sách phòng thi trực tuyến  
+  //hàm load danh sách phòng thi trực tuyến
   function LoadRooms() {
     $.ajax({
       url: "/live/list",
@@ -118,27 +131,39 @@
           let index = 1;
           $.each(data.rooms, function (k, v) {
             rooms +=
-              '<tr id = "' + v._id + '" data-subject="' + v.subject._id + '" data-master="'+v.created_by+'">';
+              '<tr id = "' +
+              v._id +
+              '" data-subject="' +
+              v.subject._id +
+              '" data-master="' +
+              v.created_by +
+              '">';
             rooms += "<td>" + index++ + "</td>";
             rooms +=
               '<td style="font-weight:bold; color:#FF6600" class = "room_name">' +
               v.subject.name +
               "</td>";
-              rooms +=
+            rooms +=
               '<td style="font-weight:bold; color:#FF6600">' +
-                (new Date(v.started_time)).toLocaleString() +
+              new Date(v.started_time).toLocaleString() +
               "</td>";
-            rooms += '<td style="text-align:right; padding-right:5px;" class = "duration">'+v.duration+' phút</td>';
-            rooms += '<td style = "text-align:right; padding-right:5px;" class = "number_of_question">'+v.number_of_question+'</td>';
+            rooms +=
+              '<td style="text-align:right; padding-right:5px;" class = "duration">' +
+              v.duration +
+              " phút</td>";
+            rooms +=
+              '<td style = "text-align:right; padding-right:5px;" class = "number_of_question">' +
+              v.number_of_question +
+              "</td>";
             rooms += "<td>";
-            if(v.status == -1){
+            if (v.status == -1) {
               rooms +=
-              '<input type="button" name="join" value="Join" class="btn btn-sm btn-warning">';
-            }else{
+                '<input type="button" name="join" value="Join" class="btn btn-sm btn-warning">';
+            } else {
               rooms +=
-              '<input type="button" name="join" value="Đang thi" disabled  class="btn btn-sm btn-danger">';
+                '<input type="button" name="join" value="Đang thi" disabled  class="btn btn-sm btn-danger">';
             }
-            
+
             rooms += "</td>";
             rooms += "</tr>";
           });
@@ -162,22 +187,20 @@
     });
   });
 
-
   // lắng nghe sự kiện xóa room
-  socket.on('remove-room',(room)=>{
+  socket.on("remove-room", (room) => {
     $.ajax({
-      url:'/live/delete',
-      type:'delete',
-      data:{
-        room:room
+      url: "/live/delete",
+      type: "delete",
+      data: {
+        room: room,
       },
-      success:function(data){
-        if(data.code == 200){
+      success: function (data) {
+        if (data.code == 200) {
           //nếu xóa room thành công thì gọi tới sự kiện add-room trên server để tiến hành load lại ds rooms
-          socket.emit('add-room');
+          socket.emit("add-room");
         }
-      }
-    })
+      },
+    });
   });
 </script>
-

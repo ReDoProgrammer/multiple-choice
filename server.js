@@ -225,7 +225,9 @@ io.on('connection',function(socket){
     if (user) {
       user.correct = correct;
       //gọi tới sự kiện ranks ở client để hiển thị bảng xếp hạng
-      io.to(user.room).emit('ranks',getRoomUsers(user.room));
+      io.to(user.room).emit('ranks',getRoomUsers(user.room).sort(function(a,b){
+        return b.correct - a.correct;
+      }));
     }
     
   });

@@ -79,7 +79,6 @@
     khu vực khai báo biến toàn cục
   */
   var time_over = false;
-  var questions;
 
   $(document).ready(function () {
     $("#questions").empty();
@@ -102,7 +101,6 @@
             room: room_id,
             duration: data.duration,
           };
-          questions = data.questions;
           //gọi tới sự kiện send-exam để public tới tất cả các thành viên trong room danh sách câu hỏi
           socket.emit("send-exam", d);
           //ẩn nút bắt đầu
@@ -112,15 +110,13 @@
     });
   });
 
-  $("#btnFinish").click(function () {
-    
-
+  $("#btnFinish").click(function () {   
     if (!time_over) {
       //nếu chưa hết thời gian làm bài
       if(!checkAllTicked()){//nếu chưa tick hết
         if(confirm("Bạn chưa trả lời hết câu hỏi. Vẫn muốn kết thúc?")){
           socket.emit("user-finish");
-          pushResult();
+          pushResult();          
         }
       }else{
         pushResult();
@@ -176,14 +172,11 @@
 
   //lắng nghe sự kiện công bố đáp án
   socket.on("populate-answers", (data) => {
-    console.log('exam data: ',data);
-    // $("#questions div").each(function (index, v) {
-    //   let question_id = $(v).attr('id');
-    //   let question = questions.find(x=>x._id === question_id);
-    //   console.log({question_id,question});
-    //   $('#'+question_id+' > fieldset > h6.'+question.answer+'').css('background-color','yellow');
-      
-    // });
+    $("#questions div").each(function (index, v) {
+      let question_id = $(v).attr('id');
+      let question = data.questions.find(x=>x._id === question_id);
+      $('#'+question_id+' > fieldset > h6.'+question.answer+'').css('background-color','yellow');      
+    });
   });
 
   //load danh sách thành viên hiện có trong room

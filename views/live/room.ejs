@@ -279,25 +279,25 @@
           '">';
           ranks += "</div>";
           ranks += '<div class="media-body">';
-            ranks += '<h4 class="text-danger">' + u.member_code;
+            ranks += '<h6 class="text-danger">' + u.member_code;
             if (rank == 1) {
                 ranks +=
-                'Hạng: '+rank+'<span class = "text-success"><i class="fa fa-star" aria-hidden="true"></i>('+u.correct+'/'+data.exam_length+')</span>';
+                '#: '+rank+'<span class = "text-warning"><i class="fa fa-star" aria-hidden="true"></i>('+u.correct+'/'+data.exam_length+')</span>';
             }else{
               if(rank == 2){
                 ranks +=
-                'Hạng: '+rank+'<span class = "text-primary"><i class="fa fa-star" aria-hidden="true"></i>('+u.correct+'/'+data.exam_length+')</span>';
+                '#: '+rank+'<span class = "text-primary"><i class="fa fa-star" aria-hidden="true"></i>('+u.correct+'/'+data.exam_length+')</span>';
               }else{
                 if(rank == 3){
                   ranks +=
-                  'Hạng: '+rank+'<span class = "text-warning"><i class="fa fa-star" aria-hidden="true"></i>('+u.correct+'/'+data.exam_length+')</span>';
+                  '#: '+rank+'<span class = "text-danger"><i class="fa fa-star" aria-hidden="true"></i>('+u.correct+'/'+data.exam_length+')</span>';
                 }else{
                   ranks +=
-                  'Hạng: '+rank+'<span class = "text-info"><i class="fa fa-bar-chart" aria-hidden="true"></i>('+u.correct+'/'+data.exam_length+')</span>';
+                  '#: '+rank+'<span class = "text-info"><i class="fa fa-bar-chart" aria-hidden="true"></i>('+u.correct+'/'+data.exam_length+')</span>';
                 }
               }
             }
-        ranks += "</h4>";
+        ranks += "</h6>";
         ranks += "</div>";
         ranks += "</div>";
         ranks += "</div>";

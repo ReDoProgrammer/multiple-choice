@@ -250,6 +250,7 @@ io.on('connection',function(socket){
       */
       let userCount =  getRoomUsers(user.room).length;
       let exam = getExam(user.room);
+      console.log(userCount,exam);
       if(exam && exam.on_exam && userCount == 0){
         removeExam(user.room);
         io.sockets.emit('remove-room',user.room);

@@ -190,21 +190,32 @@ io.on('connection',function(socket){
 
       //tìm ra người chưa hoàn thành bài thi
       let chk = users.find(x=>x.finished == false);
-      if(chk){//nếu không có <=> tất cả đã hoàn thành bài thi
+      if(chk){
+        /*
+          Nếu vẫn còn người chưa kết thúc bài thi
+          - gọi lại hàm users-in-room để cập nhật lại trạng thái
+          - của những người đã nộp bài
+        */
         io.to(user.room).emit('users-in-room', {
           room: user.room,
           users: users
         });
       }else{ 
-        io.to(user.room).emit('populate-answers');//gọi tới sự kiện công bố đáp án
-      }
-      
+        /*
+          Khi tất cả user trong room đã hoàn thành bài thi thì:
+          - gửi dữ liệu bài thi để công bố đáp án
+          - xóa dữ liệu bài thi được lưu trên server
+        */
+        io.to(user.room).emit('populate-answers',getExam(user.room));
+        removeExam(user.room);
+      }      
     }
-    // io.sockets.in(socket.room_id).emit('users-finished');
   });
 
   socket.on('send-exam',(data)=>{
     console.log('data in send exam:',data);
+    let exam = {room:data.room,questions:data.questions};
+    pushExam(exam);
     io.sockets.in(data.room).emit('populate-questions',data);
   });
 

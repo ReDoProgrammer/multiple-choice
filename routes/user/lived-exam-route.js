@@ -166,18 +166,12 @@ router.post("/generate-exam", middleware.isLoggedIn, (req, res) => {
 });
 
 //hàm trả về danh sách phòng có trạng thái là -1: chưa thi hoặc 0: đang thi
-router.get("/list", (req, res) => {
-  let d = new Date();
-  
-  let nDate = new Date().toLocaleString('en-US', {
-    timeZone: 'Asia/Ho_chi_minh'
-  });
-  console.log(d.toLocaleString(),nDate);
+router.get("/list", (req, res) => { 
 
   LivedRoom.find({status: { $in: [-1, 0] }})
   .where('started_time').gt(new Date().toLocaleString('en-US', {
     timeZone: 'Asia/Ho_chi_minh'
-  }))
+  }))//chỉ lấy những room có giờ bắt đầu lớn hơn hiện tại
     .populate("subject", "name")
     .exec(function (err, rooms) {
       if (err) {

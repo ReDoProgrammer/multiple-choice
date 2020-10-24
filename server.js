@@ -228,12 +228,21 @@ io.on('connection',function(socket){
           return b.correct - a.correct;
         }),
         exam_length:getExam(user.room).questions.length
-      });
+      });      
 
-      //xóa phòng thi này trên server & gọi lại sự kiện load room ở client
-      removeExam(user.room);
-      io.sockets.emit('load-rooms');
+      /*
+          Nếu tất cả các user đã push kết quả lên server thành công
+          - load lại danh sách room
+          - xóa room trên bộ nhớ server
+        */
+      let chk = getRoomUsers(user.room).find(x=>x.correct == 'undefined');
+      if(!chk){     
+        removeExam(user.room);
+        io.sockets.emit('load-rooms');
+      }
     }
+
+    
     
   });
   socket.on('send-exam',(data)=>{

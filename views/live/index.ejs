@@ -58,7 +58,8 @@
       let master = $(this).closest("tr").data("master");
       let subject_id = $(this).closest("tr").data("subject");
       let room_name = $(this).closest("tr").find('td.room_name').text();
-
+      let duration = $(this).closest("tr").find('td.duration').text();
+      let number_of_question = $(this).closest("tr").find('td.number_of_question').text();
       $.ajax({
         url: "/live/check-login",
         type: "get",
@@ -78,7 +79,7 @@
               $('#btnStart').hide();
             }
             $("#subject_id").val(subject_id);
-            $('#room_name').text('Phòng thi trực tuyến môn '+ room_name);
+            $('#room_name').text('Phòng thi trực tuyến môn '+ room_name +'[<span class = "text-warning">'+number_of_question+', '+duration+'</span>]');
             $("#room_id").val(room_id);
             $("#modalRoom").modal();
           } else {
@@ -128,8 +129,8 @@
               '<td style="font-weight:bold; color:#FF6600">' +
                 (new Date(v.started_time)).toLocaleString() +
               "</td>";
-            rooms += '<td style="text-align:right; padding-right:5px;">'+v.duration+' phút</td>';
-            rooms += '<td style = "text-align:right; padding-right:5px;">'+v.number_of_question+'</td>';
+            rooms += '<td style="text-align:right; padding-right:5px;" class = "duration">'+v.duration+' phút</td>';
+            rooms += '<td style = "text-align:right; padding-right:5px;" class = "number_of_question">'+v.number_of_question+'</td>';
             rooms += "<td>";
             if(v.status == -1){
               rooms +=

@@ -14,17 +14,6 @@
             <div class="panel-success">
               <div class="panel-heading">
                 <div class="row">
-                  <div class="col-md-8 col-sm-8 col-xs-12">
-                    <h6
-                      id="room_name"
-                      style="color: #fff; text-transform: uppercase"
-                    ></h6>
-                  </div>
-                  <div class="col-md-2 col-sm-2 col-xs-6 text-center" id="countdown">
-                    <h5 class="col-form-label" style="color: #ffffff">
-                      Còn lại: <span id="remainTime" style="color: #ffff33"></span>
-                    </h5>
-                  </div>
                   <div class="col-md-2 col-sm-2 col-xs-6">
                     <button
                       type="button"
@@ -34,6 +23,21 @@
                       Bắt đầu
                     </button>
                   </div>
+                </div>
+                <div class="col-md-8 col-sm-8 col-xs-12">
+                  <h6
+                    id="room_name"
+                    style="color: #fff; text-transform: uppercase"
+                  ></h6>
+                </div>
+                <div
+                  class="col-md-2 col-sm-2 col-xs-6 text-center"
+                  id="countdown"
+                >
+                  <h5 class="col-form-label" style="color: #ffffff">
+                    Còn lại:
+                    <span id="remainTime" style="color: #ffff33"></span>
+                  </h5>
                 </div>
 
                 <input type="hidden" id="room_id" value="" />
@@ -118,52 +122,55 @@
     });
   });
 
-  $("#btnFinish").click(function () {   
+  $("#btnFinish").click(function () {
     if (!time_over) {
       //nếu chưa hết thời gian làm bài
-      if(!checkAllTicked()){//nếu chưa tick hết
-        if(confirm("Bạn chưa trả lời hết câu hỏi. Vẫn muốn kết thúc?")){
+      if (!checkAllTicked()) {
+        //nếu chưa tick hết
+        if (confirm("Bạn chưa trả lời hết câu hỏi. Vẫn muốn kết thúc?")) {
           socket.emit("user-finish");
-          pushResult();             
+          pushResult();
         }
-      }else{//nếu đã được tick hết
+      } else {
+        //nếu đã được tick hết
         socket.emit("user-finish");
-        pushResult();        
+        pushResult();
       }
-    }else{//đã hết giờ
+    } else {
+      //đã hết giờ
       socket.emit("user-finish");
-      pushResult();     
-    }   
+      pushResult();
+    }
   });
 
   //hàm lưu kết quả làm bài
-  function pushResult() {  
+  function pushResult() {
     let rs = [];
     $("#questions div").each(function (index, v) {
-      let question_id = $(this).attr('id');
+      let question_id = $(this).attr("id");
       let choice = $(v).find('input[type="radio"]:checked').val();
       if (typeof choice === "undefined") {
-        choice = '';
+        choice = "";
       }
       rs.push({
-        question_id:question_id,
-        choice:choice
+        question_id: question_id,
+        choice: choice,
       });
     });
     let room_id = $("#room_id").val();
     $.ajax({
-      url:'/live/finish',
-      type:'post',
-      data:{
-        room:room_id,
-        result:JSON.stringify(rs)
+      url: "/live/finish",
+      type: "post",
+      data: {
+        room: room_id,
+        result: JSON.stringify(rs),
       },
-      success:function(data){
-        if(data.code == 200){
+      success: function (data) {
+        if (data.code == 200) {
           alert(data.msg);
-          $('#btnFinish').hide();         
+          $("#btnFinish").hide();
         }
-      }
+      },
     });
   }
 
@@ -183,14 +190,17 @@
   //lắng nghe sự kiện công bố đáp án
   socket.on("populate-answers", (data) => {
     $("#questions div").each(function (index, v) {
-      let question_id = $(v).attr('id');
-      let question = data.questions.find(x=>x._id === question_id);
-      $('#'+question_id+' > fieldset > h6.'+question.answer+'').css('background-color','yellow');      
+      let question_id = $(v).attr("id");
+      let question = data.questions.find((x) => x._id === question_id);
+      $("#" + question_id + " > fieldset > h6." + question.answer + "").css(
+        "background-color",
+        "yellow"
+      );
     });
 
     //khi công bố kết quả bài thi thì ẩn thông tin đồng hồ đếm ngược
     clearInterval(intervalId);
-    $("#countdown").hide();  
+    $("#countdown").hide();
   });
 
   //load danh sách thành viên hiện có trong room
@@ -232,12 +242,10 @@
 
   //public danh sách câu hỏi
   socket.on("populate-questions", (data) => {
-   
     //hiện đồng hồ đếm ngược
-    totalSeconds = data.duration *60;
+    totalSeconds = data.duration * 60;
     intervalId = setInterval(startTimer, 1000);
     $("#countdown").show();
-
 
     let q = "";
     let idx = 1;
@@ -294,24 +302,22 @@
 
   //hàm đếm ngược thời gian
   function startTimer() {
-
     --totalSeconds;
     hours = Math.floor(totalSeconds / 3600);
     minutes = Math.floor((totalSeconds - hours * 3600) / 60);
     seconds = totalSeconds - (hours * 3600 + minutes * 60);
-    console.log({hours,minutes,seconds});
-    let remain ='<span id="hour"></span>:<span id="minute"></span>:<span id="seconds"></span>';
+    let remain =
+      '<span id="hour"></span>:<span id="minute"></span>:<span id="seconds"></span>';
     $("#remainTime").html(remain);
     $("#hour").text(hours < 10 ? "0" + hours : hours);
     $("#minute").text(minutes < 10 ? "0" + minutes : minutes);
-    $("#seconds").text(seconds < 10 ? "0" + seconds : seconds);   
+    $("#seconds").text(seconds < 10 ? "0" + seconds : seconds);
 
     if (totalSeconds < 1) {
       time_over = true;
-      $('#btnFinish').click();
+      $("#btnFinish").click();
     }
   }
-
 </script>
 
 <style>

@@ -235,7 +235,7 @@ io.on('connection',function(socket){
           - load lại danh sách room
           - xóa room trên bộ nhớ server
         */
-      let chk = getRoomUsers(user.room).find(x=>x.correct == 'undefined');
+      let chk = getRoomUsers(user.room).find(x=>(!x.correct));
       if(!chk){            
         io.sockets.emit('load-rooms');
         removeExam(user.room);

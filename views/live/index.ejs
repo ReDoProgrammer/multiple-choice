@@ -77,6 +77,10 @@
 
     // sự kiện click button jon phòng trên từng hàng tương ứng mỗi phòng
     $(document).on("click", "input[name='join']", function () {
+
+      let started_time =  $(this).closest("tr").find("td.started_time").data("time");
+      console.log(started_time);
+
       let room_id = $(this).closest("tr").attr("id");
       let master = $(this).closest("tr").data("master");
       let subject_id = $(this).closest("tr").data("subject");
@@ -175,7 +179,7 @@
               v.subject.name +
               "</td>";
             rooms +=
-              '<td style="font-weight:bold; color:#FF6600">' +
+              '<td style="font-weight:bold; color:#FF6600" class = "started_time" data-time="'+v.started_time+'">' +
               new Date(v.started_time).toLocaleString() +
               "</td>";
             rooms +=

@@ -79,7 +79,9 @@
     $(document).on("click", "input[name='join']", function () {
 
       let started_time =  $(this).closest("tr").find("td.started_time").data("time");
-      console.log(started_time);
+      let current_time = new Date();
+      let exam_date = new Date(started_time);
+      console.log({started_time,current_time,exam_date});
 
       let room_id = $(this).closest("tr").attr("id");
       let master = $(this).closest("tr").data("master");

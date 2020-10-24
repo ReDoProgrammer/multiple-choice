@@ -170,10 +170,10 @@ router.get("/list", (req, res) => {
   let d = new Date();
   
   let nDate = new Date().toLocaleString('en-US', {
-    timeZone: 'Asia/Ho-chi-minh'
+    timeZone: 'Asia/Ho_chi_minh'
   });
   console.log(d.toLocaleString(),nDate);
-  
+
   LivedRoom.find({ status: { $in: [-1, 0] } })
     .populate("subject", "name")
     .exec(function (err, rooms) {

@@ -19,16 +19,16 @@
       </div>
       <div class="modal-body">
         <div class="row">
-          <div class="col-xs-4">
+          <div class="col-sm-4 col-xs-6">
             <div class="form-group">
               <label for="exampleInputEmail1">Môn thi</label>
-              <select class="form-control" id="subjects" style="border:1px solid #DDD"></select>
+              <select class="form-control" id="subjects" style="border:1px solid rgb(114, 26, 26)"></select>
             </div>
           </div>
-          <div class="col-xs-2">
+          <div class="col-sm-2 col-xs-6">
             <div class="form-group">
               <label for="duration">Thời gian(phút)</label>
-              <select class="form-control" id="duration">
+              <select class="form-control" id="duration" style="border:1px solid rgb(114, 26, 26)">
                 <option value="10">10 phút</option>
                 <option value="20">20 phút</option>
                 <option value="30">30 phút</option>
@@ -36,35 +36,38 @@
                 <option value="60">60 phút</option>
                 <option value="90">90 phút</option>
                 <option value="120">120 phút</option>
+                <option value="180">180 phút</option>
               </select>
             </div>
           </div>
-          <div class="col-xs-2">
+          <div class="col-sm-2 col-xs-6">
             <div class="form-group">
               <label for="number_of_question">Số câu hỏi</label>
-              <select class="form-control" id="number_of_question">
-                <option value="10">20 câu hỏi</option>
-                <option value="10">30 câu hỏi</option>
-                <option value="10">40 câu hỏi</option>
-                <option value="10">50 câu hỏi</option>
-                <option value="10">60 câu hỏi</option>
-                <option value="10">100 câu hỏi</option>
-                <option value="10">120 câu hỏi</option>
-                <option value="10">150 câu hỏi</option>                
+              <select class="form-control" id="number_of_question" style="border:1px solid rgb(114, 26, 26)">
+                <option value="20">20 câu hỏi</option>
+                <option value="30">30 câu hỏi</option>
+                <option value="40">40 câu hỏi</option>
+                <option value="50">50 câu hỏi</option>
+                <option value="60">60 câu hỏi</option>
+                <option value="100">100 câu hỏi</option>
+                <option value="120">120 câu hỏi</option>
+                <option value="150">150 câu hỏi</option>                
+                <option value="200">200 câu hỏi</option>                
               </select>
             </div>
           </div>
-          <div class="col-xs-2">
+          <div class="col-sm-2 col-xs-6">
             <div class="form-group">
+              <label for="">Ngày thi</label>
               <div class="input-group date" id="datetimepicker">
-                <input type="text" class="form-control" style="border:1px solid #DDD" id="started_time"/>
+                <input type="text" class="form-control" style="border:1px solid rgb(114, 26, 26)" id="started_time"/>
                 <span class="input-group-addon">
                   <span class="glyphicon glyphicon-calendar"></span>
                 </span>
               </div>
             </div>
           </div>
-          <div class="col-xs-2">
+          <div class="col-sm- 2 col-xs-6">
             <button type="button" class="btn btn-success" id="btnCreatNewRoom">
               Tạo phòng
             </button>

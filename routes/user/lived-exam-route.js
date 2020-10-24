@@ -6,7 +6,7 @@ const middleware = require("../../middlewares/middleware");
 const mongoose = require("mongoose");
 
 router.get("/", (req, res) => {
-  res.render("live/index", { layout: "user-layout" });
+  res.render("live/index", { layout: "user-layout",group:'Thi trực tuyến'});
 });
 
 router.get("/check-login", (req, res) => {

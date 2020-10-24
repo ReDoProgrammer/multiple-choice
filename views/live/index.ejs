@@ -155,12 +155,12 @@
               '<td style = "text-align:right; padding-right:5px;" class = "number_of_question">' +
               v.number_of_question +
               "</td>";
-            rooms += "<td>";
+            rooms += '<td style ="width:150px;" >';
             if (v.status == -1) {
               rooms +=
-                '<input type="button" name="join" value="Join" class="btn btn-sm btn-warning">';
-              rooms +=
                 '<input type="button" name="apply" value="apply" class="btn btn-sm btn-info">';
+              rooms +=
+                '<input type="button" name="join" value="Join" class="btn btn-sm btn-warning">';             
             } else {
               rooms +=
                 '<input type="button" name="join" value="Đang thi" disabled  class="btn btn-sm btn-danger">';

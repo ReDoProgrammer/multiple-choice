@@ -239,9 +239,6 @@ io.on('connection',function(socket){
       if(!chk){            
         io.sockets.emit('load-rooms');
         removeExam(user.room);
-        console.log('not found');
-      }else{
-        console.log('found');
       }
     }
 

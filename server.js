@@ -241,6 +241,16 @@ io.on('connection',function(socket){
         room: user.room,
         users: getRoomUsers(user.room)
       });
+
+      /*
+        - Nếu sau khi bắt đầu bài thi & tất cả user trong room đều thoát hết
+        1. Xóa room trên server
+        2. Xóa bài thi lưu trên server
+        3. Xóa room trong csdl
+      */
+      let userCount =  getRoomUsers(user.room).length;
+      let exam = getExam(user.room);
+      console.log({userCount,exam});
     }
   });
 });

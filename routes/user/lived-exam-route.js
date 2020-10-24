@@ -156,4 +156,20 @@ router.post('/finish',middleware.isLoggedIn,(req,res)=>{
   })
 });
 
+/*
+  - sau khi bắt đầu bài thi
+  - nếu tất cả user đều thoát khỏi phòng thi
+  - thì xóa phòng thi đó
+*/
+router.delete('/delete',(req,res)=>{
+  let room = req.body.room;
+  LivedRoom.deleteOne({_id:room},function(err){
+    if(err){
+      console.log('delete room failed: '+new Error(err));
+    }else{
+      res.send({code:200,msg:'delete room successfully'});
+    }
+  });
+});
+
 module.exports = router;

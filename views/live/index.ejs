@@ -29,7 +29,6 @@
       >
         <thead>
           <tr>
-            <th>Phòng</th>
             <th>Môn thi</th>
             <th>Ngày thi</th>
             <th>Thời gian</th>
@@ -129,7 +128,6 @@
         if (data.code == 200) {
           $("#roomslist").empty();
           let rooms = "";
-          let index = 1;
           $.each(data.rooms, function (k, v) {
             rooms +=
               '<tr id = "' +
@@ -139,7 +137,6 @@
               '" data-master="' +
               v.created_by +
               '">';
-            rooms += "<td>" + index++ + "</td>";
             rooms +=
               '<td style="font-weight:bold; color:#FF6600" class = "room_name">' +
               v.subject.name +

@@ -34,6 +34,7 @@
             <th>Ngày thi</th>
             <th>Thời gian thi</th>
             <th>Số câu hỏi</th>
+            <th>Số người đăng ký</th>
             <th style="width: 40px"></th>
           </tr>
         </thead>
@@ -155,10 +156,10 @@
               '<td style = "text-align:right; padding-right:5px;" class = "number_of_question">' +
               v.number_of_question +
               "</td>";
-            rooms += '<td style ="width:150px; text-align:center" >';
+            rooms += '<td style ="width:150px;" class = "text-center">';
             if (v.status == -1) {
               rooms +=
-                '<input type="button" name="apply" value="apply" class="btn btn-sm btn-info"> &nbsp;';
+                '<input type="button" name="apply" value="Đăng ký" class="btn btn-sm btn-info"> &nbsp;&nbsp;&nbsp;';
               rooms +=
                 '<input type="button" name="join" value="Join" class="btn btn-sm btn-warning">';             
             } else {

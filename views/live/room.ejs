@@ -197,12 +197,31 @@
           "background-color",
           "yellow"
         );
-      });
+      });   
 
+      //gọi tới hàm đối chiếu kết quả làm bài
+      checkResult(questions);
       //khi công bố kết quả bài thi thì ẩn thông tin đồng hồ đếm ngược
       clearInterval(intervalId);
       $("#countdown").hide();
     });
+
+    //hàm kiểm tra kết quả làm bài của từng user
+    function checkResult(questions){
+      let correct = 0;
+      $("#questions div").each(function (index, v) {
+        let question_id = $(v).attr('id');
+        let choice = $(v).find('input[type="radio"]:checked').val();
+        if (typeof choice === "undefined") {
+          choice = '';          
+        }
+        let question = questions.find(x=>x._id === question_id);
+        if(choice === question.answer){
+          correct++;
+        }
+      });
+      console.log('sô câu trả lời đúng: ',correct);
+    }
 
     //load danh sách thành viên hiện có trong room
     socket.on("users-in-room", (data) => {

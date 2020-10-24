@@ -88,7 +88,7 @@ router.post('/register',(req,res)=>{
       if(err){
         console.log('appy room failed. can not find room: '+new Error(err));
       }else{
-        let chk = room.registers(x=>x == req.session.user._id);
+        let chk = room.registers.find(x=>x == req.session.user._id);
         if(!chk){
           LivedRoom.updateOne({_id:room_id},{
             $push:{registers:req.session.user._id}

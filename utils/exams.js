@@ -2,7 +2,6 @@ exams = [];
 
 function pushExam({room,questions,on_exam}){
     let exam = {room,questions,on_exam}
-    console.log(exam);
     exams.push(exam);
 }
 

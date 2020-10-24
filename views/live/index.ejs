@@ -165,7 +165,19 @@
 
   // lắng nghe sự kiện xóa room
   socket.on('remove-room',(room)=>{
-    console.log(room);
+    $.ajax({
+      url:'/live/delete',
+      type:'delete',
+      data:{
+        room:room
+      },
+      success:function(data){
+        if(data.code == 200){
+          //nếu xóa room thành công thì gọi tới sự kiện add-room trên server để tiến hành load lại ds rooms
+          socket.emit('add-room');
+        }
+      }
+    })
   });
 </script>
 

@@ -242,7 +242,7 @@ io.on('connection',function(socket){
         users: getRoomUsers(user.room)
       });
 
-      
+
 
       /*
         - Nếu sau khi bắt đầu bài thi & tất cả user trong room đều thoát hết
@@ -252,7 +252,6 @@ io.on('connection',function(socket){
       */
       let userCount =  getRoomUsers(user.room).length;
       let exam = getExam(user.room);
-      console.log(userCount,exam);
       if(exam && exam.on_exam && userCount == 0){
         removeExam(user.room);
         io.sockets.emit('remove-room',user.room);

@@ -36,8 +36,24 @@
 </div>
 
 <script type="text/javascript">
+  /*
+    Khu vực khai báo biến toàn cục
+  */
+  var group_id = '';
+
   $(document).ready(function(){
     LoadData();
+
+
+    //sự kiên click button update trên mỗi dòng của table
+    $(document).on("click", "input[name='join']", function () {
+      let group_id = $(this).closest("tr").attr("id");
+      let order = $(this).closest('tr').find('td.order').text();
+      let name = $(this).closest('tr').find('td.name').text();
+      let meta = $(this).closest('tr').find('td.meta').text();
+      console.log({group_id,order,name,meta});
+      
+    });
   });
 
   $('#btnSave').click(function(){
@@ -48,8 +64,8 @@
       alert('Vui lòng nhập đủ thông tin');
       return;
     }
-
-    $.ajax({
+    if(group_id.trim().length === 0){//nếu thêm mới
+      $.ajax({
       url:'/admin/group/create',
       type:'post',
       data:{
@@ -65,7 +81,11 @@
           $('#txtGroupMeta').val('');
         }
       }
-    })
+    });
+    }else{//nếu cập nhật
+
+    }
+    
   });
 
   function LoadData(){
@@ -81,9 +101,9 @@
           let d = '';
           $.each(data.groups,function(k,r){
             d += '<tr id = "'+r._id+'">';
-              d +=  '<td>'+r.order+'</td>';
-              d +=  '<td>'+r.name+'</td>';
-              d +=  '<td>'+r.meta+'</td>';
+              d +=  '<td class = "order">'+r.order+'</td>';
+              d +=  '<td class = "name">'+r.name+'</td>';
+              d +=  '<td class = "meta">'+r.meta+'</td>';
               d += '<td><input type = "button" name = "update" class = "btn btn-xs btn-warning" value = "Update" style = "border-radius:10%;"/>&nbsp;';
               d += '<input type = "button" name = "delete" class = "btn btn-xs btn-danger" value = "Delete" style = "border-radius:10%;"/></td>';
               d += '</tr>';

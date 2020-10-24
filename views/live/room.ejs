@@ -14,7 +14,7 @@
             <div class="panel-success">
               <div class="panel-heading">
                 <div class="row">
-                  <div class="col-md-2 col-sm-2 col-xs-6">
+                  <div class="col-md-2 col-sm-2 col-xs-12">
                     <button
                       type="button"
                       class="btn btn-sm btn-warning"
@@ -23,332 +23,334 @@
                       Bắt đầu
                     </button>
                   </div>
-                </div>
-                <div class="col-md-8 col-sm-8 col-xs-12">
-                  <h6
-                    id="room_name"
-                    style="color: #fff; text-transform: uppercase"
-                  ></h6>
-                </div>
-                <div
-                  class="col-md-2 col-sm-2 col-xs-6 text-center"
-                  id="countdown"
-                >
-                  <h5 class="col-form-label" style="color: #ffffff">
-                    Còn lại:
-                    <span id="remainTime" style="color: #ffff33"></span>
-                  </h5>
-                </div>
 
-                <input type="hidden" id="room_id" value="" />
-                <input type="hidden" id="subject_id" value="" />
+                  <div class="col-md-8 col-sm-8 col-xs-12">
+                    <h6
+                      id="room_name"
+                      style="color: #fff; text-transform: uppercase"
+                    ></h6>
+                  </div>
+                  <div
+                    class="col-md-2 col-sm-2 col-xs-12 text-center"
+                    id="countdown"
+                  >
+                    <h5 class="col-form-label" style="color: #ffffff">
+                      Còn lại:
+                      <span id="remainTime" style="color: #ffff33"></span>
+                    </h5>
+                  </div>
+
+                  <input type="hidden" id="room_id" value="" />
+                  <input type="hidden" id="subject_id" value="" />
+                </div>
               </div>
-              <!-- /.card-header -->
-              <div class="panel-body" style="margin-top: 10px">
-                <!-- khu vực load câu hỏi -->
-                <div id="questions"></div>
+                <!-- /.card-header -->
+                <div class="panel-body" style="margin-top: 10px">
+                  <!-- khu vực load câu hỏi -->
+                  <div id="questions"></div>
+                </div>
+                <!-- /.card-body -->
               </div>
-              <!-- /.card-body -->
             </div>
-          </div>
-          <div
-            class="col-md-2 col-sm-4 col-xs-12"
-            style="border-left: 1px solid #ddd"
-          >
-            <div class="panel-success">
-              <div class="panel-heading">
-                <h6 style="color: #fff">
-                  Hiện tại (<span id="current_users" class="text-warning"
-                    >0</span
-                  >)
-                </h6>
+            <div
+              class="col-md-2 col-sm-4 col-xs-12"
+              style="border-left: 1px solid #ddd"
+            >
+              <div class="panel-success">
+                <div class="panel-heading">
+                  <h6 style="color: #fff">
+                    Hiện tại (<span id="current_users" class="text-warning"
+                      >0</span
+                    >)
+                  </h6>
+                </div>
+                <!-- /.card-header -->
+                <div
+                  class="panel-body"
+                  style="margin-top: 10px"
+                  id="users_list"
+                ></div>
+                <!-- /.card-body -->
               </div>
-              <!-- /.card-header -->
-              <div
-                class="panel-body"
-                style="margin-top: 10px"
-                id="users_list"
-              ></div>
-              <!-- /.card-body -->
             </div>
           </div>
         </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-primary" id="btnFinish">
-          Kết thúc & Nộp bài
-        </button>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" id="btnFinish">
+            Kết thúc & Nộp bài
+          </button>
+        </div>
       </div>
     </div>
   </div>
-</div>
 
-<script type="text/javascript">
-  /*
+  <script type="text/javascript">
+    /*
     khu vực khai báo biến toàn cục
   */
-  var time_over = false;
-  var intervalId = null;
-  $(document).ready(function () {
-    $("#questions").empty();
-    $("#btnFinish").hide();
+    var time_over = false;
+    var intervalId = null;
+    $(document).ready(function () {
+      $("#questions").empty();
+      $("#btnFinish").hide();
 
-    //ẩn đồng hồ đếm ngược
-    $("#countdown").hide();
-  });
-  $("#btnStart").click(function () {
-    let subject_id = $("#subject_id").val();
-    let room_id = $("#room_id").val();
-    $.ajax({
-      url: "/live/generate-exam",
-      type: "post",
-      data: {
-        room: room_id,
-        subject: subject_id,
-      },
-      success: function (data) {
-        if (data.code == 200) {
-          let d = {
-            questions: data.questions,
-            room: room_id,
-            duration: data.duration,
-          };
-          //gọi tới sự kiện send-exam để public tới tất cả các thành viên trong room danh sách câu hỏi
-          socket.emit("send-exam", d);
-          //ẩn nút bắt đầu
-          $("#btnStart").hide();
-        }
-      },
+      //ẩn đồng hồ đếm ngược
+      $("#countdown").hide();
     });
-  });
+    $("#btnStart").click(function () {
+      let subject_id = $("#subject_id").val();
+      let room_id = $("#room_id").val();
+      $.ajax({
+        url: "/live/generate-exam",
+        type: "post",
+        data: {
+          room: room_id,
+          subject: subject_id,
+        },
+        success: function (data) {
+          if (data.code == 200) {
+            let d = {
+              questions: data.questions,
+              room: room_id,
+              duration: data.duration,
+            };
+            //gọi tới sự kiện send-exam để public tới tất cả các thành viên trong room danh sách câu hỏi
+            socket.emit("send-exam", d);
+            //ẩn nút bắt đầu
+            $("#btnStart").hide();
+          }
+        },
+      });
+    });
 
-  $("#btnFinish").click(function () {
-    if (!time_over) {
-      //nếu chưa hết thời gian làm bài
-      if (!checkAllTicked()) {
-        //nếu chưa tick hết
-        if (confirm("Bạn chưa trả lời hết câu hỏi. Vẫn muốn kết thúc?")) {
+    $("#btnFinish").click(function () {
+      if (!time_over) {
+        //nếu chưa hết thời gian làm bài
+        if (!checkAllTicked()) {
+          //nếu chưa tick hết
+          if (confirm("Bạn chưa trả lời hết câu hỏi. Vẫn muốn kết thúc?")) {
+            socket.emit("user-finish");
+            pushResult();
+          }
+        } else {
+          //nếu đã được tick hết
           socket.emit("user-finish");
           pushResult();
         }
       } else {
-        //nếu đã được tick hết
+        //đã hết giờ
         socket.emit("user-finish");
         pushResult();
       }
-    } else {
-      //đã hết giờ
-      socket.emit("user-finish");
-      pushResult();
-    }
-  });
-
-  //hàm lưu kết quả làm bài
-  function pushResult() {
-    let rs = [];
-    $("#questions div").each(function (index, v) {
-      let question_id = $(this).attr("id");
-      let choice = $(v).find('input[type="radio"]:checked').val();
-      if (typeof choice === "undefined") {
-        choice = "";
-      }
-      rs.push({
-        question_id: question_id,
-        choice: choice,
-      });
     });
-    let room_id = $("#room_id").val();
-    $.ajax({
-      url: "/live/finish",
-      type: "post",
-      data: {
-        room: room_id,
-        result: JSON.stringify(rs),
-      },
-      success: function (data) {
-        if (data.code == 200) {
-          alert(data.msg);
-          $("#btnFinish").hide();
+
+    //hàm lưu kết quả làm bài
+    function pushResult() {
+      let rs = [];
+      $("#questions div").each(function (index, v) {
+        let question_id = $(this).attr("id");
+        let choice = $(v).find('input[type="radio"]:checked').val();
+        if (typeof choice === "undefined") {
+          choice = "";
         }
-      },
-    });
-  }
-
-  //hàm kiểm tra xem các câu hỏi đã được tick hết chưa
-  function checkAllTicked() {
-    let chk = true;
-    $("#questions div").each(function (index, v) {
-      let choice = $(v).find('input[type="radio"]:checked').val();
-      if (typeof choice === "undefined") {
-        chk = false;
-        return false;
-      }
-    });
-    return chk;
-  }
-
-  //lắng nghe sự kiện công bố đáp án
-  socket.on("populate-answers", (data) => {
-    $("#questions div").each(function (index, v) {
-      let question_id = $(v).attr("id");
-      let question = data.questions.find((x) => x._id === question_id);
-      $("#" + question_id + " > fieldset > h6." + question.answer + "").css(
-        "background-color",
-        "yellow"
-      );
-    });
-
-    //khi công bố kết quả bài thi thì ẩn thông tin đồng hồ đếm ngược
-    clearInterval(intervalId);
-    $("#countdown").hide();
-  });
-
-  //load danh sách thành viên hiện có trong room
-  socket.on("users-in-room", (data) => {
-    $("#current_users").text(
-      data.users.length < 10 ? "0" + data.users.length : data.users.length
-    );
-    $("#users_list").empty();
-    let users = '<ul class="list-unstyled mb20">';
-    let idx = 1;
-    $.each(data.users, function (k, u) {
-      users += '<div class="row">';
-      users += '<div class="col-xs-12">';
-      users += '<div class="media">';
-      users += '<div class="media-left">';
-      users +=
-        ' <img class="media-object photo-profile" src="' +
-        u.avatar +
-        '" alt="' +
-        u.member_code +
-        '">';
-      users += "</div>";
-      users += '<div class="media-body">';
-      users += '<h4 class="text-danger">' + u.member_code;
-      if (u.finished) {
-        //nếu user đã hoàn thành bài thi
-        users +=
-          '<span class = "text-success"><i class="fa fa-check" aria-hidden="true"></i></span>';
-      }
-      users += "</h4>";
-      users += "</div>";
-      users += "</div>";
-      users += "</div>";
-      users += "</div>";
-    });
-    users += "</ul>";
-    $("#users_list").append(users);
-  });
-
-  //public danh sách câu hỏi
-  socket.on("populate-questions", (data) => {
-    //hiện đồng hồ đếm ngược
-    totalSeconds = data.duration * 60;
-    intervalId = setInterval(startTimer, 1000);
-    $("#countdown").show();
-
-    let q = "";
-    let idx = 1;
-    $.each(data.questions, function (k, v) {
-      q += '<div class="row" id="' + v._id + '">';
-      q +=
-        '<h5 class = "text-danger"><span class="text-success">Câu ' +
-        idx++ +
-        ": </span>" +
-        v.question +
-        "</h5>";
-      q += "<fieldset>";
-      q +=
-        '<h6 class="A" style="line-height: 1.6; margin-left:10px;"><input type="radio" name="' +
-        v._id +
-        '" value="A"><span class="text-danger">A. </span>' +
-        v.option_a +
-        "</h6>";
-      q +=
-        '<h6 class="B" style="line-height: 1.6; margin-left:10px;"><input type="radio" name="' +
-        v._id +
-        '" value="B"><span class="text-danger">B. </span>' +
-        v.option_b +
-        "</h6>";
-      q +=
-        '<h6 class="C" style="line-height: 1.6; margin-left:10px;"><input type="radio" name="' +
-        v._id +
-        '" value="C"><span class="text-danger">C. </span>' +
-        v.option_c +
-        "</h6>";
-      q +=
-        '<h6 class="D" style="line-height: 1.6; margin-left:10px;"><input type="radio" name="' +
-        v._id +
-        '" value="D"><span class="text-danger">D. </span>' +
-        v.option_d +
-        "</h6>";
-      q += "</fieldset>";
-      q += "</div>";
-      q += "<hr>";
-    });
-    $("#questions").append(q);
-
-    //hiện nút nộp bài và kết thúc bài thi
-    $("#btnFinish").show(100);
-
-    //gọi lại sự kiện load room để cập nhật trạng thái room
-    socket.emit("add-room");
-  });
-
-  //khi đóng modal thì reload lại trang để xóa user đã thoát ra khỏi danh sách users trong room
-  $("#modalRoom").on("hidden.bs.modal", function (e) {
-    location.reload();
-  });
-
-  //hàm đếm ngược thời gian
-  function startTimer() {
-    --totalSeconds;
-    hours = Math.floor(totalSeconds / 3600);
-    minutes = Math.floor((totalSeconds - hours * 3600) / 60);
-    seconds = totalSeconds - (hours * 3600 + minutes * 60);
-    let remain =
-      '<span id="hour"></span>:<span id="minute"></span>:<span id="seconds"></span>';
-    $("#remainTime").html(remain);
-    $("#hour").text(hours < 10 ? "0" + hours : hours);
-    $("#minute").text(minutes < 10 ? "0" + minutes : minutes);
-    $("#seconds").text(seconds < 10 ? "0" + seconds : seconds);
-
-    if (totalSeconds < 1) {
-      time_over = true;
-      $("#btnFinish").click();
+        rs.push({
+          question_id: question_id,
+          choice: choice,
+        });
+      });
+      let room_id = $("#room_id").val();
+      $.ajax({
+        url: "/live/finish",
+        type: "post",
+        data: {
+          room: room_id,
+          result: JSON.stringify(rs),
+        },
+        success: function (data) {
+          if (data.code == 200) {
+            alert(data.msg);
+            $("#btnFinish").hide();
+          }
+        },
+      });
     }
-  }
-</script>
 
-<style>
-  .photo-profile {
-    border: 1px solid #ddd;
-    border-radius: 50%;
-    width: 30px;
-    height: 30px;
-  }
+    //hàm kiểm tra xem các câu hỏi đã được tick hết chưa
+    function checkAllTicked() {
+      let chk = true;
+      $("#questions div").each(function (index, v) {
+        let choice = $(v).find('input[type="radio"]:checked').val();
+        if (typeof choice === "undefined") {
+          chk = false;
+          return false;
+        }
+      });
+      return chk;
+    }
 
-  .anchor-username h4 {
-    font-weight: bold;
-  }
+    //lắng nghe sự kiện công bố đáp án
+    socket.on("populate-answers", (data) => {
+      $("#questions div").each(function (index, v) {
+        let question_id = $(v).attr("id");
+        let question = data.questions.find((x) => x._id === question_id);
+        $("#" + question_id + " > fieldset > h6." + question.answer + "").css(
+          "background-color",
+          "yellow"
+        );
+      });
 
-  .media-body {
-    padding-top: 0;
-  }
+      //khi công bố kết quả bài thi thì ẩn thông tin đồng hồ đếm ngược
+      clearInterval(intervalId);
+      $("#countdown").hide();
+    });
 
-  .fa-bullhorn {
-    font-size: 18px;
-  }
-  .modal-dialog {
-    width: 100%;
-    height: 100%;
-    margin: 0;
-    padding: 0;
-  }
+    //load danh sách thành viên hiện có trong room
+    socket.on("users-in-room", (data) => {
+      $("#current_users").text(
+        data.users.length < 10 ? "0" + data.users.length : data.users.length
+      );
+      $("#users_list").empty();
+      let users = '<ul class="list-unstyled mb20">';
+      let idx = 1;
+      $.each(data.users, function (k, u) {
+        users += '<div class="row">';
+        users += '<div class="col-xs-12">';
+        users += '<div class="media">';
+        users += '<div class="media-left">';
+        users +=
+          ' <img class="media-object photo-profile" src="' +
+          u.avatar +
+          '" alt="' +
+          u.member_code +
+          '">';
+        users += "</div>";
+        users += '<div class="media-body">';
+        users += '<h4 class="text-danger">' + u.member_code;
+        if (u.finished) {
+          //nếu user đã hoàn thành bài thi
+          users +=
+            '<span class = "text-success"><i class="fa fa-check" aria-hidden="true"></i></span>';
+        }
+        users += "</h4>";
+        users += "</div>";
+        users += "</div>";
+        users += "</div>";
+        users += "</div>";
+      });
+      users += "</ul>";
+      $("#users_list").append(users);
+    });
 
-  .modal-content {
-    height: auto;
-    min-height: 100%;
-    border-radius: 0;
-  }
-</style>
+    //public danh sách câu hỏi
+    socket.on("populate-questions", (data) => {
+      //hiện đồng hồ đếm ngược
+      totalSeconds = data.duration * 60;
+      intervalId = setInterval(startTimer, 1000);
+      $("#countdown").show();
+
+      let q = "";
+      let idx = 1;
+      $.each(data.questions, function (k, v) {
+        q += '<div class="row" id="' + v._id + '">';
+        q +=
+          '<h5 class = "text-danger"><span class="text-success">Câu ' +
+          idx++ +
+          ": </span>" +
+          v.question +
+          "</h5>";
+        q += "<fieldset>";
+        q +=
+          '<h6 class="A" style="line-height: 1.6; margin-left:10px;"><input type="radio" name="' +
+          v._id +
+          '" value="A"><span class="text-danger">A. </span>' +
+          v.option_a +
+          "</h6>";
+        q +=
+          '<h6 class="B" style="line-height: 1.6; margin-left:10px;"><input type="radio" name="' +
+          v._id +
+          '" value="B"><span class="text-danger">B. </span>' +
+          v.option_b +
+          "</h6>";
+        q +=
+          '<h6 class="C" style="line-height: 1.6; margin-left:10px;"><input type="radio" name="' +
+          v._id +
+          '" value="C"><span class="text-danger">C. </span>' +
+          v.option_c +
+          "</h6>";
+        q +=
+          '<h6 class="D" style="line-height: 1.6; margin-left:10px;"><input type="radio" name="' +
+          v._id +
+          '" value="D"><span class="text-danger">D. </span>' +
+          v.option_d +
+          "</h6>";
+        q += "</fieldset>";
+        q += "</div>";
+        q += "<hr>";
+      });
+      $("#questions").append(q);
+
+      //hiện nút nộp bài và kết thúc bài thi
+      $("#btnFinish").show(100);
+
+      //gọi lại sự kiện load room để cập nhật trạng thái room
+      socket.emit("add-room");
+    });
+
+    //khi đóng modal thì reload lại trang để xóa user đã thoát ra khỏi danh sách users trong room
+    $("#modalRoom").on("hidden.bs.modal", function (e) {
+      location.reload();
+    });
+
+    //hàm đếm ngược thời gian
+    function startTimer() {
+      --totalSeconds;
+      hours = Math.floor(totalSeconds / 3600);
+      minutes = Math.floor((totalSeconds - hours * 3600) / 60);
+      seconds = totalSeconds - (hours * 3600 + minutes * 60);
+      let remain =
+        '<span id="hour"></span>:<span id="minute"></span>:<span id="seconds"></span>';
+      $("#remainTime").html(remain);
+      $("#hour").text(hours < 10 ? "0" + hours : hours);
+      $("#minute").text(minutes < 10 ? "0" + minutes : minutes);
+      $("#seconds").text(seconds < 10 ? "0" + seconds : seconds);
+
+      if (totalSeconds < 1) {
+        time_over = true;
+        $("#btnFinish").click();
+      }
+    }
+  </script>
+
+  <style>
+    .photo-profile {
+      border: 1px solid #ddd;
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+    }
+
+    .anchor-username h4 {
+      font-weight: bold;
+    }
+
+    .media-body {
+      padding-top: 0;
+    }
+
+    .fa-bullhorn {
+      font-size: 18px;
+    }
+    .modal-dialog {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+
+    .modal-content {
+      height: auto;
+      min-height: 100%;
+      border-radius: 0;
+    }
+  </style>
+</div>

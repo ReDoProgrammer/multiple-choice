@@ -242,6 +242,8 @@ io.on('connection',function(socket){
         users: getRoomUsers(user.room)
       });
 
+      
+
       /*
         - Nếu sau khi bắt đầu bài thi & tất cả user trong room đều thoát hết
         1. Xóa room trên server ( tự động)

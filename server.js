@@ -224,8 +224,10 @@ io.on('connection',function(socket){
     const user = getCurrentUser(socket.id);
     if (user) {
       user.correct = correct;
-      console.log({user});
+      //gọi tới sự kiện ranks ở client để hiển thị bảng xếp hạng
+      io.to(user.room).emit('ranks',getRoomUsers(user.room));
     }
+    
   });
   socket.on('send-exam',(data)=>{
     let exam = {room:data.room,questions:data.questions,on_exam:data.on_exam};

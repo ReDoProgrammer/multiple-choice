@@ -261,6 +261,48 @@
       $("#users_list").append(users);
     });
 
+    //lắng nghe sự kiện xếp hạng user sau khi kết thúc bài thi
+    socket.on('ranks',(data)=>{
+      $("#users_list").empty();
+      let users = '<ul class="list-unstyled mb20">';
+      let rank = 1;
+      $.each(data.users, function (k, u) {
+        users += '<div class="row">';
+        users += '<div class="col-xs-12">';
+        users += '<div class="media">';
+        users += '<div class="media-left">';
+        users +=
+          ' <img class="media-object photo-profile" src="' +
+          u.avatar +
+          '" alt="' +
+          u.member_code +
+          '">';
+        users += "</div>";
+        users += '<div class="media-body">';
+        users += '<h4 class="text-danger">' + u.member_code;
+        if (index == 1) {
+          users +=  '<span class = "text-success"><i class="fa fa-star" aria-hidden="true"></i>#'+index+'</span>';
+        }else{
+          if (index == 2 || index == 3) {
+            users += '<span class = "text-info"><i class="fa fa-star" aria-hidden="true"></i>#'+index+'</span>';
+          }else{
+            if (index == 4 || index == 5) {
+              users += '<span class = "text-warning"><i class="fa fa-star" aria-hidden="true"></i>#'+index+'</span>';
+            }else{
+              users += '<span class = "text-danger"><i class="fa fa-star" aria-hidden="true"></i>#'+index+'</span>';
+            }
+        }
+        users += "</h4>";
+        users += "</div>";
+        users += "</div>";
+        users += "</div>";
+        users += "</div>";
+        index ++;
+      });
+      users += "</ul>";
+      $("#users_list").append(users);
+    });
+
     //public danh sách câu hỏi
     socket.on("populate-questions", (data) => {
       //hiện đồng hồ đếm ngược

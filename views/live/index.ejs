@@ -90,7 +90,7 @@
       let started_time =  $(this).closest("tr").find("td.started_time").data("time");
       let current_time = new Date();
       let exam_time = new Date(started_time);
-      let distance_time = Math.round((((exam_time-current_time) % 86400000) % 3600000) / 60000); // minutes
+      let distance_time = Math.round((((exam_time.getTime()-current_time.getTime()) % 86400000) % 3600000) / 60000); // minutes
       console.log({distance_time});
       if(distance_time>10){
         $('span#room_name').text(room_name);

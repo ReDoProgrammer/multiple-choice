@@ -291,15 +291,15 @@
 
     --totalSeconds;
     hours = Math.floor(totalSeconds / 3600);
-    minutes = Math.floor((totalSeconds - hour * 3600) / 60);
-    seconds = totalSeconds - (hour * 3600 + minute * 60);
+    minutes = Math.floor((totalSeconds - hours * 3600) / 60);
+    seconds = totalSeconds - (hours * 3600 + minutes * 60);
     console.log({hours,minutes,seconds});
     let remain ='<span id="hour"></span>:<span id="minute"></span>:<span id="seconds"></span>';
     $("#remainTime").html(remain);
     $("#hour").text(hours < 10 ? "0" + hours : hours);
     $("#minute").text(minutes < 10 ? "0" + minutes : minutes);
     $("#seconds").text(seconds < 10 ? "0" + seconds : seconds);   
-     
+
     if (totalSeconds < 1) {
       // //nếu hết thời gian làm bài
       // alert("Thời gian làm bài của bạn đã hết");

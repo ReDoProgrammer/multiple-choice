@@ -50,6 +50,11 @@ router.get('/tim-kiem',(req,res)=>{
 });
 router.get('/view',(req,res)=>{
   let {group,subject} = req.query;
+  
+  //nếu group là thi trực tuyến thì chuyển sang route live
+  if(group =='live'){
+    res.redirect('/live');
+  }
   if(group){//nếu biến group có giá trị => tìm kiếm group
     Group.findOne({meta:group},function(err,gr){
       if(err){//nếu có lỗi trong quá trình tìm kiếm

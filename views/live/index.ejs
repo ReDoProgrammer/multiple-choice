@@ -89,7 +89,7 @@
       let current_time = new Date();
       let exam_time = new Date(started_time);
       let distance_time =  Math.round((exam_time-current_time) / 60000);
-      let hours = distance_time%60;
+      let hours = distance_time/60;
       let minutes = Math.floor(distance_time/60);
       console.log({hours,minutes});
       //chỉ cho tham gia vào phòng 10 tối đa 10 trước giờ thi

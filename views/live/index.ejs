@@ -79,12 +79,14 @@
 
     // sự kiện click button jon phòng trên từng hàng tương ứng mỗi phòng
     $(document).on("click", "input[name='join']", function () {
+      let room_name = $(this).closest("tr").find("td.room_name").text();
 
       let started_time =  $(this).closest("tr").find("td.started_time").data("time");
       let current_time = new Date();
       let exam_time = new Date(started_time);
       let distance_time = Math.round((((exam_time-current_time) % 86400000) % 3600000) / 60000); // minutes
       if(distance_time>10){
+        $('#room_name').text(room_name);
         $('#modalPreventJoinRoom').modal();
         return;
       }
@@ -92,7 +94,7 @@
       let room_id = $(this).closest("tr").attr("id");
       let master = $(this).closest("tr").data("master");
       let subject_id = $(this).closest("tr").data("subject");
-      let room_name = $(this).closest("tr").find("td.room_name").text();
+     
       let duration = $(this).closest("tr").find("td.duration").text();
       let number_of_question = $(this)
         .closest("tr")

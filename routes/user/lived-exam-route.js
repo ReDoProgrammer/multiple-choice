@@ -169,7 +169,7 @@ router.post("/generate-exam", middleware.isLoggedIn, (req, res) => {
 router.get("/list", (req, res) => {
   let d = DateTime.local();
   let now = DateTime.DateTime;
-  console.log(now,now.zoneName);
+  console.log(now);
   LivedRoom.find({ status: { $in: [-1, 0] } })
     .populate("subject", "name")
     .exec(function (err, rooms) {

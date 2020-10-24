@@ -235,11 +235,11 @@ io.on('connection',function(socket){
           - load lại danh sách room
           - xóa room trên bộ nhớ server
         */
-      let chk = getRoomUsers(user.room).find(x=>x.correct == 'undefined');
-      if(!chk){     
-        removeExam(user.room);
-        io.sockets.emit('load-rooms');
-      }
+      // let chk = getRoomUsers(user.room).find(x=>x.correct == 'undefined');
+      // if(!chk){     
+      //   removeExam(user.room);
+      //   io.sockets.emit('load-rooms');
+      // }
     }
 
     

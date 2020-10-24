@@ -81,7 +81,8 @@
       let started_time =  $(this).closest("tr").find("td.started_time").data("time");
       let current_time = new Date();
       let exam_date = new Date(started_time);
-      console.log({started_time,current_time,exam_date});
+      let distance_time = exam_date.getTime() - current_time.getTime();
+      console.log({distance_time});
 
       let room_id = $(this).closest("tr").attr("id");
       let master = $(this).closest("tr").data("master");

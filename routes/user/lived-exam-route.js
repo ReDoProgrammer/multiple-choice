@@ -5,10 +5,12 @@ const Question = require("../../models/question-model");
 const middleware = require("../../middlewares/middleware");
 const mongoose = require("mongoose");
 
+//router trả về trang chủ live
 router.get("/", (req, res) => {
   res.render("live/index", { layout: "user-layout",group:'Thi trực tuyến'});
 });
 
+//kiểm tra trạng thái đăng nhập thành viên trả về session user
 router.get("/check-login", (req, res) => {
   if (req.session.user) {
     res.send({
@@ -21,6 +23,7 @@ router.get("/check-login", (req, res) => {
   }
 });
 
+//hàm kiểm tra quyền admin
 router.get("/permission", (req, res) => {
   if (req.session.user && req.session.user.is_admin) {
     res.send({ code: 200, msg: "you can create a live exam room" });
@@ -32,17 +35,20 @@ router.get("/permission", (req, res) => {
   }
 });
 
+//xóa toàn bộ phòng thi và kết quả làm bài của user
 router.get("/destroy-all-rooms", middleware.isAdmin, (req, res) => {
   LivedRoom.deleteMany({}, function (err) {
     if (err) {
       console.log("destroy all rooms failed: " + new Error(err));
     } else {
       LivedRoom.collection.drop();
-      res.send({ code: 200, msg: "destroy all rooms successfully" });
+      LivedExam.collection.drop();
+      res.send({ code: 200, msg: "destroy all rooms successfully and their exams" });
     }
   });
 });
 
+//hàm tạo phòng thi mới
 router.post("/create", middleware.isLoggedIn, (req, res) => {
   if (req.session.user.is_admin) {
     let { subject, number_of_question, duration, started_time } = req.body;
@@ -74,6 +80,7 @@ router.post("/create", middleware.isLoggedIn, (req, res) => {
   }
 });
 
+//hàm trả về danh sách câu hỏi được lấy random dựa vào thông tin của room
 router.post("/generate-exam", middleware.isLoggedIn, (req, res) => {
   let { room, subject } = req.body;
   LivedRoom.findById(room, function (err, r) {//tìm ra phòng để lấy thông tin số câu hỏi, thời gian thi
@@ -128,6 +135,7 @@ router.post("/generate-exam", middleware.isLoggedIn, (req, res) => {
   });
 });
 
+//hàm trả về danh sách phòng có trạng thái là -1: chưa thi hoặc 0: đang thi
 router.get("/list", (req, res) => {
   LivedRoom.find({ status: { $in: [-1, 0] } })
     .populate("subject", "name")
@@ -140,7 +148,9 @@ router.get("/list", (req, res) => {
     });
 });
 
-router.post('/finish',middleware.isLoggedIn,(req,res)=>{
+
+//hàm lưu kết quả bài thi của user
+router.post('/push-result',middleware.isLoggedIn,(req,res)=>{
   let result = req.body.result;
   let room = req.body.room;
   LivedExam.create({
@@ -154,6 +164,21 @@ router.post('/finish',middleware.isLoggedIn,(req,res)=>{
       res.send({code:200,msg:'Lưu kết quả bài kiểm thi thành công',exam:exam});
     }
   })
+});
+
+
+//hàm set trạng thái của phòng thi khi kết thúc thi
+router.post('/finish',middleware.isLoggedIn,(req,res)=>{
+  let room = req.body.room;
+  LivedRoom.findByIdAndUpdate({_id:room},{
+    status:1// đã thi xong
+  },function(err,room){
+    if(err){
+      console.log('finish room failed: '+new Error(err));
+    }else{
+      res.send({code:200,msg:'finish room successfully'});
+    }
+  });
 });
 
 /*

@@ -161,7 +161,7 @@
       });
       let room_id = $("#room_id").val();
       $.ajax({
-        url: "/live/finish",
+        url: "/live/push-result",
         type: "post",
         data: {
           room: room_id,
@@ -204,6 +204,28 @@
       //khi công bố kết quả bài thi thì ẩn thông tin đồng hồ đếm ngược
       clearInterval(intervalId);
       $("#countdown").hide();
+
+      /*
+        Khi công bố kết quả bài thi thì đồng nghĩa với room này có trạng thái là 1: đã thi xong
+        nên cần update lại trạng thái của phòng thi trong csdl
+      */
+      $.ajax({
+        url:'/live/finish',
+        type:'post',
+        data:{
+          room:data.room
+        },
+        success:function(data){
+          if(data.code == 200){
+            /*
+              Nếu cập nhật trạng thái của room thành công
+              thì gọi tới sự kiện add-room trên serrver
+              để server load lại danh sách rooms ở toàn bộ các clients
+            */
+            socket.emit('add-room');
+          }
+        }
+      });
     });
 
     //hàm kiểm tra kết quả làm bài của từng user
@@ -220,7 +242,6 @@
           correct++;
         }
       });
-      console.log('sô câu trả lời đúng: ',correct);
       socket.emit('push-result',correct);
     }
 

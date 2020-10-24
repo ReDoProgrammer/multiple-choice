@@ -207,14 +207,12 @@ io.on('connection',function(socket){
         /*
           Khi tất cả user trong room đã hoàn thành bài thi thì:
           - gửi dữ liệu bài thi để công bố đáp án
-          - xóa dữ liệu bài thi được lưu trên server
         */
        io.to(user.room).emit('users-in-room', {
           room: user.room,
           users: users
         });
-        io.to(user.room).emit('populate-answers',getExam(user.room));
-        // removeExam(user.room);
+        io.to(user.room).emit('populate-answers',getExam(user.room));       
       }      
     }
   });
@@ -231,6 +229,10 @@ io.on('connection',function(socket){
         }),
         exam_length:getExam(user.room).questions.length
       });
+
+      //xóa phòng thi này trên server & gọi lại sự kiện load room ở client
+      removeExam(user.room);
+      io.sockets.emit('load-rooms');
     }
     
   });

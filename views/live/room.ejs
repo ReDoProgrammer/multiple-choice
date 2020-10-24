@@ -132,10 +132,7 @@
       }
     }else{//đã hết giờ
       socket.emit("user-finish");
-      pushResult();
-      clearInterval(intervalId);
-      //khi kết thúc bài kiểm tra thì ẩn đồng hồ
-      $("#countdown").hide();  
+      pushResult();     
     }   
   });
 
@@ -190,6 +187,10 @@
       let question = data.questions.find(x=>x._id === question_id);
       $('#'+question_id+' > fieldset > h6.'+question.answer+'').css('background-color','yellow');      
     });
+
+    //khi công bố kết quả bài thi thì ẩn thông tin đồng hồ đếm ngược
+    clearInterval(intervalId);
+    $("#countdown").hide();  
   });
 
   //load danh sách thành viên hiện có trong room

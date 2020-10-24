@@ -209,12 +209,12 @@ io.on('connection',function(socket){
           - gửi dữ liệu bài thi để công bố đáp án
           - xóa dữ liệu bài thi được lưu trên server
         */
-      //  io.to(user.room).emit('users-in-room', {
-      //     room: user.room,
-      //     users: users
-      //   });
-      //   io.to(user.room).emit('populate-answers',getExam(user.room));
-      //   removeExam(user.room);
+       io.to(user.room).emit('users-in-room', {
+          room: user.room,
+          users: users
+        });
+        io.to(user.room).emit('populate-answers',getExam(user.room));
+        // removeExam(user.room);
       }      
     }
   });

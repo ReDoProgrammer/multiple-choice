@@ -229,7 +229,7 @@ io.on('connection',function(socket){
         users:getRoomUsers(user.room).sort(function(a,b){
           return b.correct - a.correct;
         }),
-        exam_length:getExam(user.room).length
+        exam_length:getExam(user.room).questions.length
       });
     }
     

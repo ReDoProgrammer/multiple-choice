@@ -167,9 +167,8 @@ router.post("/generate-exam", middleware.isLoggedIn, (req, res) => {
 
 //hàm trả về danh sách phòng có trạng thái là -1: chưa thi hoặc 0: đang thi
 router.get("/list", (req, res) => {
-  let d = DateTime.local();
-  let now = DateTime.DateTime;
-  console.log(now);
+  let d = new Date();
+  console.log(d.toLocaleString());
   LivedRoom.find({ status: { $in: [-1, 0] } })
     .populate("subject", "name")
     .exec(function (err, rooms) {

@@ -50,6 +50,8 @@
 <!-- include create new live room modal -->
 <%- include('add-room-modal') %>
 
+<%- include('prevent-join-room') %>
+
 <script type="text/javascript">
   $(document).ready(function () {
     LoadRooms();
@@ -83,7 +85,7 @@
       let exam_time = new Date(started_time);
       let distance_time = Math.round((((exam_time-current_time) % 86400000) % 3600000) / 60000); // minutes
       if(distance_time>10){
-        alert('Chưa tới giờ thi\nVui lòng quay lại 10 phút trước giờ thi để tham gia vào phòng thi');
+        $('#modalPreventJoinRoom').modal();
         return;
       }
 

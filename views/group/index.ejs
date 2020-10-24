@@ -46,7 +46,7 @@
 
 
     //sự kiên click button update trên mỗi dòng của table
-    $(document).on("click", "input[name='join']", function () {
+    $(document).on("click", "input[name='update']", function () {
       let group_id = $(this).closest("tr").attr("id");
       let order = $(this).closest('tr').find('td.order').text();
       let name = $(this).closest('tr').find('td.name').text();

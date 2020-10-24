@@ -14,13 +14,18 @@
             <div class="panel-success">
               <div class="panel-heading">
                 <div class="row">
-                  <div class="col-md-10 col-sm-10 col-xs-12">
+                  <div class="col-md-8 col-sm-8 col-xs-12">
                     <h6
                       id="room_name"
                       style="color: #fff; text-transform: uppercase"
                     ></h6>
                   </div>
-                  <div class="col-md-2 col-sm-2 col-xs-12">
+                  <div class="col-md-2 col-sm-2 col-xs-6 text-center" id="countdown">
+                    <h5 class="col-form-label" style="color: #ffffff">
+                      Còn lại: <span id="remainTime" style="color: #ffff33"></span>
+                    </h5>
+                  </div>
+                  <div class="col-md-2 col-sm-2 col-xs-6">
                     <button
                       type="button"
                       class="btn btn-sm btn-warning"
@@ -83,6 +88,9 @@
   $(document).ready(function () {
     $("#questions").empty();
     $("#btnFinish").hide();
+
+    //ẩn đồng hồ đếm ngược
+    $("#countdown").hide();
   });
   $("#btnStart").click(function () {
     let subject_id = $("#subject_id").val();
@@ -218,9 +226,9 @@
 
   //public danh sách câu hỏi
   socket.on("populate-questions", (data) => {
-    //không cho user khác tham gia vào room sau khi bắt đầu bài thi
-    // $('#roomslist > tr#'+data.room+' > td > input').attr('disabled', true);
-    // $('#roomslist > tr#'+data.room+' > td > input').attr("value", "Đang thi");
+   
+    //hiện đồng hồ đếm ngược
+    $("#countdown").show();
 
     let q = "";
     let idx = 1;

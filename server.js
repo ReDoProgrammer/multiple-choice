@@ -151,6 +151,9 @@ mongoose.connect(config.mongodb.mongodb,{
 server.listen(8080,()=>{
   console.log('server is running ...');
 });
+
+
+
 var clientIds = [];
 io.on('connection',function(socket){
   if(clientIds.indexOf(socket.id)<=-1){
@@ -206,6 +209,10 @@ io.on('connection',function(socket){
           - gửi dữ liệu bài thi để công bố đáp án
           - xóa dữ liệu bài thi được lưu trên server
         */
+       io.to(user.room).emit('users-in-room', {
+          room: user.room,
+          users: users
+        });
         io.to(user.room).emit('populate-answers',getExam(user.room));
         removeExam(user.room);
       }      
@@ -213,7 +220,6 @@ io.on('connection',function(socket){
   });
 
   socket.on('send-exam',(data)=>{
-    console.log('data in send exam:',data);
     let exam = {room:data.room,questions:data.questions};
     pushExam(exam);
     io.sockets.in(data.room).emit('populate-questions',data);

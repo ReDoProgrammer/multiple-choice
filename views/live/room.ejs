@@ -264,13 +264,13 @@
     //lắng nghe sự kiện xếp hạng user sau khi kết thúc bài thi
     socket.on('ranks',(users)=>{
       $("#users_list").empty();
-      let users = '<ul class="list-unstyled mb20">';
-      let rank = 1;
+      // let users = '<ul class="list-unstyled mb20">';
+      // let rank = 1;
       $.each(users, function (k, u) {
         console.log(u);
       });
-      users += "</ul>";
-      $("#users_list").append(users);
+      // users += "</ul>";
+      // $("#users_list").append(users);
     });
 
     //public danh sách câu hỏi

@@ -71,6 +71,9 @@
             <button type="button" class="btn btn-success" id="btnCreatNewRoom" style="margin-top:25px;">
               Tạo phòng
             </button>
+            <button type="button" class="btn btn-secondary" id="btnClose" style="margin-top:25px;">
+              Đóng
+            </button>
           </div>
         </div>
       </div>
@@ -143,5 +146,9 @@
         }
       },
     });
+  });
+
+  $('#btnClose').click(function(){
+    $('#AddRoomModal').modal('hide');
   });
 </script>

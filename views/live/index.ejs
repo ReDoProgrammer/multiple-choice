@@ -82,7 +82,7 @@
       let current_time = new Date();
       let exam_date = new Date(started_time);
       let distance_time = (exam_date.getTime() - current_time.getTime())/(60*60*1000);//quy ra phút
-      console.log({current_time,distance_time});
+      console.log({current_time,exam_date,distance_time});
 
       let room_id = $(this).closest("tr").attr("id");
       let master = $(this).closest("tr").data("master");

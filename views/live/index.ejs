@@ -29,12 +29,12 @@
       >
         <thead>
           <tr>
+            <th style="width: 40px"></th>
             <th>Môn thi</th>
             <th>Ngày thi</th>
             <th>Thời gian</th>
             <th>Câu hỏi</th>
-            <th>Người đăng ký</th>
-            <th style="width: 40px"></th>
+            <th>Người đăng ký</th>           
           </tr>
         </thead>
         <tbody id="roomslist"></tbody>
@@ -137,6 +137,18 @@
               '" data-master="' +
               v.created_by +
               '">';
+              rooms += '<td style ="width:150px;" class = "text-center">';
+            if (v.status == -1) {
+              rooms +=
+                '<input type="button" name="apply" value="Đăng ký" class="btn btn-sm btn-info"> &nbsp;&nbsp;&nbsp;';
+              rooms +=
+                '<input type="button" name="join" value="Join" class="btn btn-sm btn-warning">';             
+            } else {
+              rooms +=
+                '<input type="button" name="join" value="Đang thi" disabled  class="btn btn-sm btn-danger">';
+            }
+
+            rooms += "</td>";
             rooms +=
               '<td style="font-weight:bold; color:#FF6600" class = "room_name">' +
               v.subject.name +
@@ -154,18 +166,7 @@
               v.number_of_question +
               "</td>";
             rooms += '<td class="text-right">'+v.registers.length+'</td>';
-            rooms += '<td style ="width:150px;" class = "text-center">';
-            if (v.status == -1) {
-              rooms +=
-                '<input type="button" name="apply" value="Đăng ký" class="btn btn-sm btn-info"> &nbsp;&nbsp;&nbsp;';
-              rooms +=
-                '<input type="button" name="join" value="Join" class="btn btn-sm btn-warning">';             
-            } else {
-              rooms +=
-                '<input type="button" name="join" value="Đang thi" disabled  class="btn btn-sm btn-danger">';
-            }
-
-            rooms += "</td>";
+            
             rooms += "</tr>";
           });
           $("#roomslist").append(rooms);

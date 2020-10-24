@@ -80,6 +80,35 @@ router.post("/create", middleware.isLoggedIn, (req, res) => {
   }
 });
 
+
+router.post('/register',(req,res)=>{
+  if(req.session.user){
+    let room_id = req.body.room_id;
+    LivedRoom.findById(room_id,function(err,room){
+      if(err){
+        console.log('appy room failed. can not find room: '+new Error(err));
+      }else{
+        let chk = room.registers(x=>x == req.session.user._id);
+        if(!chk){
+          LivedRoom.updateOne({_id:room_id},{
+            $push:{registers:req.session.user._id}
+          },function(err,register){
+            if(err){
+              console.log('register to room failed: '+new Error(err));
+            }else{
+              res.send({code:200,msg:'Đăng ký dự thi thành công.\nVui lòng online đúng giờ để tham gia thi.\nGood luck ^_^!'});
+            }
+          });          
+        }else{
+          res.send({code:400,msg:'Danh sách dự thi đã tồn tại tài khoản của bạn'});
+        }
+      }
+    });
+  }else{
+    res.send({code:401,msg:'Vui lòng đăng nhập thành viên để đăng ký dự thi'});
+  }
+});
+
 //hàm trả về danh sách câu hỏi được lấy random dựa vào thông tin của room
 router.post("/generate-exam", middleware.isLoggedIn, (req, res) => {
   let { room, subject } = req.body;

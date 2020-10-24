@@ -288,30 +288,23 @@
 
   //hàm đếm ngược thời gian
   function startTimer() {
-    console.log('aaaaaaaaaaa:',totalSeconds);
+
     --totalSeconds;
-    hour = Math.floor(totalSeconds / 3600);
-    minute = Math.floor((totalSeconds - hour * 3600) / 60);
+    hours = Math.floor(totalSeconds / 3600);
+    minutes = Math.floor((totalSeconds - hour * 3600) / 60);
     seconds = totalSeconds - (hour * 3600 + minute * 60);
-    let remain =
-      '<span id="hour"></span>:<span id="minute"></span>:<span id="seconds"></span>';
-    let zremain =
-      '<span id="zhour"></span>:<span id="zminute"></span>:<span id="zseconds"></span>';
-
+    console.log({hours,minutes,seconds});
+    let remain ='<span id="hour"></span>:<span id="minute"></span>:<span id="seconds"></span>';
     $("#remainTime").html(remain);
-    $("#hour").text(hour < 10 ? "0" + hour : hour);
-    $("#minute").text(minute < 10 ? "0" + minute : minute);
-    $("#seconds").text(seconds < 10 ? "0" + seconds : seconds);
-
-    $("#topCountDown").html(zremain);
-    $("#zhour").text(hour < 10 ? "0" + hour : hour);
-    $("#zminute").text(minute < 10 ? "0" + minute : minute);
-    $("#zseconds").text(seconds < 10 ? "0" + seconds : seconds);
+    $("#hour").text(hours < 10 ? "0" + hours : hours);
+    $("#minute").text(minutes < 10 ? "0" + minutes : minutes);
+    $("#seconds").text(seconds < 10 ? "0" + seconds : seconds);   
+     
     if (totalSeconds < 1) {
-      //nếu hết thời gian làm bài
-      alert("Thời gian làm bài của bạn đã hết");
-      overtime = true; //set trạng thái hết giờ là true
-      $("#btnApplyExam").click(); //gọi tới sự kiện nộp bài
+      // //nếu hết thời gian làm bài
+      // alert("Thời gian làm bài của bạn đã hết");
+      // overtime = true; //set trạng thái hết giờ là true
+      // $("#btnApplyExam").click(); //gọi tới sự kiện nộp bài
     }
   }
 

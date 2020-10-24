@@ -209,12 +209,12 @@ io.on('connection',function(socket){
           - gửi dữ liệu bài thi để công bố đáp án
           - xóa dữ liệu bài thi được lưu trên server
         */
-       io.to(user.room).emit('users-in-room', {
-          room: user.room,
-          users: users
-        });
-        io.to(user.room).emit('populate-answers',getExam(user.room));
-        removeExam(user.room);
+      //  io.to(user.room).emit('users-in-room', {
+      //     room: user.room,
+      //     users: users
+      //   });
+      //   io.to(user.room).emit('populate-answers',getExam(user.room));
+      //   removeExam(user.room);
       }      
     }
   });
@@ -225,9 +225,12 @@ io.on('connection',function(socket){
     if (user) {
       user.correct = correct;
       //gọi tới sự kiện ranks ở client để hiển thị bảng xếp hạng
-      io.to(user.room).emit('ranks',getRoomUsers(user.room).sort(function(a,b){
-        return b.correct - a.correct;
-      }));
+      io.to(user.room).emit('ranks',{
+        users:getRoomUsers(user.room).sort(function(a,b){
+          return b.correct - a.correct;
+        }),
+        exam_length:getExam(user.room).length
+      });
     }
     
   });

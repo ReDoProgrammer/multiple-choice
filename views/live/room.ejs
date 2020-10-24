@@ -262,15 +262,50 @@
     });
 
     //lắng nghe sự kiện xếp hạng user sau khi kết thúc bài thi
-    socket.on('ranks',(users)=>{
+    socket.on('ranks',(data)=>{
       $("#users_list").empty();
-      // let users = '<ul class="list-unstyled mb20">';
-      // let rank = 1;
-      $.each(users, function (k, u) {
-        console.log(u);
+      let ranks = '<ul class="list-unstyled mb20">';
+      let rank = 1;
+      $.each(data.users, function (k, u) {
+        ranks += '<div class="row">';
+          ranks += '<div class="col-xs-12">';
+            ranks += '<div class="media">';
+              ranks += '<div class="media-left">';
+                ranks +=
+          ' <img class="media-object photo-profile" src="' +
+          u.avatar +
+          '" alt="' +
+          u.member_code +
+          '">';
+          ranks += "</div>";
+          ranks += '<div class="media-body">';
+            ranks += '<h4 class="text-danger">' + u.member_code;
+            if (rank == 1) {
+                ranks +=
+                'Hạng: '+rank+'<span class = "text-success"><i class="fa fa-star" aria-hidden="true"></i>('+u.correct+'/'+data.exam_length+')</span>';
+            }else{
+              if(rank == 2){
+                ranks +=
+                'Hạng: '+rank+'<span class = "text-primary"><i class="fa fa-star" aria-hidden="true"></i>('+u.correct+'/'+data.exam_length+')</span>';
+              }else{
+                if(rank == 3){
+                  ranks +=
+                  'Hạng: '+rank+'<span class = "text-warning"><i class="fa fa-star" aria-hidden="true"></i>('+u.correct+'/'+data.exam_length+')</span>';
+                }else{
+                  ranks +=
+                  'Hạng: '+rank+'<span class = "text-info"><i class="fa fa-bar-chart" aria-hidden="true"></i>('+u.correct+'/'+data.exam_length+')</span>';
+                }
+              }
+            }
+        ranks += "</h4>";
+        ranks += "</div>";
+        ranks += "</div>";
+        ranks += "</div>";
+        ranks += "</div>";
+        rank++;
       });
-      // users += "</ul>";
-      // $("#users_list").append(users);
+      ranks += "</ul>";
+      $("#users_list").append(ranks);
     });
 
     //public danh sách câu hỏi

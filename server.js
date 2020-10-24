@@ -220,8 +220,7 @@ io.on('connection',function(socket){
   });
 
   socket.on('send-exam',(data)=>{
-    console.log(data);
-    let exam = {room:data.room,questions:data.questions,onexam:data.onexam};
+    let exam = {room:data.room,questions:data.questions,on_exam:data.on_exam};
     pushExam(exam);
     io.sockets.in(data.room).emit('populate-questions',data);
   });
@@ -245,13 +244,16 @@ io.on('connection',function(socket){
 
       /*
         - Nếu sau khi bắt đầu bài thi & tất cả user trong room đều thoát hết
-        1. Xóa room trên server
+        1. Xóa room trên server ( tự động)
         2. Xóa bài thi lưu trên server
         3. Xóa room trong csdl
       */
       let userCount =  getRoomUsers(user.room).length;
       let exam = getExam(user.room);
-      console.log({userCount,exam});
+      if(exam && exam.on_exam && userCount == 0){
+        removeExam(user.room);
+        io.sockets.emit('remove-room',user.room);
+      }
     }
   });
 });

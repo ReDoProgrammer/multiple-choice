@@ -162,5 +162,11 @@
       },
     });
   });
+
+
+  // lắng nghe sự kiện xóa room
+  socket.on('remove-room',(room)=>{
+    console.log(room);
+  });
 </script>
 

@@ -98,7 +98,7 @@ router.post("/generate-exam", middleware.isLoggedIn, (req, res) => {
               { _id: room },
               {
                 $push: { questions: questions },
-                satus:0//khi tạo câu hỏi -> chuyển trạng thái room từ -1 -> 0 : đang thi
+                status:0//khi tạo câu hỏi -> chuyển trạng thái room từ -1 -> 0 : đang thi
               },
               {
                 safe: true,

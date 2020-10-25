@@ -129,6 +129,7 @@
         url:'/user/profile',
         type:'get',
         success:function(data){
+          console.log(data);
           if(data.code == 200){            
             socket.emit('logged-user',user);
           }

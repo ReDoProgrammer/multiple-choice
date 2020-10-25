@@ -278,6 +278,9 @@ io.on('connection',function(socket){
       io.sockets.emit('counter', {count:clientIds.length});//cập nhật lại số lượng người đang truy cập
     }
 
+    //xóa bộ nhớ của user đăng nhập trên server
+    removeUser(socket.id);
+
     //lấy user rời phòng
     const user = userLeave(socket.id);
 

@@ -1,18 +1,37 @@
 const users = [];//mảng lưu user
 
 
+//hàm xử lý sự kiện khi người dùng truy cập web
 function userConnect(socket_id){
   let user = {
     socket_id
   }  
   users.push(user);
-  console.log('user connect:',users);
+  return users;
+}
+
+//hàm xử lý sự kiện người dùng thoát khỏi trình duyệt web
+function userDisconnect(socket_id){
+  const index = users.findIndex(user => user.socket_id === socket_id);  
+  if (index !== -1) {
+    return users.splice(index, 1)[0];    
+  }
+  console.log('all users in array: ',users);
   return users;
 }
 
 
-// Join user to chat
+function userLoggedIn(user){
+  let chk = users.find(x=>x.username === user.username);
+  if(!chk){
+    users.push(user);
+  }
+  return users;
+}
+
+// Join user to exam room
 function userJoin(socket_id, username,avatar,member_code, room,finished) {
+
   let chk = users.find(x=>x.socket_id == socket_id && x.room == room);
   if(!chk){//chỉ add user khi user đó chưa có trong room tương ứng
     const user = {socket_id, username,avatar,member_code, room ,finished};
@@ -47,6 +66,7 @@ function getRoomUsers(room) {
 
 module.exports = {
   userConnect,
+  userDisconnect,
   userJoin,
   getCurrentUser,
   userLeave,

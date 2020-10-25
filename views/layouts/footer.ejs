@@ -130,8 +130,14 @@
         type:'get',
         success:function(data){
           console.log(data);
-          if(data.code == 200){            
-            socket.emit('logged-user',data.user);
+          if(data.code == 200){        
+            let user = {
+              username:data.user.username,
+              member_code:data.user.member_code,
+              avatar:data.user.avatar,
+              fullname:data.user.fullname
+            };    
+            socket.emit('logged-user',user);
           }
         }
       });    

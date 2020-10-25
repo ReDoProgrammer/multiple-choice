@@ -1,43 +1,44 @@
-const users = [];//mảng lưu user
+users = [];
+const {
+    getAllRoooms
+} = require('./rooms');
 
-// Join user to chat
-function userJoin(socket_id, username,avatar,member_code, room,finished) {
-  let chk = users.find(x=>x.socket_id == socket_id && x.room == room);
-  if(!chk){//chỉ add user khi user đó chưa có trong room tương ứng
-    const user = {socket_id, username,avatar,member_code, room ,finished};
-    users.push(user);
-    return user;
-  }
-  return chk;
+
+//hàm lưu user đã đăng nhập vào mảng trên server
+function pushUser(user){
+    u = Users.find(x=>x._id == user._id);
+    if(!u){
+        users.push(u);
+        console.log('all users:',users);
+    }
 }
 
-// Get current user
-function getCurrentUser(socket_id) {
-  return users.find(user => user.socket_id === socket_id);
-}
-
-//return all rooms
-function getAllRoooms(){
-  return users;
-}
-
-// User leaves chat
-function userLeave(socket_id) {
-  const index = users.findIndex(user => user.socket_id === socket_id);  
+//hàm giải phóng bộ nhớ lưu user hiện tại
+function removeUser(socket_id){
+    const index = users.findIndex(x => x.socket_id === socket_id);  
   if (index !== -1) {
     return users.splice(index, 1)[0];    
   }
 }
 
-// Get room users
-function getRoomUsers(room) {
-  return users.filter(user => user.room === room);
+function getUser(socket_id){
+    return users.find(x=>x.socket_id ===  socket_id);
+}
+
+function getUsers(){
+    return users;
+}
+
+function getUsersNotInRoom(){
+    rooms = getAllRoooms();
+    console.log(rooms);
 }
 
 module.exports = {
-  userJoin,
-  getCurrentUser,
-  userLeave,
-  getRoomUsers,
-  getAllRoooms
-};
+    pushUser, 
+    removeUser,
+    getUser,
+    getUsers,
+    getUsersNotInRoom
+}
+

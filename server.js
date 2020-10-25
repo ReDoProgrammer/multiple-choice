@@ -17,6 +17,14 @@ const {
   userLeave,
   getRoomUsers,
   getAllRoooms
+} = require('./utils/rooms');
+
+const {
+  pushUser, 
+  removeUser,
+  getUser,
+  getUsers,
+  getUsersNotInRoom
 } = require('./utils/users');
 
 // những hàm liên quan tới đề thi lưu trữ trên RAM server
@@ -163,7 +171,9 @@ io.on('connection',function(socket){
 
   //lắng nghe sự kiện list danh sách thành viên đăng nhập
   socket.on('logged-user',(user)=>{
-    console.log(user);
+    let u = user;
+    u.socket_id = socket.id;
+    pushUser(u);
   });
 
   socket.on('reply-comment',(data)=>{

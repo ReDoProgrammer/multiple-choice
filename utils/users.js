@@ -1,6 +1,6 @@
 users = [];
 const {
-    getAllRoooms
+    getAllRooms
 } = require('./rooms');
 
 
@@ -29,7 +29,7 @@ function getUsers(){
 }
 
 function getUsersNotInRoom(){
-    rooms = getAllRoooms();
+    rooms = getAllRooms();
     console.log(rooms);
     return users.filter(x => !rooms.includes(x));
 }

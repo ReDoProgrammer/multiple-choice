@@ -17,7 +17,7 @@ function getCurrentUser(socket_id) {
 }
 
 //return all rooms
-function getAllRoooms(){
+function getAllRooms(){
   return rooms;
 }
 
@@ -30,7 +30,7 @@ function userLeave(socket_id) {
 }
 
 // Get room rooms
-function getRoomrooms(room) {
+function getRoomUsers(room) {
   return rooms.filter(user => user.room === room);
 }
 
@@ -38,6 +38,6 @@ module.exports = {
   userJoin,
   getCurrentUser,
   userLeave,
-  getRoomrooms,
-  getAllRoooms
+  getRoomUsers,
+  getAllRooms
 };

@@ -128,7 +128,7 @@
       $.ajax({
         url:'/user/profile',
         type:'get',
-        success:function(result){
+        success:function(data){
           if(data.code == 200){            
             socket.emit('logged-user',user);
           }

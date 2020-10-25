@@ -9,6 +9,7 @@ function userConnect(socket_id) {
     };
     users.push(user);
   }
+  console.log('online user:',users.length);
   return users;
 }
 

@@ -28,10 +28,9 @@ function getUsers(){
     return users;
 }
 
-function getUsersNotInRoom(){
-    rooms = getAllRooms();
-    console.log({rooms,users});
-    return users.filter(x => !rooms.includes(x));
+function getUsersNotInRoom(){    
+    console.log({users});
+    return users.filter(x => !x.room);
 }
 
 module.exports = {

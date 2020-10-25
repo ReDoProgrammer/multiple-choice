@@ -19,7 +19,7 @@ const {
   getCurrentUser,
   userLeave,
   getRoomUsers,
-  getAllRooms
+  getAllUsers
 } = require('./utils/users');
 
 
@@ -177,6 +177,7 @@ io.on('connection',function(socket){
     socket.emit('push-notification',data);
   });
 
+//KHU VỰC XỬ LÝ PHÒNG THI TRỰC TUYẾN
 //sự kiện tạo mới 
   socket.on('add-room',()=>{
     io.sockets.emit('load-rooms');
@@ -263,11 +264,17 @@ io.on('connection',function(socket){
     io.sockets.in(data.room).emit('populate-questions',data);
   });
 
-  //sự kiện lắng nghe list user online mà không tham gia room nào
-  socket.on('list-users-not-in-any-room',()=>{
-    let users = getUsersNotInRoom();
-    console.log('user not in any room:',users);
-  });
+    //sự kiện lắng nghe list user online mà không tham gia room nào
+    // ---> lấy những user đã đăng nhập
+    // ---> và đang không tham gia ở room nào
+    socket.on('list-users-not-in-any-room',()=>{
+      console.log('user not in any room:',getAllUsers().find(x=>x.username && !x.room));
+    });
+  
+//KHU VỰC XỬ LÝ PHÒNG THI TRỰC TUYẾN
+
+
+
 
   socket.on('disconnect', function() {
     //sự kiện người dùng thoát trình duyệt web 

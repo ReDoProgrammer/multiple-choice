@@ -47,8 +47,8 @@ function getCurrentUser(socket_id) {
 }
 
 //return all rooms
-function getAllRooms(){
-  return rooms;
+function getAllUsers(){
+  return users;
 }
 
 // User leaves chat
@@ -72,5 +72,5 @@ module.exports = {
   getCurrentUser,
   userLeave,
   getRoomUsers,
-  getAllRooms
+  getAllUsers
 };

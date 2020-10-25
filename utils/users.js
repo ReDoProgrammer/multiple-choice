@@ -2,14 +2,13 @@ const users = []; //mảng lưu user
 
 //hàm xử lý sự kiện khi người dùng truy cập web
 function userConnect(socket_id) {
-  const index = users.findIndex(x => x.socket_id === socket_id);
+  const index = users.findIndex(x => x.socket_id === socket_id && !x.username);
   if (index == -1) {
     let user = {
       socket_id,
     };
     users.push(user);
   }
-  console.log('online user:',users.length);
   return users;
 }
 
@@ -24,10 +23,7 @@ function userDisconnect(socket_id) {
 }
 
 function userLoggedIn(user) {
-  let chk = users.find((x) => x.username === user.username);
-  if (!chk) {
-    users.push(user);
-  }
+  users.push(user);  
   let guest = users.filter(x=>!x.username);
   console.log("users logged in: ", users.length - guest.length,users);
   return users;

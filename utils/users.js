@@ -18,7 +18,7 @@ function userDisconnect(socket_id) {
   if (index !== -1) {
     return users.splice(index, 1)[0];
   }
-  console.log("all users in array: ", users);
+  console.log("user disconnected: ", users.length);
   return users;
 }
 

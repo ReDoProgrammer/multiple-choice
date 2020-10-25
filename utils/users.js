@@ -25,7 +25,7 @@ function userDisconnect(socket_id) {
 function userLoggedIn(user) {
   users.push(user);  
   let guest = users.filter(x=>!x.username);
-  console.log("users logged in: ", users.length - guest.length,users);
+  console.log(users.length - guest.length,{users});
   return users;
 }
 

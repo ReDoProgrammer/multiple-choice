@@ -183,17 +183,31 @@ io.on('connection',function(socket){
     io.sockets.emit('load-rooms');
   });
 
+  //sự kiện lắng nghe list user online mà không tham gia room nào
+    // ---> lấy những user đã đăng nhập
+    // ---> và đang không tham gia ở room nào
+    socket.on('list-users-not-in-any-room',()=>{
+      console.log('user not in any room:',getAllUsers().find(x=>x.username && !x.room));
+    });
+
   //join vào 1 phòng đã có
   socket.on('join-room',({ username,avatar,member_code, room ,finished})=>{
     const user = userJoin(socket.id, username,avatar,member_code, room,finished);    
     socket.join(user.room);
     
-    // Send users and room info
+    // cập nhật lại danh sách user trong phòng thi
     io.to(user.room).emit('users-in-room', {
       room: user.room,
       users: getRoomUsers(user.room)
     });
     
+  });
+
+//sự kiện công bố đề thi tới tất cả mọi người trong phòng thi
+  socket.on('send-exam',(data)=>{
+    let exam = {room:data.room,questions:data.questions,on_exam:data.on_exam};
+    pushExam(exam);
+    io.sockets.in(data.room).emit('populate-questions',data);
   });
 
   socket.on('user-finish',()=>{
@@ -257,18 +271,9 @@ io.on('connection',function(socket){
     
     
   });
-  socket.on('send-exam',(data)=>{
-    let exam = {room:data.room,questions:data.questions,on_exam:data.on_exam};
-    pushExam(exam);
-    io.sockets.in(data.room).emit('populate-questions',data);
-  });
 
-    //sự kiện lắng nghe list user online mà không tham gia room nào
-    // ---> lấy những user đã đăng nhập
-    // ---> và đang không tham gia ở room nào
-    socket.on('list-users-not-in-any-room',()=>{
-      console.log('user not in any room:',getAllUsers().find(x=>x.username && !x.room));
-    });
+
+    
   
 //KHU VỰC XỬ LÝ PHÒNG THI TRỰC TUYẾN
 

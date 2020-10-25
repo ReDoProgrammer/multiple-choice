@@ -14,6 +14,7 @@ const io = require('socket.io')(server);
 const {
   userConnect,
   userDisconnect,
+  userLoggedIn,
   userJoin,
   getCurrentUser,
   userLeave,

@@ -8,7 +8,7 @@ const {
 function pushUser(user){
     u = users.find(x=>x._id == user._id);
     if(!u){
-        users.push(u);
+        users.push(user);
         console.log('all users:',users);
     }
 }

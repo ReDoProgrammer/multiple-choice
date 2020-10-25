@@ -28,7 +28,7 @@ function userLoggedIn(user) {
   if (!chk) {
     users.push(user);
   }
-  let guest = users.find(x=>!x.username);
+  let guest = users.filter(x=>!x.username);
   console.log("users logged in: ", users.length - guest.length);
   return users;
 }

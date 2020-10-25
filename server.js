@@ -281,6 +281,7 @@ io.on('connection',function(socket){
 
 
   socket.on('disconnect', function() {
+    
     //sự kiện người dùng thoát trình duyệt web 
     let users = userDisconnect(socket.id);
     io.sockets.emit('counter', {count:users.length});//--> cập nhật lại bộ đếm hiện tại ở footer

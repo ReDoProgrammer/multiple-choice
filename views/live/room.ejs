@@ -58,11 +58,19 @@
             >
               <div class="panel-success">
                 <div class="panel-heading">
-                  <h6 style="color: #fff">
-                    Hiện tại (<span id="current_users" class="text-warning"
-                      >0</span
-                    >)
-                  </h6>
+                  <div class="row">
+                    <div class="col-xs-10">
+                      <h6 style="color: #fff">
+                        Hiện tại (<span id="current_users" class="text-warning"
+                          >0</span
+                        >)
+                      </h6>                      
+                    </div>
+                    <div class="col-xs-2"> 
+                      <button class = "btn btn-sm btn-info" style="border-radius: 50%; border:1px solid #ddd; margin:0 auto;" id="btnAddUser"><i class="fa fa-plus" aria-hidden="true"></i></button>
+                    </div>
+                  </div>
+                 
                 </div>
                 <!-- /.card-header -->
                 <div
@@ -78,12 +86,13 @@
         <div class="modal-footer">
           <button type="button" class="btn btn-primary" id="btnFinish">
             Kết thúc & Nộp bài
-          </button>
+          </button>          
         </div>
       </div>
     </div>
   </div>
 
+  <%- include('add-user-modal') %>
   <script type="text/javascript">
     /*
     khu vực khai báo biến toàn cục
@@ -407,6 +416,11 @@
         $("#btnFinish").click();
       }
     }
+  
+    // sự kiện add user cho room
+    $('#btnAddUser').click(function(){
+      $('#modalAddUser').modal();
+    });
   </script>
 
   <style>

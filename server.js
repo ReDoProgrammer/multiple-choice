@@ -251,6 +251,10 @@ io.on('connection',function(socket){
     io.sockets.in(data.room).emit('populate-questions',data);
   });
 
+  //sự kiện lắng nghe list user online mà không tham gia room nào
+  socket.on('list-users-not-in-any-room',()=>{
+    console.log('list-users-not-in-any-room');
+  });
 
   socket.on('disconnect', function() {
     let index = clientIds.indexOf(socket.id);    

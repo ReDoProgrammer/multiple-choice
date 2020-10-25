@@ -1,0 +1,31 @@
+<div class="modal" tabindex="-1" role="dialog" id="modalAddUser">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Danh sách thành viên đang online</h5>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-dismiss="modal">Hoàn toàn đồng ý!</button>
+         
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+   $('#modalAddUser').on('show.bs.modal', function (e) {
+        socket.emit('list-users-not-in-any-room');
+    })
+  </script>
+  

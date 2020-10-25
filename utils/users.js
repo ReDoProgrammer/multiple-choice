@@ -28,7 +28,7 @@ function userLoggedIn(user) {
   if (!chk) {
     users.push(user);
   }
-  console.log("users logged in: ", users);
+  console.log("users logged in: ", users.find(x=>x.username).length);
   return users;
 }
 

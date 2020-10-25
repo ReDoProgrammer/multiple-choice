@@ -1,39 +1,57 @@
 <div class="fixed-bottom" id="footer">
   <div class="row">
-    <hr>
+    <hr />
     <div class="col-md-6 col-xs-12">
-      <h5 style="padding-left:15px;; text-transform:uppercase; color: #FF6600">Mạnh dạn ủng hộ qua một trong những tài khoản sau</h5>
+      <h5 style="padding-left: 15px; text-transform: uppercase; color: #ff6600">
+        Mạnh dạn ủng hộ qua một trong những tài khoản sau
+      </h5>
       <ul class="list-unstyled mb20">
-        <li class = "outer-wrapper">
+        <li class="outer-wrapper">
           <div class="col-xs-2 frame">
-            <img src="/images/donate/bidv.png" alt="Tài khoản BIDV Nguyen Huu Truong" class="imgDonate">
+            <img
+              src="/images/donate/bidv.png"
+              alt="Tài khoản BIDV Nguyen Huu Truong"
+              class="imgDonate"
+            />
           </div>
           <div class="col-xs-10">
             <h5 class="text-danger">62110000454248</h5>
             <h5 class="text-info">NGUYEN HUU TRUONG</h5>
           </div>
         </li>
-        <li class = "outer-wrapper">
+        <li class="outer-wrapper">
           <div class="col-xs-2 frame">
-            <img src="/images/donate/momo.png" alt="Tài khoản BIDV Nguyen Huu Truong" class="imgDonate">
+            <img
+              src="/images/donate/momo.png"
+              alt="Tài khoản BIDV Nguyen Huu Truong"
+              class="imgDonate"
+            />
           </div>
           <div class="col-xs-10">
             <h5 class="text-danger">0911397764</h5>
             <h5 class="text-info">NGUYEN HUU TRUONG</h5>
           </div>
         </li>
-        <li class = "outer-wrapper">
+        <li class="outer-wrapper">
           <div class="col-xs-2 frame">
-            <img src="/images/donate/viettelpay.png" alt="Tài khoản BIDV Nguyen Huu Truong" class="imgDonate">
+            <img
+              src="/images/donate/viettelpay.png"
+              alt="Tài khoản BIDV Nguyen Huu Truong"
+              class="imgDonate"
+            />
           </div>
           <div class="col-xs-10">
             <h5 class="text-danger">9704229207615407073</h5>
             <h5 class="text-info">NGUYEN HUU TRUONG</h5>
           </div>
         </li>
-        <li class = "outer-wrapper">
+        <li class="outer-wrapper">
           <div class="col-xs-2 frame">
-            <img src="/images/donate/zalopay.png" alt="Tài khoản BIDV Nguyen Huu Truong" class="imgDonate">
+            <img
+              src="/images/donate/zalopay.png"
+              alt="Tài khoản BIDV Nguyen Huu Truong"
+              class="imgDonate"
+            />
           </div>
           <div class="col-xs-10">
             <h5 class="text-danger">0911397764</h5>
@@ -43,11 +61,27 @@
       </ul>
     </div>
     <div class="col-md-6 col-xs-12">
-      <strong id="copyright">Copyright © 2014-2020 <a href="https://redoapp.com">ReDo</a>.</strong>All rights reserved.
-      <a href="https://www.facebook.com/" target="_blank"><i class="fa fa-facebook-square social" aria-hidden="true" id="facebook"></i></a>
-      <a href="https://www.youtube.com/channel/UCvrK3w-_n9jPy93tHHJ7Rgg?view_as=subscriber?sub_confirmation=1" target="_blank"><i class="fa fa-youtube-play social" id="youtube" aria-hidden="true"></i></a>
+      <strong id="copyright"
+        >Copyright © 2014-2020 <a href="https://redoapp.com">ReDo</a>.</strong
+      >All rights reserved.
+      <a href="https://www.facebook.com/" target="_blank"
+        ><i
+          class="fa fa-facebook-square social"
+          aria-hidden="true"
+          id="facebook"
+        ></i
+      ></a>
+      <a
+        href="https://www.youtube.com/channel/UCvrK3w-_n9jPy93tHHJ7Rgg?view_as=subscriber?sub_confirmation=1"
+        target="_blank"
+        ><i
+          class="fa fa-youtube-play social"
+          id="youtube"
+          aria-hidden="true"
+        ></i
+      ></a>
       <ul class="list-unstyled mb20">
-        <li class = "outer-wrapper">
+        <li class="outer-wrapper">
           <div class="col-xs-3 frame">
             <i class="fa fa-angellist icon" aria-hidden="true"></i>
           </div>
@@ -65,7 +99,7 @@
             <h5 class="text-info statistic_number"></h5>
           </div>
         </li> -->
-        <li class = "outer-wrapper">
+        <li class="outer-wrapper">
           <div class="col-xs-3 frame">
             <i class="fa fa-users icon" aria-hidden="true"></i>
           </div>
@@ -88,32 +122,35 @@
   </div>
 </div>
 
-
-
 <script type="text/javascript">
-
-  $(document).ready(function(){
-    socket.on('counter', function (data) {
-      $('#current_visitors').text(data.count);
+  $(document).ready(function () {
+    socket.on("counter", function (users) { 
+      $.ajax({
+        url:'/user/profile',
+        type:'get',
+        success:function(result){
+          if(data.code == 200){            
+            socket.emit('logged-user',user);
+          }
+        }
+      });    
+      $("#current_visitors").text(users.count);
     });
     TotalMembers();
   });
 
-  function TotalMembers(){
+  function TotalMembers() {
     $.ajax({
-      url:'/user/count',
-      type:'get',
-      success:function(data){
-        if(data.code == 200){
-          $('#totalUsers').text(data.count);
+      url: "/user/count",
+      type: "get",
+      success: function (data) {
+        if (data.code == 200) {
+          $("#totalUsers").text(data.count);
         }
-      }
+      },
     });
   }
 </script>
-
-
-
 
 <style media="screen">
   #footer{

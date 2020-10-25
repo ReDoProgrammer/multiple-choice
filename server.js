@@ -161,6 +161,11 @@ io.on('connection',function(socket){
     io.sockets.emit('counter', {count:clientIds.length});
   }
 
+  //lắng nghe sự kiện list danh sách thành viên đăng nhập
+  socket.on('logged-user',(user)=>{
+    console.log(user);
+  });
+
   socket.on('reply-comment',(data)=>{
     socket.emit('push-notification',data);
   });

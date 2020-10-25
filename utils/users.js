@@ -3,7 +3,7 @@ const users = []; //mảng lưu user
 //hàm xử lý sự kiện khi người dùng truy cập web
 function userConnect(socket_id) {
   const index = users.findIndex(x => x.socket_id === socket_id);
-  if (index !== -1) {
+  if (index == -1) {
     let user = {
       socket_id,
     };

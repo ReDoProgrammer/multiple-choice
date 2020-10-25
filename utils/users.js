@@ -6,7 +6,7 @@ const {
 
 //hàm lưu user đã đăng nhập vào mảng trên server
 function pushUser(user){
-    u = Users.find(x=>x._id == user._id);
+    u = users.find(x=>x._id == user._id);
     if(!u){
         users.push(u);
         console.log('all users:',users);

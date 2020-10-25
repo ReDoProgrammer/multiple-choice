@@ -28,8 +28,8 @@ function userLoggedIn(user) {
   if (!chk) {
     users.push(user);
   }
-  lUsers = users.find(x=>x.username !=='undefined');
-  console.log("users logged in: ", lUsers.length);
+  let guest = users.find(x=>!x.username);
+  console.log("users logged in: ", users.length - guest.length);
   return users;
 }
 

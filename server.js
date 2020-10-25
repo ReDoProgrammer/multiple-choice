@@ -268,7 +268,8 @@ io.on('connection',function(socket){
 
   //sự kiện lắng nghe list user online mà không tham gia room nào
   socket.on('list-users-not-in-any-room',()=>{
-    console.log('list-users-not-in-any-room');
+    let users = getUsersNotInRoom();
+    console.log('user not in any room:',users);
   });
 
   socket.on('disconnect', function() {

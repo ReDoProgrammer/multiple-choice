@@ -12,20 +12,14 @@ const io = require('socket.io')(server);
 
 //những hàm liên quan đến user và room
 const {
+  userConnect,
   userJoin,
   getCurrentUser,
   userLeave,
   getRoomUsers,
   getAllRooms
-} = require('./utils/rooms');
-
-const {
-  pushUser, 
-  removeUser,
-  getUser,
-  getUsers,
-  getUsersNotInRoom
 } = require('./utils/users');
+
 
 // những hàm liên quan tới đề thi lưu trữ trên RAM server
 const{
@@ -162,12 +156,11 @@ server.listen(8080,()=>{
 
 
 
-var clientIds = [];
+
 io.on('connection',function(socket){
-  if(clientIds.indexOf(socket.id)<=-1){
-    clientIds.push(socket.id);
-    io.sockets.emit('counter', {count:clientIds.length});
-  }
+
+    let users = userConnect(socket.id)
+    io.sockets.emit('counter', {count:users.length});
 
   //lắng nghe sự kiện list danh sách thành viên đăng nhập
   socket.on('logged-user',(user)=>{
@@ -273,14 +266,7 @@ io.on('connection',function(socket){
   });
 
   socket.on('disconnect', function() {
-    let index = clientIds.indexOf(socket.id);    
-    if (index > -1) {
-      clientIds.splice(index, 1);
-      io.sockets.emit('counter', {count:clientIds.length});//cập nhật lại số lượng người đang truy cập
-    }
-
-    //xóa bộ nhớ của user đăng nhập trên server
-    removeUser(socket.id);
+   
 
     //lấy user rời phòng
     const user = userLeave(socket.id);

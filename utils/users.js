@@ -30,7 +30,7 @@ function getUsers(){
 
 function getUsersNotInRoom(){
     rooms = getAllRooms();
-    console.log({rooms});
+    console.log({rooms,users});
     return users.filter(x => !rooms.includes(x));
 }
 

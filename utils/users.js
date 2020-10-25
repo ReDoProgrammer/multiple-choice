@@ -10,7 +10,6 @@ function pushUser(user){
     if(!u){
         users.push(user);       
     }
-    console.log('all users:',users);
 }
 
 //hàm giải phóng bộ nhớ lưu user hiện tại

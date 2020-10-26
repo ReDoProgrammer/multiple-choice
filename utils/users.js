@@ -23,14 +23,10 @@ function userLoggedIn(user) {
 
 // Join user to exam room
 function userJoin(socket_id, username, avatar, member_code, room, finished) {
-  let chk = users.find((x) => x.socket_id == socket_id && x.room == room);
-  if (!chk) {
-    //chỉ add user khi user đó chưa có trong room tương ứng
+    userLeave(socket_id);
     const user = { socket_id, username, avatar, member_code, room, finished };
     users.push(user);
     return user;
-  }
-  return chk;
 }
 
 // Get current user

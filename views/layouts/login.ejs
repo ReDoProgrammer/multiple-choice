@@ -79,6 +79,7 @@ aria-hidden="true">
       },
       success:function(data){
         if(data.code == 200){
+          console.log(data);
           location.reload()
         }else{
           $('#msgSignIn').text(data.msg);

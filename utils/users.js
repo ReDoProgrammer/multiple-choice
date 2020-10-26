@@ -15,19 +15,8 @@ function userConnect(socket_id) {
 
 
 function userLoggedIn(user) {
-  const index = users.findIndex(x => x.username === user.username);
-  if(index == -1){
-    console.log('user logged in');
-    users.push(user);  
-  }else{
-    u = users.find(x=>x.socket_id == user.socket_id && !x.username);
-    if(u){
-      console.log('alter props from exsit user');
-      u.username = user.username;
-      u.avatar = user.avatar;
-      u.member_code = user.member_code;
-    }
-  } 
+  userLeave(user.socket_id);
+  users.push(user);
   let guest = users.filter(x=>!x.username);
   // console.log(users.length - guest.length,{users});
   return users;

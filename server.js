@@ -281,11 +281,6 @@ io.on('connection',function(socket){
 
   socket.on('disconnect', function() {
     
-    //sự kiện người dùng thoát trình duyệt web 
-    let users = userDisconnect(socket.id);
-    io.sockets.emit('counter', {count:users.length});//--> cập nhật lại bộ đếm hiện tại ở footer
-
-
 
     //lấy user rời phòng thi
     const user = userLeave(socket.id);
@@ -297,8 +292,7 @@ io.on('connection',function(socket){
         users: getRoomUsers(user.room)
       });
 
-      //cập nhật số người truy cập hiện tại
-      io.sockets.emit('counter', {count:users.length});
+    
 
       /*
         - Nếu sau khi bắt đầu bài thi & tất cả user trong room đều thoát hết
@@ -313,5 +307,7 @@ io.on('connection',function(socket){
         io.sockets.emit('remove-room',user.room);
       }
     }
+      //cập nhật số người truy cập hiện tại
+    io.sockets.emit('counter', {count:getAllUsers().length});
   });
 });

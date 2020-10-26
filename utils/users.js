@@ -22,9 +22,9 @@ function userLoggedIn(user) {
 }
 
 // Join user to exam room
-function userJoin(socket_id, username, avatar, member_code, room, finished) {
+function userJoin(socket_id, username,fullname,avatar, member_code, room, finished) {
     userLeave(socket_id);
-    const user = { socket_id, username, avatar, member_code, room, finished };
+    const user = { socket_id, username,fullname, avatar, member_code, room, finished };
     users.push(user);
     return user;
 }

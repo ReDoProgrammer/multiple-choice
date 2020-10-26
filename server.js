@@ -184,13 +184,14 @@ io.on('connection',function(socket){
 
   socket.on('user-leave-room',()=>{
     console.log(socket.id+' leave room');
-    userLeave(socket.id);
+    
     // cập nhật lại danh sách user trong phòng thi
-    let user = getCurrentUser(socket.id).room;
+    let user = getCurrentUser(socket.id);
     io.to(user.room).emit('users-in-room', {
       room: user.room,
       users: getRoomUsers(user.room)
     });
+    userLeave(socket.id);
   });
 
   //sự kiện lắng nghe list user online mà không tham gia room nào

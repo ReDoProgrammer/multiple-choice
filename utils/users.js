@@ -14,12 +14,12 @@ function userConnect(socket_id) {
 
 //hàm xử lý sự kiện người dùng thoát khỏi trình duyệt web
 function userDisconnect(socket_id) {
-  // const index = users.findIndex((user) => user.socket_id === socket_id);
-  // if (index !== -1) {
-  //   return users.splice(index, 1)[0];
-  // }
+  const index = users.findIndex((user) => user.socket_id === socket_id);
+  if (index !== -1) {
+    return users.splice(index, 1)[0];
+  }
   console.log("user disconnected"+socket_id);
-  return users;
+
 }
 
 function userLoggedIn(user) {

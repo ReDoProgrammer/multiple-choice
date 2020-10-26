@@ -395,7 +395,7 @@
 
     //khi đóng modal thì reload lại trang để xóa user đã thoát ra khỏi danh sách users trong room
     $("#modalRoom").on("hidden.bs.modal", function (e) {
-      socket.emit('add-room');
+      socket.emit('user-leave-room');
     });
 
     //hàm đếm ngược thời gian

@@ -182,6 +182,16 @@ io.on('connection',function(socket){
     io.sockets.emit('load-rooms');
   });
 
+  socket.on('user-leave-room',()=>{
+    console.log(socket.id+' leave room');
+    userConnect(socket.id);
+    // cập nhật lại danh sách user trong phòng thi
+    io.to(user.room).emit('users-in-room', {
+      room: user.room,
+      users: getRoomUsers(user.room)
+    });
+  });
+
   //sự kiện lắng nghe list user online mà không tham gia room nào
     // ---> lấy những user đã đăng nhập
     // ---> và đang không tham gia ở room nào

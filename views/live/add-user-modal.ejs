@@ -34,6 +34,7 @@
     socket.on("users-nin-room", (users) => {
       if (users) {
         let d = '';
+        $("#users-nin-room").empty();
         $.each(users, function (k, user) {
           d+= '<tr id="'+user.socket_id+'">';
           d+=     '<th scope="row" class = "text-danger">'+user.member_code+'</th>';         

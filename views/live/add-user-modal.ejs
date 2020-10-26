@@ -2,7 +2,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Danh sách thành viên đang online</h5>
+        <h5 class="modal-title">Mời các thành viên khác vào phòng thi</h5>
         <button
           type="button"
           class="close"
@@ -31,7 +31,7 @@
       if (users) {
         let d = '<ul class="list-unstyled mb20">';
         $.each(users, function (k, user) {
-          d += '<div class="row">';
+          d += '<div class="row" id="'+user.socket_id+'">';
           d += '<div class="col-xs-12">';
           d += '<div class="media">';
           d += '<div class="media-left">';
@@ -45,6 +45,7 @@
           d += '<div class="media-body">';
           d += '<h4 class="text-danger">' + user.fullname;
           d += "</h4>";
+          d +=  '<input type="button" name = "add" value="Mời" class="btn btn-xs btn-warning">';
           d += "</div>";
           d += "</div>";
           d += "</div>";

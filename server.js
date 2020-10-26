@@ -186,7 +186,7 @@ io.on('connection',function(socket){
     console.log(socket.id+' leave room');
     userConnect(socket.id);
     // cập nhật lại danh sách user trong phòng thi
-    io.to(user.room).emit('users-in-room', {
+    io.to(getCurrentUser(socket.id).room).emit('users-in-room', {
       room: user.room,
       users: getRoomUsers(user.room)
     });

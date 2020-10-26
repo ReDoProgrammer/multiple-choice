@@ -25,7 +25,12 @@
 
   <script>
    $('#modalAddUser').on('show.bs.modal', function (e) {
-        socket.emit('list-users-not-in-any-room');
-    })
+        socket.emit('list-users-not-in-any-room');//gọi tới sự kiện list users không tham gia bất cứ phòng nào
+        socket.on('users-nin-room',users=>{
+          console.log(users);
+        });
+    });
+
+
   </script>
   

@@ -1,50 +1,58 @@
 <div class="modal" tabindex="-1" role="dialog" id="modalAddUser">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Danh sách thành viên đang online</h5>
-          <button
-            type="button"
-            class="close"
-            data-dismiss="modal"
-            aria-label="Close"
-          >
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body" >
-          <div class="container" id="users-nin-room">
-
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-primary" data-dismiss="modal">Hoàn toàn đồng ý!</button>
-         
-        </div>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Danh sách thành viên đang online</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="container" id="users-nin-room"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">
+          Hoàn toàn đồng ý!
+        </button>
       </div>
     </div>
   </div>
- 
+</div>
 
-  <script>
-   $('#modalAddUser').on('show.bs.modal', function (e) {
-        socket.emit('list-users-not-in-any-room');//gọi tới sự kiện list users không tham gia bất cứ phòng nào
-        socket.on('users-nin-room',users=>{
-          
-          if(users){
-            let d = '';
-            $.each(users,function(k,user){
-              d += '<div class="row">';
-              d +='<div class = "col-xs-4"><img src="'+user.avatar+'" alt="'+user.fullname+'" style="width:15px; height:15px; border-radius:50%; border: 1px solid #ddd"></>';
-              d +='<div class = "col-xs-6">'+user.fullname+'</>';
-              d +='<div class = "col-xs-2"> <input type="button" value="Mời" name="add" class="btn btn-xs btn-primary"></>';              
-              d +='</div>';
-            });
-            $('#users-nin-room').append(d);
-          }
+<script>
+  $("#modalAddUser").on("show.bs.modal", function (e) {
+    socket.emit("list-users-not-in-any-room"); //gọi tới sự kiện list users không tham gia bất cứ phòng nào
+    socket.on("users-nin-room", (users) => {
+      if (users) {
+        let d = '<ul class="list-unstyled mb20">';
+        $.each(users, function (k, user) {
+          d += '<div class="row">';
+          d += '<div class="col-xs-12">';
+          d += '<div class="media">';
+          d += '<div class="media-left">';
+          d +=
+            ' <img class="media-object photo-profile" src="' +
+            user.avatar +
+            '" alt="' +
+            user.fullname +
+            '">';
+          d += "</div>";
+          d += '<div class="media-body">';
+          d += '<h4 class="text-danger">' + user.fullname;
+          d += "</h4>";
+          d += "</div>";
+          d += "</div>";
+          d += "</div>";
+          d += "</div>";
         });
+        d += "</ul>";
+        $("#users-nin-room").append(d);
+      }
     });
-
-
-  </script>
-  
+  });
+</script>

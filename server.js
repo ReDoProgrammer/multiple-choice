@@ -183,14 +183,29 @@ io.on('connection',function(socket){
   });
 
   socket.on('user-leave-room',()=>{
-    console.log(socket.id+' leave room');
+
+    let user = getCurrentUser(socket.id); //lấy user hiện tại
+
+    let u = { // sao chép thông tin của user hiện tại nhưng không lấy thông tin room vì đã thoát
+      socket_id:user.socket_id,
+      username: user.username,
+      fullname: user.fullname,
+      member_code: user.member_code,
+      avatar: user.avatar
+    }
+
+    let room = user.room;//lấy thông tin phòng
+
+    //xóa user hiện tại
+    userLeave(user.socket_id);
     
-    // cập nhật lại danh sách user trong phòng thi
-    let user = getCurrentUser(socket.id);
-    userLeave(socket.id);
-    io.to(user.room).emit('users-in-room', {
-      room: user.room,
-      users: getRoomUsers(user.room)
+    //thêm lại bản sao của user hiện tại được tính là 1 thành viên đăng nhập
+    userLoggedIn(u);
+
+    //cập nhật lại danh sách user trong room
+    io.to(room).emit('users-in-room', {
+      room: room,
+      users: getRoomUsers(room)
     });
     
   });

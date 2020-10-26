@@ -187,11 +187,12 @@ io.on('connection',function(socket){
     
     // cập nhật lại danh sách user trong phòng thi
     let user = getCurrentUser(socket.id);
+    userLeave(socket.id);
     io.to(user.room).emit('users-in-room', {
       room: user.room,
       users: getRoomUsers(user.room)
     });
-    userLeave(socket.id);
+    
   });
 
   //sự kiện lắng nghe list user online mà không tham gia room nào

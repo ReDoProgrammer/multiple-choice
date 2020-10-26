@@ -9,7 +9,6 @@ function userConnect(socket_id) {
     };
     users.push(user);
   }
-  console.log(users);
   return users;
 }
 
@@ -18,7 +17,7 @@ function userLoggedIn(user) {
   userLeave(user.socket_id);
   users.push(user);
   let guest = users.filter(x=>!x.username);
-  // console.log(users.length - guest.length,{users});
+  console.log('thành viên:',users.length - guest.length,'tất cả:',{users});
   return users;
 }
 
@@ -46,11 +45,12 @@ function getAllUsers() {
 
 // User disconnect
 function userLeave(socket_id) {
+  console.log('disconnect: '+socket_id);
   const index = users.findIndex(x => x.socket_id === socket_id);
   if (index !== -1) {
     return users.splice(index, 1)[0];
   }
-  console.log('disconnect: '+socket_id);
+ 
 }
 
 // Get room rooms

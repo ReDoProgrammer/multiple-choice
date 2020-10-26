@@ -2,7 +2,7 @@ const users = []; //mảng lưu user
 
 //hàm xử lý sự kiện khi người dùng truy cập web
 function userConnect(socket_id) {
-  const index = users.findIndex(x => x.socket_id === socket_id && !x.username);
+  const index = users.findIndex(x => x.socket_id === socket_id);
   if (index == -1) {
     let user = {
       socket_id,
@@ -14,7 +14,19 @@ function userConnect(socket_id) {
 
 
 function userLoggedIn(user) {
-  users.push(user);  
+  const index = users.findIndex(x => x.username === user.username);
+  if(index == -1){
+    console.log('user logged in');
+    users.push(user);  
+  }else{
+    u = user.find(x=>x.socket_id == user.socket_id && !x.username);
+    if(u){
+      console.log('alter props from exsit user');
+      u.username = user.username;
+      u.avatar = user.avatar;
+      u.member_code = user.member_code;
+    }
+  } 
   let guest = users.filter(x=>!x.username);
   // console.log(users.length - guest.length,{users});
   return users;
@@ -42,7 +54,7 @@ function getAllUsers() {
   return users;
 }
 
-// User leaves chat
+// User disconnect
 function userLeave(socket_id) {
   const index = users.findIndex(x => x.socket_id === socket_id);
   if (index !== -1) {

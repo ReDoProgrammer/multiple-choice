@@ -187,7 +187,7 @@ io.on('connection',function(socket){
     userConnect(socket.id);
     // cập nhật lại danh sách user trong phòng thi
     io.to(getCurrentUser(socket.id).room).emit('users-in-room', {
-      room: user.room,
+      room: getCurrentUser(socket.id).room,
       users: getRoomUsers(user.room)
     });
   });

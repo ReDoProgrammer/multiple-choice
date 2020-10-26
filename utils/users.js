@@ -19,7 +19,7 @@ function userLoggedIn(user) {
     console.log('user logged in');
     users.push(user);  
   }else{
-    u = user.find(x=>x.socket_id == user.socket_id && !x.username);
+    u = users.find(x=>x.socket_id == user.socket_id && !x.username);
     if(u){
       console.log('alter props from exsit user');
       u.username = user.username;

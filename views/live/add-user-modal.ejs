@@ -27,19 +27,19 @@
   <script>
    $('#modalAddUser').on('show.bs.modal', function (e) {
         socket.emit('list-users-not-in-any-room');//gọi tới sự kiện list users không tham gia bất cứ phòng nào
-        socket.on('users-nin-room',data=>{
-          console.log(data.users);
-          // if(data.users){
-          //   let d = '';
-          //   $.each(data.users,function(k,user){
-          //     d += '<div class="row">';
-          //     d +='<div class = "col-xs-4"><img src="'+user.avatar+'" alt="'+user.fullname+'" style="width:15px; height:15px; border-radius:50%; border: 1px solid #ddd"></>';
-          //     d +='<div class = "col-xs-6">'+user.fullname+'</>';
-          //     d +='<div class = "col-xs-2"> <input type="button" value="Mời" name="add" class="btn btn-xs btn-primary"></>';              
-          //     d +='</div>';
-          //   });
-          //   $('#users-nin-room').html(d);
-          // }
+        socket.on('users-nin-room',users=>{
+          
+          if(users){
+            let d = '';
+            $.each(users,function(k,user){
+              d += '<div class="row">';
+              d +='<div class = "col-xs-4"><img src="'+user.avatar+'" alt="'+user.fullname+'" style="width:15px; height:15px; border-radius:50%; border: 1px solid #ddd"></>';
+              d +='<div class = "col-xs-6">'+user.fullname+'</>';
+              d +='<div class = "col-xs-2"> <input type="button" value="Mời" name="add" class="btn btn-xs btn-primary"></>';              
+              d +='</div>';
+            });
+            $('#users-nin-room').html(d);
+          }
         });
     });
 

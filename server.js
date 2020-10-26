@@ -208,7 +208,7 @@ io.on('connection',function(socket){
     // ---> lấy những user đã đăng nhập
     // ---> và đang không tham gia ở room nào
     socket.on('list-users-not-in-any-room',()=>{
-      socket.emit('users-nin-room',getAllUsers().find(x=>x.username && !x.room));
+      socket.emit('users-nin-room',{users:getAllUsers().find(x=>x.username && !x.room)});
     });
 
   //join vào 1 phòng đã có

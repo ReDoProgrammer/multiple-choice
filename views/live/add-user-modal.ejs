@@ -14,10 +14,7 @@
       </div>
       <div class="modal-body">
         <table class="table table-borderless">          
-          <tbody id="users-nin-room">
-            
-            
-          </tbody>
+          <tbody id="users-nin-room"></tbody>
         </table>
       </div>
       <div class="modal-footer">
@@ -39,8 +36,7 @@
         let d = '';
         $.each(users, function (k, user) {
           d+= '<tr id="'+user.socket_id+'">';
-          d+=     '<th scope="row" class = "text-danger">'+user.member_code+'</th>';
-          d+=    '<td><img src="'+user.avatar+'" alt="'+user.fullname+'" style="height:15px; width:15px; border:1px solid #ddd; border-radius:50%;"></td>';
+          d+=     '<th scope="row" class = "text-danger">'+user.member_code+'</th>';         
           d+=    '<td class = "text-primary" style="font-weight:bold;">'+user.fullname+'</td>';
           d+=    '<td><input type="button" value="Mời" name = "add" class="btn btn-xs btn-warning"></td>';
           d+=  '</tr>';

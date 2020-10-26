@@ -13,7 +13,6 @@ const io = require('socket.io')(server);
 //những hàm liên quan đến user và room
 const {
   userConnect,
-  userDisconnect,
   userLoggedIn,
   userJoin,
   getCurrentUser,
@@ -298,7 +297,8 @@ io.on('connection',function(socket){
         users: getRoomUsers(user.room)
       });
 
-
+      //cập nhật số người truy cập hiện tại
+      io.sockets.emit('counter', {count:users.length});
 
       /*
         - Nếu sau khi bắt đầu bài thi & tất cả user trong room đều thoát hết

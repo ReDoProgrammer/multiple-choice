@@ -225,8 +225,15 @@ io.on('connection',function(socket){
   });
 
   //lắng nghe sự kiện mời user và phòng thi
-  socket.on('invite-user',data=>{
-    console.log(data);
+  socket.on('invite-user',data=>{    
+    //gửi lời mời tới người được chọn
+    let invitation = {
+      room_title:data.room_title,
+      room: getCurrentUser(socket.id).room,
+      inviter:getCurrentUser(socket.id).fullname
+    }
+    console.log(invitation);
+    io.to(data.socket_id).emit('send-invitation',invitation);    
   });
 
 //sự kiện công bố đề thi tới tất cả mọi người trong phòng thi

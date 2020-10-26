@@ -13,33 +13,10 @@
         </button>
       </div>
       <div class="modal-body">
-        <table class="table table-borderless">
-          <thead>
-            <tr>
-              <th scope="col">#</th>
-              <th scope="col">First</th>
-              <th scope="col">Last</th>
-              <th scope="col">Handle</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <th scope="row">1</th>
-              <td>Mark</td>
-              <td>Otto</td>
-              <td>@mdo</td>
-            </tr>
-            <tr>
-              <th scope="row">2</th>
-              <td>Jacob</td>
-              <td>Thornton</td>
-              <td>@fat</td>
-            </tr>
-            <tr>
-              <th scope="row">3</th>
-              <td colspan="2">Larry the Bird</td>
-              <td>@twitter</td>
-            </tr>
+        <table class="table table-borderless">          
+          <tbody id="users-nin-room">
+            
+            
           </tbody>
         </table>
       </div>
@@ -52,34 +29,23 @@
   </div>
 </div>
 
+
+
 <script>
   $("#modalAddUser").on("show.bs.modal", function (e) {
     socket.emit("list-users-not-in-any-room"); //gọi tới sự kiện list users không tham gia bất cứ phòng nào
     socket.on("users-nin-room", (users) => {
       if (users) {
-        let d = '<ul class="list-unstyled mb20">';
+        let d = '';
         $.each(users, function (k, user) {
-          d += '<div class="row" id="'+user.socket_id+'">';
-          d += '<div class="col-xs-12">';
-          d += '<div class="media">';
-          d += '<div class="media-left">';
-          d +=
-            ' <img class="media-object photo-profile" src="' +
-            user.avatar +
-            '" alt="' +
-            user.fullname +
-            '">';
-          d += "</div>";
-          d += '<div class="media-body">';
-          d += '<h4 class="text-danger">' + user.fullname;
-          d += "</h4>";
-          d +=  '<input type="button" name = "add" value="Mời" class="btn btn-xs btn-warning">';
-          d += "</div>";
-          d += "</div>";
-          d += "</div>";
-          d += "</div>";
+          d+= '<tr id="'+user.socket_id+'">';
+          d+=     '<th scope="row">'+user.member_code+'</th>';
+          d+=    '<td><img src="'+user.avatar+'" alt="'+user.fullname+'"></td>';
+          d+=    '<td>'+user.fullname+'</td>';
+          d+=    '<td><input type="button" value="Mời thi chung" name = "add" class="btn btn-xs btn-warning"></td>';
+          d+=  '</tr>';
         });
-        d += "</ul>";
+
         $("#users-nin-room").append(d);
       }
     });

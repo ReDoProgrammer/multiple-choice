@@ -44,6 +44,10 @@
           <script data-ad-client="ca-pub-7424972060609577" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
           <script type="text/javascript">
             var socket = io("https://redoapp.com/");
+            $(document).ready(function(){
+              LoadProfile();
+            });
+
             function LoadProfile(){
               $.ajax({
                 url:'/user/profile',

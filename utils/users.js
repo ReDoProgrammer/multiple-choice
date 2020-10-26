@@ -16,8 +16,6 @@ function userConnect(socket_id) {
 function userLoggedIn(user) {
   userLeave(user.socket_id);
   users.push(user);
-  let guest = users.filter(x=>!x.username);
-  console.log('thành viên:',users.length - guest.length,'tất cả:',{users});
   return users;
 }
 
@@ -43,7 +41,6 @@ function getAllUsers() {
 
 // User disconnect
 function userLeave(socket_id) {
-  console.log('disconnect: '+socket_id);
   const index = users.findIndex(x => x.socket_id === socket_id);
   if (index !== -1) {
     return users.splice(index, 1)[0];

@@ -79,7 +79,13 @@ aria-hidden="true">
       },
       success:function(data){
         if(data.code == 200){
-          console.log(data);
+          let user = {
+              username:data.user.username,
+              member_code:data.user.member_code,
+              avatar:data.user.avatar,              
+              fullname:data.user.fullname
+            };    
+            socket.emit('logged-user',user);
         }else{
           $('#msgSignIn').text(data.msg);
         }

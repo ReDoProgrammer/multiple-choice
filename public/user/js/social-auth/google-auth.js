@@ -58,6 +58,7 @@ function RegisterOrComeback(id,name,avatar){
     success:function(data){
       if(data.code == 200){
         // socket.emit('register-or-comeback',data);
+        console.log('data google:',data);
         $('#modalLogin').modal('hide');
         LoadProfile();
       }

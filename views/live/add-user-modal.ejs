@@ -14,6 +14,8 @@
         </div>       
       </div>
       <div class="modal-body">
+        <input type="hidden" id="room_title" value="">
+
         <table class="table table-borderless">          
           <tbody id="users-nin-room"></tbody>
         </table>
@@ -51,7 +53,7 @@
 
   $(document).on("click", "input[name='invite-user']", function () {
       let socket_id = $(this).closest("tr").attr('id');
-      console.log(socket_id);
+      socket.emit('invite-user',{user:socket_id,room_title:$('#room_title').val()});
   });
 
 

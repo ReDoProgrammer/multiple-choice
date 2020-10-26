@@ -224,6 +224,11 @@ io.on('connection',function(socket){
     
   });
 
+  //lắng nghe sự kiện mời user và phòng thi
+  socket.on('invite-user',data=>{
+    console.log(data);
+  });
+
 //sự kiện công bố đề thi tới tất cả mọi người trong phòng thi
   socket.on('send-exam',(data)=>{
     let exam = {room:data.room,questions:data.questions,on_exam:data.on_exam};

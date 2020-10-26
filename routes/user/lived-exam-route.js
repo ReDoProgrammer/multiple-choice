@@ -169,9 +169,9 @@ router.post("/generate-exam", middleware.isLoggedIn, (req, res) => {
 router.get("/list", (req, res) => { 
 
   LivedRoom.find({status: { $in: [-1, 0] }})
-  .where('started_time').gt(new Date().toLocaleString('en-US', {
-    timeZone: 'Asia/Ho_chi_minh'
-  }))//chỉ lấy những room có giờ bắt đầu lớn hơn hiện tại
+  // .where('started_time').gt(new Date().toLocaleString('en-US', {
+  //   timeZone: 'Asia/Ho_chi_minh'
+  // }))//chỉ lấy những room có giờ bắt đầu lớn hơn hiện tại
     .populate("subject", "name")
     .exec(function (err, rooms) {
       if (err) {

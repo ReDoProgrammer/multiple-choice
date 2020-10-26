@@ -29,6 +29,8 @@ function userJoin(socket_id, username, avatar, member_code, room, finished) {
     return user;
 }
 
+
+
 // Get current user
 function getCurrentUser(socket_id) {
   return users.find((user) => user.socket_id === socket_id);

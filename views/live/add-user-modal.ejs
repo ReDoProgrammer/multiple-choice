@@ -12,9 +12,6 @@
             </button>
           </div>
         </div>       
-
-        
-       
       </div>
       <div class="modal-body">
         <table class="table table-borderless">          
@@ -34,7 +31,7 @@
 
 <script>
   $("#modalAddUser").on("show.bs.modal", function (e) {
-    socket.emit("list-users-not-in-any-room"); //gọi tới sự kiện list users không tham gia bất cứ phòng nào
+    listUsersNinRoom();
     socket.on("users-nin-room", (users) => {
       if (users) {
         let d = '';
@@ -43,7 +40,7 @@
           d+= '<tr id="'+user.socket_id+'">';
           d+=     '<th scope="row" class = "text-danger">'+user.member_code+'</th>';         
           d+=    '<td class = "text-primary" style="font-weight:bold;">'+user.fullname+'</td>';
-          d+=    '<td class="text-right"><input type="button" value="Mời" name = "add" class="btn btn-xs btn-warning"></td>';
+          d+=    '<td class="text-right"><input type="button" value="Mời" name = "invite-user" class="btn btn-xs btn-warning"></td>';
           d+=  '</tr>';
         });
 
@@ -51,4 +48,19 @@
       }
     });
   });
+
+  $(document).on("click", "input[name='invite-user']", function () {
+      let socket_id = $(this).closest("tr").attr('id');
+      console.log(socket_id);
+  });
+
+
+
+  $('#btnRefresh').click(function(){
+    listUsersNinRoom();
+  });
+
+  function listUsersNinRoom(){
+    socket.emit("list-users-not-in-any-room"); //gọi tới sự kiện list users không tham gia bất cứ phòng nào
+  }
 </script>

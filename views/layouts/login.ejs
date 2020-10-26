@@ -86,6 +86,9 @@ aria-hidden="true">
               fullname:data.user.fullname
             };    
             socket.emit('logged-user',user);
+
+            LoadProfile();
+            $('#modalLogin').modal('hide');
         }else{
           $('#msgSignIn').text(data.msg);
         }

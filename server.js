@@ -205,11 +205,6 @@ io.on('connection',function(socket){
   });
 
   socket.on('user-leave-room',()=>{
-
-   
-
-    //thêm lại bản sao của user hiện tại được tính là 1 thành viên đăng nhập
-    userLoggedIn(u);
     leaveRoom(socket.id);
     console.log('members nin room: ',membersNiNRoom());
 

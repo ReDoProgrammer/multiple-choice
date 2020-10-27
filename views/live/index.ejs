@@ -144,18 +144,7 @@
       });
     });
   
-         //kiểm tra xem đường dẫn có phải liên quan tới phòng thi trực tuyến không
-
-      let searchParams = new URLSearchParams(window.location.search);
-      if(searchParams.has('room')){
-        console.log(searchParams.get('room'));
-        $('#roomslist > tr').each(function(index, tr) { 
-          console.log(index);
-          console.log(tr);
-        });
-      }else{
-        console.log('nothing');
-      }
+        
   
   });
 
@@ -226,6 +215,18 @@
             rooms += "</tr>";
           });
           $("#roomslist").append(rooms);
+
+          //kiểm tra xem đường dẫn có phải liên quan tới phòng thi trực tuyến không
+          let searchParams = new URLSearchParams(window.location.search);
+          if(searchParams.has('room')){
+            console.log(searchParams.get('room'));
+            $('#roomslist > tr').each(function(index, tr) { 
+              console.log(index);
+              console.log(tr);
+            });
+          }else{
+            console.log('nothing');
+          }
         }
       },
     });

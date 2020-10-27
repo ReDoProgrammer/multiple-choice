@@ -185,13 +185,9 @@ io.on('connection',function(socket){
   //lắng nghe sự kiện list danh sách thành viên đăng nhập
   socket.on('logged-user',(user)=>{
     let u = user;
-    u.socket_id = socket.id;
-    let m = {
-      user:user._id,
-      socket_id:socket.id
-    }
+    u.socket_id = socket.id;   
     userLoggedIn(u);
-    pushMember(m);
+    pushMember(u._id,socket.id);
 
     console.log(getMembers());
   });

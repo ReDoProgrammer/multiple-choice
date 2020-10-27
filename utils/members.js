@@ -1,7 +1,6 @@
 const OnlineMember = require('../models/online_member-model');
 
-function pushMember(member){
-    let {socket_id,user} = user;
+function pushMember(user,socket_id){
     OnlineMember.create({
         socket_id:socket_id,
         user:user
@@ -9,9 +8,9 @@ function pushMember(member){
         if(err){
             console.log('push member failed:'+new Errror(err));
         }else{
-            return 200;
+            return mem;
         }
-    })
+    });
 }
 function getMemberBySocketId(socket_id){
     OnlineMember.findOne({socket_id:socket_id},function(err,member){

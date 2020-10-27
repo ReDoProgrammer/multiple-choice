@@ -206,6 +206,19 @@ io.on('connection',function(socket){
     io.sockets.emit('load-rooms');
   });
 
+   //join vào 1 phòng đã có
+   socket.on('join-room',room=>{    
+    joinRoom(socket.id,room);
+    socket.join(room);
+    // cập nhật lại danh sách user trong phòng thi
+    io.to(room).emit('users-in-room', {
+      room: room,
+      users: membersInRoom(room)
+    });
+    
+  });
+
+
   socket.on('user-leave-room',()=>{    
     //cập nhật lại danh sách user trong room
     let room = getRoom(socket.id);
@@ -224,21 +237,7 @@ io.on('connection',function(socket){
       socket.emit('users-nin-room',{users:getAllUsers().filter(x=>x.username && !x.room)});
     });
 
-  //join vào 1 phòng đã có
-  socket.on('join-room',({ username,fullname,avatar,member_code, room ,finished})=>{
-    const user = userJoin(socket.id, username,fullname,avatar,member_code, room,finished); 
-    joinRoom(socket.id, username,fullname,avatar,member_code, room,finished);
-
-    socket.join(user.room);
-
-    // cập nhật lại danh sách user trong phòng thi
-    io.to(user.room).emit('users-in-room', {
-      room: user.room,
-      users: getRoomUsers(user.room).filter(x=>x.username)
-    });
-    
-  });
-
+ 
   //lắng nghe sự kiện mời user và phòng thi
   socket.on('invite-user',data=>{    
 

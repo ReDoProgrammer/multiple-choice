@@ -118,17 +118,8 @@
       url: "/live/check-login",
       type: "get",
       success: function (data) {
-        if (data.code == 200) {
-          candidate = {
-            username: data.user.username,
-            fullname: data.user.fullname,
-            avatar: data.user.avatar,
-            member_code: data.user.member_code,
-            room: room_id,
-            finished: false,
-          };
-          console.log('người tham gia phòng: ',candidate);
-          socket.emit("join-room", candidate);
+        if (data.code == 200) {      
+          socket.emit("join-room", room_id);
           if (data.user._id === master) {
             $("#btnStart").show();
           } else {

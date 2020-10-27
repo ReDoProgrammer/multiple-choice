@@ -242,8 +242,8 @@ io.on('connection',function(socket){
     //gửi lời mời tới người được chọn
     let invitation = {
       room_title:data.room_title,
-      room: getCurrentUser(socket.id).room,
-      inviter:getCurrentUser(socket.id).fullname
+      room: getRoom(socket.id),
+      inviter:getMemberBySocketId(socket.id).fullname
     }
     console.log(invitation);
     // invitedUser = getCurrentUser(data.socket_id);

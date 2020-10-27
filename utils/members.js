@@ -15,14 +15,13 @@ function removeMemberBySocketId(socket_id){
     } 
 }
 
-async function joinRoom(socket_id,room){
-    let tmp =await getMemberBySocketId(socket_id);       
+function joinRoom(socket_id,room){
+    let tmp = getMemberBySocketId(socket_id);       
     let member =tmp;
     member.room = room;
-    console.log('member: ',member,'tmp:',tmp);
-    // removeMemberBySocketId(socket_id); 
-    // pushMember(member);   
-    // console.log('tmp in join room:', tmp,'members',members);
+    removeMemberBySocketId(tmp.socket_id); 
+    pushMember(member);   
+    console.log('member join room:', member,'members',members);
 }
 
 function leaveRoom(socket_id){

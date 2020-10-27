@@ -210,6 +210,7 @@ io.on('connection',function(socket){
     //cập nhật lại danh sách user trong room
     let room = getRoom(socket.id);
     leaveRoom(socket.id);
+    console.log('room:',room);
     io.to(room).emit('users-in-room', {
       room: room,
       users: membersInRoom(room)

@@ -111,7 +111,8 @@
       let searchParams = new URLSearchParams(window.location.search);
       if(searchParams.has('room')){
         console.log(searchParams.get('room'));
-        $('#roomslist > tr').each(function(k,tr){
+        $('table > tbody  > tr#roomslist').each(function(index, tr) { 
+          console.log(index);
           console.log(tr);
         });
       }else{

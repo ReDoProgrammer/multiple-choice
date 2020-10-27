@@ -237,7 +237,7 @@ io.on('connection',function(socket){
 
  
   //lắng nghe sự kiện mời user và phòng thi
-  socket.on('invite-user',data=>{    
+  socket.on('invite-user',data=>{   
 
     //gửi lời mời tới người được chọn
     let invitation = {

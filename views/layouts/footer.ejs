@@ -140,6 +140,7 @@
       if(searchParams.has('room')){
         console.log(searchParams.get('room'));
         $('#roomslist tr').each(function(k,v){
+          console.log(v);
           if($(v).attr('id')==earchParams.get('room')){
             console.log('room found');
           }else{

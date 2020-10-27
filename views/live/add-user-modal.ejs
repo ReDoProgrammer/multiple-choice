@@ -34,7 +34,7 @@
 <script>
   $("#modalAddUser").on("show.bs.modal", function (e) {
     listUsersNinRoom();
-    socket.on("users-nin-room", (data) => {
+    socket.on("members-nin-room", (data) => {
       if (data.users) {
         let d = '';
         $("#users-nin-room").empty();
@@ -62,6 +62,6 @@
   });
 
   function listUsersNinRoom(){
-    socket.emit("list-users-not-in-any-room"); //gọi tới sự kiện list users không tham gia bất cứ phòng nào
+    socket.emit("members-nin-room"); //gọi tới sự kiện list users không tham gia bất cứ phòng nào
   }
 </script>

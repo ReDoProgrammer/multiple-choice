@@ -231,8 +231,8 @@ io.on('connection',function(socket){
   //sự kiện lắng nghe list user online mà không tham gia room nào
     // ---> lấy những user đã đăng nhập
     // ---> và đang không tham gia ở room nào
-    socket.on('list-users-not-in-any-room',()=>{
-      socket.emit('users-nin-room',{users:getAllUsers().filter(x=>x.username && !x.room)});
+    socket.on('members-nin-room',()=>{
+      socket.emit('members-nin-room',{users:getAllUsers().filter(x=>x.username && !x.room)});
     });
 
  

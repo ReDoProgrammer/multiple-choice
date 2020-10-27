@@ -232,19 +232,18 @@ io.on('connection',function(socket){
     let invitation = {
       room_title:data.room_title,
       room: getCurrentUser(socket.id).room,
-      inviter:getCurrentUser(socket.id).fullname,
-      socket_id:data.socket_id
+      inviter:getCurrentUser(socket.id).fullname
     }
     invitedUser = getCurrentUser(data.socket_id);
     socket.broadcast.to(data.socket_id).emit('send-invitation',invitation);    
   });
 
   //lắng nghe sự kiện chấp nhận lời mời tham gia phòng thi
-  socket.on('accept-invitation',data=>{
-    let user = getCurrentUser(socket.id);
-        user.room = data.room;
-    socket.broadcast.to(data.socket_id).emit('redirect-to-room',user);    
-  });
+  // socket.on('accept-invitation',data=>{
+  //   let user = getCurrentUser(socket.id);
+  //       user.room = data.room;
+  //   socket.broadcast.to(data.socket_id).emit('redirect-to-room',user);    
+  // });
 
 //sự kiện công bố đề thi tới tất cả mọi người trong phòng thi
   socket.on('send-exam',(data)=>{

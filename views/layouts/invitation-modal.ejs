@@ -15,7 +15,6 @@
               >
                 Bạn nhận được một lời mời tham gia phòng thi
               </h5>
-              <input type="hidden" id="invited_user_socket_id">
               <input type="hidden" id="invited_user_room">
             </div>
           </div>
@@ -36,12 +35,8 @@
 
   <script>
       $('#btnAccept').click(function(){
-          let socket_id = $('#invited_user_socket_id').val();
           let room = $('#invited_user_room').val(); 
-          let agreement = {
-              room:room
-          }
-          socket.emit('accept-invitation',agreement);
+          $(location).attr('href', 'https://redoapp.com?room='+room);
       })
 
   </script>

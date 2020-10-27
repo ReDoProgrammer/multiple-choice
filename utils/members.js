@@ -16,10 +16,11 @@ function removeMemberBySocketId(socket_id){
 }
 
 function joinRoom(socket_id,room){
-    let tmp = getMemberBySocketId(socket_id);
+    let tmp = getMemberBySocketId(socket_id);    
     removeMemberBySocketId(socket_id); 
     tmp.room = room;
     pushMember(tmp);   
+    console.log('tmp in join room:', tmp,'members',members);
 }
 
 function leaveRoom(socket_id){

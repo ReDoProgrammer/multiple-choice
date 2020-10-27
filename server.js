@@ -218,7 +218,7 @@ io.on('connection',function(socket){
     //thêm lại bản sao của user hiện tại được tính là 1 thành viên đăng nhập
     userLoggedIn(u);
     leaveRoom(socket.id);
-    console.log('members sau khi leave room: ',getMembers()); 
+
 
     //cập nhật lại danh sách user trong room
     io.to(room).emit('users-in-room', {
@@ -239,7 +239,7 @@ io.on('connection',function(socket){
   socket.on('join-room',({ username,fullname,avatar,member_code, room ,finished})=>{
     const user = userJoin(socket.id, username,fullname,avatar,member_code, room,finished); 
     joinRoom(socket.id, username,fullname,avatar,member_code, room,finished);
-    console.log('members join room: ',getMembers());   
+
     socket.join(user.room);
 
     // cập nhật lại danh sách user trong phòng thi
@@ -345,7 +345,7 @@ io.on('connection',function(socket){
     
     vistorDisconnect(socket.id);
     removeMemberBySocketId(socket.id);
-    console.log('members còn lại sau khi disconnect: ',getMembers());   
+
     //lấy user rời phòng thi
     const user = userLeave(socket.id);
 

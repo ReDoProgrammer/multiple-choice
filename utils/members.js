@@ -22,13 +22,23 @@ function joinRoom(socket_id,room){
     pushMember(tmp);   
 }
 
+function leaveRoom(socket_id){
+    let tmp = getMemberBySocketId(socket_id);
+    removeMemberBySocketId(socket_id); 
+    pushMember(tmp);   
+}
+
 function getMembers(){
     return members;
 }
 
+
+
 module.exports = {
     pushMember,
-    getMemberBySocketId,
+    removeMemberBySocketId,
+    getMemberBySocketId,  
     joinRoom,
+    leaveRoom,
     getMembers
 }

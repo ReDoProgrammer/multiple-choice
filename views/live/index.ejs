@@ -218,7 +218,8 @@
             console.log(searchParams.get("room"));
             $("#roomslist > tr").each(function (index, tr) {
               if ($(tr).attr("id") === searchParams.get("room")) {               
-                $('#roomslist > tr#'+searchParams.has("room")+' > td > input[name="join"]').click();   
+                console.log('#roomslist > tr#'+searchParams.has("room")+' > td > input[name="join"]');
+                // $('#roomslist > tr#'+searchParams.has("room")+' > td > input[name="join"]').click();   
               }
             });
           } else {

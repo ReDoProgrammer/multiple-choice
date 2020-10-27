@@ -240,6 +240,7 @@ io.on('connection',function(socket){
 
   //lắng nghe sự kiện chấp nhận lời mời tham gia phòng thi
   socket.on('accept-invitation',room=>{
+    console.log('invited to room: ',room);
     socket.broadcast.to(socket.id).emit('enter-room',room);    
   });
 

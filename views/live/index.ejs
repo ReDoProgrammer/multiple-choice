@@ -119,8 +119,7 @@
       type: "get",
       success: function (data) {
         if (data.code == 200) {      
-          console.log('room:',room_id);
-          // socket.emit("join-room", room_id);
+          socket.emit("join-room", room_id);
           if (data.user._id === master) {
             $("#btnStart").show();
           } else {
@@ -213,9 +212,10 @@
           let searchParams = new URLSearchParams(window.location.search);
           if (searchParams.has("room")) {
           $('#roomslist > tr').each(function(key,tr){
-            if($(tr).attr('id')===searchParams.get("room")){
-              $('#roomslist > tr#'+searchParams.get("room")+' > td > input[name="join"]').click();
-            }
+            console.log(searchParams.get("room"));
+            // if($(tr).attr('id')===searchParams.get("room")){
+            //   $('#roomslist > tr#'+searchParams.get("room")+' > td > input[name="join"]').click();
+            // }
           });
           } else {
             console.log("nothing");

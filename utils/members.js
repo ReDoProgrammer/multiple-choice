@@ -1,68 +1,26 @@
-const OnlineMember = require('../models/online_member-model');
+members = [];
 
-function pushMember(user,socket_id){
-    OnlineMember.create({
-        socket_id:socket_id,
-        user:user
-    },function(err,mem){
-        if(err){
-            console.log('push member failed:'+new Errror(err));
-        }else{
-            return mem;
-        }
-    });
+function pushMember(member){
+    members.push(member);
 }
+
 function getMemberBySocketId(socket_id){
-    OnlineMember.findOne({socket_id:socket_id},function(err,member){
-        if(err){
-            console.log('find member failed: '+new Error(err));
-        }else{
-            return member;
-        }
-    });
+    return members.filter(x=>x.socket_id === socket_id);
 }
 
-function updateSocketId(user_id,socket_id){
-    OnlineMember.findOneAndUpdate({user:user_id},{
-        socket_id:socket_id
-    },{new:true},function(err,member){
-        if(err){
-            console.log('update socket id failed:'+new Error(err));
-        }else{
-            return member; 
+async function updateRoom(socket_id,room){
+    const query = {socket_id:socket_id};
+    const updateDocument = {
+        $set:{
+            "room":room
         }
-    })
+    }
+    const result = await members.updateOne(query,updateDocument);
+    return result;
 }
 
-function memberJoinRoom(socket_id,room){
-    OnlineMember.findOneAndUpdate({
-        socket_id:socket_id
-    },{
-        room:room
-    },{new:true},function(err,member){
-        if(err){
-            console.log('member join room failed: '+new Error(err));
-        }else{
-            return member;
-        }
-    })
-}
-
-function getMembers(){
-    OnlineMember.find({},function(err,members){
-        if(err){
-            console.log('find members failed: '+new Error(err));
-        }else{
-            return members;
-        }
-    });
-}
-
-
-module.exporst = {
+module.exports = {
     pushMember,
     getMemberBySocketId,
-    updateSocketId,
-    memberJoinRoom,
-    getMembers
+    updateRoom
 }

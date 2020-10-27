@@ -218,7 +218,7 @@ io.on('connection',function(socket){
   socket.on('join-room',({ username,fullname,avatar,member_code, room ,finished})=>{
     const user = userJoin(socket.id, username,fullname,avatar,member_code, room,finished);    
     socket.join(user.room);
-    
+    console.log('new user join into room:',user);
     // cập nhật lại danh sách user trong phòng thi
     io.to(user.room).emit('users-in-room', {
       room: user.room,

@@ -127,7 +127,7 @@
 
  
   $(document).ready(function () {
-    // alert('Website đang bảo trì để nâng cấp tính năng nên tín hiệu chập chờn. Mong các bạn thông cảm!');
+    alert('Website đang bảo trì để nâng cấp tính năng nên tín hiệu chập chờn. Mong các bạn thông cảm!');
     socket.on("counter", function (users) {    
       $("#current_visitors").text(users.count);
     });

@@ -4,10 +4,10 @@ const Subject = require("../../models/subject-model");
 const Question = require("../../models/question-model");
 
 router.get("/", (req, res) => {
-  // let group = req.query.group;
-  // let subject = req.query.subject;
-  // res.render('home/index',{layout:'user-layout',user:req.session.user});
-  res.render("bao-tri", { layout: "bao-tri" });
+  let group = req.query.group;
+  let subject = req.query.subject;
+  res.render('home/index',{layout:'user-layout',user:req.session.user});
+  // res.render("bao-tri", { layout: "bao-tri" });
 });
 
 router.get("/tim-kiem", (req, res) => {

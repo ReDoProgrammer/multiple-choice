@@ -194,8 +194,6 @@ io.on('connection',function(socket){
       avatar:       user.avatar
     }
     let room = user.room;//lấy thông tin phòng
-    
-    userLeave(socket.id);
 
     //thêm lại bản sao của user hiện tại được tính là 1 thành viên đăng nhập
     userLoggedIn(u);

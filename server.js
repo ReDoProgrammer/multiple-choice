@@ -23,7 +23,9 @@ const {
   removeMemberBySocketId,
   getMemberBySocketId,  
   joinRoom,
+  getRoom,
   leaveRoom,
+  membersInRoom,
   membersNiNRoom,
   getMembers
 } = require('./utils/members');
@@ -206,15 +208,12 @@ io.on('connection',function(socket){
 
   socket.on('user-leave-room',()=>{
     leaveRoom(socket.id);
-    console.log('members nin room: ',membersNiNRoom());
-
-
     //cập nhật lại danh sách user trong room
-    // io.to(room).emit('users-in-room', {
-    //   room: room,
-    //   users: getRoomUsers(room).filter(x=>x.username)
-    // });
-    
+    let room = getRoom(socket.id);
+    io.to(room).emit('users-in-room', {
+      room: room,
+      users: membersInRoom(room)
+    });    
   });
 
   //sự kiện lắng nghe list user online mà không tham gia room nào

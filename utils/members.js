@@ -23,6 +23,10 @@ function joinRoom(socket_id,room){
     pushMember(member);   
 }
 
+function getRoom(socket_id){
+    return getMemberBySocketId(socket_id).room;
+}
+
 function leaveRoom(socket_id){
     let tmp = getMemberBySocketId(socket_id);
     let member = {
@@ -40,6 +44,10 @@ function membersNiNRoom(){
     return members.filter(x=>!x.room);
 }
 
+function membersInRoom(room){
+    return members.filter(x=>x.room === room);
+}
+
 function getMembers(){
     return members;
 }
@@ -51,6 +59,8 @@ module.exports = {
     removeMemberBySocketId,
     getMemberBySocketId,  
     joinRoom,
+    getRoom,
+    membersInRoom,
     leaveRoom,
     membersNiNRoom,
     getMembers

@@ -111,7 +111,9 @@
       let searchParams = new URLSearchParams(window.location.search);
       if(searchParams.has('room')){
         console.log(searchParams.get('room'));
-        console.log($('#btnCreate').text());
+        for(i = 1; i<5; i++){
+          console.log(i);
+        }
       }else{
         console.log('nothing');
       }

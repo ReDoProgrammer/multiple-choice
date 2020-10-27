@@ -69,8 +69,13 @@
                      $('#trFullname').text(data.user.fullname);
 //comment controls
                      $('#cmBtnComment').show(200);
-
-                     socket.emit('logged-user',data.user);
+                    let member = {
+                      username:data.user.username,
+                      member_code:data.user.member_code,
+                      fullname:data.user.fullname,
+                      avatar:data.user.avatar
+                    }
+                     socket.emit('logged-user',member);
                   }else{
                     if(data.code == 401){
                        $('#divProfile').hide();

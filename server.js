@@ -21,7 +21,8 @@ const {
 const {
   pushMember,
   getMemberBySocketId,
-  updateRoom
+  joinRoom,
+  getMembers
 } = require('./utils/members');
 
 //những hàm liên quan đến user và room
@@ -185,10 +186,7 @@ io.on('connection',function(socket){
     let u = user;
     u.socket_id = socket.id;   
     userLoggedIn(u);
-    console.log(u);
-    pushMember(u);
-
-    console.log(updateRoom(socket.id,'aaaaaaaaaaaaaaaa'));
+    pushMember(u);   
   });
 
 
@@ -236,7 +234,9 @@ io.on('connection',function(socket){
 
   //join vào 1 phòng đã có
   socket.on('join-room',({ username,fullname,avatar,member_code, room ,finished})=>{
-    const user = userJoin(socket.id, username,fullname,avatar,member_code, room,finished);    
+    const user = userJoin(socket.id, username,fullname,avatar,member_code, room,finished); 
+    joinRoom(socket.id, username,fullname,avatar,member_code, room,finished);
+    console.log('members: ',getMembers());   
     socket.join(user.room);
     console.log('Chào mừng:',user.fullname,'số người hiện tại: ',getRoomUsers(user.room).filter(x=>x.username));
     // cập nhật lại danh sách user trong phòng thi

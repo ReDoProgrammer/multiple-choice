@@ -8,19 +8,27 @@ function getMemberBySocketId(socket_id){
     return members.filter(x=>x.socket_id === socket_id);
 }
 
-async function updateRoom(socket_id,room){
-    const query = {socket_id:socket_id};
-    const updateDocument = {
-        $set:{
-            "room":room
-        }
-    }
-    const result = await members.updateOne(query,updateDocument);
-    return result;
+function removeMemberBySocketId(socket_id){
+    const index = members.findIndex(x => x.socket_id === socket_id);
+    if (index !== -1) {
+        return members.splice(index, 1)[0];
+    } 
+}
+
+function joinRoom(socket_id,room){
+    let tmp = getMemberBySocketId(socket_id);
+    removeMemberBySocketId(socket_id); 
+    tmp.room = room;
+    pushMember(tmp);   
+}
+
+function getMembers(){
+    return members;
 }
 
 module.exports = {
     pushMember,
     getMemberBySocketId,
-    updateRoom
+    joinRoom,
+    getMembers
 }

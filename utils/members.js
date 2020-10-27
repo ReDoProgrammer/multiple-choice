@@ -34,7 +34,6 @@ function leaveRoom(socket_id){
     }
     removeMemberBySocketId(socket_id); 
     pushMember(member);  
-    console.log('members: ',members); 
 }
 
 function membersNiNRoom(){

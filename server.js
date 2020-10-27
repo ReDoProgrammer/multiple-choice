@@ -24,6 +24,7 @@ const {
   getMemberBySocketId,  
   joinRoom,
   leaveRoom,
+  membersNiNRoom,
   getMembers
 } = require('./utils/members');
 
@@ -205,19 +206,12 @@ io.on('connection',function(socket){
 
   socket.on('user-leave-room',()=>{
 
-    let user = getCurrentUser(socket.id); //lấy user thoát room
-    let u = { // sao chép thông tin của user hiện tại nhưng không lấy thông tin room vì đã thoát
-      socket_id:    socket.id,
-      username:     user.username,
-      fullname:     user.fullname,
-      member_code:  user.member_code,
-      avatar:       user.avatar
-    }
-    let room = user.room;//lấy thông tin phòng
+   
 
     //thêm lại bản sao của user hiện tại được tính là 1 thành viên đăng nhập
     userLoggedIn(u);
     leaveRoom(socket.id);
+    console.log('members nin room: ',membersNiNRoom());
 
 
     //cập nhật lại danh sách user trong room

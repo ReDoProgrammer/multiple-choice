@@ -37,6 +37,10 @@ function leaveRoom(socket_id){
     console.log('members: ',members); 
 }
 
+function membersNiNRoom(){
+    return members.filter(x=>!x.room);
+}
+
 function getMembers(){
     return members;
 }
@@ -49,5 +53,6 @@ module.exports = {
     getMemberBySocketId,  
     joinRoom,
     leaveRoom,
+    membersNiNRoom,
     getMembers
 }

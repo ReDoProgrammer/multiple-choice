@@ -53,8 +53,20 @@
 <%- include('prevent-join-modal') %>
 
 <script type="text/javascript">
-  $(document).ready(function () {
-    LoadRooms();
+  $(document).ready(async function () {
+    await LoadRooms();
+     //kiểm tra xem đường dẫn có phải liên quan tới phòng thi trực tuyến không
+
+     let searchParams = new URLSearchParams(window.location.search);
+      if(searchParams.has('room')){
+        console.log(searchParams.get('room'));
+        $('#roomslist > tr').each(function(index, tr) { 
+          console.log(index);
+          console.log(tr);
+        });
+      }else{
+        console.log('nothing');
+      }
 
     //sự kiện click đăng ký dự thi trên từng hàng của danh sách phòng
     $(document).on("click", "input[name='register']", function () {
@@ -216,17 +228,17 @@
           });
           $("#roomslist").append(rooms);
 
-          //kiểm tra xem đường dẫn có phải liên quan tới phòng thi trực tuyến không
-          let searchParams = new URLSearchParams(window.location.search);
-          if(searchParams.has('room')){
-            console.log(searchParams.get('room'));
-            $('#roomslist > tr').each(function(index, tr) { 
-              console.log(index);
-              console.log(tr);
-            });
-          }else{
-            console.log('nothing');
-          }
+          // //kiểm tra xem đường dẫn có phải liên quan tới phòng thi trực tuyến không
+          // let searchParams = new URLSearchParams(window.location.search);
+          // if(searchParams.has('room')){
+          //   console.log(searchParams.get('room'));
+          //   $('#roomslist > tr').each(function(index, tr) { 
+          //     console.log(index);
+          //     console.log(tr);
+          //   });
+          // }else{
+          //   console.log('nothing');
+          // }
         }
       },
     });

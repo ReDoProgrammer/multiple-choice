@@ -24,6 +24,7 @@ function joinRoom(socket_id,room){
 }
 
 function getRoom(socket_id){
+    console.log('member:',getMemberBySocketId(socket_id));
     return getMemberBySocketId(socket_id).room;
 }
 

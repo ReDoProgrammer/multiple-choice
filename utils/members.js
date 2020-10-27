@@ -18,8 +18,15 @@ function removeMemberBySocketId(socket_id){
 function joinRoom(socket_id,room){
     let tmp = getMemberBySocketId(socket_id);    
     removeMemberBySocketId(socket_id); 
-    tmp.room = room;
-    pushMember(tmp);   
+    let member = {
+        username:tmp.username,
+        member_code: tmp.member_code,
+        avatar:tmp.avatar,
+        fullname:tmp.fullname,
+        socket_id:tmp.socket_id,
+        room:room
+    }
+    pushMember(member);   
     console.log('tmp in join room:', tmp,'members',members);
 }
 

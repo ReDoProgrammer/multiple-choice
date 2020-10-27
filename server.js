@@ -185,7 +185,7 @@ io.on('connection',function(socket){
   visitorConnect(socket.id);
 
 
-  io.sockets.emit('counter', {count:users.length});
+  io.sockets.emit('counter', {count:vistorsCount()});
 
   //lắng nghe sự kiện list danh sách thành viên đăng nhập
   socket.on('logged-user',(user)=>{

@@ -16,11 +16,15 @@ function removeMemberBySocketId(socket_id){
 }
 
 function joinRoom(socket_id,room){
-    let tmp = getMemberBySocketId(socket_id);       
-    let member =tmp;
-    member.room = room;
-    removeMemberBySocketId(tmp.socket_id); 
-    pushMember(member);   
+    try {
+        let tmp = getMemberBySocketId(socket_id);       
+        let member =tmp;
+        member.room = room;
+        removeMemberBySocketId(tmp.socket_id); 
+        pushMember(member);   
+    } catch (error) {
+        console.log('join room failed: '+new Error(err));
+    }
 }
 
 function getRoom(socket_id){

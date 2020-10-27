@@ -234,7 +234,7 @@ io.on('connection',function(socket){
       inviter:getCurrentUser(socket.id).fullname
     }
     console.log(invitation);
-    io.to(data.socket_id).emit('send-invitation',invitation);    
+    socket.broadcast.to(data.socket_id).emit('send-invitation',invitation);    
   });
 
 //sự kiện công bố đề thi tới tất cả mọi người trong phòng thi

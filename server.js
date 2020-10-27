@@ -202,7 +202,7 @@ io.on('connection',function(socket){
     //cập nhật lại danh sách user trong room
     io.to(room).emit('users-in-room', {
       room: room,
-      users: getRoomUsers(room)
+      users: getRoomUsers(room).filter(x=>x.username)
     });
     
   });

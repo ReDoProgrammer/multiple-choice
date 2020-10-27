@@ -241,6 +241,7 @@ io.on('connection',function(socket){
   //lắng nghe sự kiện chấp nhận lời mời tham gia phòng thi
   socket.on('accept-invitation',data=>{
     console.log(data);
+    socket.broadcast.to(data.socket_id).emit('apply-room',data);    
   });
 
 //sự kiện công bố đề thi tới tất cả mọi người trong phòng thi

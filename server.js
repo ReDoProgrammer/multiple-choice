@@ -10,6 +10,20 @@ const passport = require('passport');
 const server = require('http').Server(app);
 const io = require('socket.io')(server);
 
+//những hàm liên quan tới khách vãng lai = không phải thành viên
+const {
+  visitorConnect,
+  vistorDisconnect,
+  vistorsCount
+}= require('./utils/visitors');
+
+
+const {
+  pushMemeber,
+    removeMemberBySocketId,
+    findAndUpdateMember
+} = require('./utils/members');
+
 //những hàm liên quan đến user và room
 const {
   userConnect,
@@ -161,6 +175,8 @@ server.listen(8080,()=>{
 
 io.on('connection',function(socket){
 
+  visitorConnect(socket.id);
+
   let users = userConnect(socket.id)
   io.sockets.emit('counter', {count:users.length});
 
@@ -169,6 +185,7 @@ io.on('connection',function(socket){
     let u = user;
     u.socket_id = socket.id;
     userLoggedIn(u);
+    pushMemeber(u);
   });
 
 
@@ -320,6 +337,8 @@ io.on('connection',function(socket){
 
   socket.on('disconnect', function() {
     
+    vistorDisconnect(socket.id);
+
 
     //lấy user rời phòng thi
     const user = userLeave(socket.id);
@@ -347,6 +366,6 @@ io.on('connection',function(socket){
       }
     }
       //cập nhật số người truy cập hiện tại
-    io.sockets.emit('counter', {count:getAllUsers().length});
+    io.sockets.emit('counter', {count:vistorsCount()});
   });
 });

@@ -34,7 +34,7 @@
             <th>Ngày thi</th>
             <th>Thời gian</th>
             <th>Câu hỏi</th>
-            <th>Người đăng ký</th>           
+            <th>Người đăng ký</th>
           </tr>
         </thead>
         <tbody id="roomslist"></tbody>
@@ -48,33 +48,30 @@
 <%- include('room') %>
 
 <!-- include create new live room modal -->
-<%- include('add-room-modal') %>
-
-<%- include('prevent-join-modal') %>
+<%- include('add-room-modal') %> <%- include('prevent-join-modal') %>
 
 <script type="text/javascript">
   $(document).ready(function () {
-    LoadRooms();     
+    LoadRooms();
     //sự kiện click đăng ký dự thi trên từng hàng của danh sách phòng
     $(document).on("click", "input[name='register']", function () {
       let room_id = $(this).closest("tr").attr("id");
       $.ajax({
-        url:'/live/register',
-        type:'post',
-        data:{
-          room_id:room_id          
+        url: "/live/register",
+        type: "post",
+        data: {
+          room_id: room_id,
         },
-        success:function(data){
-          if(data.code == 200){
+        success: function (data) {
+          if (data.code == 200) {
             alert(data.msg);
-            socket.emit('add-room')
-          }else{
+            socket.emit("add-room");
+          } else {
             alert(data.msg);
           }
-        }
+        },
       });
     });
-
 
     // sự kiện click button jon phòng trên từng hàng tương ứng mỗi phòng
     $(document).on("click", "input[name='join']", function () {
@@ -84,67 +81,31 @@
         .closest("tr")
         .find("td.number_of_question")
         .text();
-      let started_time =  $(this).closest("tr").find("td.started_time").data("time");
+      let started_time = $(this)
+        .closest("tr")
+        .find("td.started_time")
+        .data("time");
       let current_time = new Date();
       let exam_time = new Date(started_time);
-      let distance_time =  Math.round((exam_time-current_time) / 60000);
-      let hours = distance_time%60;
-      let minutes = parseInt(distance_time/60, 10);
-      console.log({hours,minutes});
+      let distance_time = Math.round((exam_time - current_time) / 60000);
+      let hours = distance_time % 60;
+      let minutes = parseInt(distance_time / 60, 10);
+
       //chỉ cho tham gia vào phòng 10 tối đa 10 trước giờ thi
-      if(distance_time>10){
-        $('span#room_name').text(room_name);
-        $('span#started_time').text(exam_time);
-        $('span#number_of_question').text(number_of_question);
-        $('#modalPreventJoinRoom').modal();
+      if (distance_time > 10) {
+        $("span#room_name").text(room_name);
+        $("span#started_time").text(exam_time);
+        $("span#number_of_question").text(number_of_question);
+        $("#modalPreventJoinRoom").modal();
         return;
       }
 
       let room_id = $(this).closest("tr").attr("id");
       let master = $(this).closest("tr").data("master");
       let subject_id = $(this).closest("tr").data("subject");
-     
-      
-      $.ajax({
-        url: "/live/check-login",
-        type: "get",
-        success: function (data) {
-          if (data.code == 200) {
-            candidate = {
-              username: data.user.username,
-              fullname:data.user.fullname,
-              avatar: data.user.avatar,
-              member_code: data.user.member_code,
-              room: room_id,
-              finished: false,
-            };
-            socket.emit("join-room", candidate);
-            if (data.user._id === master) {
-              $("#btnStart").show();
-            } else {
-              $("#btnStart").hide();
-            }
-            $("#subject_id").val(subject_id);
-            $("#room_name").html(
-              'Phòng thi trực tuyến môn <span style="color: #FFCC33; font-weight: bold; font-size:15px;">' +
-                room_name +
-                '</span> (<span style="color: #FFFF00">' +
-                number_of_question +
-                " câu, " +
-                duration +
-                "</span>)"
-            );
-            $("#room_id").val(room_id);
-            $("#modalRoom").modal();
-          } else {
-            alert("Bạn phải đăng nhập mới tham gia phòng thi được!");
-          }
-        },
-      });
+
+      userJoin();
     });
-  
-        
-  
   });
 
   //socket load rooms
@@ -181,12 +142,12 @@
               '" data-master="' +
               v.created_by +
               '">';
-              rooms += '<td style ="width:150px;" class = "text-center">';
+            rooms += '<td style ="width:150px;" class = "text-center">';
             if (v.status == -1) {
               rooms +=
                 '<input type="button" name="register" value="Đăng ký" class="btn btn-sm btn-info"> &nbsp;&nbsp;&nbsp;';
               rooms +=
-                '<input type="button" name="join" value="Join" class="btn btn-sm btn-warning">';             
+                '<input type="button" name="join" value="Join" class="btn btn-sm btn-warning">';
             } else {
               rooms +=
                 '<input type="button" name="join" value="Đang thi" disabled  class="btn btn-sm btn-danger">';
@@ -198,7 +159,9 @@
               v.subject.name +
               "</td>";
             rooms +=
-              '<td style="font-weight:bold; color:#FF6600" class = "started_time" data-time="'+v.started_time+'">' +
+              '<td style="font-weight:bold; color:#FF6600" class = "started_time" data-time="' +
+              v.started_time +
+              '">' +
               new Date(v.started_time).toLocaleString() +
               "</td>";
             rooms +=
@@ -209,25 +172,65 @@
               '<td style = "text-align:right; padding-right:5px;" class = "number_of_question">' +
               v.number_of_question +
               "</td>";
-            rooms += '<td class="text-right">'+v.registers.length+'</td>';
-            
+            rooms += '<td class="text-right">' + v.registers.length + "</td>";
+
             rooms += "</tr>";
           });
           $("#roomslist").append(rooms);
 
           // //kiểm tra xem đường dẫn có phải liên quan tới phòng thi trực tuyến không
           let searchParams = new URLSearchParams(window.location.search);
-          if(searchParams.has('room')){
-            console.log(searchParams.get('room'));
-            $('#roomslist > tr').each(function(index, tr) { 
-              if($(tr).attr('id')===searchParams.get('room')){
+          if (searchParams.has("room")) {
+            console.log(searchParams.get("room"));
+            $("#roomslist > tr").each(function (index, tr) {
+              if ($(tr).attr("id") === searchParams.get("room")) {
                 $('#roomslist > tr > td > input[name="join"]').click();
+                userJoin();
                 return true;
               }
             });
-          }else{
-            console.log('nothing');
+          } else {
+            console.log("nothing");
           }
+        }
+      },
+    });
+  }
+
+  function userJoin() {
+    $.ajax({
+      url: "/live/check-login",
+      type: "get",
+      success: function (data) {
+        if (data.code == 200) {
+          candidate = {
+            username: data.user.username,
+            fullname: data.user.fullname,
+            avatar: data.user.avatar,
+            member_code: data.user.member_code,
+            room: room_id,
+            finished: false,
+          };
+          socket.emit("join-room", candidate);
+          if (data.user._id === master) {
+            $("#btnStart").show();
+          } else {
+            $("#btnStart").hide();
+          }
+          $("#subject_id").val(subject_id);
+          $("#room_name").html(
+            'Phòng thi trực tuyến môn <span style="color: #FFCC33; font-weight: bold; font-size:15px;">' +
+              room_name +
+              '</span> (<span style="color: #FFFF00">' +
+              number_of_question +
+              " câu, " +
+              duration +
+              "</span>)"
+          );
+          $("#room_id").val(room_id);
+          $("#modalRoom").modal();
+        } else {
+          alert("Bạn phải đăng nhập mới tham gia phòng thi được!");
         }
       },
     });

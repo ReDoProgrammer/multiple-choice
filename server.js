@@ -232,7 +232,8 @@ io.on('connection',function(socket){
     let invitation = {
       room_title:data.room_title,
       room: getCurrentUser(socket.id).room,
-      inviter:getCurrentUser(socket.id).fullname
+      inviter:getCurrentUser(socket.id).fullname,
+      socket_id:data.socket_id
     }
     invitedUser = getCurrentUser(data.socket_id);
     socket.broadcast.to(data.socket_id).emit('send-invitation',invitation);    

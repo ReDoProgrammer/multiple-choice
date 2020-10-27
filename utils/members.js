@@ -22,7 +22,7 @@ function joinRoom(socket_id,room){
         member_code: tmp.member_code,
         avatar:tmp.avatar,
         fullname:tmp.fullname,
-        socket_id:socket.id,
+        socket_id:socket_id,
         room:room
     }
     console.log('member: ',member);

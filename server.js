@@ -185,138 +185,138 @@ io.on('connection',function(socket){
   visitorConnect(socket.id);
   io.sockets.emit('counter', {count:vistorsCount()});
 
-  //lắng nghe sự kiện list danh sách thành viên đăng nhập
-  socket.on('logged-user',(user)=>{
-    let u = user;
-    u.socket_id = socket.id;   
-    pushMember(u);   
+//   //lắng nghe sự kiện list danh sách thành viên đăng nhập
+//   socket.on('logged-user',(user)=>{
+//     let u = user;
+//     u.socket_id = socket.id;   
+//     pushMember(u);   
     
-  });
-  console.log('all members:',getMembers());
+//   });
+//   console.log('all members:',getMembers());
 
 
 
-  socket.on('reply-comment',(data)=>{
-    socket.emit('push-notification',data);
-  });
+//   socket.on('reply-comment',(data)=>{
+//     socket.emit('push-notification',data);
+//   });
 
-//KHU VỰC XỬ LÝ PHÒNG THI TRỰC TUYẾN
-//sự kiện tạo mới 
-  socket.on('add-room',()=>{
-    io.sockets.emit('load-rooms');
-  });
+// //KHU VỰC XỬ LÝ PHÒNG THI TRỰC TUYẾN
+// //sự kiện tạo mới 
+//   socket.on('add-room',()=>{
+//     io.sockets.emit('load-rooms');
+//   });
 
-   //join vào 1 phòng đã có
-  socket.on('join-room',room=>{    
-    joinRoom(socket.id,room);
-    socket.join(room);
-    // cập nhật lại danh sách user trong phòng thi
-    io.to(room).emit('users-in-room', {
-      room: room,
-      users: membersInRoom(room)
-    });
+//    //join vào 1 phòng đã có
+//   socket.on('join-room',room=>{    
+//     joinRoom(socket.id,room);
+//     socket.join(room);
+//     // cập nhật lại danh sách user trong phòng thi
+//     io.to(room).emit('users-in-room', {
+//       room: room,
+//       users: membersInRoom(room)
+//     });
     
-  });
+//   });
 
-  socket.on('user-leave-room',()=>{    
-    //cập nhật lại danh sách user trong room
-    let room = getRoom(socket.id);
-    leaveRoom(socket.id);
-    io.to(room).emit('users-in-room', {
-      room: room,
-      users: membersInRoom(room)
-    });    
-  });
+//   socket.on('user-leave-room',()=>{    
+//     //cập nhật lại danh sách user trong room
+//     let room = getRoom(socket.id);
+//     leaveRoom(socket.id);
+//     io.to(room).emit('users-in-room', {
+//       room: room,
+//       users: membersInRoom(room)
+//     });    
+//   });
 
-  //sự kiện lắng nghe list user online mà không tham gia room nào
-    // ---> lấy những user đã đăng nhập
-    // ---> và đang không tham gia ở room nào
-    socket.on('members-nin-room',()=>{
-      socket.emit('members-nin-room',{users:membersNiNRoom(getRoom(socket.id))});
-    });
+//   //sự kiện lắng nghe list user online mà không tham gia room nào
+//     // ---> lấy những user đã đăng nhập
+//     // ---> và đang không tham gia ở room nào
+//     socket.on('members-nin-room',()=>{
+//       socket.emit('members-nin-room',{users:membersNiNRoom(getRoom(socket.id))});
+//     });
 
  
-  //lắng nghe sự kiện mời user và phòng thi
-  socket.on('invite-user',data=>{   
+//   //lắng nghe sự kiện mời user và phòng thi
+//   socket.on('invite-user',data=>{   
 
-    //gửi lời mời tới người được chọn
-    let invitation = {
-      room_title:data.room_title,
-      room: getRoom(socket.id),
-      inviter:getMemberBySocketId(socket.id).fullname
-    }
-    socket.broadcast.to(data.socket_id).emit('send-invitation',invitation);    
-  });
+//     //gửi lời mời tới người được chọn
+//     let invitation = {
+//       room_title:data.room_title,
+//       room: getRoom(socket.id),
+//       inviter:getMemberBySocketId(socket.id).fullname
+//     }
+//     socket.broadcast.to(data.socket_id).emit('send-invitation',invitation);    
+//   });
 
 
-//sự kiện công bố đề thi tới tất cả mọi người trong phòng thi
-  socket.on('send-exam',(data)=>{
-    let exam = {room:data.room,questions:data.questions,on_exam:data.on_exam};
-    pushExam(exam);
-    io.sockets.in(data.room).emit('populate-questions',data);
-  });
+// //sự kiện công bố đề thi tới tất cả mọi người trong phòng thi
+//   socket.on('send-exam',(data)=>{
+//     let exam = {room:data.room,questions:data.questions,on_exam:data.on_exam};
+//     pushExam(exam);
+//     io.sockets.in(data.room).emit('populate-questions',data);
+//   });
 
-  socket.on('user-finish',()=>{
+//   socket.on('user-finish',()=>{
+//     const user = getCurrentUser(socket.id);
+//     if (user) {
+//       //cập nhật lại users có trong phòng      
+//       user.finished = true;
+//       let users = getRoomUsers(user.room);
+
+//       //tìm ra người chưa hoàn thành bài thi
+//       let chk = users.find(x=>x.finished == false);
+//       if(chk){
+//         /*
+//           Nếu vẫn còn người chưa kết thúc bài thi
+//           - gọi lại hàm users-in-room để cập nhật lại trạng thái
+//           - của những người đã nộp bài
+//         */
+//         io.to(user.room).emit('users-in-room', {
+//           room: user.room,
+//           users: users
+//         });
+//       }else{ 
+//         /*
+//           Khi tất cả user trong room đã hoàn thành bài thi thì:
+//           - gửi dữ liệu bài thi để công bố đáp án
+//         */
+//        io.to(user.room).emit('users-in-room', {
+//           room: user.room,
+//           users: users
+//         });
+//         io.to(user.room).emit('populate-answers',getExam(user.room));       
+//       }      
+//     }
+//   });
+
+//   //hàm lưu kết quả số câu trả lời đúng của user
+//   socket.on('push-result',(correct)=>{
     const user = getCurrentUser(socket.id);
-    if (user) {
-      //cập nhật lại users có trong phòng      
-      user.finished = true;
-      let users = getRoomUsers(user.room);
+    // if (user) {
+    //   user.correct = correct;
+    //   //gọi tới sự kiện ranks ở client để hiển thị bảng xếp hạng
+    //   io.to(user.room).emit('ranks',{
+    //     users:getRoomUsers(user.room).sort(function(a,b){
+    //       return b.correct - a.correct;
+    //     }),
+    //     exam_length:getExam(user.room).questions.length
+    //   });      
 
-      //tìm ra người chưa hoàn thành bài thi
-      let chk = users.find(x=>x.finished == false);
-      if(chk){
-        /*
-          Nếu vẫn còn người chưa kết thúc bài thi
-          - gọi lại hàm users-in-room để cập nhật lại trạng thái
-          - của những người đã nộp bài
-        */
-        io.to(user.room).emit('users-in-room', {
-          room: user.room,
-          users: users
-        });
-      }else{ 
-        /*
-          Khi tất cả user trong room đã hoàn thành bài thi thì:
-          - gửi dữ liệu bài thi để công bố đáp án
-        */
-       io.to(user.room).emit('users-in-room', {
-          room: user.room,
-          users: users
-        });
-        io.to(user.room).emit('populate-answers',getExam(user.room));       
-      }      
-    }
-  });
-
-  //hàm lưu kết quả số câu trả lời đúng của user
-  socket.on('push-result',(correct)=>{
-    const user = getCurrentUser(socket.id);
-    if (user) {
-      user.correct = correct;
-      //gọi tới sự kiện ranks ở client để hiển thị bảng xếp hạng
-      io.to(user.room).emit('ranks',{
-        users:getRoomUsers(user.room).sort(function(a,b){
-          return b.correct - a.correct;
-        }),
-        exam_length:getExam(user.room).questions.length
-      });      
-
-      /*
-          Nếu tất cả các user đã push kết quả lên server thành công
-          - load lại danh sách room
-          - xóa room trên bộ nhớ server
-        */
-      let chk = getRoomUsers(user.room).find(x=>(!x.correct));
-      if(!chk){            
-        io.sockets.emit('load-rooms');
-        removeExam(user.room);
-      }
-    }
+    //   /*
+    //       Nếu tất cả các user đã push kết quả lên server thành công
+    //       - load lại danh sách room
+    //       - xóa room trên bộ nhớ server
+    //     */
+    //   let chk = getRoomUsers(user.room).find(x=>(!x.correct));
+    //   if(!chk){            
+    //     io.sockets.emit('load-rooms');
+    //     removeExam(user.room);
+    //   }
+    // }
 
     
     
-  });
+  // });
 
 
     
@@ -330,30 +330,30 @@ io.on('connection',function(socket){
     
     vistorDisconnect(socket.id);
     
-    let member = getMemberBySocketId(socket.id);
-    if (member.room) {
-      //cập nhật lại users có trong phòng      
-      io.to(member.room).emit('users-in-room', {
-        room: member.room,
-        users: membersInRoom(member.room)
-      });
+    // let member = getMemberBySocketId(socket.id);
+    // if (member.room) {
+    //   //cập nhật lại users có trong phòng      
+    //   io.to(member.room).emit('users-in-room', {
+    //     room: member.room,
+    //     users: membersInRoom(member.room)
+    //   });
 
-      removeMemberBySocketId(socket.id);
+    //   removeMemberBySocketId(socket.id);
 
-      /*
-        - Nếu sau khi bắt đầu bài thi & tất cả user trong room đều thoát hết
-        1. Xóa room trên server ( tự động)
-        2. Xóa bài thi lưu trên server
-        3. Xóa room trong csdl
-      */
-      // let userCount =  getRoomUsers(user.room).length;
-      // let exam = getExam(user.room);
-      // if(exam && exam.on_exam && userCount == 0){
-      //   removeExam(user.room);
-      //   io.sockets.emit('remove-room',user.room);
-      // }
-    }
-      //cập nhật số người truy cập hiện tại
+    //   /*
+    //     - Nếu sau khi bắt đầu bài thi & tất cả user trong room đều thoát hết
+    //     1. Xóa room trên server ( tự động)
+    //     2. Xóa bài thi lưu trên server
+    //     3. Xóa room trong csdl
+    //   */
+    //   // let userCount =  getRoomUsers(user.room).length;
+    //   // let exam = getExam(user.room);
+    //   // if(exam && exam.on_exam && userCount == 0){
+    //   //   removeExam(user.room);
+    //   //   io.sockets.emit('remove-room',user.room);
+    //   // }
+    // }
+    //   //cập nhật số người truy cập hiện tại
     io.sockets.emit('counter', {count:vistorsCount()});
   });
 });

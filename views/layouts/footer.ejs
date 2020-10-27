@@ -122,8 +122,12 @@
   </div>
 </div>
 
+<%- include('invitation-modal') %>
 <script type="text/javascript">
+
+ 
   $(document).ready(function () {
+    alert('Website đang bảo trì để nâng cấp tính năng nên tín hiệu chập chờn. Mong các bạn thông cảm!');
     socket.on("counter", function (users) {    
       $("#current_visitors").text(users.count);
     });
@@ -144,7 +148,10 @@
 
   //lắng nghe sự kiện mời thi trực tuyến từ người khác
   socket.on('send-invitation',data=>{
-    console.log(data);
+    console.log(modal);
+    $('#inviter').text(data.inviter);
+    $('#invitation_room').text(data.room_title);
+    $('#invitationModal').modal();
   });
 
 

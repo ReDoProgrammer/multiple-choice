@@ -206,8 +206,7 @@ io.on('connection',function(socket){
     io.sockets.emit('load-rooms');
   });
 
-  socket.on('user-leave-room',()=>{
-    
+  socket.on('user-leave-room',()=>{    
     //cập nhật lại danh sách user trong room
     let room = getRoom(socket.id);
     leaveRoom(socket.id);

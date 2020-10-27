@@ -24,7 +24,6 @@ function joinRoom(socket_id,room){
 }
 
 function getRoom(socket_id){
-    console.log('member:',getMemberBySocketId(socket_id));
     return getMemberBySocketId(socket_id).room;
 }
 
@@ -46,8 +45,6 @@ function membersNiNRoom(){
 }
 
 function membersInRoom(room){
-
-    console.log('room:',room,'members in room:',members.filter(x=>x.room === room));
     return members.filter(x=>x.room === room);
 }
 

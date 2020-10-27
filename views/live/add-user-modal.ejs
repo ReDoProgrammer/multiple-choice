@@ -53,7 +53,7 @@
 
   $(document).on("click", "input[name='invite-user']", function () {
       let socket_id = $(this).closest("tr").attr('id');
-      socket.emit('invite-user',{user:socket_id,room_title:$('#room_title').val()});
+      socket.emit('invite-user',{socket_id:socket_id,room_title:$('#room_title').val()});
   });
 
 

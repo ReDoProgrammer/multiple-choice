@@ -127,6 +127,7 @@
             room: room_id,
             finished: false,
           };
+          console.log('người tham gia phòng: ',cadidate);
           socket.emit("join-room", candidate);
           if (data.user._id === master) {
             $("#btnStart").show();
@@ -144,15 +145,7 @@
     
   });
 
-  //lắng nghe sự kiện tham gia room
-  socket.on('enter-room',room=>{
-    console.log('room:',room);
-     //  $("#roomslist > tr").each(function (index, tr) {
-            //   if ($(tr).attr("id") === searchParams.get("room")) {    
-            //     $('#roomslist > tr#'+searchParams.get("room")+' > td > input[name="join"]').click();   
-            //   }
-            // });
-  });
+
 
   //socket load rooms
   socket.on("load-rooms", () => {

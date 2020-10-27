@@ -227,7 +227,7 @@ io.on('connection',function(socket){
 
   //lắng nghe sự kiện mời user và phòng thi
   socket.on('invite-user',data=>{    
-    console.log(data);
+
     //gửi lời mời tới người được chọn
     let invitation = {
       room_title:data.room_title,
@@ -235,7 +235,6 @@ io.on('connection',function(socket){
       inviter:getCurrentUser(socket.id).fullname
     }
     invitedUser = getCurrentUser(data.socket_id);
-    console.log(invitation,invitedUser);
     socket.broadcast.to(data.socket_id).emit('send-invitation',invitation);    
   });
 

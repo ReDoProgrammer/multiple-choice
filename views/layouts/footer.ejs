@@ -150,8 +150,7 @@
   socket.on('send-invitation',data=>{
     $('#invited_user_room').val(data.room);
     $('#inviter').text(data.inviter);
-    $('#invitation_room').text(data.room_title);
-    console.log(data);
+    $('#invitation_room').text(data.room_title);   
     $('#invitationModal').modal();
   });
 

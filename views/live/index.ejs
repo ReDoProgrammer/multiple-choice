@@ -103,7 +103,18 @@
       let room_id = $(this).closest("tr").attr("id");
       let master = $(this).closest("tr").data("master");
       let subject_id = $(this).closest("tr").data("subject");
-      userJoin(room_id,master,subject_id);
+      $("#subject_id").val(subject_id);
+      $("#room_name").html(
+        'Phòng thi trực tuyến môn <span style="color: #FFCC33; font-weight: bold; font-size:15px;">' +
+          room_name +
+          '</span> (<span style="color: #FFFF00">' +
+          number_of_question +
+          " câu, " +
+          duration +
+          "</span>)"
+      );
+      $("#room_id").val(room_id);
+      userJoin(room_id, master, subject_id);
     });
   });
 
@@ -187,7 +198,7 @@
                 let room_id = $(tr).attr("id");
                 let master = $(tr).data("master");
                 let subject_id = $(tr).data("subject");
-                userJoin(room_id,master,subject_id);
+                userJoin(room_id, master, subject_id);
                 return true;
               }
             });
@@ -199,8 +210,8 @@
     });
   }
 
-  function userJoin(room_id,master,subject_id) {
-    console.log({room_id,master,subject_id});
+  function userJoin(room_id, master, subject_id) {
+    console.log({ room_id, master, subject_id });
     $.ajax({
       url: "/live/check-login",
       type: "get",
@@ -220,17 +231,6 @@
           } else {
             $("#btnStart").hide();
           }
-          $("#subject_id").val(subject_id);
-          $("#room_name").html(
-            'Phòng thi trực tuyến môn <span style="color: #FFCC33; font-weight: bold; font-size:15px;">' +
-              room_name +
-              '</span> (<span style="color: #FFFF00">' +
-              number_of_question +
-              " câu, " +
-              duration +
-              "</span>)"
-          );
-          $("#room_id").val(room_id);
           $("#modalRoom").modal();
         } else {
           alert("Bạn phải đăng nhập mới tham gia phòng thi được!");

@@ -69,6 +69,8 @@
                      $('#trFullname').text(data.user.fullname);
 //comment controls
                      $('#cmBtnComment').show(200);
+
+                     socket.emit('logged-user',data.user);
                   }else{
                     if(data.code == 401){
                        $('#divProfile').hide();

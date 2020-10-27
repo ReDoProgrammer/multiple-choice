@@ -232,7 +232,7 @@ io.on('connection',function(socket){
     // ---> lấy những user đã đăng nhập
     // ---> và đang không tham gia ở room nào
     socket.on('members-nin-room',()=>{
-      socket.emit('members-nin-room',{users:getAllUsers().filter(x=>x.username && !x.room)});
+      socket.emit('members-nin-room',{users:membersNiNRoom(getRoom(socket.id))});
     });
 
  

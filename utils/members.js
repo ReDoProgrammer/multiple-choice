@@ -20,6 +20,7 @@ function joinRoom(socket_id,room){
     let member =tmp;
     member.room = room;
     removeMemberBySocketId(tmp.socket_id); 
+    console.log(member);
     pushMember(member);   
 }
 

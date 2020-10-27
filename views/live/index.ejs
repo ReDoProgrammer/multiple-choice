@@ -142,12 +142,14 @@
     });
  
      // //kiểm tra xem đường dẫn có phải liên quan tới phòng thi trực tuyến không
-     let searchParams = new URLSearchParams(window.location.search);
-          if (searchParams.has("room")) {
-            socket.emit('accept-invitation',searchParams.get("room"));           
-          } else {
-            console.log("nothing");
-          }
+      let searchParams = new URLSearchParams(window.location.search);
+      if (searchParams.has("room")) {
+       $('#roomslist > tr').each(function(key,tr){
+         console.log(tr);
+       });
+      } else {
+        console.log("nothing");
+      }
   });
 
   //lắng nghe sự kiện tham gia room

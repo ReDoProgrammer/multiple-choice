@@ -238,11 +238,6 @@ io.on('connection',function(socket){
     socket.broadcast.to(data.socket_id).emit('send-invitation',invitation);    
   });
 
-  //lắng nghe sự kiện chấp nhận lời mời tham gia phòng thi
-  socket.on('accept-invitation',room=>{
-    console.log('invited to room: ',room);
-    socket.broadcast.to(socket.id).emit('enter-room',room);    
-  });
 
 //sự kiện công bố đề thi tới tất cả mọi người trong phòng thi
   socket.on('send-exam',(data)=>{

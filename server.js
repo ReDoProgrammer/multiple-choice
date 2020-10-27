@@ -208,7 +208,6 @@ io.on('connection',function(socket){
     // ---> lấy những user đã đăng nhập
     // ---> và đang không tham gia ở room nào
     socket.on('list-users-not-in-any-room',()=>{
-      console.log('all users: ',getAllUsers());
       socket.emit('users-nin-room',{users:getAllUsers().filter(x=>x.username && !x.room)});
     });
 
@@ -237,6 +236,11 @@ io.on('connection',function(socket){
     }
     invitedUser = getCurrentUser(data.socket_id);
     socket.broadcast.to(data.socket_id).emit('send-invitation',invitation);    
+  });
+
+  //lắng nghe sự kiện chấp nhận lời mời tham gia phòng thi
+  socket.on('accept-invitation',data=>{
+    console.log(data);
   });
 
 //sự kiện công bố đề thi tới tất cả mọi người trong phòng thi

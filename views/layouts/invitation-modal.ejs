@@ -38,7 +38,11 @@
       $('#btnAccept').click(function(){
           let socket_id = $('#invited_user_socket_id').val();
           let room = $('#invited_user_room').val(); 
-          console.log({socket_id,room});
+          let agreement = {
+              socket_id:socket_id,
+              room:room
+          }
+          socket.emit('accept-invitation',agreement);
       })
 
   </script>

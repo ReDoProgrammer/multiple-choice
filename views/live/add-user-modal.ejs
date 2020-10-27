@@ -34,12 +34,11 @@
 <script>
   $("#modalAddUser").on("show.bs.modal", function (e) {
     listUsersNinRoom();
-    socket.on("users-nin-room", (users) => {
-      console.log(users);
-      if (users) {
+    socket.on("users-nin-room", (data) => {
+      if (data.users) {
         let d = '';
         $("#users-nin-room").empty();
-        $.each(users, function (k, user) {
+        $.each(data.users, function (k, user) {
           d+= '<tr id="'+user.socket_id+'">';
           d+=     '<th scope="row" class = "text-danger">'+user.member_code+'</th>';         
           d+=    '<td class = "text-primary" style="font-weight:bold;">'+user.fullname+'</td>';

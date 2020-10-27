@@ -209,7 +209,7 @@ io.on('connection',function(socket){
     // ---> và đang không tham gia ở room nào
     socket.on('list-users-not-in-any-room',()=>{
       console.log('all users: ',getAllUsers());
-      socket.emit('users-nin-room',{users:getAllUsers().find(x=>x.username && !x.room)});
+      socket.emit('users-nin-room',{users:getAllUsers().filter(x=>x.username && !x.room)});
     });
 
   //join vào 1 phòng đã có

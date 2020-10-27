@@ -132,6 +132,16 @@
       $("#current_visitors").text(users.count);
     });
     TotalMembers();
+
+    
+//kiểm tra xem đường dẫn có phải liên quan tới phòng thi trực tuyến không
+
+      let searchParams = new URLSearchParams(window.location.search)
+      if(searchParams.has('room')){
+        console.log(searchParams.get('room'));
+      }else{
+        console.log('nothing');
+      }
   });
 
   function TotalMembers() {
@@ -154,7 +164,6 @@
     $('#invitation_room').text(data.room_title);
     $('#invitationModal').modal();
   });
-
 
 
 </script>

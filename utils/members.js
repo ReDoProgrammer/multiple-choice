@@ -23,7 +23,7 @@ function joinRoom(socket_id,room){
         removeMemberBySocketId(tmp.socket_id); 
         pushMember(member);   
     } catch (error) {
-        console.log('member:',getMemberBySocketId(socket_id));
+        console.log(socket_id,getMembers());
     }
 }
 

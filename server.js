@@ -207,7 +207,7 @@ io.on('connection',function(socket){
   });
 
    //join vào 1 phòng đã có
-   socket.on('join-room',room=>{    
+  socket.on('join-room',room=>{    
     joinRoom(socket.id,room);
     socket.join(room);
     // cập nhật lại danh sách user trong phòng thi
@@ -218,12 +218,10 @@ io.on('connection',function(socket){
     
   });
 
-
   socket.on('user-leave-room',()=>{    
     //cập nhật lại danh sách user trong room
     let room = getRoom(socket.id);
     leaveRoom(socket.id);
-    console.log('room:',room);
     io.to(room).emit('users-in-room', {
       room: room,
       users: membersInRoom(room)

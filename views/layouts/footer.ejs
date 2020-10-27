@@ -136,9 +136,16 @@
     
 //kiểm tra xem đường dẫn có phải liên quan tới phòng thi trực tuyến không
 
-      let searchParams = new URLSearchParams(window.location.search)
+      let searchParams = new URLSearchParams(window.location.search);
       if(searchParams.has('room')){
         console.log(searchParams.get('room'));
+        $('#roomslist tr').each(function(k,v){
+          if($(v).attr('id')==earchParams.get('room')){
+            console.log('room found');
+          }else{
+            console.log('room not found');
+          }
+        });
       }else{
         console.log('nothing');
       }

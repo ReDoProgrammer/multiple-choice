@@ -127,7 +127,7 @@
             room: room_id,
             finished: false,
           };
-          console.log('người tham gia phòng: ',cadidate);
+          console.log('người tham gia phòng: ',candidate);
           socket.emit("join-room", candidate);
           if (data.user._id === master) {
             $("#btnStart").show();

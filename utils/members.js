@@ -15,8 +15,8 @@ function removeMemberBySocketId(socket_id){
     } 
 }
 
-function joinRoom(socket_id,room){
-    let tmp = getMemberBySocketId(socket_id);       
+async function joinRoom(socket_id,room){
+    let tmp =await getMemberBySocketId(socket_id);       
     let member = {
         username:tmp.username,
         member_code: tmp.member_code,

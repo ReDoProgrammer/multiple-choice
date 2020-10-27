@@ -1,27 +1,69 @@
-members = [];
+const OnlineMember = require('../models/online_member-model');
 
-function pushMemeber(member){
-    members.push(member);
-    findAndUpdateMember(member.username);
+function pushMember(member){
+    let {socket_id,user} = user;
+    OnlineMember.create({
+        socket_id:socket_id,
+        user:user
+    },function(err,mem){
+        if(err){
+            console.log('push member failed:'+new Errror(err));
+        }else{
+            return 200;
+        }
+    })
+}
+function getMemberBySocketId(socket_id){
+    OnlineMember.findOne({socket_id:socket_id},function(err,member){
+        if(err){
+            console.log('find member failed: '+new Error(err));
+        }else{
+            return member;
+        }
+    });
 }
 
-function removeMemberBySocketId(socket_id){
-    const index = members.findIndex(x => x.socket_id === socket_id);
-    if (index !== -1) {
-        return members.splice(index, 1)[0];
-    } 
+function updateSocketId(user_id,socket_id){
+    OnlineMember.findOneAndUpdate({user:user_id},{
+        socket_id:socket_id
+    },{new:true},function(err,member){
+        if(err){
+            console.log('update socket id failed:'+new Error(err));
+        }else{
+            return member; 
+        }
+    })
+}
+
+function memberJoinRoom(socket_id,room){
+    OnlineMember.findOneAndUpdate({
+        socket_id:socket_id
+    },{
+        room:room
+    },{new:true},function(err,member){
+        if(err){
+            console.log('member join room failed: '+new Error(err));
+        }else{
+            return member;
+        }
+    })
+}
+
+function getMembers(){
+    OnlineMember.find({},function(err,members){
+        if(err){
+            console.log('find members failed: '+new Error(err));
+        }else{
+            return members;
+        }
+    });
 }
 
 
-
-function findAndUpdateMember(username){
-    let member = members.filter(x=>x.username === username);
-    member.room = '11111111111111111';
-    console.log({member,members});
-}
-
-module.exports ={
-    pushMemeber,
-    removeMemberBySocketId,
-    findAndUpdateMember
+module.exporst = {
+    pushMember,
+    getMemberBySocketId,
+    updateSocketId,
+    memberJoinRoom,
+    getMembers
 }

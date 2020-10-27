@@ -19,9 +19,11 @@ const {
 
 
 const {
-  pushMemeber,
-    removeMemberBySocketId,
-    findAndUpdateMember
+  pushMember,
+    getMemberBySocketId,
+    updateSocketId,
+    memberJoinRoom,
+    getMembers
 } = require('./utils/members');
 
 //những hàm liên quan đến user và room
@@ -186,6 +188,8 @@ io.on('connection',function(socket){
     u.socket_id = socket.id;
     userLoggedIn(u);
     pushMemeber(u);
+
+    console.log(getMembers());
   });
 
 

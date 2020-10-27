@@ -139,13 +139,8 @@
       let searchParams = new URLSearchParams(window.location.search);
       if(searchParams.has('room')){
         console.log(searchParams.get('room'));
-        $('#roomslist tr').each(function(k,v){
-          console.log(v);
-          if($(v).attr('id')==earchParams.get('room')){
-            console.log('room found');
-          }else{
-            console.log('room not found');
-          }
+        $('#roomslist > tr').each(function(k,tr){
+          console.log(tr);
         });
       }else{
         console.log('nothing');

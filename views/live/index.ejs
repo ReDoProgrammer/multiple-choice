@@ -193,13 +193,12 @@
           if (searchParams.has("room")) {
             console.log(searchParams.get("room"));
             $("#roomslist > tr").each(function (index, tr) {
-              if ($(tr).attr("id") === searchParams.get("room")) {
-                $('#roomslist > tr > td > input[name="join"]').click();
-                let room_id = $(tr).attr("id");
-                let master = $(tr).data("master");
-                let subject_id = $(tr).data("subject");
-                userJoin(room_id, master, subject_id);
-                return true;
+              if ($(tr).attr("id") === searchParams.get("room")) {               
+                $('#roomslist > tr > td > input[name="join"]').click();               
+                // let master = $(tr).data("master");
+                // let subject_id = $(tr).data("subject");
+                // userJoin(searchParams.get("room"), master, subject_id);
+                // return true;
               }
             });
           } else {

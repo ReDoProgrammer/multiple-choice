@@ -200,6 +200,7 @@
   }
 
   function userJoin(room_id,master,subject_id) {
+    console.log({room_id,master,subject_id});
     $.ajax({
       url: "/live/check-login",
       type: "get",

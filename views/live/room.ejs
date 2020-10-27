@@ -111,10 +111,7 @@
       let searchParams = new URLSearchParams(window.location.search);
       if(searchParams.has('room')){
         console.log(searchParams.get('room'));
-        $('table > tbody  > tr').each(function(index, tr) { 
-          console.log(index);
-          console.log(tr);
-        });
+        console.log($('#btnCreate').text());
       }else{
         console.log('nothing');
       }

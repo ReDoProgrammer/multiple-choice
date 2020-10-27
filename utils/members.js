@@ -17,7 +17,7 @@ function removeMemberBySocketId(socket_id){
 function findAndUpdateMember(username){
     let member = members.filter(x=>x.username === username);
     member.room = '11111111111111111';
-    console.log(members);
+    console.log({member,members});
 }
 
 module.exports ={

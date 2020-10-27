@@ -105,18 +105,7 @@
 
       //ẩn đồng hồ đếm ngược
       $("#countdown").hide();
-
-      //kiểm tra xem đường dẫn có phải liên quan tới phòng thi trực tuyến không
-
-      let searchParams = new URLSearchParams(window.location.search);
-      if(searchParams.has('room')){
-        console.log(searchParams.get('room'));
-        for(i = 1; i<5; i++){
-          console.log(i);
-        }
-      }else{
-        console.log('nothing');
-      }
+ 
     });
     $("#btnStart").click(function () {
       let subject_id = $("#subject_id").val();

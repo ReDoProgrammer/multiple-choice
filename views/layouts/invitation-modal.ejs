@@ -39,7 +39,6 @@
           let socket_id = $('#invited_user_socket_id').val();
           let room = $('#invited_user_room').val(); 
           let agreement = {
-              socket_id:socket_id,
               room:room
           }
           socket.emit('accept-invitation',agreement);

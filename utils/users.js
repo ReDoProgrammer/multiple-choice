@@ -34,6 +34,11 @@ function getCurrentUser(socket_id) {
   return users.find((user) => user.socket_id === socket_id);
 }
 
+//get user by username
+function getUserByUsername(username){
+  return users.find(x=>x.username == username);
+}
+
 //return all rooms
 function getAllUsers() {
   return users;
@@ -60,6 +65,7 @@ module.exports = {
   userJoin,
   getCurrentUser,
   userLeave,
+  getUserByUsername,
   getRoomUsers,
   getAllUsers,
 };

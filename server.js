@@ -18,6 +18,7 @@ const {
   getCurrentUser,
   userLeave,
   getRoomUsers,
+  getUserByUsername,
   getAllUsers
 } = require('./utils/users');
 
@@ -240,8 +241,9 @@ io.on('connection',function(socket){
 
   //lắng nghe sự kiện chấp nhận lời mời tham gia phòng thi
   socket.on('accept-invitation',data=>{
-    console.log(data);
-    socket.broadcast.to(data.socket_id).emit('apply-room',data);    
+    let user = getCurrentUser(socket.id);
+        user.room = data.room;
+    socket.broadcast.to(data.socket_id).emit('redirect-to-room',user);    
   });
 
 //sự kiện công bố đề thi tới tất cả mọi người trong phòng thi

@@ -183,6 +183,7 @@ router.get("/list", (req, res) => {
 });
 
 
+
 //hàm lưu kết quả bài thi của user
 router.post('/push-result',middleware.isLoggedIn,(req,res)=>{
   let result = req.body.result;
@@ -200,7 +201,9 @@ router.post('/push-result',middleware.isLoggedIn,(req,res)=>{
   })
 });
 
-
+router.get('/go-to-live',(req,res)=>{
+  
+});
 //hàm set trạng thái của phòng thi khi kết thúc thi
 router.post('/finish',middleware.isLoggedIn,(req,res)=>{
   let room = req.body.room;

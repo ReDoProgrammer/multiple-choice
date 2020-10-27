@@ -197,7 +197,7 @@ io.on('connection',function(socket){
 
     //thêm lại bản sao của user hiện tại được tính là 1 thành viên đăng nhập
     userLoggedIn(u);
-    console.log('users in current room:',getAllUsers().filter(x=>x.room===room));
+    console.log('users in current room:',getRoomUsers(room),'người thoát phòng:',getCurrentUser(socket.id).fullname);
 
     //cập nhật lại danh sách user trong room
     io.to(room).emit('users-in-room', {

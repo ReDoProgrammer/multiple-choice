@@ -239,11 +239,9 @@ io.on('connection',function(socket){
   });
 
   //lắng nghe sự kiện chấp nhận lời mời tham gia phòng thi
-  // socket.on('accept-invitation',data=>{
-  //   let user = getCurrentUser(socket.id);
-  //       user.room = data.room;
-  //   socket.broadcast.to(data.socket_id).emit('redirect-to-room',user);    
-  // });
+  socket.on('accept-invitation',room=>{
+    socket.broadcast.to(socket.id).emit('enter-room',room);    
+  });
 
 //sự kiện công bố đề thi tới tất cả mọi người trong phòng thi
   socket.on('send-exam',(data)=>{

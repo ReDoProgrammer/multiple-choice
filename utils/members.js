@@ -5,7 +5,7 @@ function pushMember(member){
 }
 
 function getMemberBySocketId(socket_id){
-    return members.filter(x=>x.socket_id === socket_id);
+    return members.filter(x=>x.socket_id === socket_id)[0];
 }
 
 function removeMemberBySocketId(socket_id){

@@ -21,13 +21,20 @@ function joinRoom(socket_id,room){
     member.room = room;
     removeMemberBySocketId(tmp.socket_id); 
     pushMember(member);   
-    console.log('member join room:', member,'members',members);
 }
 
 function leaveRoom(socket_id){
     let tmp = getMemberBySocketId(socket_id);
+    let member = {
+        username:tmp.username,
+        member_code:tmp.member_code,
+        avatar:tmp.avatar,
+        fullname:tmp.fullname,
+        socket_id:socket_id
+    }
     removeMemberBySocketId(socket_id); 
-    pushMember(tmp);   
+    pushMember(member);  
+    console.log('members: ',members); 
 }
 
 function getMembers(){

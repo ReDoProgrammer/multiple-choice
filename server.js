@@ -245,9 +245,7 @@ io.on('connection',function(socket){
       room: getRoom(socket.id),
       inviter:getMemberBySocketId(socket.id).fullname
     }
-    console.log(invitation);
-    // invitedUser = getCurrentUser(data.socket_id);
-    // socket.broadcast.to(data.socket_id).emit('send-invitation',invitation);    
+    socket.broadcast.to(data.socket_id).emit('send-invitation',invitation);    
   });
 
 

@@ -10,6 +10,7 @@ function getMemberBySocketId(socket_id){
 
 function removeMemberBySocketId(socket_id){
     const index = members.findIndex(x => x.socket_id === socket_id);
+    console.log(index);
     if (index !== -1) {
         return members.splice(index, 1)[0];
     } 

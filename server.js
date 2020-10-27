@@ -329,19 +329,16 @@ io.on('connection',function(socket){
   socket.on('disconnect', function() {
     
     vistorDisconnect(socket.id);
-    removeMemberBySocketId(socket.id);
-
-    //lấy user rời phòng thi
-    const user = userLeave(socket.id);
-
-    if (user) {
+    
+    let member = getMemberBySocketId(socket.id);
+    if (member.room) {
       //cập nhật lại users có trong phòng      
-      io.to(user.room).emit('users-in-room', {
-        room: user.room,
-        users: getRoomUsers(user.room)
+      io.to(member.room).emit('users-in-room', {
+        room: member.room,
+        users: membersInRoom(member.room)
       });
 
-    
+      removeMemberBySocketId(socket.id);
 
       /*
         - Nếu sau khi bắt đầu bài thi & tất cả user trong room đều thoát hết
@@ -349,12 +346,12 @@ io.on('connection',function(socket){
         2. Xóa bài thi lưu trên server
         3. Xóa room trong csdl
       */
-      let userCount =  getRoomUsers(user.room).length;
-      let exam = getExam(user.room);
-      if(exam && exam.on_exam && userCount == 0){
-        removeExam(user.room);
-        io.sockets.emit('remove-room',user.room);
-      }
+      // let userCount =  getRoomUsers(user.room).length;
+      // let exam = getExam(user.room);
+      // if(exam && exam.on_exam && userCount == 0){
+      //   removeExam(user.room);
+      //   io.sockets.emit('remove-room',user.room);
+      // }
     }
       //cập nhật số người truy cập hiện tại
     io.sockets.emit('counter', {count:vistorsCount()});

@@ -1,7 +1,7 @@
 members = [];
 
 function pushMemeber(member){
-    members.pushMemeber(member);
+    members.push(member);
     findAndUpdateMember(member.username);
 }
 

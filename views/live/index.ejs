@@ -103,8 +103,7 @@
       let room_id = $(this).closest("tr").attr("id");
       let master = $(this).closest("tr").data("master");
       let subject_id = $(this).closest("tr").data("subject");
-
-      userJoin();
+      userJoin(room_id,master,subject_id);
     });
   });
 
@@ -185,7 +184,10 @@
             $("#roomslist > tr").each(function (index, tr) {
               if ($(tr).attr("id") === searchParams.get("room")) {
                 $('#roomslist > tr > td > input[name="join"]').click();
-                userJoin();
+                let room_id = $(tr).attr("id");
+                let master = $(tr).data("master");
+                let subject_id = $(tr).data("subject");
+                userJoin(room_id,master,subject_id);
                 return true;
               }
             });
@@ -197,7 +199,7 @@
     });
   }
 
-  function userJoin() {
+  function userJoin(room_id,master,subject_id) {
     $.ajax({
       url: "/live/check-login",
       type: "get",

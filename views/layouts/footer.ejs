@@ -126,8 +126,7 @@
 <script type="text/javascript">
 
  
-  $(document).ready(function () {
-    alert('Website đang bảo trì để nâng cấp tính năng nên tín hiệu chập chờn. Mong các bạn thông cảm!');
+  $(document).ready(function () {    
     socket.on("counter", function (users) {    
       $("#current_visitors").text(users.count);
     });

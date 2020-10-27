@@ -17,17 +17,17 @@ function removeMemberBySocketId(socket_id){
 
 function joinRoom(socket_id,room){
     let tmp = getMemberBySocketId(socket_id);       
-    let member = {
-        username:tmp.username,
-        member_code: tmp.member_code,
-        avatar:tmp.avatar,
-        fullname:tmp.fullname,
-        socket_id:tmp.socket_id,
-        room:room
-    }
-    removeMemberBySocketId(socket_id); 
-    pushMember(member);   
-    console.log('tmp in join room:', member,'members',members);
+    // let member = {
+    //     username:tmp.username,
+    //     member_code: tmp.member_code,
+    //     avatar:tmp.avatar,
+    //     fullname:tmp.fullname,
+    //     socket_id:tmp.socket_id,
+    //     room:room
+    // }
+    // removeMemberBySocketId(socket_id); 
+    // pushMember(member);   
+    console.log('tmp in join room:', tmp,'members',members);
 }
 
 function leaveRoom(socket_id){

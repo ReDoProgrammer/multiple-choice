@@ -13,8 +13,7 @@ function userConnect(socket_id) {
 }
 
 
-function userLoggedIn(user) {
-  userLeave(user.socket_id);
+function userLoggedIn(user) {  
   users.push(user);
   return users;
 }

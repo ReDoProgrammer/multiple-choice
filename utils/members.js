@@ -2,6 +2,7 @@ members = [];
 
 function pushMember(member){
     members.push(member);
+    console.log(members);
 }
 
 function getMemberBySocketId(socket_id){
@@ -27,7 +28,7 @@ function joinRoom(socket_id,room){
     // }
     // removeMemberBySocketId(socket_id); 
     // pushMember(member);   
-    console.log('tmp in join room:', tmp,'members',members);
+    // console.log('tmp in join room:', tmp,'members',members);
 }
 
 function leaveRoom(socket_id){

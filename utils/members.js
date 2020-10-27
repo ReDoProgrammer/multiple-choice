@@ -45,7 +45,8 @@ function membersNiNRoom(){
 }
 
 function membersInRoom(room){
-    console.log('members in room:',members);
+
+    console.log('room:',room,'members in room:',members.filter(x=>x.room === room));
     return members.filter(x=>x.room === room);
 }
 

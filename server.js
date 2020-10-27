@@ -208,6 +208,7 @@ io.on('connection',function(socket){
     // ---> lấy những user đã đăng nhập
     // ---> và đang không tham gia ở room nào
     socket.on('list-users-not-in-any-room',()=>{
+      console.log('all users: ',getAllUsers());
       socket.emit('users-nin-room',{users:getAllUsers().find(x=>x.username && !x.room)});
     });
 

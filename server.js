@@ -181,6 +181,7 @@ server.listen(8080,()=>{
 
 io.on('connection',function(socket){
 
+  console.log('all members:',getMembers());
   visitorConnect(socket.id);
 
   let users = userConnect(socket.id)

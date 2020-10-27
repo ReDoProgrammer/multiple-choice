@@ -233,7 +233,8 @@ io.on('connection',function(socket){
       room: getCurrentUser(socket.id).room,
       inviter:getCurrentUser(socket.id).fullname
     }
-    console.log(invitation);
+    invitedUser = getCurrentUser(data.socket_id);
+    console.log(invitation,invitedUser);
     socket.broadcast.to(data.socket_id).emit('send-invitation',invitation);    
   });
 

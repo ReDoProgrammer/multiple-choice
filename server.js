@@ -187,7 +187,8 @@ io.on('connection',function(socket){
     let u = user;
     u.socket_id = socket.id;   
     userLoggedIn(u);
-    pushMember(u._id,socket.id);
+    console.log(u);
+    // pushMember(u._id,socket.id);
 
     console.log(getMembers());
   });

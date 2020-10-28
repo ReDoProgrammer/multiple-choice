@@ -3,21 +3,14 @@
     <div class="modal-content">
       <div class="modal-header" style="background-color: #CCFFCC;">
         <div class="row" >
-          <div class="col-md-10 col-sm-8 col-xs-8">
+          <div class="col-md-12 col-sm-12 col-xs-12">
             <h5 class="modal-title" style="padding-top:5px; color:#FF3300; text-transform: uppercase; font-weight: bold;">Mời các thành viên khác vào phòng thi</h5>
           </div>
-          <div class="col-md-2 col-sm-4 col-xs-4 text-right">
-            <button id="btnRefresh" class="btn btn-xs btn-warning">
-              <i class="fa fa-refresh text-primary" aria-hidden="true"></i>
-            </button>
-          </div>
-        </div>       
+        </div>         
       </div>
-      <div class="modal-body">
-        <input type="hidden" id="room_title" value="">
-
+      <div class="modal-body">     
         <table class="table table-borderless">          
-          <tbody id="users-nin-room"></tbody>
+          <tbody id="members-nin-room"></tbody>
         </table>
       </div>
       <div class="modal-footer">
@@ -34,25 +27,23 @@
 <script>
   $("#modalAddUser").on("show.bs.modal", function (e) {
     listUsersNinRoom();
-    socket.on("members-nin-room", (data) => {
-      if (data.users) {
+       socket.on("members-nin-room", (members) => {        
         let d = '';
-        $("#users-nin-room").empty();
-        $.each(data.users, function (k, user) {
+        $("#members-nin-room").empty();
+        $.each(members, function (k, user) {
           d+= '<tr id="'+user.socket_id+'">';
           d+=     '<th scope="row" class = "text-danger">'+user.member_code+'</th>';         
           d+=    '<td class = "text-primary" style="font-weight:bold;">'+user.fullname+'</td>';
-          d+=    '<td class="text-right"><input type="button" value="Mời" name = "invite-user" class="btn btn-xs btn-warning"></td>';
+          d+=    '<td class="text-right"><button name = "invite-user" class="btn btn-xs btn-success" style="border-radius:50%;"><i class="fa fa-plus" aria-hidden="true"></i></button></td>';
           d+=  '</tr>';
         });
+        $("#members-nin-room").append(d);
 
-        $("#users-nin-room").append(d);
-      }
     });
   });
 
-  $(document).on("click", "input[name='invite-user']", function () {
-      socket.emit('invite-user',{socket_id:$(this).closest("tr").attr('id'),room_title:$('#room_title').val()});
+  $(document).on("click", "button[name='invite-user']", function () {
+      socket.emit('invite-member',{socket_id:$(this).closest("tr").attr('id'),room_title:$('.panel-heading h1').text()});
   });
 
 
@@ -62,6 +53,7 @@
   });
 
   function listUsersNinRoom(){
-    socket.emit("members-nin-room"); //gọi tới sự kiện list users không tham gia bất cứ phòng nào
+    //gọi tới sự kiện list users không tham gia bất cứ phòng nào
+    socket.emit("get-members-nin-room"); 
   }
 </script>

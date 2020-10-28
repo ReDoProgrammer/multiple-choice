@@ -37,12 +37,16 @@
           <script src="/user/lib/bootstrap/js/bootstrap.js"></script>
           <script src="/user/lib/jquery-toggles/toggles.js"></script>
           <script src="/user/js/quirk.js"></script>
+
+          <!-- link tới server -->
+          <!-- <script src="http://localhost:8080/socket.io/socket.io.js"></script> -->
           <script src="https://redoapp.com/socket.io/socket.io.js" charset="utf-8"></script>
 
-
           <!-- script để kích hoạt google adsense -->
-          <script data-ad-client="ca-pub-7424972060609577" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+          <!-- <script data-ad-client="ca-pub-7424972060609577" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script> -->
+         
           <script type="text/javascript">
+            // var socket = io("http://localhost:8080");
             var socket = io("https://redoapp.com/");
             $(document).ready(function(){
               LoadProfile();
@@ -74,8 +78,15 @@
                       member_code:data.user.member_code,
                       fullname:data.user.fullname,
                       avatar:data.user.avatar
-                    }
-                     socket.emit('logged-user',member);
+                    }  
+                    socket.emit('push-member',member);
+
+                    let searchParams = new URLSearchParams(window.location.search);
+                    if(searchParams.has('room')){
+                      let room = searchParams.get('room');                     
+                      socket.emit('join-room',room);
+                    }                               
+                    
                   }else{
                     if(data.code == 401){
                        $('#divProfile').hide();
@@ -154,7 +165,7 @@
         success:function(data){
           if(data.code == 200){
             if(type.trim().length>0){
-              socket.emit('call-auth-logout',type);
+              socket.emit('member-logout',type);
             }
           }
         }

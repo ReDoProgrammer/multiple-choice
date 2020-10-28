@@ -5,10 +5,7 @@ function visitorConnect(socket_id){
 }
 
 function vistorDisconnect(socket_id){
-    const index = visitors.findIndex(x => x.socket_id === socket_id);
-    if (index !== -1) {
-        return visitors.splice(index, 1)[0];
-    } 
+    visitors = visitors.filter(x=>x!==socket_id);
 }
 
 function vistorsCount(){

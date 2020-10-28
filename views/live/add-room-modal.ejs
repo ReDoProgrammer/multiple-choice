@@ -141,7 +141,7 @@
       success: function (data) {
         if (data.code == 200) {
           alert(data.msg);
-          socket.emit("add-room");
+          socket.emit("populate-rooms");
           $("#AddRoomModal").modal("hide");
         }
       },

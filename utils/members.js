@@ -1,72 +1,100 @@
+const e = require("express");
+const { remove } = require("../models/job-model");
+
 members = [];
 
 function pushMember(member){
     members.push(member);
 }
-
-function getMemberBySocketId(socket_id){
+function getMember(socket_id){
     return members.filter(x=>x.socket_id === socket_id)[0];
 }
-
-function removeMemberBySocketId(socket_id){
-    const index = members.findIndex(x => x.socket_id === socket_id);
-    console.log(index);
-    if (index !== -1) {
-        return members.splice(index, 1)[0];
-    } 
+function removeMember(socket_id){
+    members = members.filter(x=>x.socket_id !==socket_id);
 }
 
-function joinRoom(socket_id,room){
-    try {
-        let tmp = getMemberBySocketId(socket_id);       
-        let member =tmp;
-        member.room = room;
-        removeMemberBySocketId(tmp.socket_id); 
-        pushMember(member);   
-    } catch (error) {
-        console.log(socket_id,getMembers());
-    }
-}
-
-function getRoom(socket_id){
-    return getMemberBySocketId(socket_id).room;
-}
-
-function leaveRoom(socket_id){
-    let tmp = getMemberBySocketId(socket_id);
-    let member = {
-        username:tmp.username,
-        member_code:tmp.member_code,
-        avatar:tmp.avatar,
-        fullname:tmp.fullname,
-        socket_id:socket_id
-    }
-    removeMemberBySocketId(socket_id); 
-    pushMember(member);  
-}
-
-function membersNiNRoom(){
-    return members.filter(x=>!x.room);
-}
-
-function membersInRoom(room){
-    return members.filter(x=>x.room === room);
-}
-
-function getMembers(){
+function allMembers(){
     return members;
 }
 
 
+//hàm liên quan tới room 
+function joinRoom(socket_id,room){
+    let tmp = getMember(socket_id);  
+    removeMember(socket_id);
+    tmp.room = room;
+    pushMember(tmp);
+}
+function getRoom(socket_id){
+    return getMember(socket_id).room;
+}
+function membersInRoom(room){    
+    return members.filter(x=>x.room === room);
+}
+
+function membersNinRoom(room){
+    return members.filter(x=>!x.room);
+}
+
+function onExam(room){
+    membersInRoom(room).forEach(member => {
+        tmp = member;
+        removeMember(member);
+        tmp.onExam = true;
+        pushMember(tmp);
+    });
+}
+
+function finishExam(socket_id){
+    membersInRoom(getRoom(socket_id)).forEach(member=>{
+        tmp = getMember(member.socket_id);
+        removeMember(member.socket_id);
+        if(tmp.socket_id === socket_id){
+            tmp.finishExam = true;
+        }       
+        pushMember(tmp);
+    });    
+}
+
+function pushResult(socket_id,correct){
+    tmp = getMember(socket_id);
+    removeMember(socket_id);
+    tmp.correct = correct;
+    pushMember(tmp);
+}
+
+function checkPushResultAll(room){
+    return membersInRoom(room).find(x=>!x.correct);
+}
+
+function sortRank(room){
+   return membersInRoom(room).sort(function(a,b){
+       return b.correct - a.correct;
+   });
+}
+
+function finishRoom(room){
+    return membersInRoom(room).find(x=>!x.finishExam)==undefined;
+}
+
+function leaveRoom(socket_id){   
+   members = members.filter(x=>x.socket_id !== socket_id);
+}
 
 module.exports = {
-    pushMember,
-    removeMemberBySocketId,
-    getMemberBySocketId,  
-    joinRoom,
-    getRoom,
-    membersInRoom,
-    leaveRoom,
-    membersNiNRoom,
-    getMembers
+   pushMember,
+   getMember,
+   joinRoom,
+   getRoom,
+   membersInRoom,
+   membersNinRoom,
+   onExam,
+   finishExam,
+   pushResult,
+   checkPushResultAll,
+   sortRank,
+   finishRoom,
+   leaveRoom,
+   removeMember,
+   allMembers
 }

@@ -112,7 +112,7 @@ router.post('/register',(req,res)=>{
 
 //hàm trả về danh sách câu hỏi được lấy random dựa vào thông tin của room
 router.post("/generate-exam", middleware.isLoggedIn, (req, res) => {
-  let { room, subject } = req.body;
+  let { room} = req.body;
   LivedRoom.findById(room, function (err, r) {//tìm ra phòng để lấy thông tin số câu hỏi, thời gian thi
     if (err) {
       console.log("find room failed: " + new Error(err));
@@ -121,7 +121,7 @@ router.post("/generate-exam", middleware.isLoggedIn, (req, res) => {
         [
           {
             $match: {
-              subject: mongoose.Types.ObjectId(subject),
+              subject: mongoose.Types.ObjectId(r.subject),
               is_actived: true,
             },
           },
@@ -201,8 +201,23 @@ router.post('/push-result',middleware.isLoggedIn,(req,res)=>{
   })
 });
 
-router.get('/go-to-live',(req,res)=>{
-  
+router.get('/apply',middleware.isLoggedIn,(req,res)=>{
+  let room = req.query.room;
+  LivedRoom.findById(room)  
+  .populate('subject','_id name')
+  .exec(function(err,room){
+    if(err){
+      console.log('can not find room: '+new Error(err));
+    }else{
+      if(room.status == 1){//đã thi xong
+        res.redirect('/live');
+      }else{
+        res.render('live/room',{layout:'user-layout',room:room});
+      }
+     
+    }   
+  })
+ 
 });
 //hàm set trạng thái của phòng thi khi kết thúc thi
 router.post('/finish',middleware.isLoggedIn,(req,res)=>{

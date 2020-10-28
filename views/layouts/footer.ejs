@@ -147,8 +147,9 @@
 
   //lắng nghe sự kiện mời thi trực tuyến từ người khác
   socket.on('send-invitation',data=>{
+    console.log(data);
     $('#invited_user_room').val(data.room);
-    $('#inviter').text(data.inviter);
+    $('#invitee').text(data.invitee);
     $('#invitation_room').text(data.room_title);   
     $('#invitationModal').modal();
   });

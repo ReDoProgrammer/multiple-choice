@@ -44,8 +44,6 @@
   <!-- /.card-body -->
 </div>
 
-<!-- include room modal -->
-<%- include('room') %>
 
 <!-- include create new live room modal -->
 <%- include('add-room-modal') %> <%- include('prevent-join-modal') %>
@@ -101,38 +99,8 @@
       }
 
       let room_id = $(this).closest("tr").attr("id");
-      let master = $(this).closest("tr").data("master");
-      let subject_id = $(this).closest("tr").data("subject");
-      $("#subject_id").val(subject_id);
-      $("#room_name").html(
-        'Phòng thi trực tuyến môn <span style="color: #FFCC33; font-weight: bold; font-size:15px;">' +
-          room_name +
-          '</span> (<span style="color: #FFFF00">' +
-          number_of_question +
-          " câu, " +
-          duration +
-          "</span>)"
-      );
-      $("#room_id").val(room_id);
-      $.ajax({
-      url: "/live/check-login",
-      type: "get",
-      success: function (data) {
-        if (data.code == 200) {      
-          socket.emit("join-room", room_id);
-          if (data.user._id === master) {
-            $("#btnStart").show();
-          } else {
-            $("#btnStart").hide();
-          }
-          $("#modalRoom").modal();
-        } else {
-          alert("Bạn phải đăng nhập mới tham gia phòng thi được!");
-        }
-      },
-    });
-    });
- 
+      $(location).attr('href', window.location.origin+'/live/apply?room='+room_id);
+    }); 
     
   });
 
@@ -141,18 +109,7 @@
   //socket load rooms
   socket.on("load-rooms", () => {
     LoadRooms();
-  });
-  //hiển thị users tương ứng mỗi phòng
-  socket.on("users-in-rooms", (rooms) => {
-    $("#roomslist > tr").each(function () {
-      let current_users = rooms.filter((x) => x.room === $(this).attr("id"))
-        .length;
-
-      $("#roomslist > tr#" + $(this).attr("id") + " > td.current_members").text(
-        current_users < 10 ? "0" + current_users : current_users
-      );
-    });
-  });
+  });  
 
   //hàm load danh sách phòng thi trực tuyến
   function LoadRooms() {
@@ -206,20 +163,7 @@
 
             rooms += "</tr>";
           });
-          $("#roomslist").append(rooms);   
-          
-           // //kiểm tra xem đường dẫn có phải liên quan tới phòng thi trực tuyến không
-          let searchParams = new URLSearchParams(window.location.search);
-          if (searchParams.has("room")) {
-          $('#roomslist > tr').each(function(key,tr){
-
-            if($(tr).attr('id')===searchParams.get("room")){
-              $('#roomslist > tr#'+searchParams.get("room")+' > td > input[name="join"]').click();
-            }
-          });
-          } else {
-            console.log("nothing");
-          }
+          $("#roomslist").append(rooms);    
         }
       },
     });

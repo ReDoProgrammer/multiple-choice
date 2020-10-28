@@ -41,8 +41,7 @@ router.get('/profile',(req,res)=>{
 });
 
 router.post('/login',(req,res)=>{
-  let username = req.body.username;
-  let password = req.body.password;
+  let {username,password} = req.body;
   User.findOne({ username: username }, function(err, user) {
     if (err) {
       console.log('error login: ', new Error(err));

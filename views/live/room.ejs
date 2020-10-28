@@ -1,96 +1,88 @@
-<div
-  class="modal fade bd-example-modal-lg"
-  tabindex="-1"
-  role="dialog"
-  aria-labelledby="myLargeModalLabel"
-  aria-hidden="true"
-  id="modalRoom"
->
-  <div class="modal-dialog modal-lg modal-dialog-full">
-    <div class="modal-content modal-content-full">
-      <div class="modal-body">
-        <div class="row">
-          <div class="col-md-10 col-sm-8 col-xs-12">
-            <div class="panel-success">
-              <div class="panel-heading">
-                <div class="row">
-                  <div class="col-md-2 col-sm-2 col-xs-12 text-center">
-                    <button
-                      type="button"
-                      class="btn btn-sm btn-warning"
-                      id="btnStart"
-                    >
-                      Bắt đầu bài thi
-                    </button>
-                  </div>
-
-                  <div class="col-md-8 col-sm-8 col-xs-12">
-                    <h6
-                      id="room_name"
-                      style="color: #fff; text-transform: uppercase"
-                    ></h6>
-                  </div>
-                  <div
-                    class="col-md-2 col-sm-2 col-xs-12 text-center"
-                    id="countdown"
-                  >
-                    <h5 class="col-form-label" style="color: #ffffff">
-                      Còn lại:
-                      <span id="remainTime" style="color: #ffff33"></span>
-                    </h5>
-                  </div>
-
-                  <input type="hidden" id="room_id" value="" />
-                  <input type="hidden" id="subject_id" value="" />
-                </div>
+    <div class="row">
+      <div class="col-md-8 col-xs-12">
+        <div class="panel panel-danger">
+          <div class="panel-heading"> <h1
+            style="
+              font-size: 13px;
+              text-transform: uppercase;
+              color: #fff;
+              margin-top:0;
+              margin-bottom:0;
+            ",
+            id="<%=room._id%>"
+          ><i class="fa fa-home" aria-hidden="true"></i>
+            <%= room.subject.name %>
+            (<span class="text-info"><%=room.duration%> phút, <%=room.number_of_question%> câu</span>)
+          </h1></div>
+          <div class="panel-body">
+            <div class="row">
+              <div class="col-xs-6">
+                <div id="remain">Thời gian còn lại: <span id="countdown"></span></div>
               </div>
-                <!-- /.card-header -->
-                <div class="panel-body" style="margin-top: 10px">
-                  <!-- khu vực load câu hỏi -->
-                  <div id="questions"></div>
-                </div>
-                <!-- /.card-body -->
+              <div class="col-xs-6 text-right">
+                <button class="btn btn-xs btn-success" id="btnStart"><i class="fa fa-hourglass-start text-warning" aria-hidden="true"></i> Bắt đầu</button>                
               </div>
             </div>
-            <div
-              class="col-md-2 col-sm-4 col-xs-12"
-              style="border-left: 1px solid #ddd"
-            >
-              <div class="panel-success">
-                <div class="panel-heading">
-                  <div class="row">
-                    <div class="col-xs-10">
-                      <h6 style="color: #fff">
-                        Hiện tại (<span id="current_users" class="text-warning"
-                          >0</span
-                        >)
-                      </h6>                      
-                    </div>
-                    <div class="col-xs-2"> 
-                      <button class = "btn btn-sm btn-info" style="border-radius: 50%; border:1px solid #ddd; margin:0 auto;" id="btnAddUser"><i class="fa fa-plus" aria-hidden="true"></i></button>
-                    </div>
-                  </div>
-                 
-                </div>
-                <!-- /.card-header -->
-                <div
-                  class="panel-body"
-                  style="margin-top: 10px"
-                  id="users_list"
-                ></div>
-                <!-- /.card-body -->
+            
+            <hr>
+            <div id="questions"></div>
+            <div class="row">
+              <div class="col-xs-12 text-right" style="padding-bottom: 20px;">
+                <button id="btnFinish" class="btn btn-sm btn-success" ><i class="fa fa-check" aria-hidden="true"></i> Kết thúc & nộp bài</button>
               </div>
             </div>
           </div>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-primary" id="btnFinish">
-            Kết thúc & Nộp bài
-          </button>          
+      </div>
+      <div class="col-md-4 col-xs-12">  
+        <div class="panel panel-primary">
+          <div class="panel-heading">
+            <div class="row" style="margin:0; padding:0;">
+              <div class="col-xs-4" style="margin:0; padding:0;">
+                <button class="btn btn-xs btn-primary" id="btnLeftRoom" style="border: solid 1px #d9534f"><i class="fa fa-sign-out text-danger" aria-hidden="true"></i>Rời phòng thi</button>
+              </div>
+              <div class="col-xs-8 text-right" style="margin:0; padding:0;">                
+                Hiện tại (<span id="member_count" class="text-danger"></span>)
+                <span>
+                  <button id="btnAddMember" class="btn btn-xs btn-success" style="border:1px solid #fff;border-radius: 50%;">
+                    <i class="fa fa-plus" aria-hidden="true"></i>
+                  </button>
+                </span>
+              </div>              
+            </div>    
+          </div>
+          <div class="panel-body" id="users_list"></div>
+        </div>     
+        <div class="panel panel-warning" style="margin-bottom:1px;">
+          <div class="panel-heading" style="padding-top:5px; padding-bottom:5px;">
+            <h3 class="panel-title" style="text-transform: uppercase; margin-top:5px; padding-top:5px; padding-bottom:5px;">
+              <i class="fa fa-circle text-success" aria-hidden="true"></i> 
+              Chat trực tuyến 
+            </h3>
+          </div>
+          <div class="panel-body" id="messages">
+        
+          </div>
+          <hr>
+          <div class="post-footer-comment-wrapper" id="divChat">
+            <div class="comment-form">
+              <div class="input-group mb15">
+                <input type="text" class="form-control" id="txtMessage">
+                <span class="input-group-btn">
+                  <button type="button" class="btn btn-default" id="btnChat" ><i class="fa fa-send-o text-primary"></i></button>
+                </span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-  </div>
+
+
+
+
+
+
 
   <%- include('add-user-modal') %>
   <script type="text/javascript">
@@ -99,34 +91,37 @@
   */
     var time_over = false;
     var intervalId = null;
+
     $(document).ready(function () {
       $("#questions").empty();
       $("#btnFinish").hide();
 
       //ẩn đồng hồ đếm ngược
-      $("#countdown").hide();
- 
+      $("#remain").hide();
+
     });
+   
+    $('#btnLeftRoom').click(function(){
+      socket.emit('leave-room');
+      $(location).attr('href', window.location.href.match(/^.*\//));
+    });
+   
     $("#btnStart").click(function () {
-      let subject_id = $("#subject_id").val();
-      let room_id = $("#room_id").val();
       $.ajax({
         url: "/live/generate-exam",
         type: "post",
         data: {
-          room: room_id,
-          subject: subject_id,
+          room: $('.panel-heading h1').attr('id')
         },
         success: function (data) {
           if (data.code == 200) {
             let d = {
-              questions: data.questions,
-              room: room_id,
-              duration: data.duration,
-              on_exam:true
+              questions: data.questions,             
+              on_exam:true,
+              duration:data.duration
             };
             //gọi tới sự kiện send-exam để public tới tất cả các thành viên trong room danh sách câu hỏi
-            socket.emit("send-exam", d);
+            socket.emit("request-exam", d);
             //ẩn nút bắt đầu
             $("#btnStart").hide();
           }
@@ -140,17 +135,17 @@
         if (!checkAllTicked()) {
           //nếu chưa tick hết
           if (confirm("Bạn chưa trả lời hết câu hỏi. Vẫn muốn kết thúc?")) {
-            socket.emit("user-finish");
+            socket.emit("finish-exam");
             pushResult();
           }
         } else {
           //nếu đã được tick hết
-          socket.emit("user-finish");
+          socket.emit("finish-exam");
           pushResult();
         }
       } else {
         //đã hết giờ
-        socket.emit("user-finish");
+        socket.emit("finish-exam");
         pushResult();
       }
     });
@@ -198,154 +193,17 @@
       return chk;
     }
 
-    //lắng nghe sự kiện công bố đáp án
-    socket.on("populate-answers", (data) => {
-      $("#questions div").each(function (index, v) {
-        let question_id = $(v).attr("id");
-        let question = data.questions.find((x) => x._id === question_id);
-        $("#" + question_id + " > fieldset > h6." + question.answer + "").css(
-          "background-color",
-          "yellow"
-        );
-      });   
 
-      //gọi tới hàm đối chiếu kết quả làm bài
-      checkResult(data.questions);
-      //khi công bố kết quả bài thi thì ẩn thông tin đồng hồ đếm ngược
-      clearInterval(intervalId);
-      $("#countdown").hide();
-
-      /*
-        Khi công bố kết quả bài thi thì đồng nghĩa với room này có trạng thái là 1: đã thi xong
-        nên cần update lại trạng thái của phòng thi trong csdl
-      */
-      $.ajax({
-        url:'/live/finish',
-        type:'post',
-        data:{
-          room:data.room
-        },
-        success:function(data){
-          if(data.code == 200){
-            /*
-              Nếu cập nhật trạng thái của room thành công
-              thì gọi tới sự kiện add-room trên serrver
-              để server load lại danh sách rooms ở toàn bộ các clients
-            */
-            socket.emit('add-room');
-          }
-        }
-      });
-    });
-
-    //hàm kiểm tra kết quả làm bài của từng user
-    function checkResult(questions){
-      let correct = 0;
-      $("#questions div").each(function (index, v) {
-        let question_id = $(v).attr('id');
-        let choice = $(v).find('input[type="radio"]:checked').val();
-        if (typeof choice === "undefined") {
-          choice = '';          
-        }
-        let question = questions.find(x=>x._id === question_id);
-        if(choice === question.answer){
-          correct++;
-        }
-      });
-      socket.emit('push-result',correct);
-    }
-
-    //load danh sách thành viên hiện có trong room
-    socket.on("users-in-room", (data) => {
-      $("#current_users").text(
-        data.users.length < 10 ? "0" + data.users.length : data.users.length
-      );
-      $("#users_list").empty();
-      let users = '<ul class="list-unstyled mb20">';
-      let idx = 1;
-      $.each(data.users, function (k, u) {
-        users += '<div class="row">';
-        users += '<div class="col-xs-12">';
-        users += '<div class="media">';
-        users += '<div class="media-left">';
-        users +=
-          ' <img class="media-object photo-profile" src="' +
-          u.avatar +
-          '" alt="' +
-          u.member_code +
-          '">';
-        users += "</div>";
-        users += '<div class="media-body">';
-        users += '<h4 class="text-danger">' + u.member_code;
-        if (u.finished) {
-          //nếu user đã hoàn thành bài thi
-          users +=
-            '<span class = "text-success"><i class="fa fa-check" aria-hidden="true"></i></span>';
-        }
-        users += "</h4>";
-        users += "</div>";
-        users += "</div>";
-        users += "</div>";
-        users += "</div>";
-      });
-      users += "</ul>";
-      $("#users_list").append(users);
-    });
-
-    //lắng nghe sự kiện xếp hạng user sau khi kết thúc bài thi
-    socket.on('ranks',(data)=>{
-      $("#users_list").empty();
-      let ranks = '<ul class="list-unstyled mb20">';
-      let rank = 1;
-      $.each(data.users, function (k, u) {
-        ranks += '<div class="row">';
-          ranks += '<div class="col-xs-12">';
-            ranks += '<div class="media">';
-              ranks += '<div class="media-left">';
-                ranks +=
-          ' <img class="media-object photo-profile" src="' +
-          u.avatar +
-          '" alt="' +
-          u.member_code +
-          '">';
-          ranks += "</div>";
-          ranks += '<div class="media-body">';
-            ranks += '<h6 class="text-danger">' + u.member_code;
-            if (rank == 1) {
-                ranks +=
-                ': #'+rank+'<span class = "text-warning"><i class="fa fa-star" aria-hidden="true"></i>('+u.correct+'/'+data.exam_length+')</span>';
-            }else{
-              if(rank == 2){
-                ranks +=
-                ': #'+rank+'<span class = "text-primary"><i class="fa fa-star" aria-hidden="true"></i>('+u.correct+'/'+data.exam_length+')</span>';
-              }else{
-                if(rank == 3){
-                  ranks +=
-                  ': #'+rank+'<span class = "text-danger"><i class="fa fa-star" aria-hidden="true"></i>('+u.correct+'/'+data.exam_length+')</span>';
-                }else{
-                  ranks +=
-                  ': #'+rank+'<span class = "text-info"><i class="fa fa-bar-chart" aria-hidden="true"></i>('+u.correct+'/'+data.exam_length+')</span>';
-                }
-              }
-            }
-        ranks += "</h6>";
-        ranks += "</div>";
-        ranks += "</div>";
-        ranks += "</div>";
-        ranks += "</div>";
-        rank++;
-      });
-      ranks += "</ul>";
-      $("#users_list").append(ranks);
-    });
-
-    //public danh sách câu hỏi
-    socket.on("populate-questions", (data) => {
+     //public danh sách câu hỏi
+     socket.on("populate-exam", (data) => {
       //hiện đồng hồ đếm ngược
       totalSeconds = data.duration * 60;
       intervalId = setInterval(startTimer, 1000);
-      $("#countdown").show();
+      $("#remain").show();
 
+      //khi bắt đầu thi sẽ không cho mời thêm người vào phòng
+      $('#btnAddMember').hide();
+      $('#btnStart').hide();
       let q = "";
       let idx = 1;
       $.each(data.questions, function (k, v) {
@@ -389,15 +247,158 @@
 
       //hiện nút nộp bài và kết thúc bài thi
       $("#btnFinish").show(100);
-
-      //gọi lại sự kiện load room để cập nhật trạng thái room
-      socket.emit("add-room");
     });
 
-    //khi đóng modal thì reload lại trang để xóa user đã thoát ra khỏi danh sách users trong room
-    $("#modalRoom").on("hidden.bs.modal", function (e) {
-      socket.emit('user-leave-room');
+
+    //lắng nghe sự kiện công bố đáp án
+    socket.on("populate-answers", (data) => {
+      $("#questions div").each(function (index, v) {
+        let question_id = $(v).attr("id");
+        let question = data.questions.find((x) => x._id === question_id);
+        $("#" + question_id + " > fieldset > h6." + question.answer + "").css(
+          "background-color",
+          "yellow"
+        );
+        if(question.description.trim().length > 0){
+          $("#questions div#"+question_id+"").append('<p><span style="color:red; font-weight:bold;text-decoration: underline; ">Chú thích: </span>'+question.description+'</p>');
+        }
+      });   
+
+      //gọi tới hàm đối chiếu kết quả làm bài
+      checkResult(data.questions);
+
+
+      //khi công bố kết quả bài thi thì ẩn thông tin đồng hồ đếm ngược
+      clearInterval(intervalId);
+      $("#remain").hide();
+
+      /*
+        Khi công bố kết quả bài thi thì đồng nghĩa với room này có trạng thái là 1: đã thi xong
+        nên cần update lại trạng thái của phòng thi trong csdl
+      */
+      $.ajax({
+        url:'/live/finish',
+        type:'post',
+        data:{
+          room:data.room
+        },
+        success:function(data){
+          if(data.code == 200){
+            /*
+              Nếu cập nhật trạng thái của room thành công
+              thì gọi tới sự kiện add-room trên serrver
+              để server load lại danh sách rooms ở toàn bộ các clients
+            */
+            socket.emit('populate-rooms');
+          }
+        }
+      });
     });
+
+    //hàm kiểm tra kết quả làm bài của từng user
+    function checkResult(questions){
+      let correct = 0;
+      $("#questions div").each(function (index, v) {
+        let question_id = $(v).attr('id');
+        let choice = $(v).find('input[type="radio"]:checked').val();
+        if (typeof choice === "undefined") {
+          choice = '';          
+        }
+        let question = questions.find(x=>x._id === question_id);
+        if(choice === question.answer){
+          correct++;
+        }
+      });
+      socket.emit('request-rank',correct);
+    }
+
+    //load danh sách thành viên hiện có trong room
+    socket.on("members-in-room", members => {
+      $("#member_count").text(
+        members.length < 10 ? "0" + members.length : members.length
+      );
+      $("#users_list").empty();
+      let usersList = '<ul class="list-unstyled mb20">';
+      let idx = 1;
+      $.each(members, function (k, u) {
+        usersList += '<div class="row">';
+        usersList += '<div class="col-xs-12">';
+          usersList += '<div class="media">';
+            usersList += '<div class="media-left">';
+              usersList +=
+          ' <img class="media-object photo-profile" src="' +
+          u.avatar +
+          '" alt="' +
+          u.member_code +
+          '">';
+          usersList += "</div>";
+          usersList += '<div class="media-body">';
+            usersList += '<h4><span  class="text-danger">' + u.member_code+'</span> ';
+              usersList +=u.fullname;
+        if (u.finishExam) {
+          //nếu user đã hoàn thành bài thi
+          usersList +=
+            '<span class = "text-success"><i class="fa fa-check" aria-hidden="true"></i></span>';
+        }
+        usersList += "</h4>";
+        usersList += "</div>";
+        usersList += "</div>";
+        usersList += "</div>";
+        usersList += "</div>";
+      });
+      usersList += "</ul>";
+      $("#users_list").append(usersList);
+    });
+
+    //lắng nghe sự kiện xếp hạng user sau khi kết thúc bài thi
+    socket.on('populate-ranks',(data)=>{
+      $("#users_list").empty();
+      let ranks = '<ul class="list-unstyled mb20">';
+      let rank = 1;
+      $.each(data.members, function (k, u) {
+        ranks += '<div class="row">';
+          ranks += '<div class="col-xs-12">';
+            ranks += '<div class="media">';
+              ranks += '<div class="media-left">';
+                ranks +=
+          ' <img class="media-object photo-profile" src="' +
+          u.avatar +
+          '" alt="' +
+          u.member_code +
+          '">';
+          ranks += "</div>";
+          ranks += '<div class="media-body">';
+            ranks += '<h4><span  class="text-danger">' + u.member_code+'</span> ';
+              ranks +=u.fullname;
+            if (rank == 1) {
+                ranks +=
+                ': #'+rank+'<span><i class="fa fa-trophy" aria-hidden="true" style="color:yellow; border:solid 1px yellow"></i>('+u.correct+'/'+data.exam_length+')</span>';
+            }else{
+              if(rank == 2){
+                ranks +=
+                ': #'+rank+'<span><i class="fa fa-trophy"  aria-hidden="true" style="color:#ddd; border:solid 1px yellow"></i>('+u.correct+'/'+data.exam_length+')</span>';
+              }else{
+                if(rank == 3){
+                  ranks +=
+                  ': #'+rank+'<span><i class="fa fa-trophy" aria-hidden="true" style="color:brown; border:solid 1px yellow" ></i>('+u.correct+'/'+data.exam_length+')</span>';
+                }else{
+                  ranks +=
+                  ': #'+rank+'<span class = "text-info"><i class="fa fa-bar-chart" aria-hidden="true"></i>('+u.correct+'/'+data.exam_length+')</span>';
+                }
+              }
+            }
+        ranks += "</h6>";
+        ranks += "</div>";
+        ranks += "</div>";
+        ranks += "</div>";
+        ranks += "</div>";
+        rank++;
+      });
+      ranks += "</ul>";
+      $("#users_list").append(ranks);
+    });
+
+   
 
     //hàm đếm ngược thời gian
     function startTimer() {
@@ -407,11 +408,12 @@
       seconds = totalSeconds - (hours * 3600 + minutes * 60);
       let remain =
         '<span id="hour"></span>:<span id="minute"></span>:<span id="seconds"></span>';
-      $("#remainTime").html(remain);
+
+      $("#countdown").html(remain);
       $("#hour").text(hours < 10 ? "0" + hours : hours);
       $("#minute").text(minutes < 10 ? "0" + minutes : minutes);
       $("#seconds").text(seconds < 10 ? "0" + seconds : seconds);
-
+     
       if (totalSeconds < 1) {
         time_over = true;
         $("#btnFinish").click();
@@ -419,13 +421,117 @@
     }
   
     // sự kiện add user cho room
-    $('#btnAddUser').click(function(){
-      $('#room_title').val($('#room_name').text());
-      $('#modalAddUser').modal();
+    $('#btnAddMember').click(function(){ 
+      $('#modalAddUser').modal(400);
+    });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    //phần liên quan tới chat
+    $('#btnChat').click(function(){
+      let message = $('#txtMessage').val().trim();     
+      if(message.length>0){
+        socket.emit('send-message',message);
+        let avatar = $('#divProfile div a img').attr('src');
+          let d = '<div class = "row">';
+          d +=  '<div class = "col-xs-12 text-right">';
+          d +=    '<span class="user_message">'+message+'</span>  ';
+          d +=    '<img src="'+avatar+'" alt="" class="user_avatar">';
+          d +=  '</div>';
+          d += '</div><hr>';
+        $('#messages').append(d);
+        $('#txtMessage').val('');
+      }
+    });
+
+    $('#txtMessage').keyup(function(e){
+      if(e.keyCode == 13)    {
+        $('#btnChat').click();
+      }
+    });
+
+
+    socket.on('send-message',data=>{
+      let d = '<div class = "row">';
+          d +=  '<div class = "col-xs-12">';
+          d +=    '<img src="'+data.user.avatar+'" alt="'+data.user.fullname+'" class="user_avatar">';
+          d +=    '<span class="user_fullname"> '+data.user.fullname+'</span>:';
+          d +=    '<span class="user_message">'+data.message+'</span>';
+          d +=  '</div>';
+          d += '</div><hr>';
+      
+      $('#messages').append(d)
     });
   </script>
 
+
+
+
+
   <style>
+    #messages{
+      height: 300px;
+      overflow: scroll;
+      overflow-x:hidden;
+    }
+    #txtMessage{
+      border: solid 1px #2574ab;
+    }
+    #btnChat{
+      border: solid 1px #2574ab;
+      border: solid 1px ;
+    }
+
+    .user_avatar{
+      height: 24px;
+      height: 24px;
+      border: 1px solid #d9534f;
+      border-radius: 50%;
+    }
+    .user_fullname{
+      font-weight:bold;
+      color: darkgreen;
+    }
+
+    .own_message{
+      float: right;
+    }
+    .user_message{
+      word-wrap: break-word;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     .photo-profile {
       border: 1px solid #ddd;
       border-radius: 50%;
@@ -456,5 +562,19 @@
       min-height: 100%;
       border-radius: 0;
     }
+    #remain{
+      font-size: 16px;
+      color:darkgreen;
+      float:right;
+    }
+    #countdown{
+      font-family: "Digital";
+      font-weight: bold;
+      text-decoration: chocolate;
+      text-shadow: cornflowerblue;
+      color:darkred;
+    }
+
+    
   </style>
 </div>
